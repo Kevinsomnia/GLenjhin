@@ -5,29 +5,30 @@
 static double gameTime = 0.0;
 static double deltaTime = 0.0;
 
-const unsigned int NUM_VERTICES = 9;
+const unsigned int NUM_VERTICES = 5;
+const unsigned int NUM_INDICES = 9;	// Should be divisible by 3
 static float originalVertices[NUM_VERTICES * 3] = {
 	0.0f, 0.0f, 0.0f,
 	1.0f, 0.25f, 1.0f,
 	0.5f, 0.9f, 0.5f,
-
-	0.5f, 0.9f, 0.5f,
 	-0.5f, 0.8f, 0.5f,
-	0.0f, 0.0f, 0.0f,
-
-	-0.5f, 0.8f, 0.5f,
-	-1.0f, 0.1f, 0.0f,
-	0.0f, 0.0f, 0.0f
+	-1.0f, 0.1f, 0.0f
 };
 
 static float vertices[NUM_VERTICES * 3];
+
+static unsigned int indices[NUM_INDICES] = {
+	0, 1, 2,
+	2, 3, 0,
+	0, 3, 4
+};
 
 void update()
 {
 	for (int i = 0; i < NUM_VERTICES * 3; i += 3)
 	{
 		// Manipulating XY of each vertex position.
-		double speed = PI * 2 * 0.15;
+		double speed = PI * 2 * (i % 2 == 0 ? 0.15 : -0.15);
 		double offset = 2.0 * PI * i / (NUM_VERTICES * 3);
 		const float strength = 0.125f;
 
@@ -84,6 +85,12 @@ int main()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(0);
 
+	// Create and bind a index buffer
+	unsigned int ibo;
+	glGenBuffers(1, &ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, NUM_INDICES * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+
 	double elapsedTime = 0.0;
 	unsigned int frames = 0;
 
@@ -94,7 +101,7 @@ int main()
 
 		update();
 
-		glDrawArrays(GL_TRIANGLES, 0, NUM_VERTICES);
+		glDrawElements(GL_TRIANGLES, NUM_INDICES, GL_UNSIGNED_INT, nullptr);
 
 		// Swap back and front buffers
 		glfwSwapBuffers(window);
