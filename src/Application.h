@@ -9,5 +9,6 @@ using std::cout;
 using std::endl;
 
 void update();
+void cleanup();
 
 #endif // APPLICATION_H

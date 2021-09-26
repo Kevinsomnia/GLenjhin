@@ -18,6 +18,9 @@
     <ClCompile Include="src\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ShaderCompiler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h">
@@ -29,5 +32,11 @@
     <ClInclude Include="src\Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ShaderCompiler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\Unlit.shader" />
   </ItemGroup>
 </Project>

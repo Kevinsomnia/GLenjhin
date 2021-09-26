@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Convert.h"
 #include "Math.h"
+#include "ShaderCompiler.h"
 
 static double gameTime = 0.0;
 static double deltaTime = 0.0;
@@ -40,6 +41,10 @@ void update()
 	}
 
 	glBufferData(GL_ARRAY_BUFFER, NUM_VERTICES * 3 * sizeof(float), vertices, GL_DYNAMIC_DRAW);
+}
+
+void cleanup()
+{
 }
 
 int main()
@@ -91,6 +96,11 @@ int main()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, NUM_INDICES * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
+	// Create shader
+	ShaderParseResult unlitShader = parseShader("res/shaders/Unlit.shader");
+	unsigned int unlit = createShader(unlitShader);
+	glUseProgram(unlit);
+
 	double elapsedTime = 0.0;
 	unsigned int frames = 0;
 
@@ -126,6 +136,9 @@ int main()
 			cout << "FPS: " << fps << endl;
 		}
 	}
+
+	cleanup();
+	glDeleteProgram(unlit);
 
 	glfwTerminate();
 	return 0;
