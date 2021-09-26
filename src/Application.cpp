@@ -40,7 +40,7 @@ void update()
 		vertices[i + 2] = originalVertices[i + 2] + x * y * strength;
 	}
 
-	glBufferData(GL_ARRAY_BUFFER, NUM_VERTICES * 3 * sizeof(float), vertices, GL_DYNAMIC_DRAW);
+	glCheckError(glBufferData(GL_ARRAY_BUFFER, NUM_VERTICES * 3 * sizeof(float), vertices, GL_DYNAMIC_DRAW));
 }
 
 void cleanup()
@@ -54,6 +54,10 @@ int main()
 	if (!glfwInit())
 		return 1;
 
+	// OpenGL Core 4.6
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	GLFWwindow* window = glfwCreateWindow(1600, 900, "GLenjhin", nullptr, nullptr);
 
 	if (!window)
@@ -80,20 +84,25 @@ int main()
 	// Initialize vertex positions
 	memcpy(vertices, originalVertices, NUM_VERTICES * 3 * sizeof(float));
 
+	// Create a vertex array object
+	unsigned int vao;
+	glCheckError(glGenVertexArrays(1, &vao));
+	glCheckError(glBindVertexArray(vao));
+
 	// Create and bind a vertex buffer
 	unsigned int vbo;
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glCheckError(glGenBuffers(1, &vbo));
+	glCheckError(glBindBuffer(GL_ARRAY_BUFFER, vbo));
 	glCheckError(glBufferData(GL_ARRAY_BUFFER, NUM_VERTICES * 3 * sizeof(float), vertices, GL_DYNAMIC_DRAW));
 
 	// Vertex position attribute
 	glCheckError(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0));
-	glEnableVertexAttribArray(0);
+	glCheckError(glEnableVertexAttribArray(0));
 
 	// Create and bind a index buffer
 	unsigned int ibo;
-	glGenBuffers(1, &ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glCheckError(glGenBuffers(1, &ibo));
+	glCheckError(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
 	glCheckError(glBufferData(GL_ELEMENT_ARRAY_BUFFER, NUM_INDICES * sizeof(unsigned int), indices, GL_STATIC_DRAW));
 
 	// Create shader
