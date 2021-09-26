@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Convert.h"
 #include "Math.h"
+#include "Renderer/Material.h"
 #include "Renderer/MeshRenderer.h"
 #include "Renderer/Shader.h"
 
@@ -53,6 +54,10 @@ int main()
 	Shader unlit("res/shaders/Unlit.shader");
 	Shader rainbow("res/shaders/Rainbow.shader");
 
+	// Create basic materials for objects below
+	Material matA(&rainbow);
+	Material matB(&unlit);
+
 	// Create 2 simple mesh objects
 	const unsigned int numVerticesA = 5;
 	static float verticesA[numVerticesA * 3] = {
@@ -69,7 +74,7 @@ int main()
 		0, 3, 4
 	};
 	Mesh meshA(verticesA, numVerticesA, indicesA, numIndicesA);
-	MeshRenderer rendererA(&meshA);
+	MeshRenderer rendererA(&meshA, &matA);
 
 	const unsigned int numVerticesB = 4;
 	static float verticesB[numVerticesB * 3] = {
@@ -84,7 +89,7 @@ int main()
 		2, 3, 0,
 	};
 	Mesh meshB(verticesB, numVerticesB, indicesB, numIndicesB);
-	MeshRenderer rendererB(&meshB);
+	MeshRenderer rendererB(&meshB, &matB);
 
 	double elapsedTime = 0.0;
 	unsigned int frames = 0;
@@ -96,9 +101,7 @@ int main()
 
 		update();
 
-		rainbow.use();
 		rendererA.draw();
-		unlit.use();
 		rendererB.draw();
 
 		// Swap back and front buffers

@@ -1,6 +1,6 @@
 #include "MeshRenderer.h"
 
-MeshRenderer::MeshRenderer(Mesh* mesh) : mesh(mesh)
+MeshRenderer::MeshRenderer(Mesh* mesh, Material* material) : mesh(mesh), material(material)
 {
 }
 
@@ -12,8 +12,14 @@ void MeshRenderer::draw()
 {
 	if (mesh)
 	{
+		if (material)
+			material->bind();
+
 		mesh->bind();
 		mesh->draw();
 		mesh->unbind();
+
+		if (material)
+			material->unbind();
 	}
 }
