@@ -84,17 +84,17 @@ int main()
 	unsigned int vbo;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, NUM_VERTICES * 3 * sizeof(float), vertices, GL_DYNAMIC_DRAW);
+	glCheckError(glBufferData(GL_ARRAY_BUFFER, NUM_VERTICES * 3 * sizeof(float), vertices, GL_DYNAMIC_DRAW));
 
 	// Vertex position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glCheckError(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0));
 	glEnableVertexAttribArray(0);
 
 	// Create and bind a index buffer
 	unsigned int ibo;
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, NUM_INDICES * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+	glCheckError(glBufferData(GL_ELEMENT_ARRAY_BUFFER, NUM_INDICES * sizeof(unsigned int), indices, GL_STATIC_DRAW));
 
 	// Create shader
 	ShaderParseResult unlitShader = parseShader("res/shaders/Unlit.shader");
@@ -111,7 +111,7 @@ int main()
 
 		update();
 
-		glDrawElements(GL_TRIANGLES, NUM_INDICES, GL_UNSIGNED_INT, nullptr);
+		glCheckError(glDrawElements(GL_TRIANGLES, NUM_INDICES, GL_UNSIGNED_INT, nullptr));
 
 		// Swap back and front buffers
 		glfwSwapBuffers(window);
