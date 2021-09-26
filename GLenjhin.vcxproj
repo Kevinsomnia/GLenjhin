@@ -149,6 +149,7 @@
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Renderer\Mesh.cpp" />
     <ClCompile Include="src\Renderer\MeshRenderer.cpp" />
+    <ClCompile Include="src\Renderer\Shader.cpp" />
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\ShaderCompiler.cpp" />
   </ItemGroup>
@@ -159,10 +160,12 @@
     <ClInclude Include="src\Math.h" />
     <ClInclude Include="src\Renderer\Mesh.h" />
     <ClInclude Include="src\Renderer\MeshRenderer.h" />
+    <ClInclude Include="src\Renderer\Shader.h" />
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\ShaderCompiler.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\shaders\Rainbow.shader" />
     <None Include="res\shaders\Unlit.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

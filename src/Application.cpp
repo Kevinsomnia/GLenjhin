@@ -1,8 +1,8 @@
 #include "Application.h"
 #include "Convert.h"
 #include "Math.h"
-#include "ShaderCompiler.h"
 #include "Renderer/MeshRenderer.h"
+#include "Renderer/Shader.h"
 
 static double gameTime = 0.0;
 static double deltaTime = 0.0;
@@ -49,6 +49,10 @@ int main()
 
 	cout << "Running OpenGL " << glGetString(GL_VERSION) << endl;
 
+	// Load and compile shaders
+	Shader unlit("res/shaders/Unlit.shader");
+	Shader rainbow("res/shaders/Rainbow.shader");
+
 	// Create 2 simple mesh objects
 	const unsigned int numVerticesA = 5;
 	static float verticesA[numVerticesA * 3] = {
@@ -82,11 +86,6 @@ int main()
 	Mesh meshB(verticesB, numVerticesB, indicesB, numIndicesB);
 	MeshRenderer rendererB(&meshB);
 
-	// Create shader
-	ShaderParseResult unlitShader = parseShader("res/shaders/Unlit.shader");
-	unsigned int unlit = createShader(unlitShader);
-	glUseProgram(unlit);
-
 	double elapsedTime = 0.0;
 	unsigned int frames = 0;
 
@@ -97,7 +96,9 @@ int main()
 
 		update();
 
+		rainbow.use();
 		rendererA.draw();
+		unlit.use();
 		rendererB.draw();
 
 		// Swap back and front buffers
@@ -125,7 +126,6 @@ int main()
 	}
 
 	cleanup();
-	glDeleteProgram(unlit);
 
 	glfwTerminate();
 	return 0;
