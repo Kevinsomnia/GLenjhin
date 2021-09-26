@@ -7,22 +7,6 @@
 static double gameTime = 0.0;
 static double deltaTime = 0.0;
 
-const unsigned int NUM_VERTICES = 5;
-const unsigned int NUM_INDICES = 9;	// Should be divisible by 3
-static float vertices[NUM_VERTICES * 3] = {
-	0.0f, 0.0f, 0.0f,
-	1.0f, 0.25f, 1.0f,
-	0.5f, 0.9f, 0.5f,
-	-0.5f, 0.8f, 0.5f,
-	-1.0f, 0.1f, 0.0f
-};
-
-static unsigned int indices[NUM_INDICES] = {
-	0, 1, 2,
-	2, 3, 0,
-	0, 3, 4
-};
-
 void update()
 {
 }
@@ -65,9 +49,38 @@ int main()
 
 	cout << "Running OpenGL " << glGetString(GL_VERSION) << endl;
 
-	// Create a simple mesh object
-	Mesh mesh(vertices, NUM_VERTICES, indices, NUM_INDICES);
-	MeshRenderer renderer(&mesh);
+	// Create 2 simple mesh objects
+	const unsigned int numVerticesA = 5;
+	static float verticesA[numVerticesA * 3] = {
+		0.0f, 0.0f, 0.0f,
+		1.0f, 0.25f, 1.0f,
+		0.5f, 0.9f, 0.5f,
+		-0.5f, 0.8f, 0.5f,
+		-1.0f, 0.1f, 0.0f
+	};
+	const unsigned int numIndicesA = 9;
+	static unsigned int indicesA[numIndicesA] = {
+		0, 1, 2,
+		2, 3, 0,
+		0, 3, 4
+	};
+	Mesh meshA(verticesA, numVerticesA, indicesA, numIndicesA);
+	MeshRenderer rendererA(&meshA);
+
+	const unsigned int numVerticesB = 4;
+	static float verticesB[numVerticesB * 3] = {
+		-0.25f, -0.75f, 0.0f,
+		-0.25f, -0.25f, 0.5f,
+		-0.75f, -0.3f, 0.0f,
+		-0.75f, -0.6f, 0.5f
+	};
+	const unsigned int numIndicesB = 6;
+	static unsigned int indicesB[numIndicesB] = {
+		0, 1, 2,
+		2, 3, 0,
+	};
+	Mesh meshB(verticesB, numVerticesB, indicesB, numIndicesB);
+	MeshRenderer rendererB(&meshB);
 
 	// Create shader
 	ShaderParseResult unlitShader = parseShader("res/shaders/Unlit.shader");
@@ -84,7 +97,8 @@ int main()
 
 		update();
 
-		renderer.draw();
+		rendererA.draw();
+		rendererB.draw();
 
 		// Swap back and front buffers
 		glfwSwapBuffers(window);
@@ -112,7 +126,6 @@ int main()
 
 	cleanup();
 	glDeleteProgram(unlit);
-	mesh.~Mesh();
 
 	glfwTerminate();
 	return 0;
