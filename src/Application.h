@@ -14,9 +14,6 @@
 using std::cout;
 using std::endl;
 
-void update();
-void cleanup();
-
 // OpenGL error handling
 static void glClearError()
 {

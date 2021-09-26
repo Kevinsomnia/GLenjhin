@@ -2,10 +2,20 @@
 #define SCENE_H
 
 #include <iostream>
+#include <vector>
+#include "Renderer/MeshRenderer.h"
 
 using std::cout;
 using std::endl;
 
-void render();
+class Scene
+{
+public:
+	Scene();
+	~Scene();
+	void draw();
+private:
+	std::vector<MeshRenderer*> m_renderers;
+};
 
 #endif // SCENE_H
