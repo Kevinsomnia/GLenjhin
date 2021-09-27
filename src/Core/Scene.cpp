@@ -11,7 +11,7 @@ Scene::Scene()
 	Material* matB = new Material(unlit);
 
 	// Create 2 simple mesh objects
-	const unsigned int numVerticesA = 5;
+	const uint32_t numVerticesA = 5;
 	Vertex verticesA[numVerticesA] = {
 		Vertex(Vec3(0.0f, 0.0f, 0.0f)),
 		Vertex(Vec3(1.0f, 0.25f, 1.0f)),
@@ -19,23 +19,23 @@ Scene::Scene()
 		Vertex(Vec3(-0.5f, 0.8f, 0.5f)),
 		Vertex(Vec3(-1.0f, 0.1f, 0.0f))
 	};
-	const unsigned int numIndicesA = 9;
-	unsigned int indicesA[numIndicesA] = {
+	const uint32_t numIndicesA = 9;
+	uint32_t indicesA[numIndicesA] = {
 		0, 1, 2,
 		2, 3, 0,
 		0, 3, 4
 	};
 	Mesh* meshA = new Mesh(verticesA, numVerticesA, indicesA, numIndicesA);
 
-	const unsigned int numVerticesB = 4;
+	const uint32_t numVerticesB = 4;
 	Vertex verticesB[numVerticesB] = {
 		Vertex(Vec3(-0.25f, -0.75f, 0.0f)),
 		Vertex(Vec3(-0.25f, -0.25f, 0.5f)),
 		Vertex(Vec3(-0.75f, -0.3f, 0.0f)),
 		Vertex(Vec3(-0.75f, -0.6f, 0.5f))
 	};
-	const unsigned int numIndicesB = 6;
-	unsigned int indicesB[numIndicesB] = {
+	const uint32_t numIndicesB = 6;
+	uint32_t indicesB[numIndicesB] = {
 		0, 1, 2,
 		2, 3, 0,
 	};

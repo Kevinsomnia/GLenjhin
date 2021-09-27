@@ -19,5 +19,5 @@ void Material::bind()
 
 void Material::unbind()
 {
-	glUseProgram(0);
+	glUseProgram(NULL);
 }

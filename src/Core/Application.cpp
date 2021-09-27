@@ -41,7 +41,7 @@ int main()
 
 	double deltaTime = 0.0;
 	double elapsedTime = 0.0;
-	unsigned int frames = 0;
+	uint32_t frames = 0;
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -65,7 +65,7 @@ int main()
 
 		if (elapsedTime > 1.0)
 		{
-			unsigned int fps = (unsigned int)(frames / elapsedTime);
+			uint32_t fps = (uint32_t)(frames / elapsedTime);
 			elapsedTime = 0.0;
 			frames = 0;
 

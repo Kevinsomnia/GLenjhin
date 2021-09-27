@@ -20,6 +20,6 @@ struct ShaderParseResult
 };
 
 ShaderParseResult parseShader(const string& filePath);
-unsigned int createShader(const ShaderParseResult& info);
+uint32_t createShader(const ShaderParseResult& info);
 
 #endif // SHADER_COMPILER_H

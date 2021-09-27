@@ -50,9 +50,9 @@ ShaderParseResult parseShader(const string& filePath)
 	};
 }
 
-unsigned int compileShader(unsigned int type, const string& source)
+uint32_t compileShader(uint32_t type, const string& source)
 {
-	unsigned int id = glCreateShader(type);
+	uint32_t id = glCreateShader(type);
 	const char* src = source.c_str();
 	glShaderSource(id, 1, &src, nullptr);
 	glCompileShader(id);
@@ -75,11 +75,11 @@ unsigned int compileShader(unsigned int type, const string& source)
 	return id;
 }
 
-unsigned int createShader(const ShaderParseResult& info)
+uint32_t createShader(const ShaderParseResult& info)
 {
-	unsigned int program = glCreateProgram();
-	unsigned int vert = 0;
-	unsigned int frag = 0;
+	uint32_t program = glCreateProgram();
+	uint32_t vert = 0;
+	uint32_t frag = 0;
 
 	if (info.vertex.length() > 0)
 	{

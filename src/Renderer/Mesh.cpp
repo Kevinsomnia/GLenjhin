@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-Mesh::Mesh(const Vertex* vertices, const unsigned int vertexCount, const unsigned int* indices, const unsigned int indexCount)
+Mesh::Mesh(const Vertex* vertices, const uint32_t vertexCount, const uint32_t* indices, const uint32_t indexCount)
 	: m_Vertices(vertices), m_VertexCount(vertexCount), m_Indices(indices), m_TriangleCount(indexCount / 3), m_VaoId(0), m_IboId(0)
 {
 	if (indexCount % 3 != 0)
@@ -25,7 +25,7 @@ Mesh::Mesh(const Vertex* vertices, const unsigned int vertexCount, const unsigne
 	// Create and bind a index buffer
 	glGenBuffers(1, &m_IboId);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IboId);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount * sizeof(uint32_t), indices, GL_STATIC_DRAW);
 }
 
 Mesh::~Mesh()
