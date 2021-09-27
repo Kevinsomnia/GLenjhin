@@ -16,8 +16,8 @@ public:
 	~MeshRenderer();
 	void draw();
 private:
-	Mesh* mesh;
-	Material* material;
+	Mesh* m_Mesh;
+	Material* m_Material;
 };
 
 #endif // MESHRENDERER_H

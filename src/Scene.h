@@ -15,7 +15,7 @@ public:
 	~Scene();
 	void draw();
 private:
-	std::vector<MeshRenderer*> m_renderers;
+	std::vector<MeshRenderer*> m_Renderers;
 };
 
 #endif // SCENE_H

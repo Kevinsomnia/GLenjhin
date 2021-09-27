@@ -16,12 +16,12 @@ public:
 	void unbind();
 	void draw();
 private:
-	const float* vertices;
-	const unsigned int vertexCount;
-	const unsigned int* indices;
-	const unsigned int triangleCount;
-	unsigned int m_vaoId;
-	unsigned int m_iboId;
+	const float* m_Vertices;
+	const unsigned int m_VertexCount;
+	const unsigned int* m_Indices;
+	const unsigned int m_TriangleCount;
+	unsigned int m_VaoId;
+	unsigned int m_IboId;
 };
 
 #endif // MESH_H

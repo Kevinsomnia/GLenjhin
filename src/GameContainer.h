@@ -18,7 +18,7 @@ public:
 
 	double time;
 private:
-	Scene* m_currentScene;
+	Scene* m_CurrentScene;
 };
 
 #endif // GAMECONTAINER_H

@@ -41,24 +41,24 @@ Scene::Scene()
 	};
 	Mesh* meshB = new Mesh(verticesB, numVerticesB, indicesB, numIndicesB);
 
-	m_renderers.push_back(new MeshRenderer(meshA, matA));
-	m_renderers.push_back(new MeshRenderer(meshB, matB));
+	m_Renderers.push_back(new MeshRenderer(meshA, matA));
+	m_Renderers.push_back(new MeshRenderer(meshB, matB));
 }
 
 Scene::~Scene()
 {
-	for (size_t i = 0; i < m_renderers.size(); i++)
+	for (size_t i = 0; i < m_Renderers.size(); i++)
 	{
-		delete m_renderers[i];
+		delete m_Renderers[i];
 	}
 
-	m_renderers.clear();
+	m_Renderers.clear();
 }
 
 void Scene::draw()
 {
-	for (size_t i = 0; i < m_renderers.size(); i++)
+	for (size_t i = 0; i < m_Renderers.size(); i++)
 	{
-		m_renderers[i]->draw();
+		m_Renderers[i]->draw();
 	}
 }

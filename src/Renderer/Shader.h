@@ -16,7 +16,7 @@ public:
 	~Shader();
 	void use();
 private:
-	unsigned int m_shaderId;
+	unsigned int m_ShaderId;
 };
 
 #endif // SHADER_H

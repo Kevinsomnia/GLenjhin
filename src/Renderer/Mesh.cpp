@@ -1,7 +1,7 @@
 #include "Mesh.h"
 
 Mesh::Mesh(const float* vertices, const unsigned int vertexCount, const unsigned int* indices, const unsigned int indexCount)
-	: vertices(vertices), vertexCount(vertexCount), indices(indices), triangleCount(indexCount / 3), m_vaoId(0), m_iboId(0)
+	: m_Vertices(vertices), m_VertexCount(vertexCount), m_Indices(indices), m_TriangleCount(indexCount / 3), m_VaoId(0), m_IboId(0)
 {
 	if (indexCount % 3 != 0)
 	{
@@ -9,8 +9,8 @@ Mesh::Mesh(const float* vertices, const unsigned int vertexCount, const unsigned
 	}
 
 	// Create and bind a vertex array
-	glGenVertexArrays(1, &m_vaoId);
-	glBindVertexArray(m_vaoId);
+	glGenVertexArrays(1, &m_VaoId);
+	glBindVertexArray(m_VaoId);
 
 	// Create a vertex buffer
 	unsigned int vbo;
@@ -24,8 +24,8 @@ Mesh::Mesh(const float* vertices, const unsigned int vertexCount, const unsigned
 	glEnableVertexAttribArray(0);
 
 	// Create and bind a index buffer
-	glGenBuffers(1, &m_iboId);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_iboId);
+	glGenBuffers(1, &m_IboId);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IboId);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 }
 
@@ -35,8 +35,8 @@ Mesh::~Mesh()
 
 void Mesh::bind()
 {
-	glBindVertexArray(m_vaoId);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_iboId);
+	glBindVertexArray(m_VaoId);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IboId);
 }
 
 void Mesh::unbind()
@@ -47,5 +47,5 @@ void Mesh::unbind()
 
 void Mesh::draw()
 {
-	glDrawElements(GL_TRIANGLES, triangleCount * 3, GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, m_TriangleCount * 3, GL_UNSIGNED_INT, nullptr);
 }

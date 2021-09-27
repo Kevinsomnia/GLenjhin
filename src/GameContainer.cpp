@@ -1,9 +1,9 @@
 #include "GameContainer.h"
 
-GameContainer::GameContainer() : time(0.0), m_currentScene(nullptr)
+GameContainer::GameContainer() : time(0.0), m_CurrentScene(nullptr)
 {
 	// Load scene.
-	m_currentScene = new Scene();
+	m_CurrentScene = new Scene();
 }
 
 GameContainer::~GameContainer()
@@ -19,8 +19,8 @@ void GameContainer::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	if (m_currentScene)
+	if (m_CurrentScene)
 	{
-		m_currentScene->draw();
+		m_CurrentScene->draw();
 	}
 }
