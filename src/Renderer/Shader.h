@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <GL/glew.h>
-#include "../ShaderCompiler.h"
+#include "../Core/ShaderCompiler.h"
 
 using std::cout;
 using std::endl;

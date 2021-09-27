@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <vector>
-#include "Renderer/MeshRenderer.h"
+#include "../Renderer/MeshRenderer.h"
 
 using std::cout;
 using std::endl;

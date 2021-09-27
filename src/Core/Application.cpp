@@ -1,6 +1,6 @@
 #include "Application.h"
-#include "Convert.h"
 #include "GameContainer.h"
+#include "../Math/Convert.h"
 
 int main()
 {

@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Application.cpp">
+    <ClCompile Include="src\Core\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ShaderCompiler.cpp">
+    <ClCompile Include="src\Core\ShaderCompiler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Renderer\Mesh.cpp">
@@ -27,10 +27,10 @@
     <ClCompile Include="src\Renderer\MeshRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scene.cpp">
+    <ClCompile Include="src\Core\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Camera.cpp">
+    <ClCompile Include="src\Renderer\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Renderer\Shader.cpp">
@@ -39,21 +39,21 @@
     <ClCompile Include="src\Renderer\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameContainer.cpp">
+    <ClCompile Include="src\Core\GameContainer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Application.h">
+    <ClInclude Include="src\Core\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Convert.h">
+    <ClInclude Include="src\Math\Convert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Math\Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ShaderCompiler.h">
+    <ClInclude Include="src\Core\ShaderCompiler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Renderer\Mesh.h">
@@ -62,10 +62,10 @@
     <ClInclude Include="src\Renderer\MeshRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Scene.h">
+    <ClInclude Include="src\Core\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Camera.h">
+    <ClInclude Include="src\Renderer\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Renderer\Shader.h">
@@ -74,7 +74,7 @@
     <ClInclude Include="src\Renderer\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameContainer.h">
+    <ClInclude Include="src\Core\GameContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Math\Vector.h">
