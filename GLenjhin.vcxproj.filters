@@ -50,7 +50,7 @@
     <ClInclude Include="src\Convert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Math.h">
+    <ClInclude Include="src\Math\Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ShaderCompiler.h">
@@ -75,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\GameContainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Math\Vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

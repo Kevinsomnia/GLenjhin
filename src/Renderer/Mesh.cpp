@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-Mesh::Mesh(const float* vertices, const unsigned int vertexCount, const unsigned int* indices, const unsigned int indexCount)
+Mesh::Mesh(const Vertex* vertices, const unsigned int vertexCount, const unsigned int* indices, const unsigned int indexCount)
 	: m_Vertices(vertices), m_VertexCount(vertexCount), m_Indices(indices), m_TriangleCount(indexCount / 3), m_VaoId(0), m_IboId(0)
 {
 	if (indexCount % 3 != 0)
@@ -16,11 +16,10 @@ Mesh::Mesh(const float* vertices, const unsigned int vertexCount, const unsigned
 	unsigned int vbo;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, vertexCount * 3 * sizeof(float), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertexCount * sizeof(Vertex), vertices, GL_STATIC_DRAW);
 
-	// Set vertex position attribute
-	// This will also bind the vertex buffer to the vertex array
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	// Vertex position
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vec3), 0);
 	glEnableVertexAttribArray(0);
 
 	// Create and bind a index buffer

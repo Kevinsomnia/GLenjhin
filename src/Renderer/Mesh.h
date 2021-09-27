@@ -3,20 +3,29 @@
 
 #include <iostream>
 #include <GL/glew.h>
+#include "../Math/Vector.h"
 
 using std::cout;
 using std::endl;
 
+struct Vertex
+{
+	Vertex(Vec3 position)
+		: position(position) {}
+
+	Vec3 position;
+};
+
 class Mesh
 {
 public:
-	Mesh(const float* vertices, const unsigned int vertexCount, const unsigned int* indices, const unsigned int indexCount);
+	Mesh(const Vertex* vertices, const unsigned int vertexCount, const unsigned int* indices, const unsigned int indexCount);
 	~Mesh();
 	void bind();
 	void unbind();
 	void draw();
 private:
-	const float* m_Vertices;
+	const Vertex* m_Vertices;
 	const unsigned int m_VertexCount;
 	const unsigned int* m_Indices;
 	const unsigned int m_TriangleCount;

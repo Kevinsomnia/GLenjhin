@@ -160,7 +160,8 @@
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Convert.h" />
     <ClInclude Include="src\GameContainer.h" />
-    <ClInclude Include="src\Math.h" />
+    <ClInclude Include="src\Math\Math.h" />
+    <ClInclude Include="src\Math\Vector.h" />
     <ClInclude Include="src\Renderer\Material.h" />
     <ClInclude Include="src\Renderer\Mesh.h" />
     <ClInclude Include="src\Renderer\MeshRenderer.h" />
