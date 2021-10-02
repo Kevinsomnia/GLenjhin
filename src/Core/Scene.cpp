@@ -11,14 +11,14 @@ Scene::Scene()
 	// Cube
 	const uint32_t numVerticesA = 8;
 	Vertex verticesA[numVerticesA] = {
-		Vertex(Vec3(-0.5f, 0.5f, 0.5f)),
-		Vertex(Vec3(0.5f, 0.5f, 0.5f)),
-		Vertex(Vec3(-0.5f, -0.5f, 0.5f)),
-		Vertex(Vec3(0.5f, -0.5f, 0.5f)),
-		Vertex(Vec3(-0.5f, 0.5f, -0.5f)),
-		Vertex(Vec3(0.5f, 0.5f, -0.5f)),
-		Vertex(Vec3(-0.5f, -0.5f, -0.5f)),
-		Vertex(Vec3(0.5f, -0.5f, -0.5f))
+		Vertex(Vector3(-0.5f, 0.5f, 0.5f)),
+		Vertex(Vector3(0.5f, 0.5f, 0.5f)),
+		Vertex(Vector3(-0.5f, -0.5f, 0.5f)),
+		Vertex(Vector3(0.5f, -0.5f, 0.5f)),
+		Vertex(Vector3(-0.5f, 0.5f, -0.5f)),
+		Vertex(Vector3(0.5f, 0.5f, -0.5f)),
+		Vertex(Vector3(-0.5f, -0.5f, -0.5f)),
+		Vertex(Vector3(0.5f, -0.5f, -0.5f))
 	};
 	const uint32_t numIndicesA = 12*3;
 	uint32_t indicesA[numIndicesA] = {

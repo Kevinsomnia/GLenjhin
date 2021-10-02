@@ -10,10 +10,10 @@ using std::endl;
 
 struct Vertex
 {
-	Vertex(Vec3 position)
+	Vertex(Vector3 position)
 		: position(position) {}
 
-	Vec3 position;
+	Vector3 position;
 };
 
 class Mesh

@@ -1,6 +1,6 @@
 #include "Material.h"
 
-Material::Material(Shader* shader) : shader(shader)
+Material::Material(Shader* shader) : m_Shader(shader)
 {
 }
 
@@ -10,10 +10,10 @@ Material::~Material()
 
 void Material::bind() const
 {
-	if (shader)
+	if (m_Shader)
 	{
 		// TODO: basic shader props here.
-		shader->use();
+		m_Shader->use();
 	}
 }
 

@@ -19,7 +19,7 @@ Mesh::Mesh(const Vertex* vertices, const uint32_t vertexCount, const uint32_t* i
 	glBufferData(GL_ARRAY_BUFFER, vertexCount * sizeof(Vertex), vertices, GL_STATIC_DRAW);
 
 	// Vertex position
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vec3), 0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3), 0);
 	glEnableVertexAttribArray(0);
 
 	// Create and bind a index buffer

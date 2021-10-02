@@ -16,7 +16,7 @@ public:
 	void bind() const;
 	void unbind() const;
 private:
-	Shader* shader;
+	Shader* m_Shader;
 };
 
 #endif // MATERIAL_H
