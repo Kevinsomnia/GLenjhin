@@ -2,6 +2,22 @@
 #include "GameContainer.h"
 #include "../Math/Convert.h"
 
+static void GLAPIENTRY openGLLogMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
+{
+	switch (severity)
+	{
+		case GL_DEBUG_SEVERITY_HIGH:
+			cout << "[High Severity] " << message << endl;
+			break;
+		case GL_DEBUG_SEVERITY_MEDIUM:
+			cout << "[Medium Severity] " << message << endl;
+			break;
+		case GL_DEBUG_SEVERITY_LOW:
+			cout << "[Low Severity] " << message << endl;
+			break;
+	}
+}
+
 int main()
 {
 	cout << "Initializing engine" << endl;
@@ -13,6 +29,7 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 	GLFWwindow* window = glfwCreateWindow(1600, 900, "GLenjhin", nullptr, nullptr);
 
 	if (!window)
@@ -24,15 +41,20 @@ int main()
 
 	glfwMakeContextCurrent(window);
 
-	// Disable v-sync
-	glfwSwapInterval(0);
-
 	if (glewInit() != GLEW_OK)
 	{
 		cout << "Failed to initialize GLEW" << endl;
 		glfwTerminate();
 		return 1;
 	}
+
+	// Enable debugging
+	glDebugMessageCallback(openGLLogMessage, nullptr);
+	glEnable(GL_DEBUG_OUTPUT);
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+
+	// Disable v-sync
+	glfwSwapInterval(0);
 
 	cout << "Running OpenGL " << glGetString(GL_VERSION) << endl;
 
