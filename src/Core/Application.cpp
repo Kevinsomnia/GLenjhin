@@ -1,6 +1,4 @@
 #include "Application.h"
-#include "GameContainer.h"
-#include "../Math/Convert.h"
 
 static void GLAPIENTRY openGLLogMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 {
@@ -79,7 +77,7 @@ int main()
 		clock_t frameEndTick = clock();
 
 		// Application timer
-		deltaTime = convertClockTicksToSeconds(frameEndTick - frameStartTick);
+		deltaTime = clockTicksToSeconds(frameEndTick - frameStartTick);
 
 		// Print frame rate
 		elapsedTime += deltaTime;
