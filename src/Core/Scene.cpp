@@ -3,46 +3,47 @@
 Scene::Scene()
 {
 	// Load and compile shaders
-	Shader* unlit = new Shader("res/shaders/Unlit.shader");
 	Shader* rainbow = new Shader("res/shaders/Rainbow.shader");
 
 	// Create basic materials for objects below
 	Material* matA = new Material(rainbow);
-	Material* matB = new Material(unlit);
 
-	// Create 2 simple mesh objects
-	const uint32_t numVerticesA = 5;
+	// Cube
+	const uint32_t numVerticesA = 8;
 	Vertex verticesA[numVerticesA] = {
-		Vertex(Vec3(0.0f, 0.0f, 0.0f)),
-		Vertex(Vec3(1.0f, 0.25f, 1.0f)),
-		Vertex(Vec3(0.5f, 0.9f, 0.5f)),
-		Vertex(Vec3(-0.5f, 0.8f, 0.5f)),
-		Vertex(Vec3(-1.0f, 0.1f, 0.0f))
+		Vertex(Vec3(-0.5f, 0.5f, 0.5f)),
+		Vertex(Vec3(0.5f, 0.5f, 0.5f)),
+		Vertex(Vec3(-0.5f, -0.5f, 0.5f)),
+		Vertex(Vec3(0.5f, -0.5f, 0.5f)),
+		Vertex(Vec3(-0.5f, 0.5f, -0.5f)),
+		Vertex(Vec3(0.5f, 0.5f, -0.5f)),
+		Vertex(Vec3(-0.5f, -0.5f, -0.5f)),
+		Vertex(Vec3(0.5f, -0.5f, -0.5f))
 	};
-	const uint32_t numIndicesA = 9;
+	const uint32_t numIndicesA = 12*3;
 	uint32_t indicesA[numIndicesA] = {
-		0, 1, 2,
-		2, 3, 0,
-		0, 3, 4
+		// -Z
+		4, 7, 5,
+		4, 6, 7,
+		// +Z
+		0, 1, 3,
+		0, 3, 2,
+		// -X
+		2, 4, 0,
+		2, 6, 4,
+		// +X
+		5, 3, 1,
+		5, 7, 3,
+		// -Y
+		7, 2, 3,
+		7, 6, 2,
+		// +Y
+		0, 5, 1,
+		0, 4, 5
 	};
 	Mesh* meshA = new Mesh(verticesA, numVerticesA, indicesA, numIndicesA);
 
-	const uint32_t numVerticesB = 4;
-	Vertex verticesB[numVerticesB] = {
-		Vertex(Vec3(-0.25f, -0.75f, 0.0f)),
-		Vertex(Vec3(-0.25f, -0.25f, 0.5f)),
-		Vertex(Vec3(-0.75f, -0.3f, 0.0f)),
-		Vertex(Vec3(-0.75f, -0.6f, 0.5f))
-	};
-	const uint32_t numIndicesB = 6;
-	uint32_t indicesB[numIndicesB] = {
-		0, 1, 2,
-		2, 3, 0,
-	};
-	Mesh* meshB = new Mesh(verticesB, numVerticesB, indicesB, numIndicesB);
-
 	m_Renderers.push_back(new MeshRenderer(meshA, matA));
-	m_Renderers.push_back(new MeshRenderer(meshB, matB));
 }
 
 Scene::~Scene()
