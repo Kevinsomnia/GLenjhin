@@ -13,8 +13,8 @@ class Material
 public:
 	Material(Shader* shader);
 	~Material();
-	void bind();
-	void unbind();
+	void bind() const;
+	void unbind() const;
 private:
 	Shader* shader;
 };

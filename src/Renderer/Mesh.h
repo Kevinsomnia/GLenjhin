@@ -21,9 +21,9 @@ class Mesh
 public:
 	Mesh(const Vertex* vertices, const uint32_t vertexCount, const uint32_t* indices, const uint32_t indexCount);
 	~Mesh();
-	void bind();
-	void unbind();
-	void draw();
+	void bind() const;
+	void unbind() const;
+	void draw() const;
 private:
 	const Vertex* m_Vertices;
 	const uint32_t m_VertexCount;

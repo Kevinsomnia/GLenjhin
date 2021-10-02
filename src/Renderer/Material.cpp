@@ -8,7 +8,7 @@ Material::~Material()
 {
 }
 
-void Material::bind()
+void Material::bind() const
 {
 	if (shader)
 	{
@@ -17,7 +17,7 @@ void Material::bind()
 	}
 }
 
-void Material::unbind()
+void Material::unbind() const
 {
 	glUseProgram(NULL);
 }

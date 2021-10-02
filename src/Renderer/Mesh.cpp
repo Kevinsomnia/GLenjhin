@@ -32,19 +32,19 @@ Mesh::~Mesh()
 {
 }
 
-void Mesh::bind()
+void Mesh::bind() const
 {
 	glBindVertexArray(m_VaoId);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IboId);
 }
 
-void Mesh::unbind()
+void Mesh::unbind() const
 {
 	glBindVertexArray(NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
 }
 
-void Mesh::draw()
+void Mesh::draw() const
 {
 	glDrawElements(GL_TRIANGLES, m_TriangleCount * 3, GL_UNSIGNED_INT, nullptr);
 }
