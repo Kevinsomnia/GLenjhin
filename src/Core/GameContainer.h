@@ -4,6 +4,7 @@
 #include <iostream>
 #include <GL/glew.h>
 #include "Scene.h"
+#include "Time.h"
 
 using std::cout;
 using std::endl;
@@ -15,8 +16,6 @@ public:
 	~GameContainer();
 	void update(double deltaTime);
 	void render();
-
-	double time;
 private:
 	Scene* m_CurrentScene;
 };
