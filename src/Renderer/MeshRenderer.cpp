@@ -12,15 +12,13 @@ MeshRenderer::~MeshRenderer()
 {
 }
 
-void MeshRenderer::draw(const Matrix4x4& pos, const Matrix4x4& rot, const Matrix4x4& scale)
+void MeshRenderer::draw(const Matrix4x4& model)
 {
 	if (m_Mesh)
 	{
 		if (m_Material)
 		{
-			m_Material->setMatrix("mPosition", pos);
-			m_Material->setMatrix("mRotation", rot);
-			m_Material->setMatrix("mScale", scale);
+			m_Material->setMatrix("u_Model", model);
 			m_Material->bind();
 		}
 

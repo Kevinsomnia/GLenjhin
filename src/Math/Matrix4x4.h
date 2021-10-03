@@ -27,6 +27,7 @@ struct Matrix4x4
 	static Matrix4x4 Translate(const Vector3& pos);
 	static Matrix4x4 Rotate(const Vector3& rot);
 	static Matrix4x4 Scale(const Vector3& scale);
+	static Matrix4x4 TRS(const Vector3& pos, const Vector3& rot, const Vector3& scale);
 
 	friend std::ostream& operator<<(std::ostream& os, const Matrix4x4& mat)
 	{

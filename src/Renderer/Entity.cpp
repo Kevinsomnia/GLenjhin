@@ -29,11 +29,11 @@ void Entity::draw() const
 {
 	if (m_Renderer)
 	{
-		m_Renderer->draw(
-			Matrix4x4::Translate(m_Position),
-			Matrix4x4::Rotate(Vector3(degToRad(m_Rotation.x), degToRad(m_Rotation.y), degToRad(m_Rotation.z))),
-			Matrix4x4::Scale(m_Scale)
-		);
+		m_Renderer->draw(Matrix4x4::TRS(
+			m_Position,
+			Vector3(degToRad(m_Rotation.x), degToRad(m_Rotation.y), degToRad(m_Rotation.z)),
+			m_Scale
+		));
 	}
 }
 

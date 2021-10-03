@@ -110,7 +110,7 @@ Matrix4x4 Matrix4x4::Rotate(const Vector3& rot)
 	float sinY = sin(rot.y);
 	float sinZ = sin(rot.z);
 
-	// ZYX matrix multiplication
+	// Be sure to update TRS() if this ordering changes: ZYX
 	Matrix4x4 result = Matrix4x4();
 	result.set(0, 0, cosZ * cosY);
 	result.set(0, 1, (-sinZ * cosX) + (cosZ * sinY * sinX));
@@ -134,4 +134,31 @@ Matrix4x4 Matrix4x4::Scale(const Vector3& scale)
 	result.set(2, 2, scale.z);
 	result.set(3, 3, 1.0f);
 	return result;
+}
+
+Matrix4x4 Matrix4x4::TRS(const Vector3& pos, const Vector3& rot, const Vector3& scale)
+{
+	float cosX = cos(rot.x);
+	float cosY = cos(rot.y);
+	float cosZ = cos(rot.z);
+	float sinX = sin(rot.x);
+	float sinY = sin(rot.y);
+	float sinZ = sin(rot.z);
+
+	Matrix4x4 trs = Matrix4x4();
+	trs.set(0, 0, (cosZ * cosY) * scale.x);
+	trs.set(0, 1, (-sinZ * cosX + cosZ * sinY * sinX) * scale.y);
+	trs.set(0, 2, (sinZ * sinX + cosZ * sinY * cosX) * scale.z);
+	trs.set(0, 3, pos.x);
+	trs.set(1, 0, (sinZ * cosY) * scale.x);
+	trs.set(1, 1, (cosZ * cosX + sinZ * sinY * sinX) * scale.y);
+	trs.set(1, 2, (cosZ * -sinX + sinZ * sinY * cosX) * scale.z);
+	trs.set(1, 3, pos.y);
+	trs.set(2, 0, (-sinY) * scale.x);
+	trs.set(2, 1, (cosY * sinX) * scale.y);
+	trs.set(2, 2, (cosY * cosX) * scale.z);
+	trs.set(2, 3, pos.z);
+	trs.set(3, 3, 1.0f);
+
+	return trs;
 }

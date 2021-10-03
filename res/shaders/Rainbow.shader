@@ -4,14 +4,10 @@
 layout(location = 0) in vec4 position;
 out vec4 pos;
 
-uniform mat4 mPosition;
-uniform mat4 mRotation;
-uniform mat4 mScale;
+uniform mat4 u_Model;
 
 void main()
 {
-	mat4 model = mPosition * mRotation * mScale;
-
 	// VIEW
 	vec3 cPos = vec3(0.0, 0.0, 0.0);
 
@@ -37,7 +33,7 @@ void main()
 	proj[2] = vec4(0.0, 0.0, 0.0, 1.0);
 	proj[3] = vec4(0.0, 0.0, 0.0, 0.0);
 
-	gl_Position = proj * view * model * position;
+	gl_Position = proj * view * u_Model * position;
 	pos = position;
 }
 
