@@ -2,10 +2,13 @@
 #define MATERIAL_H
 
 #include <iostream>
+#include <unordered_map>
 #include <GL/glew.h>
+#include "../Math/Matrix4x4.h"
 #include "Shader.h"
 
 using std::cout;
+using std::cerr;
 using std::endl;
 
 class Material
@@ -15,8 +18,15 @@ public:
 	~Material();
 	void bind() const;
 	void unbind() const;
+	void setMatrix(const string& uniformName, const Matrix4x4& mat);
 private:
 	Shader* m_Shader;
+
+	// uniform mappings: uniform ID -> value
+	std::unordered_map<GLint, Matrix4x4> m_uniformMat4;
+
+	int getShaderUniformLocation(const string& name) const;
+	void setUniforms() const;
 };
 
 #endif // MATERIAL_H

@@ -15,6 +15,7 @@ public:
 	Shader(const string& shaderPath);
 	~Shader();
 	void use() const;
+	const uint32_t getShaderId() const;
 private:
 	uint32_t m_ShaderId;
 };

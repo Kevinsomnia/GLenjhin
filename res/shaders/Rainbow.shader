@@ -4,24 +4,18 @@
 layout(location = 0) in vec4 position;
 out vec4 pos;
 
+uniform mat4 mPosition;
+uniform mat4 mRotation;
+uniform mat4 mScale;
+
 void main()
 {
-	mat4 mPosition;
-	vec3 tPos = vec3(-0.85, -0.85, 3.5);
-	vec3 tScale = vec3(1.0, 1.0, 1.0);
-	mPosition[0] = vec4(1.0, 0.0, 0.0, 0.0);
-	mPosition[1] = vec4(0.0, 1.0, 0.0, 0.0);
-	mPosition[2] = vec4(0.0, 0.0, 1.0, 0.0);
-	mPosition[3] = vec4(tPos, 1.0);
-	mat4 mScale;
-	mScale[0] = vec4(tScale.x, 0.0, 0.0, 0.0);
-	mScale[1] = vec4(0.0, tScale.y, 0.0, 0.0);
-	mScale[2] = vec4(0.0, 0.0, tScale.z, 0.0);
-	mScale[3] = vec4(0.0, 0.0, 0.0, 1.0);
-	mat4 model = mPosition * mScale;
+	mat4 model = mPosition * mRotation * mScale;
+
+	// VIEW
+	vec3 cPos = vec3(0.0, 0.0, 0.0);
 
 	mat4 viewPos;
-	vec3 cPos = vec3(0.0, 0.0, 0.0);
 	viewPos[0] = vec4(1.0, 0.0, 0.0, 0.0);
 	viewPos[1] = vec4(0.0, 1.0, 0.0, 0.0);
 	viewPos[2] = vec4(0.0, 0.0, 1.0, 0.0);
@@ -33,8 +27,10 @@ void main()
 	viewRot[3] = vec4(0.0, 0.0, 0.0, 1.0);
 	mat4 view = viewRot * viewPos;
 
+	// PROJECTION
 	float fov = tan(75.0 * 0.01745329251 * 0.5);
-	float aspect = 1.777;
+	const float aspect = 1.7777777;
+
 	mat4 proj;
 	proj[0] = vec4(1.0 / (fov * aspect), 0.0, 0.0, 0.0);
 	proj[1] = vec4(0.0, 1.0 / fov, 0.0, 0.0);
@@ -55,5 +51,5 @@ out vec4 color;
 
 void main()
 {
-	color = vec4(0.5 + pos.x * 0.5, 0.5 + pos.y * 0.5, 0.5 + pos.z * 0.5, 1.0);
+	color = vec4(0.5 + pos.x * 0.8, 0.5 + pos.y * 0.8, 0.5 + pos.z * 0.8, 1.0);
 }

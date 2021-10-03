@@ -15,3 +15,8 @@ void Shader::use() const
 {
 	glUseProgram(m_ShaderId);
 }
+
+const uint32_t Shader::getShaderId() const
+{
+	return m_ShaderId;
+}

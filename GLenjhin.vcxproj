@@ -148,6 +148,7 @@
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Math\Convert.cpp" />
     <ClCompile Include="src\Math\Matrix4x4.cpp" />
+    <ClCompile Include="src\Math\Vector.cpp" />
     <ClCompile Include="src\Renderer\Camera.cpp" />
     <ClCompile Include="src\Core\GameContainer.cpp" />
     <ClCompile Include="src\Renderer\Material.cpp" />
