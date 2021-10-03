@@ -10,27 +10,27 @@ Matrix4x4::Matrix4x4()
 	std::fill(std::begin(values), std::end(values), 0.0f);
 }
 
-float Matrix4x4::get(int row, int column) const
+inline float Matrix4x4::get(int row, int column) const
 {
 	return values[getIndex(row, column)];
 }
 
-Vector4 Matrix4x4::getRow(int row) const
+inline Vector4 Matrix4x4::getRow(int row) const
 {
 	return Vector4(get(row, 0), get(row, 1), get(row, 2), get(row, 3));
 }
 
-Vector4 Matrix4x4::getColumn(int column) const
+inline Vector4 Matrix4x4::getColumn(int column) const
 {
 	return Vector4(get(0, column), get(1, column), get(2, column), get(3, column));
 }
 
-void Matrix4x4::set(int row, int column, float value)
+inline void Matrix4x4::set(int row, int column, float value)
 {
 	values[getIndex(row, column)] = value;
 }
 
-void Matrix4x4::setRow(int row, const Vector4& values)
+inline void Matrix4x4::setRow(int row, const Vector4& values)
 {
 	set(row, 0, values.x);
 	set(row, 1, values.y);
@@ -38,7 +38,7 @@ void Matrix4x4::setRow(int row, const Vector4& values)
 	set(row, 3, values.w);
 }
 
-void Matrix4x4::setColumn(int column, const Vector4& values)
+inline void Matrix4x4::setColumn(int column, const Vector4& values)
 {
 	set(0, column, values.x);
 	set(1, column, values.y);

@@ -13,12 +13,12 @@ struct Matrix4x4
 	float values[16];
 
 	Matrix4x4();
-	float get(int row, int column) const;
-	Vector4 getRow(int row) const;
-	Vector4 getColumn(int column) const;
-	void set(int row, int column, float value);
-	void setRow(int row, const Vector4& values);
-	void setColumn(int column, const Vector4& values);
+	inline float get(int row, int column) const;
+	inline Vector4 getRow(int row) const;
+	inline Vector4 getColumn(int column) const;
+	inline void set(int row, int column, float value);
+	inline void setRow(int row, const Vector4& values);
+	inline void setColumn(int column, const Vector4& values);
 
 	operator const float* () const;
 	Matrix4x4 operator *(const Matrix4x4& other) const;
