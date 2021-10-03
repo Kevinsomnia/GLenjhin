@@ -152,6 +152,7 @@
     <ClCompile Include="src\Math\Vector.cpp" />
     <ClCompile Include="src\Renderer\Camera.cpp" />
     <ClCompile Include="src\Core\GameContainer.cpp" />
+    <ClCompile Include="src\Renderer\Entity.cpp" />
     <ClCompile Include="src\Renderer\Material.cpp" />
     <ClCompile Include="src\Renderer\Mesh.cpp" />
     <ClCompile Include="src\Renderer\MeshRenderer.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="src\Core\GameContainer.h" />
     <ClInclude Include="src\Math\Math.h" />
     <ClInclude Include="src\Math\Vector.h" />
+    <ClInclude Include="src\Renderer\Entity.h" />
     <ClInclude Include="src\Renderer\Material.h" />
     <ClInclude Include="src\Renderer\Mesh.h" />
     <ClInclude Include="src\Renderer\MeshRenderer.h" />

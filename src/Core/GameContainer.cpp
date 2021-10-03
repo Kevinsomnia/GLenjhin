@@ -20,6 +20,9 @@ GameContainer::~GameContainer()
 void GameContainer::update(double deltaTime)
 {
 	Time::timestep(deltaTime);
+
+	if (m_CurrentScene)
+		m_CurrentScene->update();
 }
 
 void GameContainer::render()
@@ -27,7 +30,5 @@ void GameContainer::render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (m_CurrentScene)
-	{
 		m_CurrentScene->draw();
-	}
 }

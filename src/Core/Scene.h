@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include <vector>
-#include "../Renderer/MeshRenderer.h"
+#include "../Renderer/Entity.h"
+#include "Time.h"
 
 using std::cout;
 using std::endl;
@@ -13,9 +14,10 @@ class Scene
 public:
 	Scene();
 	~Scene();
+	void update();
 	void draw();
 private:
-	std::vector<MeshRenderer*> m_Renderers;
+	std::vector<Entity*> m_Entities;
 };
 
 #endif // SCENE_H
