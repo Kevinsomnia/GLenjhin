@@ -15,12 +15,12 @@ float Matrix4x4::get(int row, int column) const
 	return values[getIndex(row, column)];
 }
 
-Vector4 Matrix4x4::getRow(int row) const
+const Vector4& Matrix4x4::getRow(int row) const
 {
 	return Vector4(get(row, 0), get(row, 1), get(row, 2), get(row, 3));
 }
 
-Vector4 Matrix4x4::getColumn(int column) const
+const Vector4& Matrix4x4::getColumn(int column) const
 {
 	return Vector4(get(0, column), get(1, column), get(2, column), get(3, column));
 }
