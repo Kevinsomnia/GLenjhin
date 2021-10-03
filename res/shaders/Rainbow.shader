@@ -5,24 +5,10 @@ layout(location = 0) in vec4 position;
 out vec4 pos;
 
 uniform mat4 u_Model;
+uniform mat4 u_View;
 
 void main()
 {
-	// VIEW
-	vec3 cPos = vec3(0.0, 0.0, 0.0);
-
-	mat4 viewPos;
-	viewPos[0] = vec4(1.0, 0.0, 0.0, 0.0);
-	viewPos[1] = vec4(0.0, 1.0, 0.0, 0.0);
-	viewPos[2] = vec4(0.0, 0.0, 1.0, 0.0);
-	viewPos[3] = vec4(-cPos, 1.0);
-	mat4 viewRot;
-	viewRot[0] = vec4(1.0, 0.0, 0.0, 0.0);
-	viewRot[1] = vec4(0.0, 1.0, 0.0, 0.0);
-	viewRot[2] = vec4(0.0, 0.0, 1.0, 0.0);
-	viewRot[3] = vec4(0.0, 0.0, 0.0, 1.0);
-	mat4 view = viewRot * viewPos;
-
 	// PROJECTION
 	float fov = tan(75.0 * 0.01745329251 * 0.5);
 	const float aspect = 1.7777777;
@@ -33,7 +19,7 @@ void main()
 	proj[2] = vec4(0.0, 0.0, 0.0, 1.0);
 	proj[3] = vec4(0.0, 0.0, 0.0, 0.0);
 
-	gl_Position = proj * view * u_Model * position;
+	gl_Position = proj * u_View * u_Model * position;
 	pos = position;
 }
 

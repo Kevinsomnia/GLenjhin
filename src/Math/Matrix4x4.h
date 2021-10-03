@@ -88,6 +88,36 @@ inline void Matrix4x4::setColumn(int column, const Vector4& val)
 	values[start + 3] = val.w;
 }
 
+inline Vector3 Matrix4x4::multiplyPoint3x4(const Vector3& p) const
+{
+	return Vector3(
+		p.x * values[0] + p.y * values[4] + p.z * values[8] + values[12],
+		p.x * values[1] + p.y * values[5] + p.z * values[9] + values[13],
+		p.x * values[2] + p.y * values[6] + p.z * values[10] + values[14]
+	);
+}
+
+inline Vector3 Matrix4x4::multiplyPoint(const Vector3& p) const
+{
+	// Divide (x,y,z) by perspective component (w)
+	float oneOverW = 1.0f / (p.x * values[3] + p.y * values[7] + p.z * values[11] + values[15]);
+
+	return Vector3(
+		(p.x * values[0] + p.y * values[4] + p.z * values[8] + values[12]) * oneOverW,
+		(p.x * values[1] + p.y * values[5] + p.z * values[9] + values[13]) * oneOverW,
+		(p.x * values[2] + p.y * values[6] + p.z * values[10] + values[14]) * oneOverW
+	);
+}
+
+inline Vector3 Matrix4x4::multiplyVector(const Vector3& v) const
+{
+	return Vector3(
+		v.x * values[0] + v.y * values[4] + v.z * values[8],
+		v.x * values[1] + v.y * values[5] + v.z * values[9],
+		v.x * values[2] + v.y * values[6] + v.z * values[10]
+	);
+}
+
 inline uint32_t Matrix4x4::getIndex(int row, int column) const
 {
 	return column * 4 + row;

@@ -148,3 +148,20 @@ Matrix4x4 Matrix4x4::TRS(const Vector3& pos, const Vector3& rot, const Vector3& 
 		Vector4(0.0f, 0.0f, 0.0f, 1.0f)
 	);
 }
+
+Matrix4x4 Matrix4x4::View(const Vector3& pos, const Vector3& rot)
+{
+	Matrix4x4 rotMatrix = Matrix4x4::Rotate(rot);
+
+	// Compute camera transform vectors
+	Vector3 fwd = rotMatrix.multiplyVector(Vector3::forward);
+	Vector3 up = rotMatrix.multiplyVector(Vector3::up);
+	Vector3 right = Vector3::Cross(up, fwd);
+
+	return Matrix4x4(
+		Vector4(right.x, right.y, right.z, -pos.x),
+		Vector4(up.x, up.y, up.z, -pos.y),
+		Vector4(fwd.x, fwd.y, fwd.z, -pos.z),
+		Vector4(0.0f, 0.0f, 0.0f, 1.0f)
+	);
+}

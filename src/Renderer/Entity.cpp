@@ -33,11 +33,17 @@ void Entity::draw() const
 	if (m_Renderer)
 	{
 		Vector3 rot = m_Transform->getRotation();
-		m_Renderer->draw(Matrix4x4::TRS(
-			m_Transform->getPosition(),
-			Vector3(degToRad(rot.x), degToRad(rot.y), degToRad(rot.z)),
-			m_Transform->getScale()
-		));
+		m_Renderer->draw(
+			Matrix4x4::View(
+				Vector3(0.65f, 1.05f, 0.0f),
+				Vector3(degToRad(15.0f), degToRad(-10.0f), 0.0f)
+			),
+			Matrix4x4::TRS(
+				m_Transform->getPosition(),
+				Vector3(degToRad(rot.x), degToRad(rot.y), degToRad(rot.z)),
+				m_Transform->getScale()
+			)
+		);
 	}
 }
 
