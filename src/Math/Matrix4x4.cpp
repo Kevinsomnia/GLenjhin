@@ -103,31 +103,27 @@ Matrix4x4 Matrix4x4::Translate(const Vector3& pos)
 
 Matrix4x4 Matrix4x4::Rotate(const Vector3& rot)
 {
-	Matrix4x4 matrixX = Matrix4x4();
-	matrixX.set(0, 0, 1.0f);
-	matrixX.set(1, 1, cos(rot.x));
-	matrixX.set(1, 2, -sin(rot.x));
-	matrixX.set(2, 1, sin(rot.x));
-	matrixX.set(2, 2, cos(rot.x));
-	matrixX.set(3, 3, 1.0f);
+	float cosX = cos(rot.x);
+	float cosY = cos(rot.y);
+	float cosZ = cos(rot.z);
+	float sinX = sin(rot.x);
+	float sinY = sin(rot.y);
+	float sinZ = sin(rot.z);
 
-	Matrix4x4 matrixY = Matrix4x4();
-	matrixY.set(0, 0, cos(rot.y));
-	matrixY.set(0, 2, sin(rot.y));
-	matrixY.set(1, 1, 1.0f);
-	matrixY.set(2, 0, -sin(rot.y));
-	matrixY.set(2, 2, cos(rot.y));
-	matrixY.set(3, 3, 1.0f);
+	// ZYX matrix multiplication
+	Matrix4x4 result = Matrix4x4();
+	result.set(0, 0, cosZ * cosY);
+	result.set(0, 1, (-sinZ * cosX) + (cosZ * sinY * sinX));
+	result.set(0, 2, (sinZ * sinX) + (cosZ * sinY * cosX));
+	result.set(1, 0, sinZ * cosY);
+	result.set(1, 1, (cosZ * cosX) + (sinZ * sinY * sinX));
+	result.set(1, 2, (cosZ * -sinX) + (sinZ * sinY * cosX));
+	result.set(2, 0, -sinY);
+	result.set(2, 1, cosY * sinX);
+	result.set(2, 2, cosY * cosX);
+	result.set(3, 3, 1.0f);
 
-	Matrix4x4 matrixZ = Matrix4x4();
-	matrixZ.set(0, 0, cos(rot.z));
-	matrixZ.set(0, 1, -sin(rot.z));
-	matrixZ.set(1, 0, sin(rot.z));
-	matrixZ.set(1, 1, cos(rot.z));
-	matrixZ.set(2, 2, 1.0f);
-	matrixZ.set(3, 3, 1.0f);
-
-	return matrixZ * matrixY * matrixX;
+	return result;
 }
 
 Matrix4x4 Matrix4x4::Scale(const Vector3& scale)
