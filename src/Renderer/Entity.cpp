@@ -37,17 +37,17 @@ void Entity::draw() const
 	}
 }
 
-const Vector3& Entity::getPosition() const
+Vector3 Entity::getPosition() const
 {
 	return m_Position;
 }
 
-const Vector3& Entity::getRotation() const
+Vector3 Entity::getRotation() const
 {
 	return m_Rotation;
 }
 
-const Vector3& Entity::getScale() const
+Vector3 Entity::getScale() const
 {
 	return m_Scale;
 }

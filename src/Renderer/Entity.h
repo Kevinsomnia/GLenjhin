@@ -18,9 +18,9 @@ public:
 	void setupRenderer(Mesh* mesh, Material* material);
 	void draw() const;
 
-	const Vector3& getPosition() const;
-	const Vector3& getRotation() const;
-	const Vector3& getScale() const;
+	Vector3 getPosition() const;
+	Vector3 getRotation() const;
+	Vector3 getScale() const;
 	void setPosition(const Vector3& position);
 	void setRotation(const Vector3& rotation);
 	void setScale(const Vector3& scale);
