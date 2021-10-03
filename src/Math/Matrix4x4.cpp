@@ -2,7 +2,15 @@
 
 Matrix4x4::Matrix4x4()
 {
-	std::fill(std::begin(values), std::end(values), 0.0f);
+	memset(values, 0, sizeof(values));
+}
+
+Matrix4x4::Matrix4x4(const Vector4& row0, const Vector4& row1, const Vector4& row2, const Vector4& row3)
+{
+	setRow(0, row0);
+	setRow(1, row1);
+	setRow(2, row2);
+	setRow(3, row3);
 }
 
 Matrix4x4::operator const float*() const
@@ -21,43 +29,49 @@ Matrix4x4 Matrix4x4::operator *(const Matrix4x4& other) const
 	Vector4 b2 = other.getColumn(2);
 	Vector4 b3 = other.getColumn(3);
 
-	Matrix4x4 result;
-	result.set(0, 0, Vector4::Dot(a0, b0));
-	result.set(0, 1, Vector4::Dot(a0, b1));
-	result.set(0, 2, Vector4::Dot(a0, b2));
-	result.set(0, 3, Vector4::Dot(a0, b3));
-	result.set(1, 0, Vector4::Dot(a1, b0));
-	result.set(1, 1, Vector4::Dot(a1, b1));
-	result.set(1, 2, Vector4::Dot(a1, b2));
-	result.set(1, 3, Vector4::Dot(a1, b3));
-	result.set(2, 0, Vector4::Dot(a2, b0));
-	result.set(2, 1, Vector4::Dot(a2, b1));
-	result.set(2, 2, Vector4::Dot(a2, b2));
-	result.set(2, 3, Vector4::Dot(a2, b3));
-	result.set(3, 0, Vector4::Dot(a3, b0));
-	result.set(3, 1, Vector4::Dot(a3, b1));
-	result.set(3, 2, Vector4::Dot(a3, b2));
-	result.set(3, 3, Vector4::Dot(a3, b3));
-	return result;
+	return Matrix4x4(
+		Vector4(
+			Vector4::Dot(a0, b0),
+			Vector4::Dot(a0, b1),
+			Vector4::Dot(a0, b2),
+			Vector4::Dot(a0, b3)
+		),
+		Vector4(
+			Vector4::Dot(a1, b0),
+			Vector4::Dot(a1, b1),
+			Vector4::Dot(a1, b2),
+			Vector4::Dot(a1, b3)
+		),
+		Vector4(
+			Vector4::Dot(a2, b0),
+			Vector4::Dot(a2, b1),
+			Vector4::Dot(a2, b2),
+			Vector4::Dot(a2, b3)
+		),
+		Vector4(
+			Vector4::Dot(a3, b0),
+			Vector4::Dot(a3, b1),
+			Vector4::Dot(a3, b2),
+			Vector4::Dot(a3, b3)
+		)
+	);
 }
 
-Matrix4x4 Matrix4x4::Identity()
-{
-	Matrix4x4 result = Matrix4x4();
-	result.set(0, 0, 1.0f);
-	result.set(1, 1, 1.0f);
-	result.set(2, 2, 1.0f);
-	result.set(3, 3, 1.0f);
-	return result;
-}
+Matrix4x4 Matrix4x4::identity = Matrix4x4(
+	Vector4(1.0f, 0.0f, 0.0f, 0.0f),
+	Vector4(0.0f, 1.0f, 0.0f, 0.0f),
+	Vector4(0.0f, 0.0f, 1.0f, 0.0f),
+	Vector4(0.0f, 0.0f, 0.0f, 1.0f)
+);
 
 Matrix4x4 Matrix4x4::Translate(const Vector3& pos)
 {
-	Matrix4x4 result = Matrix4x4::Identity();
-	result.set(0, 3, pos.x);
-	result.set(1, 3, pos.y);
-	result.set(2, 3, pos.z);
-	return result;
+	return Matrix4x4(
+		Vector4(1.0f, 0.0f, 0.0f, pos.x),
+		Vector4(0.0f, 1.0f, 0.0f, pos.y),
+		Vector4(0.0f, 0.0f, 1.0f, pos.z),
+		Vector4(0.0f, 0.0f, 0.0f, 1.0f)
+	);
 }
 
 Matrix4x4 Matrix4x4::Rotate(const Vector3& rot)
@@ -69,30 +83,38 @@ Matrix4x4 Matrix4x4::Rotate(const Vector3& rot)
 	float sinY = sin(rot.y);
 	float sinZ = sin(rot.z);
 
-	// Be sure to update TRS() if this ordering changes: ZYX
-	Matrix4x4 result = Matrix4x4();
-	result.set(0, 0, cosZ * cosY);
-	result.set(0, 1, (-sinZ * cosX) + (cosZ * sinY * sinX));
-	result.set(0, 2, (sinZ * sinX) + (cosZ * sinY * cosX));
-	result.set(1, 0, sinZ * cosY);
-	result.set(1, 1, (cosZ * cosX) + (sinZ * sinY * sinX));
-	result.set(1, 2, (cosZ * -sinX) + (sinZ * sinY * cosX));
-	result.set(2, 0, -sinY);
-	result.set(2, 1, cosY * sinX);
-	result.set(2, 2, cosY * cosX);
-	result.set(3, 3, 1.0f);
-
-	return result;
+	// Be sure to update TRS() too if this ordering changes: ZYX
+	return Matrix4x4(
+		Vector4(
+			cosZ * cosY,
+			-sinZ * cosX + cosZ * sinY * sinX,
+			sinZ * sinX + cosZ * sinY * cosX,
+			0.0f
+		),
+		Vector4(
+			sinZ * cosY,
+			cosZ * cosX + sinZ * sinY * sinX,
+			cosZ * -sinX + sinZ * sinY * cosX,
+			0.0f
+		),
+		Vector4(
+			-sinY,
+			cosY * sinX,
+			cosY * cosX,
+			0.0f
+		),
+		Vector4(0.0f, 0.0f, 0.0f, 1.0f)
+	);
 }
 
 Matrix4x4 Matrix4x4::Scale(const Vector3& scale)
 {
-	Matrix4x4 result = Matrix4x4();
-	result.set(0, 0, scale.x);
-	result.set(1, 1, scale.y);
-	result.set(2, 2, scale.z);
-	result.set(3, 3, 1.0f);
-	return result;
+	return Matrix4x4(
+		Vector4(scale.x, 0.0f, 0.0f, 0.0f),
+		Vector4(0.0f, scale.y, 0.0f, 0.0f),
+		Vector4(0.0f, 0.0f, scale.z, 0.0f),
+		Vector4(0.0f, 0.0f, 0.0f, 1.0f)
+	);
 }
 
 Matrix4x4 Matrix4x4::TRS(const Vector3& pos, const Vector3& rot, const Vector3& scale)
@@ -104,20 +126,25 @@ Matrix4x4 Matrix4x4::TRS(const Vector3& pos, const Vector3& rot, const Vector3& 
 	float sinY = sin(rot.y);
 	float sinZ = sin(rot.z);
 
-	Matrix4x4 trs = Matrix4x4();
-	trs.set(0, 0, (cosZ * cosY) * scale.x);
-	trs.set(0, 1, (-sinZ * cosX + cosZ * sinY * sinX) * scale.y);
-	trs.set(0, 2, (sinZ * sinX + cosZ * sinY * cosX) * scale.z);
-	trs.set(0, 3, pos.x);
-	trs.set(1, 0, (sinZ * cosY) * scale.x);
-	trs.set(1, 1, (cosZ * cosX + sinZ * sinY * sinX) * scale.y);
-	trs.set(1, 2, (cosZ * -sinX + sinZ * sinY * cosX) * scale.z);
-	trs.set(1, 3, pos.y);
-	trs.set(2, 0, (-sinY) * scale.x);
-	trs.set(2, 1, (cosY * sinX) * scale.y);
-	trs.set(2, 2, (cosY * cosX) * scale.z);
-	trs.set(2, 3, pos.z);
-	trs.set(3, 3, 1.0f);
-
-	return trs;
+	return Matrix4x4(
+		Vector4(
+			(cosZ * cosY) * scale.x,
+			(-sinZ * cosX + cosZ * sinY * sinX) * scale.y,
+			(sinZ * sinX + cosZ * sinY * cosX) * scale.z,
+			pos.x
+		),
+		Vector4(
+			(sinZ * cosY) * scale.x,
+			(cosZ * cosX + sinZ * sinY * sinX) * scale.y,
+			(cosZ * -sinX + sinZ * sinY * cosX) * scale.z,
+			pos.y
+		),
+		Vector4(
+			(-sinY) * scale.x,
+			(cosY * sinX) * scale.y,
+			(cosY * cosX) * scale.z,
+			pos.z
+		),
+		Vector4(0.0f, 0.0f, 0.0f, 1.0f)
+	);
 }
