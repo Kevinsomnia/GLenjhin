@@ -10,6 +10,7 @@ using std::endl;
 
 struct Matrix4x4
 {
+public:
 	float values[16];
 
 	Matrix4x4();
@@ -37,6 +38,51 @@ struct Matrix4x4
 		os << mat.get(3, 0) << '\t' << mat.get(3, 1) << '\t' << mat.get(3, 2) << '\t' << mat.get(3, 3);
 		return os;
 	}
+private:
+	inline uint32_t getIndex(int row, int column) const;
 };
+
+inline float Matrix4x4::get(int row, int column) const
+{
+	return values[getIndex(row, column)];
+}
+
+inline Vector4 Matrix4x4::getRow(int row) const
+{
+	return Vector4(values[row], values[row + 4], values[row + 8], values[row + 12]);
+}
+
+inline Vector4 Matrix4x4::getColumn(int column) const
+{
+	int start = column * 4;
+	return Vector4(values[start], values[start + 1], values[start + 2], values[start + 3]);
+}
+
+inline void Matrix4x4::set(int row, int column, float value)
+{
+	values[getIndex(row, column)] = value;
+}
+
+inline void Matrix4x4::setRow(int row, const Vector4& val)
+{
+	values[row] = val.x;
+	values[row + 4] = val.y;
+	values[row + 8] = val.z;
+	values[row + 12] = val.w;
+}
+
+inline void Matrix4x4::setColumn(int column, const Vector4& val)
+{
+	int start = column * 4;
+	values[start] = val.x;
+	values[start + 1] = val.y;
+	values[start + 2] = val.z;
+	values[start + 3] = val.w;
+}
+
+inline uint32_t Matrix4x4::getIndex(int row, int column) const
+{
+	return column * 4 + row;
+}
 
 #endif // MATRIX4X4_H

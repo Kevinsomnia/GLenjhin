@@ -1,51 +1,8 @@
 #include "Matrix4x4.h"
 
-inline uint32_t getIndex(int row, int column)
-{
-	return (column * 4) + row;
-}
-
 Matrix4x4::Matrix4x4()
 {
 	std::fill(std::begin(values), std::end(values), 0.0f);
-}
-
-inline float Matrix4x4::get(int row, int column) const
-{
-	return values[getIndex(row, column)];
-}
-
-inline Vector4 Matrix4x4::getRow(int row) const
-{
-	return Vector4(values[row], values[row + 4], values[row + 8], values[row + 12]);
-}
-
-inline Vector4 Matrix4x4::getColumn(int column) const
-{
-	int start = column * 4;
-	return Vector4(values[start], values[start + 1], values[start + 2], values[start + 3]);
-}
-
-inline void Matrix4x4::set(int row, int column, float value)
-{
-	values[getIndex(row, column)] = value;
-}
-
-inline void Matrix4x4::setRow(int row, const Vector4& val)
-{
-	values[row] = val.x;
-	values[row + 4] = val.y;
-	values[row + 8] = val.z;
-	values[row + 12] = val.w;
-}
-
-inline void Matrix4x4::setColumn(int column, const Vector4& val)
-{
-	int start = column * 4;
-	values[start] = val.x;
-	values[start + 1] = val.y;
-	values[start + 2] = val.z;
-	values[start + 3] = val.w;
 }
 
 Matrix4x4::operator const float*() const
