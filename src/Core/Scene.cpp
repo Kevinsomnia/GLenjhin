@@ -43,9 +43,12 @@ Scene::Scene()
 	};
 	Mesh* meshA = new Mesh(verticesA, numVerticesA, indicesA, numIndicesA);
 
-	Entity* entityA = new Entity(Vector3(-0.65f, 0.45f, 2.95f), Vector3(35.0f, 60.0f, -25.0f), Vector3(0.85f, 0.6f, 0.75f));
-	entityA->setupRenderer(meshA, matA);
-	m_Entities.push_back(entityA);
+	for (int i = 0; i < 10000; i++)
+	{
+		Entity* entity = new Entity(Vector3(-0.65f, 0.45f, 2.95f), Vector3(35.0f, 60.0f, -25.0f), Vector3(0.85f, 0.6f, 0.75f));
+		entity->setupRenderer(meshA, matA);
+		m_Entities.push_back(entity);
+	}
 }
 
 Scene::~Scene()
@@ -60,25 +63,27 @@ Scene::~Scene()
 
 void Scene::update()
 {
-	if (m_Entities.size() > 0)
-	{
-		double t = Time::getTime();
+	double t = Time::getTime();
 
-		Entity* entity = m_Entities[0];
+	for (size_t i = 0; i < m_Entities.size(); i++)
+	{
+		t += 0.317529 * i;
+		Entity* entity = m_Entities[i];
+
 		entity->setPosition(Vector3(
-			(float)sin(t * 0.5) * 0.5f - 0.65f,
-			(float)cos(t * 0.6) * 0.5f - 0.45f,
-			(float)sin(t * 0.7) * (float)cos(t * 0.8) * 0.5f + 2.95f
+			(float)sin(t * 0.5) * 2.0f,
+			(float)cos(t * 0.6),
+			(float)sin(t * 0.7) * (float)cos(t * 0.8) * 0.25f + 2.95f
 		));
 		entity->setRotation(Vector3(
-			(float)fmod(t * 60.0f, 360.0f),
-			(float)fmod(t * 80.0f, 360.0f),
-			(float)fmod(t * 100.0f, 360.0f)
+			(float)t * 25.0f,
+			(float)t * 30.0f,
+			(float)t * 35.0f
 		));
 		entity->setScale(Vector3(
-			(float)sin(t * 1.5) * 0.4f + 0.85f,
-			(float)cos(t * 1.6) * 0.3f - 0.65f,
-			(float)sin(t * 1.7) * (float)cos(t * 1.3) * 0.4f + 0.75f
+			(float)sin(t * 1.5) * 0.2f + 0.85f,
+			(float)cos(t * 1.6) * 0.15f - 0.65f,
+			(float)sin(t * 1.7) * (float)cos(t * 1.3) * 0.2f + 0.75f
 		));
 	}
 }
