@@ -17,8 +17,8 @@ struct Matrix4x4
 	inline Vector4 getRow(int row) const;
 	inline Vector4 getColumn(int column) const;
 	inline void set(int row, int column, float value);
-	inline void setRow(int row, const Vector4& values);
-	inline void setColumn(int column, const Vector4& values);
+	inline void setRow(int row, const Vector4& val);
+	inline void setColumn(int column, const Vector4& val);
 
 	operator const float* () const;
 	Matrix4x4 operator *(const Matrix4x4& other) const;

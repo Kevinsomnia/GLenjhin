@@ -2,7 +2,7 @@
 
 inline uint32_t getIndex(int row, int column)
 {
-	return (column << 2) + row;
+	return (column * 4) + row;
 }
 
 Matrix4x4::Matrix4x4()
@@ -17,12 +17,13 @@ inline float Matrix4x4::get(int row, int column) const
 
 inline Vector4 Matrix4x4::getRow(int row) const
 {
-	return Vector4(get(row, 0), get(row, 1), get(row, 2), get(row, 3));
+	return Vector4(values[row], values[row + 4], values[row + 8], values[row + 12]);
 }
 
 inline Vector4 Matrix4x4::getColumn(int column) const
 {
-	return Vector4(get(0, column), get(1, column), get(2, column), get(3, column));
+	int start = column * 4;
+	return Vector4(values[start], values[start + 1], values[start + 2], values[start + 3]);
 }
 
 inline void Matrix4x4::set(int row, int column, float value)
@@ -30,20 +31,21 @@ inline void Matrix4x4::set(int row, int column, float value)
 	values[getIndex(row, column)] = value;
 }
 
-inline void Matrix4x4::setRow(int row, const Vector4& values)
+inline void Matrix4x4::setRow(int row, const Vector4& val)
 {
-	set(row, 0, values.x);
-	set(row, 1, values.y);
-	set(row, 2, values.z);
-	set(row, 3, values.w);
+	values[row] = val.x;
+	values[row + 4] = val.y;
+	values[row + 8] = val.z;
+	values[row + 12] = val.w;
 }
 
-inline void Matrix4x4::setColumn(int column, const Vector4& values)
+inline void Matrix4x4::setColumn(int column, const Vector4& val)
 {
-	set(0, column, values.x);
-	set(1, column, values.y);
-	set(2, column, values.z);
-	set(3, column, values.w);
+	int start = column * 4;
+	values[start] = val.x;
+	values[start + 1] = val.y;
+	values[start + 2] = val.z;
+	values[start + 3] = val.w;
 }
 
 Matrix4x4::operator const float*() const
