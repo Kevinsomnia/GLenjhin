@@ -1,12 +1,15 @@
 #include "Entity.h"
 
 Entity::Entity(const Vector3& position, const Vector3& rotation, const Vector3& scale)
-	: m_Renderer(nullptr), m_Position(position), m_Rotation(rotation), m_Scale(scale)
+	: m_Renderer(nullptr)
 {
+	m_Transform = new Transform(position, rotation, scale);
 }
 
 Entity::~Entity()
 {
+	delete m_Transform;
+
 	if (m_Renderer)
 	{
 		delete m_Renderer;
@@ -29,45 +32,21 @@ void Entity::draw() const
 {
 	if (m_Renderer)
 	{
+		Vector3 rot = m_Transform->getRotation();
 		m_Renderer->draw(Matrix4x4::TRS(
-			m_Position,
-			Vector3(degToRad(m_Rotation.x), degToRad(m_Rotation.y), degToRad(m_Rotation.z)),
-			m_Scale
+			m_Transform->getPosition(),
+			Vector3(degToRad(rot.x), degToRad(rot.y), degToRad(rot.z)),
+			m_Transform->getScale()
 		));
 	}
 }
 
-Vector3 Entity::getPosition() const
+Transform* Entity::getTransform() const
 {
-	return m_Position;
+	return m_Transform;
 }
 
-Vector3 Entity::getRotation() const
-{
-	return m_Rotation;
-}
-
-Vector3 Entity::getScale() const
-{
-	return m_Scale;
-}
-
-void Entity::setPosition(const Vector3& position)
-{
-	m_Position = position;
-}
-
-void Entity::setRotation(const Vector3& rotation)
-{
-	m_Rotation = rotation;
-}
-
-void Entity::setScale(const Vector3& scale)
-{
-	m_Scale = scale;
-}
-
-const MeshRenderer* Entity::getRenderer() const
+MeshRenderer* Entity::getRenderer() const
 {
 	return m_Renderer;
 }

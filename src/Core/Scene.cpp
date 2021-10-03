@@ -70,17 +70,17 @@ void Scene::update()
 		t += 0.317529 * i;
 		Entity* entity = m_Entities[i];
 
-		entity->setPosition(Vector3(
+		entity->getTransform()->setPosition(Vector3(
 			(float)sin(t * 0.5) * 2.0f,
 			(float)cos(t * 0.6),
 			(float)sin(t * 0.7) * (float)cos(t * 0.8) * 0.25f + 2.95f
 		));
-		entity->setRotation(Vector3(
+		entity->getTransform()->setRotation(Vector3(
 			(float)t * 25.0f,
 			(float)t * 30.0f,
 			(float)t * 35.0f
 		));
-		entity->setScale(Vector3(
+		entity->getTransform()->setScale(Vector3(
 			(float)sin(t * 1.5) * 0.2f + 0.85f,
 			(float)cos(t * 1.6) * 0.15f - 0.65f,
 			(float)sin(t * 1.7) * (float)cos(t * 1.3) * 0.2f + 0.75f

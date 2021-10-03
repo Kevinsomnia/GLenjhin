@@ -159,6 +159,7 @@
     <ClCompile Include="src\Renderer\Shader.cpp" />
     <ClCompile Include="src\Core\Scene.cpp" />
     <ClCompile Include="src\Core\ShaderCompiler.cpp" />
+    <ClCompile Include="src\Renderer\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Application.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="src\Renderer\Shader.h" />
     <ClInclude Include="src\Core\Scene.h" />
     <ClInclude Include="src\Core\ShaderCompiler.h" />
+    <ClInclude Include="src\Renderer\Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\Rainbow.shader" />
