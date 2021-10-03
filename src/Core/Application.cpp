@@ -54,6 +54,8 @@ int main()
 	// Disable v-sync
 	glfwSwapInterval(0);
 
+	cout << std::fixed;
+	cout << std::setprecision(2);
 	cout << "Running OpenGL " << glGetString(GL_VERSION) << endl;
 
 	// Create GameContainer for update loop and other game object setup
@@ -85,7 +87,7 @@ int main()
 
 		if (elapsedTime > 1.0)
 		{
-			uint32_t fps = (uint32_t)(frames / elapsedTime);
+			double fps = (frames / elapsedTime);
 			elapsedTime = 0.0;
 			frames = 0;
 
