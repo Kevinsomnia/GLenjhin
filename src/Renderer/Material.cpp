@@ -27,10 +27,7 @@ void Material::setMatrix(const string& uniformName, const Matrix4x4& mat)
 	int uniformId = getShaderUniformLocation(uniformName);
 
 	if (uniformId == -1)
-	{
-		cerr << "Invalid material uniform ID provided for Matrix4x4" << endl;
 		return;
-	}
 
 	m_uniformMat4[uniformId] = mat;
 }
@@ -47,11 +44,8 @@ int Material::getShaderUniformLocation(const string& name) const
 	glUseProgram(programId);
 	int uniformId = glGetUniformLocation(programId, name.c_str());
 
-	if (uniformId == -1 || uniformId == GL_INVALID_OPERATION || uniformId == GL_INVALID_VALUE)
-	{
-		cerr << "Invalid material uniform ID provided for Matrix4x4" << endl;
+	if (uniformId == GL_INVALID_OPERATION || uniformId == GL_INVALID_VALUE)
 		return -1;
-	}
 
 	return uniformId;
 }
