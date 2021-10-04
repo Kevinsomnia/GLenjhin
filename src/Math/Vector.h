@@ -17,6 +17,7 @@ struct Vector2
 	Vector2 operator /(const float divisor) const;
 	Vector2 operator *(const Vector2& other) const;
 	Vector2 operator /(const Vector2& other) const;
+	Vector2 operator -() const;
 
 	static Vector2 zero;
 	static Vector2 one;
@@ -50,6 +51,7 @@ struct Vector3
 	Vector3 operator /(const float divisor) const;
 	Vector3 operator *(const Vector3& other) const;
 	Vector3 operator /(const Vector3& other) const;
+	Vector3 operator -() const;
 
 	static Vector3 zero;
 	static Vector3 one;
@@ -86,6 +88,7 @@ struct Vector4
 	Vector4 operator /(const float divisor) const;
 	Vector4 operator *(const Vector4& other) const;
 	Vector4 operator /(const Vector4& other) const;
+	Vector4 operator -() const;
 
 	static Vector4 zero;
 	static Vector4 one;

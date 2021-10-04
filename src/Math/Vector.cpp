@@ -35,6 +35,11 @@ Vector2 Vector2::operator /(const Vector2& other) const
 	return Vector2(x / other.x, y / other.y);
 }
 
+Vector2 Vector2::operator -() const
+{
+	return Vector2(-x, -y);
+}
+
 Vector2 Vector2::zero = Vector2();
 Vector2 Vector2::one = Vector2(1.0f, 1.0f);
 Vector2 Vector2::left = Vector2(-1.0f, 0.0f);
@@ -86,6 +91,11 @@ Vector3 Vector3::operator *(const Vector3& other) const
 Vector3 Vector3::operator /(const Vector3& other) const
 {
 	return Vector3(x / other.x, y / other.y, z / other.z);
+}
+
+Vector3 Vector3::operator -() const
+{
+	return Vector3(-x, -y, -z);
 }
 
 Vector3 Vector3::zero = Vector3();
@@ -144,6 +154,11 @@ Vector4 Vector4::operator *(const Vector4& other) const
 Vector4 Vector4::operator /(const Vector4& other) const
 {
 	return Vector4(x / other.x, y / other.y, z / other.z, w / other.w);
+}
+
+Vector4 Vector4::operator -() const
+{
+	return Vector4(-x, -y, -z, -w);
 }
 
 Vector4 Vector4::zero = Vector4();

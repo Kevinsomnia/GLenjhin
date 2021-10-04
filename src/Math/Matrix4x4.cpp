@@ -162,9 +162,9 @@ Matrix4x4 Matrix4x4::View(const Vector3& pos, const Vector3& rot)
 	Vector3 right = Vector3::Cross(up, fwd);
 
 	return Matrix4x4(
-		Vector4(right.x, right.y, right.z, -pos.x),
-		Vector4(up.x, up.y, up.z, -pos.y),
-		Vector4(fwd.x, fwd.y, fwd.z, -pos.z),
+		Vector4(right.x, up.x, fwd.x, -right.x * pos.x - up.x * pos.y - fwd.x * pos.z),
+		Vector4(right.y, up.y, fwd.y, -right.y * pos.x - up.y * pos.y - fwd.y * pos.z),
+		Vector4(right.z, up.z, fwd.z, -right.z * pos.x - up.z * pos.y - fwd.z * pos.z),
 		Vector4(0.0f, 0.0f, 0.0f, 1.0f)
 	);
 }

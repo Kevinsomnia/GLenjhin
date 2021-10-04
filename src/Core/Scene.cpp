@@ -4,9 +4,9 @@ Scene::Scene()
 {
 	// Setup camera
 	m_Camera = new Camera(
-		Vector3(0.0f, 3.05f, 0.0f),
-		rotationToRad(Vector3(35.0f, -10.0f, 0.0f)),
-		75.0f,		// FOV
+		Vector3(0.0f, 1.0f, 0.0f),
+		Vector3::zero,
+		70.0f,		// FOV
 		0.1f,		// Near
 		1000.0f		// Far
 	);
@@ -100,12 +100,12 @@ void Scene::update()
 
 	if (m_Camera)
 	{
-		m_Camera->getTransform()->setPosition(Vector3(0.0f, 0.0f, 5.0f));
+		m_Camera->getTransform()->setPosition(Vector3(1.5f, 4.5f, -3.0f));
 
 		// Mouse look
 		Vector3 currRot = m_Camera->getTransform()->getRotation();
 		Vector2 mouseDelta = Input::getMouseMoveDelta() * 0.1f;
-		currRot.y -= degToRad(mouseDelta.x);
+		currRot.y += degToRad(mouseDelta.x);
 		currRot.x += degToRad(mouseDelta.y);
 		m_Camera->getTransform()->setRotation(currRot);
 
