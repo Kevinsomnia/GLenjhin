@@ -4,6 +4,7 @@
 #include <iostream>
 #include "../Math/Convert.h"
 #include "../Math/Vector.h"
+#include "Camera.h"
 #include "MeshRenderer.h"
 #include "Transform.h"
 
@@ -17,7 +18,7 @@ public:
 	Entity(const Vector3& position, const Vector3& rotation, const Vector3& scale);
 	~Entity();
 	void setupRenderer(Mesh* mesh, Material* material);
-	void draw() const;
+	void draw(const Camera& camera) const;
 
 	Transform* getTransform() const;
 	MeshRenderer* getRenderer() const;

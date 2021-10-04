@@ -2,6 +2,12 @@
 
 Scene::Scene()
 {
+	// Setup camera
+	m_Camera = new Camera(
+		Vector3(0.0f, 3.05f, 0.0f),
+		Vector3(degToRad(35.0f), degToRad(-10.0f), degToRad(0.0f))
+	);
+
 	// Load and compile shaders
 	Shader* rainbow = new Shader("res/shaders/Rainbow.shader");
 
@@ -53,6 +59,8 @@ Scene::Scene()
 
 Scene::~Scene()
 {
+	delete m_Camera;
+
 	for (size_t i = 0; i < m_Entities.size(); i++)
 	{
 		delete m_Entities[i];
@@ -86,12 +94,15 @@ void Scene::update()
 			(float)sin(t * 1.7) * 0.1f + 0.95f
 		));
 	}
+
+	if (m_Camera)
+		m_Camera->update();
 }
 
 void Scene::draw()
 {
 	for (size_t i = 0; i < m_Entities.size(); i++)
 	{
-		m_Entities[i]->draw();
+		m_Entities[i]->draw(*m_Camera);
 	}
 }

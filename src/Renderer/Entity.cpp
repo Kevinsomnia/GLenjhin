@@ -28,17 +28,14 @@ void Entity::setupRenderer(Mesh* mesh, Material* material)
 	m_Renderer = new MeshRenderer(mesh, material);
 }
 
-void Entity::draw() const
+void Entity::draw(const Camera& cam) const
 {
 	if (m_Renderer)
 	{
 		Vector3 rot = m_Transform->getRotation();
 		m_Renderer->draw(
 			Matrix4x4::Perspective(75.0f, 16.0f / 9.0f, 0.1f, 500.0f),
-			Matrix4x4::View(
-				Vector3(0.0f, 3.05f, 0.0f),
-				Vector3(degToRad(35.0f), degToRad(-10.0f), degToRad(0.0f))
-			),
+			cam.getViewMatrix(),
 			Matrix4x4::TRS(
 				m_Transform->getPosition(),
 				Vector3(degToRad(rot.x), degToRad(rot.y), degToRad(rot.z)),

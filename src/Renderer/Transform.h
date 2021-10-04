@@ -11,6 +11,7 @@ using std::endl;
 class Transform
 {
 public:
+	Transform();
 	Transform(const Vector3& position, const Vector3& rotation, const Vector3& scale);
 
 	Vector3 getPosition() const;

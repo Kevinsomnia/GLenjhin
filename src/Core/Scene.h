@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include "../Renderer/Camera.h"
 #include "../Renderer/Entity.h"
 #include "Time.h"
 
@@ -17,6 +18,7 @@ public:
 	void update();
 	void draw();
 private:
+	Camera* m_Camera;
 	std::vector<Entity*> m_Entities;
 };
 
