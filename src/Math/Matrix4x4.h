@@ -37,6 +37,7 @@ public:
 	static Matrix4x4 Scale(const Vector3& scale);
 	static Matrix4x4 TRS(const Vector3& pos, const Vector3& rot, const Vector3& scale);
 	static Matrix4x4 View(const Vector3& pos, const Vector3& rot);
+	static Matrix4x4 Orthographic(float size, float aspect, float near, float far);
 
 	friend std::ostream& operator<<(std::ostream& os, const Matrix4x4& mat)
 	{

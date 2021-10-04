@@ -168,3 +168,13 @@ Matrix4x4 Matrix4x4::View(const Vector3& pos, const Vector3& rot)
 		Vector4(0.0f, 0.0f, 0.0f, 1.0f)
 	);
 }
+
+Matrix4x4 Matrix4x4::Orthographic(float size, float aspect, float near, float far)
+{
+	return Matrix4x4(
+		Vector4(1.0f / (size * aspect), 0.0f, 0.0f, 0.0f),
+		Vector4(0.0f, 1.0f / size, 0.0f, 0.0f),
+		Vector4(0.0f, 0.0f, -2.0f / (far - near), -(far + near) / (far - near)),
+		Vector4(0.0f, 0.0f, 0.0f, 1.0f)
+	);
+}

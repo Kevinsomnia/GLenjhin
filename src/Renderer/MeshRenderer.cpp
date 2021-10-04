@@ -12,12 +12,13 @@ MeshRenderer::~MeshRenderer()
 {
 }
 
-void MeshRenderer::draw(const Matrix4x4& view, const Matrix4x4& model)
+void MeshRenderer::draw(const Matrix4x4& projection, const Matrix4x4& view, const Matrix4x4& model)
 {
 	if (m_Mesh)
 	{
 		if (m_Material)
 		{
+			m_Material->setMatrix("u_Proj", projection);
 			m_Material->setMatrix("u_View", view);
 			m_Material->setMatrix("u_Model", model);
 			m_Material->bind();
