@@ -43,7 +43,7 @@ Scene::Scene()
 	};
 	Mesh* meshA = new Mesh(verticesA, numVerticesA, indicesA, numIndicesA);
 
-	for (int i = 0; i < 1000; i++)
+	for (int i = 0; i < 100; i++)
 	{
 		Entity* entity = new Entity(Vector3(-0.65f, 0.45f, 2.95f), Vector3(35.0f, 60.0f, -25.0f), Vector3(0.85f, 0.6f, 0.75f));
 		entity->setupRenderer(meshA, matA);
@@ -71,9 +71,9 @@ void Scene::update()
 		Entity* entity = m_Entities[i];
 
 		entity->getTransform()->setPosition(Vector3(
-			(float)sin(t * 0.5) * 2.0f,
+			(float)sin(t * 0.5) * 4.0f,
 			(float)cos(t * 0.6),
-			(float)sin(t * 0.7) * 5.0f + 7.0f
+			(float)sin(t * 0.1) * 15.0f + 18.0f
 		));
 		entity->getTransform()->setRotation(Vector3(
 			(float)t * 25.0f,
@@ -81,9 +81,9 @@ void Scene::update()
 			(float)t * 35.0f
 		));
 		entity->getTransform()->setScale(Vector3(
-			(float)sin(t * 1.5) * 0.2f + 0.85f,
-			(float)cos(t * 1.6) * 0.15f - 0.65f,
-			(float)sin(t * 1.7) * (float)cos(t * 1.3) * 0.2f + 0.75f
+			(float)sin(t * 1.5) * 0.1f + 0.95f,
+			(float)cos(t * 1.6) * 0.15f + 0.95f,
+			(float)sin(t * 1.7) * 0.1f + 0.95f
 		));
 	}
 }
