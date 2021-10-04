@@ -87,9 +87,9 @@ void Scene::update()
 			(float)sin(t * 0.1) * 15.0f + 18.0f
 		));
 		entity->getTransform()->setRotation(Vector3(
-			(float)t * 25.0f,
-			(float)t * 30.0f,
-			(float)t * 35.0f
+			degToRad((float)t * 25.0f),
+			degToRad((float)t * 30.0f),
+			degToRad((float)t * 35.0f)
 		));
 		entity->getTransform()->setScale(Vector3(
 			(float)sin(t * 1.5) * 0.1f + 0.95f,

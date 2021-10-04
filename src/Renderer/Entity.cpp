@@ -32,14 +32,9 @@ void Entity::draw(const Camera& cam) const
 {
 	if (m_Renderer)
 	{
-		Vector3 rot = m_Transform->getRotation();
 		m_Renderer->draw(
 			cam.getViewProjMatrix(),
-			Matrix4x4::TRS(
-				m_Transform->getPosition(),
-				Vector3(degToRad(rot.x), degToRad(rot.y), degToRad(rot.z)),
-				m_Transform->getScale()
-			)
+			m_Transform->getTRS()
 		);
 	}
 }
