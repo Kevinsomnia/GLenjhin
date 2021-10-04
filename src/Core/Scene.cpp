@@ -5,7 +5,7 @@ Scene::Scene()
 	// Setup camera
 	m_Camera = new Camera(
 		Vector3(0.0f, 3.05f, 0.0f),
-		Vector3(degToRad(35.0f), degToRad(-10.0f), degToRad(0.0f)),
+		rotationToRad(Vector3(35.0f, -10.0f, 0.0f)),
 		75.0f,	// FOV
 		0.1f,	// Near
 		250.0f	// Far
@@ -86,11 +86,11 @@ void Scene::update()
 			(float)cos(t * 0.6),
 			(float)sin(t * 0.1) * 15.0f + 18.0f
 		));
-		entity->getTransform()->setRotation(Vector3(
-			degToRad((float)t * 25.0f),
-			degToRad((float)t * 30.0f),
-			degToRad((float)t * 35.0f)
-		));
+		entity->getTransform()->setRotation(rotationToRad(Vector3(
+			(float)t * 25.0f,
+			(float)t * 30.0f,
+			(float)t * 35.0f
+		)));
 		entity->getTransform()->setScale(Vector3(
 			(float)sin(t * 1.5) * 0.1f + 0.95f,
 			(float)cos(t * 1.6) * 0.15f + 0.95f,
