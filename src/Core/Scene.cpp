@@ -73,7 +73,7 @@ void Scene::update()
 		entity->getTransform()->setPosition(Vector3(
 			(float)sin(t * 0.5) * 2.0f,
 			(float)cos(t * 0.6),
-			(float)sin(t * 0.7) * (float)cos(t * 0.8) * 0.25f + 2.95f
+			(float)sin(t * 0.7) * 5.0f + 7.0f
 		));
 		entity->getTransform()->setRotation(Vector3(
 			(float)t * 25.0f,
