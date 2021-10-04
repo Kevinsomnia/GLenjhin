@@ -5,7 +5,10 @@ Scene::Scene()
 	// Setup camera
 	m_Camera = new Camera(
 		Vector3(0.0f, 3.05f, 0.0f),
-		Vector3(degToRad(35.0f), degToRad(-10.0f), degToRad(0.0f))
+		Vector3(degToRad(35.0f), degToRad(-10.0f), degToRad(0.0f)),
+		75.0f,	// FOV
+		0.1f,	// Near
+		250.0f	// Far
 	);
 
 	// Load and compile shaders

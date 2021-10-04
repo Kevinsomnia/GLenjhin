@@ -34,8 +34,7 @@ void Entity::draw(const Camera& cam) const
 	{
 		Vector3 rot = m_Transform->getRotation();
 		m_Renderer->draw(
-			Matrix4x4::Perspective(75.0f, 16.0f / 9.0f, 0.1f, 500.0f),
-			cam.getViewMatrix(),
+			cam.getViewProjMatrix(),
 			Matrix4x4::TRS(
 				m_Transform->getPosition(),
 				Vector3(degToRad(rot.x), degToRad(rot.y), degToRad(rot.z)),

@@ -14,7 +14,7 @@ class MeshRenderer
 public:
 	MeshRenderer(Mesh* mesh, Material* material);
 	~MeshRenderer();
-	void draw(const Matrix4x4& projection, const Matrix4x4& view, const Matrix4x4& model);
+	void draw(const Matrix4x4& vp, const Matrix4x4& model);
 private:
 	Mesh* m_Mesh;
 	Material* m_Material;
