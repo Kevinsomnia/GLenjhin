@@ -178,3 +178,15 @@ Matrix4x4 Matrix4x4::Orthographic(float size, float aspect, float near, float fa
 		Vector4(0.0f, 0.0f, 0.0f, 1.0f)
 	);
 }
+
+Matrix4x4 Matrix4x4::Perspective(float fov, float aspect, float near, float far)
+{
+	float tanHalfFov = tan(degToRad(fov * 0.5f));
+
+	return Matrix4x4(
+		Vector4(1.0f / (tanHalfFov * aspect), 0.0f, 0.0f, 0.0f),
+		Vector4(0.0f, 1.0f / tanHalfFov, 0.0f, 0.0f),
+		Vector4(0.0f, 0.0f, -(far + near) / (far - near), -(2.0f * far * near) / (far - near)),
+		Vector4(0.0f, 0.0f, -1.0f, 0.0f)
+	);
+}
