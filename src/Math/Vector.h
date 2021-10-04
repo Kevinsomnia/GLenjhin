@@ -12,6 +12,7 @@ struct Vector2
 	float y;
 
 	static Vector2 zero;
+	static Vector2 one;
 	static Vector2 left;
 	static Vector2 right;
 	static Vector2 down;
@@ -37,6 +38,7 @@ struct Vector3
 	float z;
 
 	static Vector3 zero;
+	static Vector3 one;
 	static Vector3 left;
 	static Vector3 right;
 	static Vector3 back;
@@ -65,6 +67,7 @@ struct Vector4
 	float w;
 
 	static Vector4 zero;
+	static Vector4 one;
 
 	static float Dot(const Vector4& a, const Vector4& b);
 

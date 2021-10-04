@@ -5,6 +5,7 @@
 // ====================
 
 Vector2 Vector2::zero = Vector2();
+Vector2 Vector2::one = Vector2(1.0f, 1.0f);
 Vector2 Vector2::left = Vector2(-1.0f, 0.0f);
 Vector2 Vector2::right = Vector2(1.0f, 0.0f);
 Vector2 Vector2::down = Vector2(0.0f, -1.0f);
@@ -26,6 +27,7 @@ float Vector2::Cross(const Vector2& a, const Vector2& b)
 // ====================
 
 Vector3 Vector3::zero = Vector3();
+Vector3 Vector3::one = Vector3(1.0f, 1.0f, 1.0f);
 Vector3 Vector3::left = Vector3(-1.0f, 0.0f, 0.0f);
 Vector3 Vector3::right = Vector3(1.0f, 0.0f, 0.0f);
 Vector3 Vector3::back = Vector3(0.0f, 0.0f, -1.0f);
@@ -52,6 +54,7 @@ Vector3 Vector3::Cross(const Vector3& a, const Vector3& b)
 // ====================
 
 Vector4 Vector4::zero = Vector4();
+Vector4 Vector4::one = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 
 float Vector4::Dot(const Vector4& a, const Vector4& b)
 {
