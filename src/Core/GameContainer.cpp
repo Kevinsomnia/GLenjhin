@@ -1,6 +1,6 @@
 #include "GameContainer.h"
 
-GameContainer::GameContainer() : m_CurrentScene(nullptr)
+GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_CurrentScene(nullptr)
 {
 	// Enable depth testing
 	glEnable(GL_DEPTH_TEST);
@@ -8,6 +8,7 @@ GameContainer::GameContainer() : m_CurrentScene(nullptr)
 	glEnable(GL_CULL_FACE);
 
 	Time::init();
+	Input::init(window);
 
 	// Load scene.
 	m_CurrentScene = new Scene();
@@ -20,6 +21,7 @@ GameContainer::~GameContainer()
 void GameContainer::update(double deltaTime)
 {
 	Time::timestep(deltaTime);
+	Input::poll();
 
 	if (m_CurrentScene)
 		m_CurrentScene->update();

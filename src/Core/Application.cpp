@@ -60,7 +60,7 @@ int main()
 	cout << "Running OpenGL " << glGetString(GL_VERSION) << endl;
 
 	// Create GameContainer for update loop and other game object setup
-	GameContainer game = GameContainer();
+	GameContainer game = GameContainer(window);
 
 	double deltaTime = 0.0;
 	double elapsedTime = 0.0;

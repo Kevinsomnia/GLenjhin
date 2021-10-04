@@ -8,13 +8,13 @@ public:
 	static double getTime();
 	static double getDeltaTime();
 	static void timestep(double deltaTime);
-
 private:
 	static Time* m_Inst;
 
-	Time();
 	double m_Time;
 	double m_DeltaTime;
+
+	Time();
 };
 
 #endif // TIME_H

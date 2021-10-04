@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include "../Interaction/Input.h"
 #include "../Renderer/Camera.h"
 #include "../Renderer/Entity.h"
 #include "Time.h"

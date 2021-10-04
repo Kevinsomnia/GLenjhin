@@ -6,9 +6,9 @@ Scene::Scene()
 	m_Camera = new Camera(
 		Vector3(0.0f, 3.05f, 0.0f),
 		rotationToRad(Vector3(35.0f, -10.0f, 0.0f)),
-		75.0f,	// FOV
-		0.1f,	// Near
-		250.0f	// Far
+		75.0f,		// FOV
+		0.1f,		// Near
+		1000.0f		// Far
 	);
 
 	// Load and compile shaders
@@ -82,9 +82,9 @@ void Scene::update()
 		Entity* entity = m_Entities[i];
 
 		entity->getTransform()->setPosition(Vector3(
-			(float)sin(t * 0.5) * 4.0f,
-			(float)cos(t * 0.6),
-			(float)sin(t * 0.1) * 15.0f + 18.0f
+			(float)sin(t * 0.5) * 1.0f,
+			(float)cos(t * 0.6) * 0.5f,
+			(float)sin(t * 0.1) * 7.0f + 9.0f
 		));
 		entity->getTransform()->setRotation(rotationToRad(Vector3(
 			(float)t * 25.0f,
@@ -92,14 +92,25 @@ void Scene::update()
 			(float)t * 35.0f
 		)));
 		entity->getTransform()->setScale(Vector3(
-			(float)sin(t * 1.5) * 0.1f + 0.95f,
-			(float)cos(t * 1.6) * 0.15f + 0.95f,
-			(float)sin(t * 1.7) * 0.1f + 0.95f
+			(float)sin(t * 1.5) * 0.03f + 0.45f,
+			(float)cos(t * 1.6) * 0.05f + 0.45f,
+			(float)sin(t * 1.7) * 0.03f + 0.45f
 		));
 	}
 
 	if (m_Camera)
+	{
+		m_Camera->getTransform()->setPosition(Vector3(0.0f, 0.0f, 5.0f));
+
+		// Mouse look
+		Vector3 currRot = m_Camera->getTransform()->getRotation();
+		Vector2 mouseDelta = Input::getMouseMoveDelta() * 0.1f;
+		currRot.y -= degToRad(mouseDelta.x);
+		currRot.x += degToRad(mouseDelta.y);
+		m_Camera->getTransform()->setRotation(currRot);
+
 		m_Camera->update();
+	}
 }
 
 void Scene::draw()
