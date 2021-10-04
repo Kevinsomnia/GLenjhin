@@ -153,8 +153,11 @@ Matrix4x4 Matrix4x4::View(const Vector3& pos, const Vector3& rot)
 {
 	Matrix4x4 rotMatrix = Matrix4x4::Rotate(rot);
 
-	// Compute camera transform vectors
-	Vector3 fwd = rotMatrix.multiplyVector(Vector3::forward);
+	// Calculate "look at" vector (fwd) by using the camera transform rotation. The look at vector is (pos - targetPoint), aka the
+	// targetPoint's Z will be facing the camera's position (pos). Since we want the targetPoint to *always* be in front of the camera
+	// in local space for the provided rotation to work, the local space "look at" direction will always be (0, 0, -1).
+	// We simply use the rotMatrix (camera's world space rotation matrix) to transform this local vector into world space.
+	Vector3 fwd = rotMatrix.multiplyVector(Vector3::back);
 	Vector3 up = rotMatrix.multiplyVector(Vector3::up);
 	Vector3 right = Vector3::Cross(up, fwd);
 
