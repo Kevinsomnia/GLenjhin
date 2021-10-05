@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "../Interaction/Input.h"
+#include "../Renderer/MeshPrimitives.h"
 #include "Scene.h"
 #include "Time.h"
 

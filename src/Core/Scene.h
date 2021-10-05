@@ -6,6 +6,7 @@
 #include "../Interaction/Input.h"
 #include "../Renderer/Camera.h"
 #include "../Renderer/Entity.h"
+#include "../Renderer/MeshPrimitives.h"
 #include "Time.h"
 
 using std::cout;

@@ -162,6 +162,7 @@
     <ClCompile Include="src\Renderer\Entity.cpp" />
     <ClCompile Include="src\Renderer\Material.cpp" />
     <ClCompile Include="src\Renderer\Mesh.cpp" />
+    <ClCompile Include="src\Renderer\MeshPrimitives.cpp" />
     <ClCompile Include="src\Renderer\MeshRenderer.cpp" />
     <ClCompile Include="src\Renderer\Shader.cpp" />
     <ClCompile Include="src\Core\Scene.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="src\Renderer\Entity.h" />
     <ClInclude Include="src\Renderer\Material.h" />
     <ClInclude Include="src\Renderer\Mesh.h" />
+    <ClInclude Include="src\Renderer\MeshPrimitives.h" />
     <ClInclude Include="src\Renderer\MeshRenderer.h" />
     <ClInclude Include="src\Renderer\Shader.h" />
     <ClInclude Include="src\Core\Scene.h" />

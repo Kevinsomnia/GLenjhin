@@ -9,6 +9,7 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Curre
 
 	Time::Init();
 	Input::Init(window);
+	MeshPrimitives::Init();
 
 	// Load scene.
 	m_CurrentScene = new Scene();

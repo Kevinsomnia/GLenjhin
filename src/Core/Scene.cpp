@@ -17,45 +17,10 @@ Scene::Scene()
 	// Create basic materials for objects below
 	Material* matA = new Material(rainbow);
 
-	// Cube
-	const uint32_t numVerticesA = 8;
-	Vertex verticesA[numVerticesA] = {
-		Vertex(Vector3(-0.5f, 0.5f, 0.5f)),
-		Vertex(Vector3(0.5f, 0.5f, 0.5f)),
-		Vertex(Vector3(-0.5f, -0.5f, 0.5f)),
-		Vertex(Vector3(0.5f, -0.5f, 0.5f)),
-		Vertex(Vector3(-0.5f, 0.5f, -0.5f)),
-		Vertex(Vector3(0.5f, 0.5f, -0.5f)),
-		Vertex(Vector3(-0.5f, -0.5f, -0.5f)),
-		Vertex(Vector3(0.5f, -0.5f, -0.5f))
-	};
-	const uint32_t numIndicesA = 12*3;
-	uint32_t indicesA[numIndicesA] = {
-		// -Z
-		4, 7, 5,
-		4, 6, 7,
-		// +Z
-		0, 1, 3,
-		0, 3, 2,
-		// -X
-		2, 4, 0,
-		2, 6, 4,
-		// +X
-		5, 3, 1,
-		5, 7, 3,
-		// -Y
-		7, 2, 3,
-		7, 6, 2,
-		// +Y
-		0, 5, 1,
-		0, 4, 5
-	};
-	Mesh* meshA = new Mesh(verticesA, numVerticesA, indicesA, numIndicesA);
-
 	for (int i = 0; i < 100; i++)
 	{
 		Entity* entity = new Entity(Vector3(-0.65f, 0.45f, 2.95f), Vector3(35.0f, 60.0f, -25.0f), Vector3(0.85f, 0.6f, 0.75f));
-		entity->setupRenderer(meshA, matA);
+		entity->setupRenderer(MeshPrimitives::cube, matA);
 		m_Entities.push_back(entity);
 	}
 }

@@ -19,18 +19,21 @@ struct Vertex
 class Mesh
 {
 public:
-	Mesh(const Vertex* vertices, const uint32_t vertexCount, const uint32_t* indices, const uint32_t indexCount);
+	Mesh();
+	Mesh(Vertex* vertices, uint32_t vertexCount, uint32_t* indices, uint32_t indexCount);
 	~Mesh();
 	void bind() const;
 	void unbind() const;
 	void draw() const;
-private:
-	const Vertex* m_Vertices;
-	const uint32_t m_VertexCount;
-	const uint32_t* m_Indices;
-	const uint32_t m_TriangleCount;
+protected:
+	Vertex* m_Vertices;
+	uint32_t m_VertexCount;
+	uint32_t* m_Indices;
+	uint32_t m_TriangleCount;
 	uint32_t m_VaoId;
 	uint32_t m_IboId;
+
+	void setup(Vertex* vertices, uint32_t vertexCount, uint32_t* indices, uint32_t indexCount);
 };
 
 #endif // MESH_H
