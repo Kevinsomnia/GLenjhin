@@ -3,13 +3,22 @@
 
 #include <iostream>
 
+// ===========================================================================
+// Vector2
+// ===========================================================================
+
 struct Vector2
 {
-	Vector2() : x(0.0f), y(0.0f) {}
-	Vector2(float x, float y) : x(x), y(y) {}
+	Vector2();
+	Vector2(float x, float y);
+	Vector2(const float* arr);
 
-	float x;
-	float y;
+	float values[2];
+
+	inline float getX() const;
+	inline float getY() const;
+	inline void setX(float x);
+	inline void setY(float y);
 
 	Vector2 operator +(const Vector2& other) const;
 	Vector2& operator +=(const Vector2& other);
@@ -24,6 +33,8 @@ struct Vector2
 	Vector2 operator /(const Vector2& other) const;
 	Vector2& operator /=(const Vector2& other);
 	Vector2 operator -() const;
+	operator const float* () const;
+	float& operator [](int index);
 
 	static Vector2 zero;
 	static Vector2 one;
@@ -37,19 +48,49 @@ struct Vector2
 
 	friend std::ostream& operator<<(std::ostream& os, const Vector2& v)
 	{
-		os << '(' << v.x << ", " << v.y << ')';
+		os << '(' << v[0] << ", " << v[1] << ')';
 		return os;
 	}
 };
 
+inline float Vector2::getX() const
+{
+	return values[0];
+}
+
+inline float Vector2::getY() const
+{
+	return values[1];
+}
+
+inline void Vector2::setX(float x)
+{
+	values[0] = x;
+}
+
+inline void Vector2::setY(float y)
+{
+	values[1] = y;
+}
+
+// ===========================================================================
+// Vector3
+// ===========================================================================
+
 struct Vector3
 {
-	Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
-	Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
+	Vector3();
+	Vector3(float x, float y, float z);
+	Vector3(const float* arr);
 
-	float x;
-	float y;
-	float z;
+	float values[3];
+
+	inline float getX() const;
+	inline float getY() const;
+	inline float getZ() const;
+	inline void setX(float x);
+	inline void setY(float y);
+	inline void setZ(float z);
 
 	Vector3 operator +(const Vector3& other) const;
 	Vector3& operator +=(const Vector3& other);
@@ -64,6 +105,8 @@ struct Vector3
 	Vector3 operator /(const Vector3& other) const;
 	Vector3& operator /=(const Vector3& other);
 	Vector3 operator -() const;
+	operator const float* () const;
+	float& operator [](int index);
 
 	static Vector3 zero;
 	static Vector3 one;
@@ -79,20 +122,61 @@ struct Vector3
 
 	friend std::ostream& operator<<(std::ostream& os, const Vector3& v)
 	{
-		os << '(' << v.x << ", " << v.y << ", " << v.z << ')';
+		os << '(' << v[0] << ", " << v[1] << ", " << v[2] << ')';
 		return os;
 	}
 };
 
+inline float Vector3::getX() const
+{
+	return values[0];
+}
+
+inline float Vector3::getY() const
+{
+	return values[1];
+}
+
+inline float Vector3::getZ() const
+{
+	return values[2];
+}
+
+inline void Vector3::setX(float x)
+{
+	values[0] = x;
+}
+
+inline void Vector3::setY(float y)
+{
+	values[1] = y;
+}
+
+inline void Vector3::setZ(float z)
+{
+	values[2] = z;
+}
+
+// ===========================================================================
+// Vector4
+// ===========================================================================
+
 struct Vector4
 {
-	Vector4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
-	Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
+	Vector4();
+	Vector4(float x, float y, float z, float w);
+	Vector4(const float* arr);
 
-	float x;
-	float y;
-	float z;
-	float w;
+	float values[4];
+
+	inline float getX() const;
+	inline float getY() const;
+	inline float getZ() const;
+	inline float getW() const;
+	inline void setX(float x);
+	inline void setY(float y);
+	inline void setZ(float z);
+	inline void setW(float w);
 
 	Vector4 operator +(const Vector4& other) const;
 	Vector4& operator +=(const Vector4& other);
@@ -107,6 +191,8 @@ struct Vector4
 	Vector4 operator /(const Vector4& other) const;
 	Vector4& operator /=(const Vector4& other);
 	Vector4 operator -() const;
+	operator const float* () const;
+	float& operator [](int index);
 
 	static Vector4 zero;
 	static Vector4 one;
@@ -115,9 +201,49 @@ struct Vector4
 
 	friend std::ostream& operator<<(std::ostream& os, const Vector4& v)
 	{
-		os << '(' << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ')';
+		os << '(' << v[0] << ", " << v[1] << ", " << v[2] << ", " << v[3] << ')';
 		return os;
 	}
 };
+
+inline float Vector4::getX() const
+{
+	return values[0];
+}
+
+inline float Vector4::getY() const
+{
+	return values[1];
+}
+
+inline float Vector4::getZ() const
+{
+	return values[2];
+}
+
+inline float Vector4::getW() const
+{
+	return values[3];
+}
+
+inline void Vector4::setX(float x)
+{
+	values[0] = x;
+}
+
+inline void Vector4::setY(float y)
+{
+	values[1] = y;
+}
+
+inline void Vector4::setZ(float z)
+{
+	values[2] = z;
+}
+
+inline void Vector4::setW(float w)
+{
+	values[3] = w;
+}
 
 #endif // VECTOR_H

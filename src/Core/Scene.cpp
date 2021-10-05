@@ -68,7 +68,7 @@ void Scene::update()
 	{
 		// Mouse look
 		Vector2 mouseDelta = Input::GetMouseMoveDelta() * 0.075f;
-		Vector3 rotateDelta = rotationToRad(Vector3(mouseDelta.y, mouseDelta.x, 0.0f));
+		Vector3 rotateDelta = rotationToRad(Vector3(mouseDelta.getY(), mouseDelta.getX(), 0.0f));
 		m_Camera->getTransform()->rotate(rotateDelta);
 
 		// Free fly
