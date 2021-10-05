@@ -19,6 +19,10 @@ struct Vector2
 	inline float getY() const;
 	inline void setX(float x);
 	inline void setY(float y);
+	inline float getMagnitude() const;
+	inline float getSqrMagnitude() const;
+	inline Vector2 getNormalized() const;
+	inline void normalize();
 
 	Vector2 operator +(const Vector2& other) const;
 	Vector2& operator +=(const Vector2& other);
@@ -73,6 +77,27 @@ inline void Vector2::setY(float y)
 	values[1] = y;
 }
 
+inline float Vector2::getMagnitude() const
+{
+	return sqrt(getSqrMagnitude());
+}
+
+inline float Vector2::getSqrMagnitude() const
+{
+	return values[0] * values[0] + values[1] * values[1];
+}
+
+inline Vector2 Vector2::getNormalized() const
+{
+	return *this / getMagnitude();
+}
+
+inline void Vector2::normalize()
+{
+	float oneOverMagnitude = 1.0f / getMagnitude();
+	operator *=(oneOverMagnitude);
+}
+
 // ===========================================================================
 // Vector3
 // ===========================================================================
@@ -91,6 +116,10 @@ struct Vector3
 	inline void setX(float x);
 	inline void setY(float y);
 	inline void setZ(float z);
+	inline float getMagnitude() const;
+	inline float getSqrMagnitude() const;
+	inline Vector3 getNormalized() const;
+	inline void normalize();
 
 	Vector3 operator +(const Vector3& other) const;
 	Vector3& operator +=(const Vector3& other);
@@ -157,6 +186,27 @@ inline void Vector3::setZ(float z)
 	values[2] = z;
 }
 
+inline float Vector3::getMagnitude() const
+{
+	return sqrt(getSqrMagnitude());
+}
+
+inline float Vector3::getSqrMagnitude() const
+{
+	return values[0] * values[0] + values[1] * values[1] + values[2] * values[2];
+}
+
+inline Vector3 Vector3::getNormalized() const
+{
+	return *this / getMagnitude();
+}
+
+inline void Vector3::normalize()
+{
+	float oneOverMagnitude = 1.0f / getMagnitude();
+	operator *=(oneOverMagnitude);
+}
+
 // ===========================================================================
 // Vector4
 // ===========================================================================
@@ -177,6 +227,10 @@ struct Vector4
 	inline void setY(float y);
 	inline void setZ(float z);
 	inline void setW(float w);
+	inline float getMagnitude() const;
+	inline float getSqrMagnitude() const;
+	inline Vector4 getNormalized() const;
+	inline void normalize();
 
 	Vector4 operator +(const Vector4& other) const;
 	Vector4& operator +=(const Vector4& other);
@@ -244,6 +298,27 @@ inline void Vector4::setZ(float z)
 inline void Vector4::setW(float w)
 {
 	values[3] = w;
+}
+
+inline float Vector4::getMagnitude() const
+{
+	return sqrt(getSqrMagnitude());
+}
+
+inline float Vector4::getSqrMagnitude() const
+{
+	return values[0] * values[0] + values[1] * values[1] + values[2] * values[2] + values[3] * values[3];
+}
+
+inline Vector4 Vector4::getNormalized() const
+{
+	return *this / getMagnitude();
+}
+
+inline void Vector4::normalize()
+{
+	float oneOverMagnitude = 1.0f / getMagnitude();
+	operator *=(oneOverMagnitude);
 }
 
 #endif // VECTOR_H
