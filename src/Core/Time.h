@@ -4,10 +4,10 @@
 class Time
 {
 public:
-	static void init();
-	static double getTime();
-	static double getDeltaTime();
-	static void timestep(double deltaTime);
+	static void Init();
+	static double GetTime();
+	static double GetDeltaTime();
+	static void Timestep(double deltaTime);
 private:
 	static Time* m_Inst;
 

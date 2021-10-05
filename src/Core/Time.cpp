@@ -8,23 +8,23 @@ Time::Time()
 	m_DeltaTime = 0.0;
 }
 
-void Time::init()
+void Time::Init()
 {
 	if (!m_Inst)
 		m_Inst = new Time();
 }
 
-double Time::getTime()
+double Time::GetTime()
 {
 	return m_Inst->m_Time;
 }
 
-double Time::getDeltaTime()
+double Time::GetDeltaTime()
 {
 	return m_Inst->m_DeltaTime;
 }
 
-void Time::timestep(double deltaTime)
+void Time::Timestep(double deltaTime)
 {
 	m_Inst->m_Time += deltaTime;
 	m_Inst->m_DeltaTime = deltaTime;

@@ -7,8 +7,8 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Curre
 	// Enable back face culling
 	glEnable(GL_CULL_FACE);
 
-	Time::init();
-	Input::init(window);
+	Time::Init();
+	Input::Init(window);
 
 	// Load scene.
 	m_CurrentScene = new Scene();
@@ -20,8 +20,8 @@ GameContainer::~GameContainer()
 
 void GameContainer::update(double deltaTime)
 {
-	Time::timestep(deltaTime);
-	Input::poll();
+	Time::Timestep(deltaTime);
+	Input::Poll();
 
 	if (m_CurrentScene)
 		m_CurrentScene->update();

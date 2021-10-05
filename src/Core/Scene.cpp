@@ -74,7 +74,7 @@ Scene::~Scene()
 
 void Scene::update()
 {
-	double t = Time::getTime();
+	double t = Time::GetTime();
 
 	for (size_t i = 0; i < m_Entities.size(); i++)
 	{
@@ -104,12 +104,22 @@ void Scene::update()
 
 		// Mouse look
 		Vector3 currRot = m_Camera->getTransform()->getRotation();
-		Vector2 mouseDelta = Input::getMouseMoveDelta() * 0.1f;
+		Vector2 mouseDelta = Input::GetMouseMoveDelta() * 0.1f;
 		currRot.y += degToRad(mouseDelta.x);
 		currRot.x += degToRad(mouseDelta.y);
 		m_Camera->getTransform()->setRotation(currRot);
 
 		m_Camera->update();
+	}
+
+	if (Input::GetKeyDown(KeyCode::W))
+	{
+		cout << "PRESSED W" << endl;
+	}
+
+	if (Input::GetKeyUp(KeyCode::W))
+	{
+		cout << "RELEASED W" << endl;	
 	}
 }
 
