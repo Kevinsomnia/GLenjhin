@@ -9,6 +9,12 @@ using std::cout;
 using std::cerr;
 using std::endl;
 
+enum class Space
+{
+	World,
+	Local
+};
+
 class Transform
 {
 public:
@@ -22,6 +28,8 @@ public:
 	void setPosition(const Vector3& position);
 	void setRotation(const Vector3& rotation);
 	void setScale(const Vector3& scale);
+	void translate(const Vector3& v, Space space = Space::World);
+	void rotate(const Vector3& r, Space space = Space::World);
 private:
 	Vector3 m_Position;
 	Vector3 m_Rotation;

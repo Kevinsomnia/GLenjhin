@@ -21,6 +21,8 @@ public:
 private:
 	Camera* m_Camera;
 	std::vector<Entity*> m_Entities;
+
+	Vector3 getMoveAxis() const;
 };
 
 #endif // SCENE_H

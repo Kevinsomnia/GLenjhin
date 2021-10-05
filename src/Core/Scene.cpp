@@ -75,6 +75,7 @@ Scene::~Scene()
 void Scene::update()
 {
 	double t = Time::GetTime();
+	double dt = Time::GetDeltaTime();
 
 	for (size_t i = 0; i < m_Entities.size(); i++)
 	{
@@ -100,26 +101,33 @@ void Scene::update()
 
 	if (m_Camera)
 	{
-		m_Camera->getTransform()->setPosition(Vector3(1.5f, 4.5f, -3.0f));
-
 		// Mouse look
-		Vector3 currRot = m_Camera->getTransform()->getRotation();
-		Vector2 mouseDelta = Input::GetMouseMoveDelta() * 0.1f;
-		currRot.y += degToRad(mouseDelta.x);
-		currRot.x += degToRad(mouseDelta.y);
-		m_Camera->getTransform()->setRotation(currRot);
+		Vector2 mouseDelta = Input::GetMouseMoveDelta() * 0.075f;
+		Vector3 rotateDelta = rotationToRad(Vector3(mouseDelta.y, mouseDelta.x, 0.0f));
+		m_Camera->getTransform()->rotate(rotateDelta);
 
+		// Free fly
+		const float MOVE_SPEED = 3.0f;
+		Vector3 moveDelta = getMoveAxis() * MOVE_SPEED * (float)dt;
+		m_Camera->getTransform()->translate(moveDelta, Space::Local);
+
+		bool space = Input::GetKey(KeyCode::Space);
+		bool ctrl = Input::GetKey(KeyCode::LeftCtrl) || Input::GetKey(KeyCode::RightCtrl);
+		float y = 0.0f;
+
+		if (space && !ctrl)
+		{
+			y = 1.0f;
+		}
+		else if (ctrl && !space)
+		{
+			y = -1.0f;
+		}
+
+		m_Camera->getTransform()->translate(Vector3(0.0f, y, 0.0f) * MOVE_SPEED * (float)dt, Space::World);
+
+		// Update and upload view projection.
 		m_Camera->update();
-	}
-
-	if (Input::GetKeyDown(KeyCode::W))
-	{
-		cout << "PRESSED W" << endl;
-	}
-
-	if (Input::GetKeyUp(KeyCode::W))
-	{
-		cout << "RELEASED W" << endl;	
 	}
 }
 
@@ -129,4 +137,34 @@ void Scene::draw()
 	{
 		m_Entities[i]->draw(*m_Camera);
 	}
+}
+
+Vector3 Scene::getMoveAxis() const
+{
+	bool w = Input::GetKey(KeyCode::W);
+	bool s = Input::GetKey(KeyCode::S);
+	bool a = Input::GetKey(KeyCode::A);
+	bool d = Input::GetKey(KeyCode::D);
+
+	float x = 0.0f, z = 0.0f;
+
+	if (d && !a)
+	{
+		x = 1.0f;
+	}
+	else if (a && !d)
+	{
+		x = -1.0f;
+	}
+
+	if (w && !s)
+	{
+		z = 1.0f;
+	}
+	else if (s && !w)
+	{
+		z = -1.0f;
+	}
+
+	return Vector3(x, 0.0f, z);
 }

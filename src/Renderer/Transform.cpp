@@ -53,3 +53,31 @@ void Transform::setScale(const Vector3& scale)
 	m_Scale = scale;
 	m_DirtyTRS = true;
 }
+
+void Transform::translate(const Vector3& v, Space space)
+{
+	if (space == Space::World)
+	{
+		m_Position += v;
+	}
+	else
+	{
+		m_Position += getTRS().multiplyVector(v);
+	}
+
+	m_DirtyTRS = true;
+}
+
+void Transform::rotate(const Vector3& r, Space space)
+{
+	if (space == Space::World)
+	{
+		m_Rotation += r;
+	}
+	else
+	{
+		m_Rotation += getTRS().multiplyVector(r);
+	}
+
+	m_DirtyTRS = true;
+}
