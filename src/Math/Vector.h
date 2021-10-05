@@ -12,11 +12,17 @@ struct Vector2
 	float y;
 
 	Vector2 operator +(const Vector2& other) const;
+	Vector2& operator +=(const Vector2& other);
 	Vector2 operator -(const Vector2& other) const;
-	Vector2 operator *(const float scalar) const;
-	Vector2 operator /(const float divisor) const;
+	Vector2& operator -=(const Vector2& other);
+	Vector2 operator *(float scalar) const;
+	Vector2& operator *=(float scalar);
+	Vector2 operator /(float divisor) const;
+	Vector2& operator /=(float divisor);
 	Vector2 operator *(const Vector2& other) const;
+	Vector2& operator *=(const Vector2& other);
 	Vector2 operator /(const Vector2& other) const;
+	Vector2& operator /=(const Vector2& other);
 	Vector2 operator -() const;
 
 	static Vector2 zero;
@@ -46,11 +52,17 @@ struct Vector3
 	float z;
 
 	Vector3 operator +(const Vector3& other) const;
+	Vector3& operator +=(const Vector3& other);
 	Vector3 operator -(const Vector3& other) const;
-	Vector3 operator *(const float scalar) const;
-	Vector3 operator /(const float divisor) const;
+	Vector3& operator -=(const Vector3& other);
+	Vector3 operator *(float scalar) const;
+	Vector3& operator *=(float scalar);
+	Vector3 operator /(float divisor) const;
+	Vector3& operator /=(float divisor);
 	Vector3 operator *(const Vector3& other) const;
+	Vector3& operator *=(const Vector3& other);
 	Vector3 operator /(const Vector3& other) const;
+	Vector3& operator /=(const Vector3& other);
 	Vector3 operator -() const;
 
 	static Vector3 zero;
@@ -83,11 +95,17 @@ struct Vector4
 	float w;
 
 	Vector4 operator +(const Vector4& other) const;
+	Vector4& operator +=(const Vector4& other);
 	Vector4 operator -(const Vector4& other) const;
-	Vector4 operator *(const float scalar) const;
-	Vector4 operator /(const float divisor) const;
+	Vector4& operator -=(const Vector4& other);
+	Vector4 operator *(float scalar) const;
+	Vector4& operator *=(float scalar);
+	Vector4 operator /(float divisor) const;
+	Vector4& operator /=(float divisor);
 	Vector4 operator *(const Vector4& other) const;
+	Vector4& operator *=(const Vector4& other);
 	Vector4 operator /(const Vector4& other) const;
+	Vector4& operator /=(const Vector4& other);
 	Vector4 operator -() const;
 
 	static Vector4 zero;
