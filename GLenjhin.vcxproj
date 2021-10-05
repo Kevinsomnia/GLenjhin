@@ -172,6 +172,7 @@
     <ClInclude Include="src\Core\Application.h" />
     <ClInclude Include="src\Core\Time.h" />
     <ClInclude Include="src\Interaction\Input.h" />
+    <ClInclude Include="src\Interaction\InputCodes.h" />
     <ClInclude Include="src\Math\Matrix4x4.h" />
     <ClInclude Include="src\Renderer\Camera.h" />
     <ClInclude Include="src\Math\Convert.h" />
