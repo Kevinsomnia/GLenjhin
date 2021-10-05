@@ -32,23 +32,23 @@ Scene::Scene()
 	const uint32_t numIndicesA = 12*3;
 	uint32_t indicesA[numIndicesA] = {
 		// -Z
-		4, 5, 7,
-		4, 7, 6,
+		4, 7, 5,
+		4, 6, 7,
 		// +Z
-		0, 3, 1,
-		0, 2, 3,
+		0, 1, 3,
+		0, 3, 2,
 		// -X
-		2, 0, 4,
-		2, 4, 6,
+		2, 4, 0,
+		2, 6, 4,
 		// +X
-		5, 1, 3,
-		5, 3, 7,
+		5, 3, 1,
+		5, 7, 3,
 		// -Y
-		7, 3, 2,
-		7, 2, 6,
+		7, 2, 3,
+		7, 6, 2,
 		// +Y
-		0, 1, 5,
-		0, 5, 4
+		0, 5, 1,
+		0, 4, 5
 	};
 	Mesh* meshA = new Mesh(verticesA, numVerticesA, indicesA, numIndicesA);
 
