@@ -1,8 +1,4 @@
 #include "MeshRenderer.h"
-#include "../Core/Time.h"
-#include "../Math/Convert.h"
-#include "../Math/Matrix4x4.h"
-#include "../Math/Vector.h"
 
 MeshRenderer::MeshRenderer(Mesh* mesh, Material* material) : m_Mesh(mesh), m_Material(material)
 {
