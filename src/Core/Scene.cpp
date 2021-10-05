@@ -11,15 +11,19 @@ Scene::Scene()
 		1000.0f		// Far
 	);
 
+	// Setup lighting
+	Light* sun = new DirectionalLight(Vector3::zero, rotationToRad(Vector3(30.0f, 50.0f, 0.0f)));
+	m_Lights.push_back(sun);
+
 	// Load and compile shaders
-	Shader* rainbow = new Shader("res/shaders/Rainbow.shader");
+	Shader* rainbow = new Shader("res/shaders/StandardSurface.shader");
 
 	// Create basic materials for objects below
 	Material* matA = new Material(rainbow);
 
 	for (int i = 0; i < 100; i++)
 	{
-		Entity* entity = new Entity(Vector3(-0.65f, 0.45f, 2.95f), Vector3(35.0f, 60.0f, -25.0f), Vector3(0.85f, 0.6f, 0.75f));
+		Entity* entity = new Entity(Vector3(-0.65f, 0.45f, 2.95f), Vector3::zero, Vector3::one);
 		entity->setupRenderer(MeshPrimitives::cube, matA);
 		m_Entities.push_back(entity);
 	}
@@ -29,12 +33,14 @@ Scene::~Scene()
 {
 	delete m_Camera;
 
-	for (size_t i = 0; i < m_Entities.size(); i++)
-	{
-		delete m_Entities[i];
-	}
+	for (Entity* entity : m_Entities)
+		delete entity;
+
+	for (Light* light : m_Lights)
+		delete light;
 
 	m_Entities.clear();
+	m_Lights.clear();
 }
 
 void Scene::update()
@@ -106,7 +112,7 @@ void Scene::draw()
 {
 	for (size_t i = 0; i < m_Entities.size(); i++)
 	{
-		m_Entities[i]->draw(*m_Camera);
+		m_Entities[i]->draw(*m_Camera, m_Lights);
 	}
 }
 

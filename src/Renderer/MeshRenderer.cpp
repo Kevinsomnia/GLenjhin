@@ -8,7 +8,7 @@ MeshRenderer::~MeshRenderer()
 {
 }
 
-void MeshRenderer::draw(const Matrix4x4& vp, const Matrix4x4& model)
+void MeshRenderer::draw(const Matrix4x4& vp, const Matrix4x4& model, const std::vector<Light*>& lights)
 {
 	if (m_Mesh)
 	{
@@ -18,6 +18,10 @@ void MeshRenderer::draw(const Matrix4x4& vp, const Matrix4x4& model)
 			m_Material->setMatrix("u_Model", model);
 			m_Material->bind();
 		}
+
+		// NOTE: multiple lights of same type are not supported!
+		for (Light* light : lights)
+			light->bind(m_Material);
 
 		m_Mesh->bind();
 		m_Mesh->draw();

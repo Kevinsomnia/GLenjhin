@@ -51,9 +51,14 @@ void Mesh::setup(Vertex* vertices, uint32_t vertexCount, uint32_t* indices, uint
 	glBufferData(GL_ARRAY_BUFFER, vertexCount * stride, vertices, GL_STATIC_DRAW);
 
 	// Vertex position
-	int offset = 0;
+	size_t offset = 0;
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (const void*)offset);
 	glEnableVertexAttribArray(0);
+	offset += sizeof(Vector3);
+	// Vertex normal
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (const void*)offset);
+	glEnableVertexAttribArray(1);
+	offset += sizeof(Vector3);
 
 	// Create and bind a index buffer
 	glGenBuffers(1, &m_IboId);

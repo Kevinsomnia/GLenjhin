@@ -28,13 +28,14 @@ void Entity::setupRenderer(Mesh* mesh, Material* material)
 	m_Renderer = new MeshRenderer(mesh, material);
 }
 
-void Entity::draw(const Camera& cam) const
+void Entity::draw(const Camera& cam, const std::vector<Light*>& lights) const
 {
 	if (m_Renderer)
 	{
 		m_Renderer->draw(
 			cam.getViewProjMatrix(),
-			m_Transform->getTRS()
+			m_Transform->getTRS(),
+			lights
 		);
 	}
 }

@@ -7,6 +7,7 @@
 #include "../Renderer/Camera.h"
 #include "../Renderer/Entity.h"
 #include "../Renderer/MeshPrimitives.h"
+#include "../Renderer/Lighting/Lighting.h"
 #include "Time.h"
 
 using std::cout;
@@ -22,6 +23,7 @@ public:
 private:
 	Camera* m_Camera;
 	std::vector<Entity*> m_Entities;
+	std::vector<Light*> m_Lights;
 
 	Vector3 getMoveAxis() const;
 };
