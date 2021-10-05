@@ -72,8 +72,14 @@ void Scene::update()
 		m_Camera->getTransform()->rotate(rotateDelta);
 
 		// Free fly
-		const float MOVE_SPEED = 3.0f;
-		Vector3 moveDelta = getMoveAxis() * MOVE_SPEED * (float)dt;
+		float moveSpeed = 3.0f;
+
+		if (Input::GetKey(KeyCode::LeftShift))
+		{
+			moveSpeed *= 3.0f;
+		}
+
+		Vector3 moveDelta = getMoveAxis() * moveSpeed * (float)dt;
 		m_Camera->getTransform()->translate(moveDelta, Space::Local);
 
 		bool space = Input::GetKey(KeyCode::Space);
@@ -89,7 +95,7 @@ void Scene::update()
 			y = -1.0f;
 		}
 
-		m_Camera->getTransform()->translate(Vector3(0.0f, y, 0.0f) * MOVE_SPEED * (float)dt, Space::World);
+		m_Camera->getTransform()->translate(Vector3(0.0f, y, 0.0f) * moveSpeed * (float)dt, Space::World);
 
 		// Update and upload view projection.
 		m_Camera->update();
