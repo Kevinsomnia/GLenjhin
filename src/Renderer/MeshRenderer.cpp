@@ -25,9 +25,5 @@ void MeshRenderer::draw(const Matrix4x4& vp, const Matrix4x4& model)
 
 		m_Mesh->bind();
 		m_Mesh->draw();
-		m_Mesh->unbind();
-
-		if (m_Material)
-			m_Material->unbind();
 	}
 }
