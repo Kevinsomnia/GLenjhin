@@ -15,7 +15,7 @@ class MeshRenderer
 public:
 	MeshRenderer(Mesh* mesh, Material* material);
 	~MeshRenderer();
-	void draw(const Matrix4x4& vp, const Matrix4x4& model, const std::vector<Light*>& lights);
+	void draw(const Vector3& cameraPos, const Matrix4x4& vp, const Matrix4x4& model, const std::vector<Light*>& lights);
 private:
 	Mesh* m_Mesh;
 	Material* m_Material;

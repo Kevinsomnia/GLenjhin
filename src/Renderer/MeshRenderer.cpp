@@ -8,7 +8,7 @@ MeshRenderer::~MeshRenderer()
 {
 }
 
-void MeshRenderer::draw(const Matrix4x4& vp, const Matrix4x4& model, const std::vector<Light*>& lights)
+void MeshRenderer::draw(const Vector3& cameraPos, const Matrix4x4& vp, const Matrix4x4& model, const std::vector<Light*>& lights)
 {
 	if (m_Mesh)
 	{
@@ -16,6 +16,7 @@ void MeshRenderer::draw(const Matrix4x4& vp, const Matrix4x4& model, const std::
 		{
 			m_Material->setMatrix("u_VP", vp);
 			m_Material->setMatrix("u_Model", model);
+			m_Material->setVector("u_CameraPos", cameraPos);
 			m_Material->bind();
 		}
 
