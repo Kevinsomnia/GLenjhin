@@ -52,6 +52,9 @@ int main()
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 
+	// Enable Linear color space (sRGB)
+	glEnable(GL_FRAMEBUFFER_SRGB);
+
 	// Disable v-sync
 	glfwSwapInterval(0);
 

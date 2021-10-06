@@ -23,7 +23,7 @@ Scene::Scene()
 	plane->setupRenderer(MeshPrimitives::quad, surfaceMat);
 	m_Entities.push_back(plane);
 
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		Entity* entity = new Entity(Vector3(-0.65f, 0.45f, 2.95f), Vector3::zero, Vector3::one);
 		entity->setupRenderer(MeshPrimitives::cube, surfaceMat);
@@ -52,13 +52,13 @@ void Scene::update()
 
 	for (size_t i = 1; i < m_Entities.size(); i++)
 	{
-		t += 0.317529 * i;
+		t += 2.48529;
 		Entity* entity = m_Entities[i];
 
 		entity->getTransform()->setPosition(Vector3(
-			(float)sin(t * 0.5) * 1.0f,
-			(float)cos(t * 0.6) * 0.5f + 3.0f,
-			(float)sin(t * 0.1) * 7.0f + 9.0f
+			(float)cos(t * 0.5),
+			(float)sin(t * 0.6) * 0.5f + 3.0f,
+			(float)sin(t * 0.1) * 7.0f
 		));
 		entity->getTransform()->setRotation(rotationToRad(Vector3(
 			(float)t * 25.0f,
