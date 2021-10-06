@@ -12,7 +12,14 @@ public:
         Cube();
     };
 
+    class Quad: public Mesh
+    {
+    public:
+        Quad();
+    };
+
     static Cube* cube;
+    static Quad* quad;
     static void Init();
 };
 

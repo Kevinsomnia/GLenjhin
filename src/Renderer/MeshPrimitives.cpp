@@ -65,9 +65,30 @@ MeshPrimitives::Cube::Cube() : Mesh()
     setup(vertices, NUM_VERTICES, indices, NUM_INDICES);
 }
 
+MeshPrimitives::Quad::Quad() : Mesh()
+{
+	// Single-sied quad that faces +Z
+	const uint32_t NUM_VERTICES = 4;
+	Vertex vertices[NUM_VERTICES] = {
+		Vertex(Vector3(-0.5f, 0.5f, 0.0f), Vector3::forward),
+		Vertex(Vector3(0.5f, 0.5f, 0.0f), Vector3::forward),
+		Vertex(Vector3(-0.5f, -0.5f, 0.0f), Vector3::forward),
+		Vertex(Vector3(0.5f, -0.5f, 0.0f), Vector3::forward),
+	};
+	const uint32_t NUM_INDICES = 2*3;
+	uint32_t indices[NUM_INDICES] = {
+		0, 1, 3,
+		0, 3, 2
+	};
+
+    setup(vertices, NUM_VERTICES, indices, NUM_INDICES);
+}
+
 MeshPrimitives::Cube* MeshPrimitives::cube = nullptr;
+MeshPrimitives::Quad* MeshPrimitives::quad = nullptr;
 
 void MeshPrimitives::Init()
 {
     cube = new Cube();
+    quad = new Quad();
 }

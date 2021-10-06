@@ -15,16 +15,18 @@ Scene::Scene()
 	Light* sun = new DirectionalLight(Vector3::zero, rotationToRad(Vector3(30.0f, 50.0f, 0.0f)));
 	m_Lights.push_back(sun);
 
-	// Load and compile shaders
-	Shader* rainbow = new Shader("res/shaders/StandardSurface.shader");
+	// Load shader and material
+	Shader* surfaceShader = new Shader("res/shaders/StandardSurface.shader");
+	Material* surfaceMat = new Material(surfaceShader);
 
-	// Create basic materials for objects below
-	Material* matA = new Material(rainbow);
+	Entity* plane = new Entity(Vector3::zero, rotationToRad(Vector3(-90.0f, 0.0f, 0.0f)), Vector3::one * 100.0f);
+	plane->setupRenderer(MeshPrimitives::quad, surfaceMat);
+	m_Entities.push_back(plane);
 
 	for (int i = 0; i < 100; i++)
 	{
 		Entity* entity = new Entity(Vector3(-0.65f, 0.45f, 2.95f), Vector3::zero, Vector3::one);
-		entity->setupRenderer(MeshPrimitives::cube, matA);
+		entity->setupRenderer(MeshPrimitives::cube, surfaceMat);
 		m_Entities.push_back(entity);
 	}
 }
@@ -48,14 +50,14 @@ void Scene::update()
 	double t = Time::GetTime();
 	double dt = Time::GetDeltaTime();
 
-	for (size_t i = 0; i < m_Entities.size(); i++)
+	for (size_t i = 1; i < m_Entities.size(); i++)
 	{
 		t += 0.317529 * i;
 		Entity* entity = m_Entities[i];
 
 		entity->getTransform()->setPosition(Vector3(
 			(float)sin(t * 0.5) * 1.0f,
-			(float)cos(t * 0.6) * 0.5f,
+			(float)cos(t * 0.6) * 0.5f + 3.0f,
 			(float)sin(t * 0.1) * 7.0f + 9.0f
 		));
 		entity->getTransform()->setRotation(rotationToRad(Vector3(
