@@ -9,93 +9,93 @@
 
 struct Vector2
 {
-	Vector2();
-	Vector2(float x, float y);
-	Vector2(const float* arr);
+    Vector2();
+    Vector2(float x, float y);
+    Vector2(const float* arr);
 
-	float values[2];
+    float values[2];
 
-	inline float getX() const;
-	inline float getY() const;
-	inline void setX(float x);
-	inline void setY(float y);
-	inline float getMagnitude() const;
-	inline float getSqrMagnitude() const;
-	inline Vector2 getNormalized() const;
-	inline void normalize();
+    inline float getX() const;
+    inline float getY() const;
+    inline void setX(float x);
+    inline void setY(float y);
+    inline float getMagnitude() const;
+    inline float getSqrMagnitude() const;
+    inline Vector2 getNormalized() const;
+    inline void normalize();
 
-	Vector2 operator +(const Vector2& other) const;
-	Vector2& operator +=(const Vector2& other);
-	Vector2 operator -(const Vector2& other) const;
-	Vector2& operator -=(const Vector2& other);
-	Vector2 operator *(float scalar) const;
-	Vector2& operator *=(float scalar);
-	Vector2 operator /(float divisor) const;
-	Vector2& operator /=(float divisor);
-	Vector2 operator *(const Vector2& other) const;
-	Vector2& operator *=(const Vector2& other);
-	Vector2 operator /(const Vector2& other) const;
-	Vector2& operator /=(const Vector2& other);
-	Vector2 operator -() const;
-	operator const float* () const;
-	float& operator [](int index);
+    Vector2 operator +(const Vector2& other) const;
+    Vector2& operator +=(const Vector2& other);
+    Vector2 operator -(const Vector2& other) const;
+    Vector2& operator -=(const Vector2& other);
+    Vector2 operator *(float scalar) const;
+    Vector2& operator *=(float scalar);
+    Vector2 operator /(float divisor) const;
+    Vector2& operator /=(float divisor);
+    Vector2 operator *(const Vector2& other) const;
+    Vector2& operator *=(const Vector2& other);
+    Vector2 operator /(const Vector2& other) const;
+    Vector2& operator /=(const Vector2& other);
+    Vector2 operator -() const;
+    operator const float* () const;
+    float& operator [](int index);
 
-	static Vector2 zero;
-	static Vector2 one;
-	static Vector2 left;
-	static Vector2 right;
-	static Vector2 down;
-	static Vector2 up;
+    static Vector2 zero;
+    static Vector2 one;
+    static Vector2 left;
+    static Vector2 right;
+    static Vector2 down;
+    static Vector2 up;
 
-	static float Dot(const Vector2& a, const Vector2& b);
-	static float Cross(const Vector2& a, const Vector2& b);
+    static float Dot(const Vector2& a, const Vector2& b);
+    static float Cross(const Vector2& a, const Vector2& b);
 
-	friend std::ostream& operator<<(std::ostream& os, const Vector2& v)
-	{
-		os << '(' << v[0] << ", " << v[1] << ')';
-		return os;
-	}
+    friend std::ostream& operator<<(std::ostream& os, const Vector2& v)
+    {
+        os << '(' << v[0] << ", " << v[1] << ')';
+        return os;
+    }
 };
 
 inline float Vector2::getX() const
 {
-	return values[0];
+    return values[0];
 }
 
 inline float Vector2::getY() const
 {
-	return values[1];
+    return values[1];
 }
 
 inline void Vector2::setX(float x)
 {
-	values[0] = x;
+    values[0] = x;
 }
 
 inline void Vector2::setY(float y)
 {
-	values[1] = y;
+    values[1] = y;
 }
 
 inline float Vector2::getMagnitude() const
 {
-	return sqrt(getSqrMagnitude());
+    return sqrt(getSqrMagnitude());
 }
 
 inline float Vector2::getSqrMagnitude() const
 {
-	return values[0] * values[0] + values[1] * values[1];
+    return values[0] * values[0] + values[1] * values[1];
 }
 
 inline Vector2 Vector2::getNormalized() const
 {
-	return *this / getMagnitude();
+    return *this / getMagnitude();
 }
 
 inline void Vector2::normalize()
 {
-	float oneOverMagnitude = 1.0f / getMagnitude();
-	operator *=(oneOverMagnitude);
+    float oneOverMagnitude = 1.0f / getMagnitude();
+    operator *=(oneOverMagnitude);
 }
 
 // ===========================================================================
@@ -104,107 +104,107 @@ inline void Vector2::normalize()
 
 struct Vector3
 {
-	Vector3();
-	Vector3(float x, float y, float z);
-	Vector3(const float* arr);
+    Vector3();
+    Vector3(float x, float y, float z);
+    Vector3(const float* arr);
 
-	float values[3];
+    float values[3];
 
-	inline float getX() const;
-	inline float getY() const;
-	inline float getZ() const;
-	inline void setX(float x);
-	inline void setY(float y);
-	inline void setZ(float z);
-	inline float getMagnitude() const;
-	inline float getSqrMagnitude() const;
-	inline Vector3 getNormalized() const;
-	inline void normalize();
+    inline float getX() const;
+    inline float getY() const;
+    inline float getZ() const;
+    inline void setX(float x);
+    inline void setY(float y);
+    inline void setZ(float z);
+    inline float getMagnitude() const;
+    inline float getSqrMagnitude() const;
+    inline Vector3 getNormalized() const;
+    inline void normalize();
 
-	Vector3 operator +(const Vector3& other) const;
-	Vector3& operator +=(const Vector3& other);
-	Vector3 operator -(const Vector3& other) const;
-	Vector3& operator -=(const Vector3& other);
-	Vector3 operator *(float scalar) const;
-	Vector3& operator *=(float scalar);
-	Vector3 operator /(float divisor) const;
-	Vector3& operator /=(float divisor);
-	Vector3 operator *(const Vector3& other) const;
-	Vector3& operator *=(const Vector3& other);
-	Vector3 operator /(const Vector3& other) const;
-	Vector3& operator /=(const Vector3& other);
-	Vector3 operator -() const;
-	operator const float* () const;
-	float& operator [](int index);
+    Vector3 operator +(const Vector3& other) const;
+    Vector3& operator +=(const Vector3& other);
+    Vector3 operator -(const Vector3& other) const;
+    Vector3& operator -=(const Vector3& other);
+    Vector3 operator *(float scalar) const;
+    Vector3& operator *=(float scalar);
+    Vector3 operator /(float divisor) const;
+    Vector3& operator /=(float divisor);
+    Vector3 operator *(const Vector3& other) const;
+    Vector3& operator *=(const Vector3& other);
+    Vector3 operator /(const Vector3& other) const;
+    Vector3& operator /=(const Vector3& other);
+    Vector3 operator -() const;
+    operator const float* () const;
+    float& operator [](int index);
 
-	static Vector3 zero;
-	static Vector3 one;
-	static Vector3 left;
-	static Vector3 right;
-	static Vector3 back;
-	static Vector3 forward;
-	static Vector3 down;
-	static Vector3 up;
+    static Vector3 zero;
+    static Vector3 one;
+    static Vector3 left;
+    static Vector3 right;
+    static Vector3 back;
+    static Vector3 forward;
+    static Vector3 down;
+    static Vector3 up;
 
-	static float Dot(const Vector3& a, const Vector3& b);
-	static Vector3 Cross(const Vector3& a, const Vector3& b);
+    static float Dot(const Vector3& a, const Vector3& b);
+    static Vector3 Cross(const Vector3& a, const Vector3& b);
 
-	friend std::ostream& operator<<(std::ostream& os, const Vector3& v)
-	{
-		os << '(' << v[0] << ", " << v[1] << ", " << v[2] << ')';
-		return os;
-	}
+    friend std::ostream& operator<<(std::ostream& os, const Vector3& v)
+    {
+        os << '(' << v[0] << ", " << v[1] << ", " << v[2] << ')';
+        return os;
+    }
 };
 
 inline float Vector3::getX() const
 {
-	return values[0];
+    return values[0];
 }
 
 inline float Vector3::getY() const
 {
-	return values[1];
+    return values[1];
 }
 
 inline float Vector3::getZ() const
 {
-	return values[2];
+    return values[2];
 }
 
 inline void Vector3::setX(float x)
 {
-	values[0] = x;
+    values[0] = x;
 }
 
 inline void Vector3::setY(float y)
 {
-	values[1] = y;
+    values[1] = y;
 }
 
 inline void Vector3::setZ(float z)
 {
-	values[2] = z;
+    values[2] = z;
 }
 
 inline float Vector3::getMagnitude() const
 {
-	return sqrt(getSqrMagnitude());
+    return sqrt(getSqrMagnitude());
 }
 
 inline float Vector3::getSqrMagnitude() const
 {
-	return values[0] * values[0] + values[1] * values[1] + values[2] * values[2];
+    return values[0] * values[0] + values[1] * values[1] + values[2] * values[2];
 }
 
 inline Vector3 Vector3::getNormalized() const
 {
-	return *this / getMagnitude();
+    return *this / getMagnitude();
 }
 
 inline void Vector3::normalize()
 {
-	float oneOverMagnitude = 1.0f / getMagnitude();
-	operator *=(oneOverMagnitude);
+    float oneOverMagnitude = 1.0f / getMagnitude();
+    operator *=(oneOverMagnitude);
 }
 
 // ===========================================================================
@@ -213,112 +213,112 @@ inline void Vector3::normalize()
 
 struct Vector4
 {
-	Vector4();
-	Vector4(float x, float y, float z, float w);
-	Vector4(const float* arr);
+    Vector4();
+    Vector4(float x, float y, float z, float w);
+    Vector4(const float* arr);
 
-	float values[4];
+    float values[4];
 
-	inline float getX() const;
-	inline float getY() const;
-	inline float getZ() const;
-	inline float getW() const;
-	inline void setX(float x);
-	inline void setY(float y);
-	inline void setZ(float z);
-	inline void setW(float w);
-	inline float getMagnitude() const;
-	inline float getSqrMagnitude() const;
-	inline Vector4 getNormalized() const;
-	inline void normalize();
+    inline float getX() const;
+    inline float getY() const;
+    inline float getZ() const;
+    inline float getW() const;
+    inline void setX(float x);
+    inline void setY(float y);
+    inline void setZ(float z);
+    inline void setW(float w);
+    inline float getMagnitude() const;
+    inline float getSqrMagnitude() const;
+    inline Vector4 getNormalized() const;
+    inline void normalize();
 
-	Vector4 operator +(const Vector4& other) const;
-	Vector4& operator +=(const Vector4& other);
-	Vector4 operator -(const Vector4& other) const;
-	Vector4& operator -=(const Vector4& other);
-	Vector4 operator *(float scalar) const;
-	Vector4& operator *=(float scalar);
-	Vector4 operator /(float divisor) const;
-	Vector4& operator /=(float divisor);
-	Vector4 operator *(const Vector4& other) const;
-	Vector4& operator *=(const Vector4& other);
-	Vector4 operator /(const Vector4& other) const;
-	Vector4& operator /=(const Vector4& other);
-	Vector4 operator -() const;
-	operator const float* () const;
-	float& operator [](int index);
+    Vector4 operator +(const Vector4& other) const;
+    Vector4& operator +=(const Vector4& other);
+    Vector4 operator -(const Vector4& other) const;
+    Vector4& operator -=(const Vector4& other);
+    Vector4 operator *(float scalar) const;
+    Vector4& operator *=(float scalar);
+    Vector4 operator /(float divisor) const;
+    Vector4& operator /=(float divisor);
+    Vector4 operator *(const Vector4& other) const;
+    Vector4& operator *=(const Vector4& other);
+    Vector4 operator /(const Vector4& other) const;
+    Vector4& operator /=(const Vector4& other);
+    Vector4 operator -() const;
+    operator const float* () const;
+    float& operator [](int index);
 
-	static Vector4 zero;
-	static Vector4 one;
+    static Vector4 zero;
+    static Vector4 one;
 
-	static float Dot(const Vector4& a, const Vector4& b);
+    static float Dot(const Vector4& a, const Vector4& b);
 
-	friend std::ostream& operator<<(std::ostream& os, const Vector4& v)
-	{
-		os << '(' << v[0] << ", " << v[1] << ", " << v[2] << ", " << v[3] << ')';
-		return os;
-	}
+    friend std::ostream& operator<<(std::ostream& os, const Vector4& v)
+    {
+        os << '(' << v[0] << ", " << v[1] << ", " << v[2] << ", " << v[3] << ')';
+        return os;
+    }
 };
 
 inline float Vector4::getX() const
 {
-	return values[0];
+    return values[0];
 }
 
 inline float Vector4::getY() const
 {
-	return values[1];
+    return values[1];
 }
 
 inline float Vector4::getZ() const
 {
-	return values[2];
+    return values[2];
 }
 
 inline float Vector4::getW() const
 {
-	return values[3];
+    return values[3];
 }
 
 inline void Vector4::setX(float x)
 {
-	values[0] = x;
+    values[0] = x;
 }
 
 inline void Vector4::setY(float y)
 {
-	values[1] = y;
+    values[1] = y;
 }
 
 inline void Vector4::setZ(float z)
 {
-	values[2] = z;
+    values[2] = z;
 }
 
 inline void Vector4::setW(float w)
 {
-	values[3] = w;
+    values[3] = w;
 }
 
 inline float Vector4::getMagnitude() const
 {
-	return sqrt(getSqrMagnitude());
+    return sqrt(getSqrMagnitude());
 }
 
 inline float Vector4::getSqrMagnitude() const
 {
-	return values[0] * values[0] + values[1] * values[1] + values[2] * values[2] + values[3] * values[3];
+    return values[0] * values[0] + values[1] * values[1] + values[2] * values[2] + values[3] * values[3];
 }
 
 inline Vector4 Vector4::getNormalized() const
 {
-	return *this / getMagnitude();
+    return *this / getMagnitude();
 }
 
 inline void Vector4::normalize()
 {
-	float oneOverMagnitude = 1.0f / getMagnitude();
-	operator *=(oneOverMagnitude);
+    float oneOverMagnitude = 1.0f / getMagnitude();
+    operator *=(oneOverMagnitude);
 }
 
 #endif // VECTOR_H

@@ -10,31 +10,31 @@ using std::endl;
 
 struct Vertex
 {
-	Vertex(const Vector3& position, const Vector3& normal)
-		: position(position), normal(normal) {}
+    Vertex(const Vector3& position, const Vector3& normal)
+        : position(position), normal(normal) {}
 
-	Vector3 position;
-	Vector3 normal;
+    Vector3 position;
+    Vector3 normal;
 };
 
 class Mesh
 {
 public:
-	Mesh();
-	Mesh(Vertex* vertices, uint32_t vertexCount, uint32_t* indices, uint32_t indexCount);
-	~Mesh();
-	void bind() const;
-	void unbind() const;
-	void draw() const;
+    Mesh();
+    Mesh(Vertex* vertices, uint32_t vertexCount, uint32_t* indices, uint32_t indexCount);
+    ~Mesh();
+    void bind() const;
+    void unbind() const;
+    void draw() const;
 protected:
-	Vertex* m_Vertices;
-	uint32_t m_VertexCount;
-	uint32_t* m_Indices;
-	uint32_t m_TriangleCount;
-	uint32_t m_VaoId;
-	uint32_t m_IboId;
+    Vertex* m_Vertices;
+    uint32_t m_VertexCount;
+    uint32_t* m_Indices;
+    uint32_t m_TriangleCount;
+    uint32_t m_VaoId;
+    uint32_t m_IboId;
 
-	void setup(Vertex* vertices, uint32_t vertexCount, uint32_t* indices, uint32_t indexCount);
+    void setup(Vertex* vertices, uint32_t vertexCount, uint32_t* indices, uint32_t indexCount);
 };
 
 #endif // MESH_H

@@ -2,21 +2,21 @@
 
 Shader::Shader(const string& shaderPath) : m_ShaderId(0)
 {
-	ShaderParseResult parsedResults = parseShader(shaderPath);
-	m_ShaderId = createShader(parsedResults);
+    ShaderParseResult parsedResults = parseShader(shaderPath);
+    m_ShaderId = createShader(parsedResults);
 }
 
 Shader::~Shader()
 {
-	glDeleteProgram(m_ShaderId);
+    glDeleteProgram(m_ShaderId);
 }
 
 void Shader::use() const
 {
-	glUseProgram(m_ShaderId);
+    glUseProgram(m_ShaderId);
 }
 
 const uint32_t Shader::getShaderId() const
 {
-	return m_ShaderId;
+    return m_ShaderId;
 }

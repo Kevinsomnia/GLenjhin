@@ -9,8 +9,8 @@ uniform mat4 u_Model;
 
 void main()
 {
-	gl_Position = u_VP * u_Model * position;
-	pos = position;
+    gl_Position = u_VP * u_Model * position;
+    pos = position;
 }
 
 
@@ -23,5 +23,5 @@ out vec4 color;
 
 void main()
 {
-	color = vec4(0.5 + pos.x * 0.8, 0.5 + pos.y * 0.8, 0.5 + pos.z * 0.8, 1.0);
+    color = vec4(0.5 + pos.x * 0.8, 0.5 + pos.y * 0.8, 0.5 + pos.z * 0.8, 1.0);
 }

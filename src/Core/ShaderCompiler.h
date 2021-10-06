@@ -15,8 +15,8 @@ using std::string;
 
 struct ShaderParseResult
 {
-	const string vertex;
-	const string fragment;
+    const string vertex;
+    const string fragment;
 };
 
 ShaderParseResult parseShader(const string& filePath);

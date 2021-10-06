@@ -12,13 +12,13 @@ out vec3 wNormal;
 
 void main()
 {
-	vec4 worldPos = u_Model * aPosition;
-	vec4 worldNormal = u_Model * vec4(aNormal, 0.0);
+    vec4 worldPos = u_Model * aPosition;
+    vec4 worldNormal = u_Model * vec4(aNormal, 0.0);
 
-	wPos = worldPos.xyz;
-	wNormal = worldNormal.xyz;
+    wPos = worldPos.xyz;
+    wNormal = worldNormal.xyz;
 
-	gl_Position = u_VP * worldPos;
+    gl_Position = u_VP * worldPos;
 }
 
 
@@ -37,17 +37,17 @@ out vec4 color;
 
 void main()
 {
-	vec3 ambient = vec3(0.1);
-	vec3 albedo = vec3(0.9, 0.625, 0.55);
+    vec3 ambient = vec3(0.1);
+    vec3 albedo = vec3(0.9, 0.625, 0.55);
 
-	vec3 nrm = normalize(wNormal);
+    vec3 nrm = normalize(wNormal);
 
-	float nDotL = max(0.0, dot(-u_DirLightDir, nrm));
-	vec3 viewDir = normalize(wPos - u_CameraPos);
-	vec3 halfDir = normalize(viewDir - u_DirLightDir);
+    float nDotL = max(0.0, dot(-u_DirLightDir, nrm));
+    vec3 viewDir = normalize(wPos - u_CameraPos);
+    vec3 halfDir = normalize(viewDir - u_DirLightDir);
 
-	float specContrib = pow(max(0.0, dot(halfDir, nrm)), 6.0) * nDotL;
-	vec3 specular = vec3(1.0) * specContrib;
+    float specContrib = pow(max(0.0, dot(halfDir, nrm)), 6.0) * nDotL;
+    vec3 specular = vec3(1.0) * specContrib;
 
-	color = vec4(ambient + (albedo * nDotL) + specular, 1.0);
+    color = vec4(ambient + (albedo * nDotL) + specular, 1.0);
 }

@@ -13,12 +13,12 @@ using std::endl;
 class MeshRenderer
 {
 public:
-	MeshRenderer(Mesh* mesh, Material* material);
-	~MeshRenderer();
-	void draw(const Vector3& cameraPos, const Matrix4x4& vp, const Matrix4x4& model, const std::vector<Light*>& lights);
+    MeshRenderer(Mesh* mesh, Material* material);
+    ~MeshRenderer();
+    void draw(const Vector3& cameraPos, const Matrix4x4& vp, const Matrix4x4& model, const std::vector<Light*>& lights);
 private:
-	Mesh* m_Mesh;
-	Material* m_Material;
+    Mesh* m_Mesh;
+    Material* m_Material;
 };
 
 #endif // MESHRENDERER_H

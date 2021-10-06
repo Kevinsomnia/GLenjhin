@@ -10,27 +10,27 @@
 
 inline double clockTicksToSeconds(clock_t clk)
 {
-	return clk / (double)CLOCKS_PER_SEC;
+    return clk / (double)CLOCKS_PER_SEC;
 }
 
 inline float degToRad(float degrees)
 {
-	return degrees * DEG_TO_RAD;
+    return degrees * DEG_TO_RAD;
 }
 
 inline float radToDeg(float radians)
 {
-	return radians * RAD_TO_DEG;
+    return radians * RAD_TO_DEG;
 }
 
 inline Vector3 rotationToRad(const Vector3& rotDeg)
 {
-	return Vector3(degToRad(rotDeg.getX()), degToRad(rotDeg.getY()), degToRad(rotDeg.getZ()));
+    return Vector3(degToRad(rotDeg.getX()), degToRad(rotDeg.getY()), degToRad(rotDeg.getZ()));
 }
 
 inline Vector3 rotationToDeg(const Vector3& rotRad)
 {
-	return Vector3(radToDeg(rotRad.getX()), radToDeg(rotRad.getY()), radToDeg(rotRad.getZ()));
+    return Vector3(radToDeg(rotRad.getX()), radToDeg(rotRad.getY()), radToDeg(rotRad.getZ()));
 }
 
 #endif // CONVERT_H

@@ -16,16 +16,16 @@ using std::endl;
 class Scene
 {
 public:
-	Scene();
-	~Scene();
-	void update();
-	void draw();
+    Scene();
+    ~Scene();
+    void update();
+    void draw();
 private:
-	Camera* m_Camera;
-	std::vector<Entity*> m_Entities;
-	std::vector<Light*> m_Lights;
+    Camera* m_Camera;
+    std::vector<Entity*> m_Entities;
+    std::vector<Light*> m_Lights;
 
-	Vector3 getMoveAxis() const;
+    Vector3 getMoveAxis() const;
 };
 
 #endif // SCENE_H

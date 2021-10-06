@@ -11,31 +11,31 @@ using std::endl;
 
 enum class Space
 {
-	World,
-	Local
+    World,
+    Local
 };
 
 class Transform
 {
 public:
-	Transform();
-	Transform(const Vector3& position, const Vector3& rotation, const Vector3& scale);
+    Transform();
+    Transform(const Vector3& position, const Vector3& rotation, const Vector3& scale);
 
-	Vector3 getPosition() const;
-	Vector3 getRotation() const;	// Rotation is in radians
-	Vector3 getScale() const;
-	Matrix4x4 getTRS();
-	void setPosition(const Vector3& position);
-	void setRotation(const Vector3& rotation);
-	void setScale(const Vector3& scale);
-	void translate(const Vector3& v, Space space = Space::World);
-	void rotate(const Vector3& r, Space space = Space::World);
+    Vector3 getPosition() const;
+    Vector3 getRotation() const;	// Rotation is in radians
+    Vector3 getScale() const;
+    Matrix4x4 getTRS();
+    void setPosition(const Vector3& position);
+    void setRotation(const Vector3& rotation);
+    void setScale(const Vector3& scale);
+    void translate(const Vector3& v, Space space = Space::World);
+    void rotate(const Vector3& r, Space space = Space::World);
 private:
-	Vector3 m_Position;
-	Vector3 m_Rotation;
-	Vector3 m_Scale;
-	Matrix4x4 m_TRS;
-	bool m_DirtyTRS;
+    Vector3 m_Position;
+    Vector3 m_Rotation;
+    Vector3 m_Scale;
+    Matrix4x4 m_TRS;
+    bool m_DirtyTRS;
 };
 
 #endif // TRANSFORM_H

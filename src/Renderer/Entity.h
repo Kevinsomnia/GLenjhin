@@ -16,16 +16,16 @@ using std::endl;
 class Entity
 {
 public:
-	Entity(const Vector3& position, const Vector3& rotation, const Vector3& scale);
-	~Entity();
-	void setupRenderer(Mesh* mesh, Material* material);
-	void draw(const Camera& camera, const std::vector<Light*>& lights) const;
+    Entity(const Vector3& position, const Vector3& rotation, const Vector3& scale);
+    ~Entity();
+    void setupRenderer(Mesh* mesh, Material* material);
+    void draw(const Camera& camera, const std::vector<Light*>& lights) const;
 
-	Transform* getTransform() const;
-	MeshRenderer* getRenderer() const;
+    Transform* getTransform() const;
+    MeshRenderer* getRenderer() const;
 private:
-	Transform* m_Transform;
-	MeshRenderer* m_Renderer;
+    Transform* m_Transform;
+    MeshRenderer* m_Renderer;
 };
 
 #endif // ENTITY_H
