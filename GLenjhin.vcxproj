@@ -18,6 +18,49 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Core\Application.cpp" />
+    <ClCompile Include="src\Core\GameContainer.cpp" />
+    <ClCompile Include="src\Core\Scene.cpp" />
+    <ClCompile Include="src\Core\ShaderCompiler.cpp" />
+    <ClCompile Include="src\Core\Time.cpp" />
+    <ClCompile Include="src\Interaction\Input.cpp" />
+    <ClCompile Include="src\Math\Convert.cpp" />
+    <ClCompile Include="src\Math\Matrix4x4.cpp" />
+    <ClCompile Include="src\Math\Vector.cpp" />
+    <ClCompile Include="src\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Renderer\Entity.cpp" />
+    <ClCompile Include="src\Renderer\Lighting\DirectionalLight.cpp" />
+    <ClCompile Include="src\Renderer\Lighting\Light.cpp" />
+    <ClCompile Include="src\Renderer\Material.cpp" />
+    <ClCompile Include="src\Renderer\Mesh.cpp" />
+    <ClCompile Include="src\Renderer\MeshPrimitives.cpp" />
+    <ClCompile Include="src\Renderer\MeshRenderer.cpp" />
+    <ClCompile Include="src\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Renderer\Transform.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Core\Application.h" />
+    <ClInclude Include="src\Core\GameContainer.h" />
+    <ClInclude Include="src\Core\Scene.h" />
+    <ClInclude Include="src\Core\ShaderCompiler.h" />
+    <ClInclude Include="src\Core\Time.h" />
+    <ClInclude Include="src\Interaction\Input.h" />
+    <ClInclude Include="src\Interaction\InputCodes.h" />
+    <ClInclude Include="src\Math\Convert.h" />
+    <ClInclude Include="src\Math\Math.h" />
+    <ClInclude Include="src\Math\Matrix4x4.h" />
+    <ClInclude Include="src\Math\Vector.h" />
+    <ClInclude Include="src\Renderer\Camera.h" />
+    <ClInclude Include="src\Renderer\Entity.h" />
+    <ClInclude Include="src\Renderer\Lighting\Lighting.h" />
+    <ClInclude Include="src\Renderer\Material.h" />
+    <ClInclude Include="src\Renderer\Mesh.h" />
+    <ClInclude Include="src\Renderer\MeshPrimitives.h" />
+    <ClInclude Include="src\Renderer\MeshRenderer.h" />
+    <ClInclude Include="src\Renderer\Shader.h" />
+    <ClInclude Include="src\Renderer\Transform.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -150,53 +193,6 @@
       <AdditionalDependencies>User32.lib;Gdi32.lib;Shell32.lib;glfw3.lib;glew32s.lib;opengl32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="src\Core\Application.cpp" />
-    <ClCompile Include="src\Core\Time.cpp" />
-    <ClCompile Include="src\Interaction\Input.cpp" />
-    <ClCompile Include="src\Math\Convert.cpp" />
-    <ClCompile Include="src\Math\Matrix4x4.cpp" />
-    <ClCompile Include="src\Math\Vector.cpp" />
-    <ClCompile Include="src\Renderer\Camera.cpp" />
-    <ClCompile Include="src\Core\GameContainer.cpp" />
-    <ClCompile Include="src\Renderer\Entity.cpp" />
-    <ClCompile Include="src\Renderer\Lighting\DirectionalLight.cpp" />
-    <ClCompile Include="src\Renderer\Lighting\Light.cpp" />
-    <ClCompile Include="src\Renderer\Material.cpp" />
-    <ClCompile Include="src\Renderer\Mesh.cpp" />
-    <ClCompile Include="src\Renderer\MeshPrimitives.cpp" />
-    <ClCompile Include="src\Renderer\MeshRenderer.cpp" />
-    <ClCompile Include="src\Renderer\Shader.cpp" />
-    <ClCompile Include="src\Core\Scene.cpp" />
-    <ClCompile Include="src\Core\ShaderCompiler.cpp" />
-    <ClCompile Include="src\Renderer\Transform.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Core\Application.h" />
-    <ClInclude Include="src\Core\Time.h" />
-    <ClInclude Include="src\Interaction\Input.h" />
-    <ClInclude Include="src\Interaction\InputCodes.h" />
-    <ClInclude Include="src\Math\Matrix4x4.h" />
-    <ClInclude Include="src\Renderer\Camera.h" />
-    <ClInclude Include="src\Math\Convert.h" />
-    <ClInclude Include="src\Core\GameContainer.h" />
-    <ClInclude Include="src\Math\Math.h" />
-    <ClInclude Include="src\Math\Vector.h" />
-    <ClInclude Include="src\Renderer\Entity.h" />
-    <ClInclude Include="src\Renderer\Lighting\Lighting.h" />
-    <ClInclude Include="src\Renderer\Material.h" />
-    <ClInclude Include="src\Renderer\Mesh.h" />
-    <ClInclude Include="src\Renderer\MeshPrimitives.h" />
-    <ClInclude Include="src\Renderer\MeshRenderer.h" />
-    <ClInclude Include="src\Renderer\Shader.h" />
-    <ClInclude Include="src\Core\Scene.h" />
-    <ClInclude Include="src\Core\ShaderCompiler.h" />
-    <ClInclude Include="src\Renderer\Transform.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\shaders\Rainbow.shader" />
-    <None Include="res\shaders\Unlit.shader" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
