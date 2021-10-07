@@ -145,5 +145,10 @@ Vector3 Scene::getMoveAxis() const
         z = -1.0f;
     }
 
-    return Vector3(x, 0.0f, z);
+    Vector3 result(x, 0.0f, z);
+
+    if (result.getSqrMagnitude() > 1.0f)
+        result.normalize();
+
+    return result;
 }
