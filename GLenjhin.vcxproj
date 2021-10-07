@@ -37,6 +37,8 @@
     <ClCompile Include="src\Renderer\MeshPrimitives.cpp" />
     <ClCompile Include="src\Renderer\MeshRenderer.cpp" />
     <ClCompile Include="src\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Renderer\Texture\Texture.cpp" />
+    <ClCompile Include="src\Renderer\Texture\Texture2D.cpp" />
     <ClCompile Include="src\Renderer\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +61,7 @@
     <ClInclude Include="src\Renderer\MeshPrimitives.h" />
     <ClInclude Include="src\Renderer\MeshRenderer.h" />
     <ClInclude Include="src\Renderer\Shader.h" />
+    <ClInclude Include="src\Renderer\Texture\Texture.h" />
     <ClInclude Include="src\Renderer\Transform.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

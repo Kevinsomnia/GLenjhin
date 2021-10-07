@@ -8,6 +8,7 @@
 #include "../Renderer/Entity.h"
 #include "../Renderer/MeshPrimitives.h"
 #include "../Renderer/Lighting/Lighting.h"
+#include "../Renderer/Texture/Texture.h"
 #include "Time.h"
 
 using std::cout;

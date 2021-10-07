@@ -18,6 +18,8 @@ Scene::Scene()
     // Load shader and material
     Shader* surfaceShader = new Shader("res/shaders/StandardSurface.shader");
     Material* surfaceMat = new Material(surfaceShader);
+    Texture2D* surfaceTexture = new Texture2D();
+    surfaceMat->setTexture("u_MainTex", surfaceTexture);
 
     Entity* plane = new Entity(Vector3::zero, rotationToRad(Vector3(-90.0f, 0.0f, 0.0f)), Vector3::one * 100.0f);
     plane->setupRenderer(MeshPrimitives::quad, surfaceMat);

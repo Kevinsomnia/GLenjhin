@@ -10,11 +10,12 @@ using std::endl;
 
 struct Vertex
 {
-    Vertex(const Vector3& position, const Vector3& normal)
-        : position(position), normal(normal) {}
+    Vertex(const Vector3& position, const Vector3& normal, const Vector2& uv)
+        : position(position), normal(normal), uv(uv) {}
 
     Vector3 position;
     Vector3 normal;
+    Vector2 uv;
 };
 
 class Mesh

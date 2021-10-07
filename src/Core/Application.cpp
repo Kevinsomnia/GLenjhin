@@ -61,8 +61,6 @@ int main()
     // Input mouse look
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    cout << std::fixed;
-    cout << std::setprecision(2);
     cout << "Running OpenGL " << glGetString(GL_VERSION) << endl;
 
     // Create GameContainer for update loop and other game object setup

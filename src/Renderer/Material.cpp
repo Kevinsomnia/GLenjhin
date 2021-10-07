@@ -38,6 +38,14 @@ void Material::setMatrix(const string& uniformName, const Matrix4x4& mat)
         m_UniformMat4[uniformId] = mat;
 }
 
+void Material::setTexture(const string& uniformName, Texture2D* tex)
+{
+    int uniformId = getShaderUniformLocation(uniformName);
+
+    if (uniformId != -1)
+        m_UniformTex2D[uniformId] = tex;
+}
+
 int Material::getShaderUniformLocation(const string& name) const
 {
     if (!m_Shader)
@@ -62,4 +70,12 @@ void Material::setUniforms() const
         glUniform3fv(pair.first, 1, pair.second);
     for (const auto& pair : m_UniformMat4)
         glUniformMatrix4fv(pair.first, 1, GL_FALSE, pair.second);
+
+    uint32_t unitIndex = 0;
+    for (const auto& pair : m_UniformTex2D)
+    {
+        pair.second->bind(unitIndex);
+        glUniform1i(pair.first, unitIndex);
+        unitIndex++;
+    }
 }
