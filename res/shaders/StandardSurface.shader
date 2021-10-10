@@ -18,7 +18,7 @@ void main()
     vec4 worldNormal = u_Model * vec4(aNormal, 0.0);
 
     wPos = worldPos.xyz;
-    wNormal = worldNormal.xyz;
+    wNormal = normalize(worldNormal.xyz);
 
     gl_Position = u_VP * worldPos;
     v_UV = aUV;
@@ -35,27 +35,28 @@ uniform vec3 u_DirLightColor;
 
 uniform sampler2D u_MainTex;
 
+in vec2 v_UV;
+
 in vec3 wPos;
 in vec3 wNormal;
-in vec2 v_UV;
 
 out vec4 color;
 
 void main()
 {
-    vec4 tColor = texture(u_MainTex, v_UV);
+    // needs uniform
+    vec3 ambient = vec3(0.1);
+    float shininess = 64.0;
 
-    vec3 ambient = vec3(0.1);   // temp
-    vec3 albedo = tColor.rgb;
+    // Lambert
+    float nDotL = max(0.0, dot(-u_DirLightDir, wNormal));
 
-    vec3 nrm = normalize(wNormal);
-
-    float nDotL = max(0.0, dot(-u_DirLightDir, nrm));
-    vec3 viewDir = normalize(wPos - u_CameraPos);
+    // Blinn-Phong
+    vec3 viewDir = normalize(u_CameraPos - wPos);
     vec3 halfDir = normalize(viewDir - u_DirLightDir);
+    float specContrib = max(0.0, dot(halfDir, wNormal));
 
-    float specContrib = pow(max(0.0, dot(halfDir, nrm)), 6.0) * nDotL;
-    vec3 specular = vec3(1.0) * specContrib;
-
-    color = vec4((albedo * mix(ambient, vec3(1.0), nDotL)) + specular, 1.0);
+    vec4 albedo = texture(u_MainTex, v_UV);
+    float specular = pow(specContrib, shininess);
+    color = vec4((albedo.rgb * mix(ambient, vec3(1.0), nDotL)) + specular, 1.0);
 }
