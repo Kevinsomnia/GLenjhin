@@ -20,7 +20,7 @@ Texture2D::Texture2D() : Texture()
         0x00, 0xFF, 0x00,
 
         0x00, 0x00, 0xFF,
-        0x00, 0x00, 0xFF,
+        0x00, 0x00, 0xFF
     };
 
     glTextureSubImage2D(m_TextureID, 0, 0, 0, 4, 2, GL_RGB, GL_UNSIGNED_BYTE, data);

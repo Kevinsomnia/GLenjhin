@@ -40,6 +40,7 @@
     <ClCompile Include="src\Renderer\Texture\Texture.cpp" />
     <ClCompile Include="src\Renderer\Texture\Texture2D.cpp" />
     <ClCompile Include="src\Renderer\Transform.cpp" />
+    <ClCompile Include="src\Serialization\MemoryStream.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Application.h" />
@@ -63,6 +64,7 @@
     <ClInclude Include="src\Renderer\Shader.h" />
     <ClInclude Include="src\Renderer\Texture\Texture.h" />
     <ClInclude Include="src\Renderer\Transform.h" />
+    <ClInclude Include="src\Serialization\MemoryStream.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
