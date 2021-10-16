@@ -24,6 +24,18 @@ public:
     inline size_t getByteOffset() const;
     inline uint8_t getBitOffset() const;
     inline void setPosition(size_t byteOffset, uint8_t bitOffset = 0);
+    inline void advance(int64_t bytes, int64_t bits = 0);
+    // Reset to previous byte boundary (sets bit offset to 0). Does nothing if we're already on one.
+    inline void floorToByteBoundary();
+    // Point to next available byte boundary. Does nothing if we're already on one.
+    inline void ceilToByteBoundary();
+
+    inline uint8_t* begin() const;
+    inline uint8_t* end() const;
+    inline size_t size() const;
+    inline bool hasData() const;
+
+    operator uint8_t*() const { return m_DataPtr; }
 
     inline bool readBool();
 
@@ -72,11 +84,68 @@ uint8_t MemoryStream::getBitOffset() const
 
 void MemoryStream::setPosition(size_t byteOffset, uint8_t bitOffset)
 {
-    if (byteOffset >= m_Size)
-        throw std::out_of_range("MemoryStream: Byte offset exceeds stream buffer size");
-
     m_DataPtr = m_DataStart + byteOffset;
     m_BitOffset = bitOffset & 7;
+}
+
+void MemoryStream::advance(int64_t bytes, int64_t bits)
+{
+    m_DataPtr += bytes;
+
+    if (bits != 0)
+    {
+        int64_t newBitOffset = m_BitOffset + bits;
+
+        if (newBitOffset >= 8)
+        {
+            m_DataPtr += newBitOffset / 8;
+            m_BitOffset = newBitOffset & 7; // modulo 8
+        }
+        else if (newBitOffset < 0)
+        {
+            int64_t bytesBack = static_cast<int64_t>(ceil(-newBitOffset / 8) + 0.0001);
+            m_DataPtr -= bytesBack;
+            m_BitOffset = static_cast<uint8_t>(8 + newBitOffset + (bytesBack * 8)); // Calculate new bit offset after adding byte offset.
+        }
+        else
+        {
+            m_BitOffset = static_cast<uint8_t>(newBitOffset);
+        }
+    }
+}
+
+void MemoryStream::floorToByteBoundary()
+{
+    m_BitOffset = 0;
+}
+
+void MemoryStream::ceilToByteBoundary()
+{
+    if (m_BitOffset != 0)
+    {
+        m_DataPtr++;
+        m_BitOffset = 0;
+    }
+}
+
+uint8_t* MemoryStream::begin() const
+{
+    return m_DataStart;
+}
+
+uint8_t* MemoryStream::end() const
+{
+    return m_DataEnd;
+}
+
+size_t MemoryStream::size() const
+{
+    return m_Size;
+}
+
+bool MemoryStream::hasData() const
+{
+    return m_DataPtr < m_DataEnd;
 }
 
 bool MemoryStream::readBool()
