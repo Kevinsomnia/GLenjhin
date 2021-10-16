@@ -397,8 +397,17 @@ float MemoryStream::readFloat(Endian byteOrder)
 {
     validateEnoughSpace(32);
 
-    uint32_t bytes = readUInt32(byteOrder);
-    return *reinterpret_cast<float*>(&bytes);
+    if (m_BitOffset == 0)
+    {
+        float result = *reinterpret_cast<float*>(m_DataPtr);
+        m_DataPtr += 4;
+        return result;
+    }
+    else
+    {
+        uint32_t bytes = readUInt32(byteOrder);
+        return *reinterpret_cast<float*>(&bytes);
+    }
 }
 
 uint64_t MemoryStream::readUInt64(Endian byteOrder)
@@ -448,11 +457,11 @@ uint64_t MemoryStream::readUInt64(uint8_t numBits, Endian byteOrder)
 
         if (byteOrder == Endian::Big)
         {
-            result = (static_cast<uint64_t>(readUInt32(extraBits, byteOrder)) << 32) | static_cast<uint64_t>(readUInt32(byteOrder));
+            result = (static_cast<uint64_t>(readUInt32(extraBits, Endian::Big)) << 32) | static_cast<uint64_t>(readUInt32(Endian::Big));
         }
         else
         {
-            result = static_cast<uint64_t>(readUInt32(byteOrder)) | (static_cast<uint64_t>(readUInt32(extraBits, byteOrder)) << 32);
+            result = static_cast<uint64_t>(readUInt32(Endian::Little)) | (static_cast<uint64_t>(readUInt32(extraBits, Endian::Little)) << 32);
         }
 
         return result;
@@ -468,8 +477,17 @@ double MemoryStream::readDouble(Endian byteOrder)
 {
     validateEnoughSpace(64);
 
-    uint64_t bytes = readUInt64(byteOrder);
-    return *reinterpret_cast<double*>(&bytes);
+    if (m_BitOffset == 0)
+    {
+        double result = *reinterpret_cast<double*>(m_DataPtr);
+        m_DataPtr += 8;
+        return result;
+    }
+    else
+    {
+        uint64_t bytes = readUInt64(byteOrder);
+        return *reinterpret_cast<double*>(&bytes);
+    }
 }
 
 void MemoryStream::validateEnoughSpace(size_t bitsNeeded)
