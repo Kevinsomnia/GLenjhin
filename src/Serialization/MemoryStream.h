@@ -60,9 +60,13 @@ public:
     inline void writeUInt32(uint32_t value, uint8_t numBits, Endian byteOrder = Endian::Big);
     inline void writeInt32(int32_t value, Endian byteOrder = Endian::Big);
 
+    inline void writeFloat(float value);
+
     inline void writeUInt64(uint64_t value, Endian byteOrder = Endian::Big);
     inline void writeUInt64(uint64_t value, uint8_t numBits, Endian byteOrder = Endian::Big);
     inline void writeInt64(int64_t value, Endian byteOrder = Endian::Big);
+
+    inline void writeDouble(double value);
 
     inline bool readBool();
 
@@ -82,13 +86,13 @@ public:
     inline uint32_t readUInt32(uint8_t numBits, Endian byteOrder = Endian::Big);
     inline int32_t readInt32(Endian byteOrder = Endian::Big);
 
-    inline float readFloat(Endian byteOrder = Endian::Big);
+    inline float readFloat();
 
     inline uint64_t readUInt64(Endian byteOrder = Endian::Big);
     inline uint64_t readUInt64(uint8_t numBits, Endian byteOrder = Endian::Big);
     inline int64_t readInt64(Endian byteOrder = Endian::Big);
 
-    inline double readDouble(Endian byteOrder = Endian::Big);
+    inline double readDouble();
 private:
     uint8_t* m_DataStart;
     uint8_t* m_DataEnd;
@@ -403,6 +407,11 @@ void MemoryStream::writeInt32(int32_t value, Endian byteOrder)
     writeUInt32(static_cast<uint32_t>(value), byteOrder);
 }
 
+void MemoryStream::writeFloat(float value)
+{
+    writeUInt32(*reinterpret_cast<uint32_t*>(&value));
+}
+
 void MemoryStream::writeUInt64(uint64_t value, Endian byteOrder)
 {
     if (byteOrder == Endian::Big)
@@ -443,6 +452,11 @@ void MemoryStream::writeUInt64(uint64_t value, uint8_t numBits, Endian byteOrder
 void MemoryStream::writeInt64(int64_t value, Endian byteOrder)
 {
     writeUInt64(static_cast<uint64_t>(value), byteOrder);
+}
+
+void MemoryStream::writeDouble(double value)
+{
+    writeUInt64(*reinterpret_cast<uint64_t*>(&value));
 }
 
 bool MemoryStream::readBool()
@@ -689,7 +703,7 @@ int32_t MemoryStream::readInt32(Endian byteOrder)
     return static_cast<int32_t>(readUInt32(byteOrder));
 }
 
-float MemoryStream::readFloat(Endian byteOrder)
+float MemoryStream::readFloat()
 {
     validateEnoughSpace(32);
 
@@ -701,7 +715,7 @@ float MemoryStream::readFloat(Endian byteOrder)
     }
     else
     {
-        uint32_t bytes = readUInt32(byteOrder);
+        uint32_t bytes = readUInt32();
         return *reinterpret_cast<float*>(&bytes);
     }
 }
@@ -755,7 +769,7 @@ int64_t MemoryStream::readInt64(Endian byteOrder)
     return static_cast<int64_t>(readUInt64(byteOrder));
 }
 
-double MemoryStream::readDouble(Endian byteOrder)
+double MemoryStream::readDouble()
 {
     validateEnoughSpace(64);
 
@@ -767,7 +781,7 @@ double MemoryStream::readDouble(Endian byteOrder)
     }
     else
     {
-        uint64_t bytes = readUInt64(byteOrder);
+        uint64_t bytes = readUInt64();
         return *reinterpret_cast<double*>(&bytes);
     }
 }
