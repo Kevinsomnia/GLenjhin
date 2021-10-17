@@ -25,6 +25,7 @@ public:
     MemoryStream();
     MemoryStream(size_t capacity);
     MemoryStream(uint8_t* buffer, size_t bufferSize);
+    ~MemoryStream();
 
     inline size_t getByteOffset() const;
     inline uint8_t getBitOffset() const;
@@ -98,6 +99,7 @@ public:
 
     inline void read(uint8_t* buffer, uint32_t size);
 private:
+    bool m_CreatedData;
     uint8_t* m_DataStart;
     uint8_t* m_DataEnd;
     uint8_t* m_DataPtr;
@@ -876,13 +878,16 @@ void MemoryStream::expandCapacityIfNeeded(size_t bitsNeeded)
         // Allocate a new buffer. Copy old buffer contents over. Delete old buffer.
         uint8_t* newBuffer = new uint8_t[newCapacity];
         memcpy(newBuffer, m_DataStart, m_Size);
-        delete[] m_DataStart;
+
+        if (m_CreatedData)
+            delete[] m_DataStart;
 
         // Update remaining properties.
         m_DataStart = newBuffer;
         m_DataPtr = m_DataStart + byteOffset;
         m_DataEnd = m_DataStart + m_Size;
         m_Capacity = newCapacity;
+        m_CreatedData = true;
     }
 }
 
