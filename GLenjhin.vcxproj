@@ -65,6 +65,7 @@
     <ClInclude Include="src\Renderer\Texture\Texture.h" />
     <ClInclude Include="src\Renderer\Transform.h" />
     <ClInclude Include="src\Serialization\MemoryStream.h" />
+    <ClInclude Include="src\Serialization\MemoryStream.Tests.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

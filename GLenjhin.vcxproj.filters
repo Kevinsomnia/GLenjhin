@@ -149,5 +149,8 @@
     <ClInclude Include="src\Serialization\MemoryStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Serialization\MemoryStream.Tests.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
