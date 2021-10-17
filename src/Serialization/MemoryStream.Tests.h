@@ -187,73 +187,11 @@ namespace MemoryStreamTests
     };
 
     static void Run();
-    static void Test_EndianBitLevel();
     static void Test_SerializeDeserialize();
 
     void Run()
     {
-        Test_EndianBitLevel();
         Test_SerializeDeserialize();
-    }
-
-    void Test_EndianBitLevel()
-    {
-        const uint16_t VALUE_A = 356;
-        const uint16_t VALUE_B = 412;
-        const uint16_t VALUE_C = 493;
-        const uint8_t NUM_BITS = 11;
-
-        cout << "WRITE BIG, READ BIG:\t\t\t";
-        MemoryStream test = MemoryStream();
-        test.setPosition(0);
-        test.writeUInt16(VALUE_A, NUM_BITS, MemoryStream::Endian::Big);
-        test.writeUInt16(VALUE_B, NUM_BITS, MemoryStream::Endian::Big);
-        test.writeUInt16(VALUE_C, NUM_BITS, MemoryStream::Endian::Big);
-
-        test.setPosition(0);
-        uint16_t a = test.readUInt16(NUM_BITS, MemoryStream::Endian::Big);
-        uint16_t b = test.readUInt16(NUM_BITS, MemoryStream::Endian::Big);
-        uint16_t c = test.readUInt16(NUM_BITS, MemoryStream::Endian::Big);
-        cout << a << "   " << b << "   " << c << endl;
-
-
-        cout << "WRITE BIG, READ LITTLE:\t\t\t";
-        test.setPosition(0);
-        test.writeUInt16(VALUE_A, NUM_BITS, MemoryStream::Endian::Big);
-        test.writeUInt16(VALUE_B, NUM_BITS, MemoryStream::Endian::Big);
-        test.writeUInt16(VALUE_C, NUM_BITS, MemoryStream::Endian::Big);
-
-        test.setPosition(0);
-        a = test.readUInt16(NUM_BITS, MemoryStream::Endian::Little);
-        b = test.readUInt16(NUM_BITS, MemoryStream::Endian::Little);
-        c = test.readUInt16(NUM_BITS, MemoryStream::Endian::Little);
-        cout << a << "   " << b << "   " << c << endl;
-
-
-        cout << "WRITE LITTLE, READ BIG:\t\t\t";
-        test.setPosition(0);
-        test.writeUInt16(VALUE_A, NUM_BITS, MemoryStream::Endian::Little);
-        test.writeUInt16(VALUE_B, NUM_BITS, MemoryStream::Endian::Little);
-        test.writeUInt16(VALUE_C, NUM_BITS, MemoryStream::Endian::Little);
-
-        test.setPosition(0);
-        a = test.readUInt16(NUM_BITS, MemoryStream::Endian::Big);
-        b = test.readUInt16(NUM_BITS, MemoryStream::Endian::Big);
-        c = test.readUInt16(NUM_BITS, MemoryStream::Endian::Big);
-        cout << a << "   " << b << "   " << c << endl;
-
-
-        cout << "WRITE LITTLE, READ LITTLE:\t\t";
-        test.setPosition(0);
-        test.writeUInt16(VALUE_A, NUM_BITS, MemoryStream::Endian::Little);
-        test.writeUInt16(VALUE_B, NUM_BITS, MemoryStream::Endian::Little);
-        test.writeUInt16(VALUE_C, NUM_BITS, MemoryStream::Endian::Little);
-
-        test.setPosition(0);
-        a = test.readUInt16(NUM_BITS, MemoryStream::Endian::Little);
-        b = test.readUInt16(NUM_BITS, MemoryStream::Endian::Little);
-        c = test.readUInt16(NUM_BITS, MemoryStream::Endian::Little);
-        cout << a << "   " << b << "   " << c << endl;
     }
 
     void Test_SerializeDeserialize()

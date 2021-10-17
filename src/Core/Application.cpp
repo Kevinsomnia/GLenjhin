@@ -1,5 +1,4 @@
 #include "Application.h"
-#include "../Serialization/MemoryStream.Tests.h"
 
 static void GLAPIENTRY openGLLogMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 {
@@ -19,8 +18,6 @@ static void GLAPIENTRY openGLLogMessage(GLenum source, GLenum type, GLuint id, G
 
 int main()
 {
-    MemoryStreamTests::Run();
-
     cout << "Initializing engine" << endl;
 
     if (!glfwInit())

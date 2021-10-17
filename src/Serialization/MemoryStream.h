@@ -346,7 +346,7 @@ void MemoryStream::writeUInt24(uint32_t value, uint8_t numBits, Endian byteOrder
 {
     if (numBits <= 16)
     {
-        writeUInt16(static_cast<uint16_t>(value), numBits);
+        writeUInt16(static_cast<uint16_t>(value), numBits, byteOrder);
     }
     else
     {
@@ -394,7 +394,7 @@ void MemoryStream::writeUInt32(uint32_t value, uint8_t numBits, Endian byteOrder
 {
     if (numBits <= 24)
     {
-        writeUInt24(value, numBits);
+        writeUInt24(value, numBits, byteOrder);
     }
     else
     {
@@ -440,7 +440,7 @@ void MemoryStream::writeUInt64(uint64_t value, uint8_t numBits, Endian byteOrder
 {
     if (numBits <= 32)
     {
-        writeUInt32(static_cast<uint32_t>(value), numBits);
+        writeUInt32(static_cast<uint32_t>(value), numBits, byteOrder);
     }
     else
     {
@@ -571,21 +571,20 @@ int8_t MemoryStream::readInt8()
 uint16_t MemoryStream::readUInt16(Endian byteOrder)
 {
     validateEnoughSpace(16);
-
-    uint16_t result;
+    uint8_t a, b;
 
     if (byteOrder == Endian::Big)
     {
-        result = (static_cast<uint16_t>(readUInt8()) << 8) |
-                readUInt8();
+        a = readUInt8();
+        b = readUInt8();
     }
     else
     {
-        result = readUInt8() |
-                (static_cast<uint16_t>(readUInt8()) << 8);
+        b = readUInt8();
+        a = readUInt8();
     }
 
-    return result;
+    return (static_cast<uint16_t>(a) << 8) | b;
 }
 
 uint16_t MemoryStream::readUInt16(uint8_t numBits, Endian byteOrder)
@@ -598,21 +597,21 @@ uint16_t MemoryStream::readUInt16(uint8_t numBits, Endian byteOrder)
     {
         validateEnoughSpace(numBits);
 
-        uint16_t result;
         uint8_t extraBits = numBits - 8;
+        uint8_t a, b;
 
         if (byteOrder == Endian::Big)
         {
-            result = (static_cast<uint16_t>(readUInt8(extraBits)) << 8) |
-                    readUInt8();
+            a = readUInt8(extraBits);
+            b = readUInt8();
         }
         else
         {
-            result = readUInt8() |
-                    (static_cast<uint16_t>(readUInt8(extraBits)) << 8);
+            b = readUInt8();
+            a = readUInt8(extraBits);
         }
 
-        return result;
+        return (static_cast<uint16_t>(a) << 8) | b;
     }
 }
 
@@ -624,23 +623,23 @@ int16_t MemoryStream::readInt16(Endian byteOrder)
 uint32_t MemoryStream::readUInt24(Endian byteOrder)
 {
     validateEnoughSpace(24);
-
-    uint32_t result;
+    uint8_t a, b, c;
 
     if (byteOrder == Endian::Big)
     {
-        result = (static_cast<uint32_t>(readUInt8()) << 16) |
-                (static_cast<uint32_t>(readUInt8()) << 8) |
-                readUInt8();
+        a = readUInt8();
+        b = readUInt8();
+        c = readUInt8();
+
     }
     else
     {
-        result = readUInt8() |
-                (static_cast<uint32_t>(readUInt8()) << 8) |
-                (static_cast<uint32_t>(readUInt8()) << 16);
+        c = readUInt8();
+        b = readUInt8();
+        a = readUInt8();
     }
 
-    return result;
+    return (static_cast<uint32_t>(a) << 16) | (static_cast<uint32_t>(b) << 8) | c;
 }
 
 uint32_t MemoryStream::readUInt24(uint8_t numBits, Endian byteOrder)
@@ -653,23 +652,23 @@ uint32_t MemoryStream::readUInt24(uint8_t numBits, Endian byteOrder)
     {
         validateEnoughSpace(numBits);
 
-        uint32_t result;
         uint8_t extraBits = numBits - 16;
+        uint8_t a, b, c;
 
         if (byteOrder == Endian::Big)
         {
-            result = (static_cast<uint32_t>(readUInt8(extraBits)) << 16) |
-                    (static_cast<uint32_t>(readUInt8()) << 8) |
-                    readUInt8();
+            a = readUInt8(extraBits);
+            b = readUInt8();
+            c = readUInt8();
         }
         else
         {
-            result = readUInt8() |
-                    (static_cast<uint32_t>(readUInt8()) << 8) |
-                    (static_cast<uint32_t>(readUInt8(extraBits)) << 16);
+            c = readUInt8();
+            b = readUInt8();
+            a = readUInt8(extraBits);
         }
 
-        return result;
+        return (static_cast<uint32_t>(a) << 16) | (static_cast<uint32_t>(b) << 8) | c;
     }
 }
 
@@ -712,25 +711,28 @@ uint32_t MemoryStream::readUInt32(uint8_t numBits, Endian byteOrder)
     {
         validateEnoughSpace(numBits);
 
-        uint32_t result;
         uint8_t extraBits = numBits - 24;
+        uint8_t a, b, c, d;
 
         if (byteOrder == Endian::Big)
         {
-            result = (static_cast<uint32_t>(readUInt8(extraBits)) << 24) |
-                    (static_cast<uint32_t>(readUInt8()) << 16) |
-                    (static_cast<uint32_t>(readUInt8()) << 8) |
-                    readUInt8();
+            a = readUInt8(extraBits);
+            b = readUInt8();
+            c = readUInt8();
+            d = readUInt8();
         }
         else
         {
-            result = readUInt8() |
-                    (static_cast<uint32_t>(readUInt8()) << 8) |
-                    (static_cast<uint32_t>(readUInt8()) << 16) |
-                    (static_cast<uint32_t>(readUInt8(extraBits)) << 24);
+            d = readUInt8();
+            c = readUInt8();
+            b = readUInt8();
+            a = readUInt8(extraBits);
         }
 
-        return result;
+        return (static_cast<uint32_t>(a) << 24) |
+                (static_cast<uint32_t>(b) << 16) |
+                (static_cast<uint32_t>(c) << 8) |
+                d;
     }
 }
 
@@ -742,44 +744,47 @@ int32_t MemoryStream::readInt32(Endian byteOrder)
 uint64_t MemoryStream::readUInt64(Endian byteOrder)
 {
     validateEnoughSpace(64);
-
-    uint64_t result;
+    uint32_t a, b;
 
     if (byteOrder == Endian::Big)
     {
-        result = (static_cast<uint64_t>(readUInt32()) << 32) | readUInt32();
+        a = readUInt32();
+        b = readUInt32();
     }
     else
     {
-        result = readUInt32() | (static_cast<uint64_t>(readUInt32()) << 32);
+        b = readUInt32(Endian::Little);
+        a = readUInt32(Endian::Little);
     }
 
-    return result;
+    return (static_cast<uint64_t>(a) << 32) | b;
 }
 
 uint64_t MemoryStream::readUInt64(uint8_t numBits, Endian byteOrder)
 {
     if (numBits <= 32)
     {
-        return static_cast<uint64_t>(readUInt32(numBits));
+        return static_cast<uint64_t>(readUInt32(numBits, byteOrder));
     }
     else
     {
         validateEnoughSpace(numBits);
 
-        uint64_t result;
         uint8_t extraBits = numBits - 32;
+        uint32_t a, b;
 
         if (byteOrder == Endian::Big)
         {
-            result = (static_cast<uint64_t>(readUInt32(extraBits, Endian::Big)) << 32) | static_cast<uint64_t>(readUInt32(Endian::Big));
+            a = readUInt32(extraBits);
+            b = readUInt32();
         }
         else
         {
-            result = static_cast<uint64_t>(readUInt32(Endian::Little)) | (static_cast<uint64_t>(readUInt32(extraBits, Endian::Little)) << 32);
+            b = readUInt32(Endian::Little);
+            a = readUInt32(extraBits, Endian::Little);
         }
 
-        return result;
+        return (static_cast<uint64_t>(a) << 32) | b;
     }
 }
 
