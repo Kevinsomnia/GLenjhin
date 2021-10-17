@@ -42,6 +42,7 @@ public:
 
     operator uint8_t*() const { return m_DataPtr; }
 
+    // === WRITING ===
     inline void writeBool(bool value);
 
     inline void writeUInt8(uint8_t value);
@@ -60,14 +61,16 @@ public:
     inline void writeUInt32(uint32_t value, uint8_t numBits, Endian byteOrder = Endian::Big);
     inline void writeInt32(int32_t value, Endian byteOrder = Endian::Big);
 
-    inline void writeFloat(float value);
-
     inline void writeUInt64(uint64_t value, Endian byteOrder = Endian::Big);
     inline void writeUInt64(uint64_t value, uint8_t numBits, Endian byteOrder = Endian::Big);
     inline void writeInt64(int64_t value, Endian byteOrder = Endian::Big);
 
+    inline void writeFloat(float value);
     inline void writeDouble(double value);
 
+    inline void write(uint8_t* data, uint32_t size);
+
+    // === READING ===
     inline bool readBool();
 
     inline uint8_t readUInt8();
@@ -86,13 +89,14 @@ public:
     inline uint32_t readUInt32(uint8_t numBits, Endian byteOrder = Endian::Big);
     inline int32_t readInt32(Endian byteOrder = Endian::Big);
 
-    inline float readFloat();
-
     inline uint64_t readUInt64(Endian byteOrder = Endian::Big);
     inline uint64_t readUInt64(uint8_t numBits, Endian byteOrder = Endian::Big);
     inline int64_t readInt64(Endian byteOrder = Endian::Big);
 
+    inline float readFloat();
     inline double readDouble();
+
+    inline void read(uint8_t* buffer, uint32_t size);
 private:
     uint8_t* m_DataStart;
     uint8_t* m_DataEnd;
@@ -105,6 +109,12 @@ private:
     inline void expandCapacityIfNeeded(size_t bitsNeeded);  // for writing only
     inline void expandLengthIfNeeded(size_t bitsToWrite);   // for writing only
 };
+
+
+
+// =========================
+// GENERAL FUNCTIONS
+// =========================
 
 size_t MemoryStream::getByteOffset() const
 {
@@ -181,6 +191,11 @@ bool MemoryStream::hasData() const
 {
     return m_DataPtr < m_DataEnd;
 }
+
+
+// =========================
+// WRITING
+// =========================
 
 void MemoryStream::writeBool(bool value)
 {
@@ -407,11 +422,6 @@ void MemoryStream::writeInt32(int32_t value, Endian byteOrder)
     writeUInt32(static_cast<uint32_t>(value), byteOrder);
 }
 
-void MemoryStream::writeFloat(float value)
-{
-    writeUInt32(*reinterpret_cast<uint32_t*>(&value));
-}
-
 void MemoryStream::writeUInt64(uint64_t value, Endian byteOrder)
 {
     if (byteOrder == Endian::Big)
@@ -454,10 +464,36 @@ void MemoryStream::writeInt64(int64_t value, Endian byteOrder)
     writeUInt64(static_cast<uint64_t>(value), byteOrder);
 }
 
+void MemoryStream::writeFloat(float value)
+{
+    writeUInt32(*reinterpret_cast<uint32_t*>(&value));
+}
+
 void MemoryStream::writeDouble(double value)
 {
     writeUInt64(*reinterpret_cast<uint64_t*>(&value));
 }
+
+void MemoryStream::write(uint8_t* data, uint32_t size)
+{
+    if (m_BitOffset == 0)
+    {
+        expandLengthIfNeeded(size * 8);
+        memcpy(m_DataPtr, data, size);
+        m_DataPtr += size;
+    }
+    else
+    {
+        // Very slow... recommended to align to byte.
+        for (uint32_t i = 0; i < size; i++)
+            writeUInt8(data[i]);
+    }
+}
+
+
+// =========================
+// READING
+// =========================
 
 bool MemoryStream::readBool()
 {
@@ -703,23 +739,6 @@ int32_t MemoryStream::readInt32(Endian byteOrder)
     return static_cast<int32_t>(readUInt32(byteOrder));
 }
 
-float MemoryStream::readFloat()
-{
-    validateEnoughSpace(32);
-
-    if (m_BitOffset == 0)
-    {
-        float result = *reinterpret_cast<float*>(m_DataPtr);
-        m_DataPtr += 4;
-        return result;
-    }
-    else
-    {
-        uint32_t bytes = readUInt32();
-        return *reinterpret_cast<float*>(&bytes);
-    }
-}
-
 uint64_t MemoryStream::readUInt64(Endian byteOrder)
 {
     validateEnoughSpace(64);
@@ -769,6 +788,23 @@ int64_t MemoryStream::readInt64(Endian byteOrder)
     return static_cast<int64_t>(readUInt64(byteOrder));
 }
 
+float MemoryStream::readFloat()
+{
+    validateEnoughSpace(32);
+
+    if (m_BitOffset == 0)
+    {
+        float result = *reinterpret_cast<float*>(m_DataPtr);
+        m_DataPtr += 4;
+        return result;
+    }
+    else
+    {
+        uint32_t bytes = readUInt32();
+        return *reinterpret_cast<float*>(&bytes);
+    }
+}
+
 double MemoryStream::readDouble()
 {
     validateEnoughSpace(64);
@@ -785,6 +821,27 @@ double MemoryStream::readDouble()
         return *reinterpret_cast<double*>(&bytes);
     }
 }
+
+void MemoryStream::read(uint8_t* buffer, uint32_t size)
+{
+    if (m_BitOffset == 0)
+    {
+        validateEnoughSpace(size * 8);
+        memcpy(buffer, m_DataPtr, size);
+        m_DataPtr += size;
+    }
+    else
+    {
+        // Very slow... recommended to align to byte.
+        for (uint32_t i = 0; i < size; i++)
+            buffer[i] = readUInt8();
+    }
+}
+
+
+// =========================
+// PRIVATE INTERFACE
+// =========================
 
 void MemoryStream::validateEnoughSpace(size_t bitsNeeded)
 {
