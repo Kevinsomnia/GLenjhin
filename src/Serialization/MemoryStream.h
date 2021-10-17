@@ -1,24 +1,29 @@
 #ifndef MEMORY_STREAM_H
 #define MEMORY_STREAM_H
 
-#include <iostream>
+#include <algorithm>
 #include <exception>
+#include <iostream>
 
-#define MASK_BITS(numBits) (1 << numBits) - 1
+#define MASK_BITS(numBits) ((1 << numBits) - 1)
 
 using std::cout;
+using std::cerr;
 using std::endl;
 
 class MemoryStream
 {
 public:
+    static const size_t DEFAULT_CAPACITY = 256;
+
     enum class Endian
     {
         Little,
         Big
     };
 
-    MemoryStream() = delete;
+    MemoryStream();
+    MemoryStream(size_t capacity);
     MemoryStream(uint8_t* buffer, size_t bufferSize);
 
     inline size_t getByteOffset() const;
@@ -36,6 +41,28 @@ public:
     inline bool hasData() const;
 
     operator uint8_t*() const { return m_DataPtr; }
+
+    inline void writeBool(bool value);
+
+    inline void writeUInt8(uint8_t value);
+    inline void writeUInt8(uint8_t value, uint8_t numBits);
+    inline void writeInt8(int8_t value);
+
+    inline void writeUInt16(uint16_t value, Endian byteOrder = Endian::Big);
+    inline void writeUInt16(uint16_t value, uint8_t numBits, Endian byteOrder = Endian::Big);
+    inline void writeInt16(int16_t value, Endian byteOrder = Endian::Big);
+
+    inline void writeUInt24(uint32_t value, Endian byteOrder = Endian::Big);
+    inline void writeUInt24(uint32_t value, uint8_t numBits, Endian byteOrder = Endian::Big);
+    inline void writeInt24(int32_t value, Endian byteOrder = Endian::Big);
+
+    inline void writeUInt32(uint32_t value, Endian byteOrder = Endian::Big);
+    inline void writeUInt32(uint32_t value, uint8_t numBits, Endian byteOrder = Endian::Big);
+    inline void writeInt32(int32_t value, Endian byteOrder = Endian::Big);
+
+    inline void writeUInt64(uint64_t value, Endian byteOrder = Endian::Big);
+    inline void writeUInt64(uint64_t value, uint8_t numBits, Endian byteOrder = Endian::Big);
+    inline void writeInt64(int64_t value, Endian byteOrder = Endian::Big);
 
     inline bool readBool();
 
@@ -67,9 +94,12 @@ private:
     uint8_t* m_DataEnd;
     uint8_t* m_DataPtr;
     uint8_t m_BitOffset;
+    size_t m_Capacity;
     size_t m_Size;
 
-    inline void validateEnoughSpace(size_t bitsNeeded);
+    inline void validateEnoughSpace(size_t bitsNeeded); // for reading only
+    inline void expandCapacityIfNeeded(size_t bitsNeeded);  // for writing only
+    inline void expandLengthIfNeeded(size_t bitsToWrite);   // for writing only
 };
 
 size_t MemoryStream::getByteOffset() const
@@ -146,6 +176,273 @@ size_t MemoryStream::size() const
 bool MemoryStream::hasData() const
 {
     return m_DataPtr < m_DataEnd;
+}
+
+void MemoryStream::writeBool(bool value)
+{
+    expandLengthIfNeeded(1);
+
+    if (value)
+    {
+        *m_DataPtr |= 1 << m_BitOffset;
+    }
+    else
+    {
+        *m_DataPtr &= ~(1 << m_BitOffset);
+    }
+
+    if (m_BitOffset == 7)
+    {
+        m_BitOffset = 0;
+        m_DataPtr++;
+    }
+    else
+    {
+        m_BitOffset++;
+    }
+}
+
+void MemoryStream::writeUInt8(uint8_t value)
+{
+    expandLengthIfNeeded(8);
+
+    if (m_BitOffset == 0)
+    {
+        *m_DataPtr++ = value;
+    }
+    else
+    {
+        uint8_t leftoverBits = 8 - m_BitOffset;
+        uint8_t firstByteMask = MASK_BITS(m_BitOffset);
+        *m_DataPtr++ = (*m_DataPtr & firstByteMask) | (value << m_BitOffset);
+        *m_DataPtr = (*m_DataPtr & ~firstByteMask) | (value >> leftoverBits);
+    }
+}
+
+void MemoryStream::writeUInt8(uint8_t value, uint8_t numBits)
+{
+    if (numBits >= 8)
+    {
+        writeUInt8(value);
+        return;
+    }
+
+    expandLengthIfNeeded(numBits);
+    uint8_t bitsLeft = 8 - m_BitOffset;
+    uint8_t valueBitMask = MASK_BITS(numBits);
+    uint8_t maskedValue = value & valueBitMask;
+
+    if (numBits <= bitsLeft)
+    {
+        uint8_t byteMask = ~(valueBitMask << m_BitOffset);
+        *m_DataPtr = (*m_DataPtr & byteMask) | (maskedValue << m_BitOffset);
+
+        if (numBits == bitsLeft)
+        {
+            m_DataPtr++;
+            m_BitOffset = 0;
+        }
+        else
+        {
+            m_BitOffset += numBits;
+        }
+    }
+    else
+    {
+        // Spans 2 bytes.
+        uint8_t bitsToWriteSecondByte = numBits - bitsLeft;
+        uint8_t firstByteMask = MASK_BITS(m_BitOffset);
+        uint8_t secondByteMask = ~MASK_BITS(bitsToWriteSecondByte);
+
+        *m_DataPtr++ = (*m_DataPtr & firstByteMask) | (maskedValue << m_BitOffset);
+        *m_DataPtr = (*m_DataPtr & secondByteMask) | (maskedValue >> bitsLeft);
+        m_BitOffset = bitsToWriteSecondByte;
+    }
+}
+
+void MemoryStream::writeInt8(int8_t value)
+{
+    writeUInt8(static_cast<uint8_t>(value));
+}
+
+void MemoryStream::writeUInt16(uint16_t value, Endian byteOrder)
+{
+    if (byteOrder == Endian::Big)
+    {
+        writeUInt8(static_cast<uint8_t>(value >> 8));
+        writeUInt8(static_cast<uint8_t>(value));
+    }
+    else
+    {
+        writeUInt8(static_cast<uint8_t>(value));
+        writeUInt8(static_cast<uint8_t>(value >> 8));
+    }
+}
+
+void MemoryStream::writeUInt16(uint16_t value, uint8_t numBits, Endian byteOrder)
+{
+    if (numBits <= 8)
+    {
+        writeUInt8(static_cast<uint8_t>(value), numBits);
+    }
+    else
+    {
+        uint8_t extraBits = numBits - 8;
+
+        if (byteOrder == Endian::Big)
+        {
+            writeUInt8(static_cast<uint8_t>(value >> 8), extraBits);
+            writeUInt8(static_cast<uint8_t>(value));
+        }
+        else
+        {
+            writeUInt8(static_cast<uint8_t>(value));
+            writeUInt8(static_cast<uint8_t>(value >> 8), extraBits);
+        }
+    }
+}
+
+void MemoryStream::writeInt16(int16_t value, Endian byteOrder)
+{
+    writeUInt16(static_cast<uint16_t>(value), byteOrder);
+}
+
+void MemoryStream::writeUInt24(uint32_t value, Endian byteOrder)
+{
+    if (byteOrder == Endian::Big)
+    {
+        writeUInt8(static_cast<uint8_t>(value >> 16));
+        writeUInt8(static_cast<uint8_t>(value >> 8));
+        writeUInt8(static_cast<uint8_t>(value));
+    }
+    else
+    {
+        writeUInt8(static_cast<uint8_t>(value));
+        writeUInt8(static_cast<uint8_t>(value >> 8));
+        writeUInt8(static_cast<uint8_t>(value >> 16));
+    }
+}
+
+void MemoryStream::writeUInt24(uint32_t value, uint8_t numBits, Endian byteOrder)
+{
+    if (numBits <= 16)
+    {
+        writeUInt16(static_cast<uint16_t>(value), numBits);
+    }
+    else
+    {
+        uint8_t extraBits = numBits - 16;
+
+        if (byteOrder == Endian::Big)
+        {
+            writeUInt8(static_cast<uint8_t>(value >> 16), extraBits);
+            writeUInt8(static_cast<uint8_t>(value >> 8));
+            writeUInt8(static_cast<uint8_t>(value));
+        }
+        else
+        {
+            writeUInt8(static_cast<uint8_t>(value));
+            writeUInt8(static_cast<uint8_t>(value >> 8));
+            writeUInt8(static_cast<uint8_t>(value >> 16), extraBits);
+        }
+    }
+}
+
+void MemoryStream::writeInt24(int32_t value, Endian byteOrder)
+{
+    writeUInt24(static_cast<uint32_t>(value), byteOrder);
+}
+
+void MemoryStream::writeUInt32(uint32_t value, Endian byteOrder)
+{
+    if (byteOrder == Endian::Big)
+    {
+        writeUInt8(static_cast<uint8_t>(value >> 24));
+        writeUInt8(static_cast<uint8_t>(value >> 16));
+        writeUInt8(static_cast<uint8_t>(value >> 8));
+        writeUInt8(static_cast<uint8_t>(value));
+    }
+    else
+    {
+        writeUInt8(static_cast<uint8_t>(value));
+        writeUInt8(static_cast<uint8_t>(value >> 8));
+        writeUInt8(static_cast<uint8_t>(value >> 16));
+        writeUInt8(static_cast<uint8_t>(value >> 24));
+    }
+}
+
+void MemoryStream::writeUInt32(uint32_t value, uint8_t numBits, Endian byteOrder)
+{
+    if (numBits <= 24)
+    {
+        writeUInt24(value, numBits);
+    }
+    else
+    {
+        uint8_t extraBits = numBits - 24;
+
+        if (byteOrder == Endian::Big)
+        {
+            writeUInt8(static_cast<uint8_t>(value >> 24), extraBits);
+            writeUInt8(static_cast<uint8_t>(value >> 16));
+            writeUInt8(static_cast<uint8_t>(value >> 8));
+            writeUInt8(static_cast<uint8_t>(value));
+        }
+        else
+        {
+            writeUInt8(static_cast<uint8_t>(value));
+            writeUInt8(static_cast<uint8_t>(value >> 8));
+            writeUInt8(static_cast<uint8_t>(value >> 16));
+            writeUInt8(static_cast<uint8_t>(value >> 24), extraBits);
+        }
+    }
+}
+
+void MemoryStream::writeInt32(int32_t value, Endian byteOrder)
+{
+    writeUInt32(static_cast<uint32_t>(value), byteOrder);
+}
+
+void MemoryStream::writeUInt64(uint64_t value, Endian byteOrder)
+{
+    if (byteOrder == Endian::Big)
+    {
+        writeUInt32(static_cast<uint32_t>(value >> 32), Endian::Big);
+        writeUInt32(static_cast<uint32_t>(value), Endian::Big);
+    }
+    else
+    {
+        writeUInt32(static_cast<uint32_t>(value), Endian::Little);
+        writeUInt32(static_cast<uint32_t>(value >> 32), Endian::Little);
+    }
+}
+
+void MemoryStream::writeUInt64(uint64_t value, uint8_t numBits, Endian byteOrder)
+{
+    if (numBits <= 32)
+    {
+        writeUInt32(static_cast<uint32_t>(value), numBits);
+    }
+    else
+    {
+        uint8_t extraBits = numBits - 32;
+
+        if (byteOrder == Endian::Big)
+        {
+            writeUInt32(static_cast<uint32_t>(value >> 32), extraBits, MemoryStream::Endian::Big);
+            writeUInt32(static_cast<uint32_t>(value), MemoryStream::Endian::Big);
+        }
+        else
+        {
+            writeUInt32(static_cast<uint32_t>(value), MemoryStream::Endian::Little);
+            writeUInt32(static_cast<uint32_t>(value >> 32), extraBits, MemoryStream::Endian::Little);
+        }
+    }
+}
+
+void MemoryStream::writeInt64(int64_t value, Endian byteOrder)
+{
+    writeUInt64(static_cast<uint64_t>(value), byteOrder);
 }
 
 bool MemoryStream::readBool()
@@ -417,25 +714,11 @@ uint64_t MemoryStream::readUInt64(Endian byteOrder)
 
     if (byteOrder == Endian::Big)
     {
-        result = (static_cast<uint64_t>(readUInt8()) << 56) |
-                (static_cast<uint64_t>(readUInt8()) << 48) |
-                (static_cast<uint64_t>(readUInt8()) << 40) |
-                (static_cast<uint64_t>(readUInt8()) << 32) |
-                (static_cast<uint64_t>(readUInt8()) << 24) |
-                (static_cast<uint64_t>(readUInt8()) << 16) |
-                (static_cast<uint64_t>(readUInt8()) << 8) |
-                readUInt8();
+        result = (static_cast<uint64_t>(readUInt32()) << 32) | readUInt32();
     }
     else
     {
-        result = readUInt8() |
-                (static_cast<uint64_t>(readUInt8()) << 8) |
-                (static_cast<uint64_t>(readUInt8()) << 16) |
-                (static_cast<uint64_t>(readUInt8()) << 24) |
-                (static_cast<uint64_t>(readUInt8()) << 32) |
-                (static_cast<uint64_t>(readUInt8()) << 40) |
-                (static_cast<uint64_t>(readUInt8()) << 48) |
-                (static_cast<uint64_t>(readUInt8()) << 56);
+        result = readUInt32() | (static_cast<uint64_t>(readUInt32()) << 32);
     }
 
     return result;
@@ -495,6 +778,54 @@ void MemoryStream::validateEnoughSpace(size_t bitsNeeded)
 
     if (bitsNeeded > bitsLeft)
         throw std::out_of_range("MemoryStream: Not enough bits left");
+}
+
+void MemoryStream::expandCapacityIfNeeded(size_t bitsNeeded)
+{
+    size_t bitsLeftInBuffer = (((m_DataStart + m_Capacity) - m_DataPtr) * 8) - m_BitOffset;
+
+    if (bitsNeeded > bitsLeftInBuffer)
+    {
+        size_t extraBits = bitsNeeded - bitsLeftInBuffer;
+        size_t bytesNeeded = (extraBits / 8) + (extraBits % 8 != 0);    // Integer ceil()
+        size_t minCapacity = m_Capacity + bytesNeeded;
+        size_t newCapacity = m_Capacity;
+
+        while (newCapacity < minCapacity)
+            newCapacity <<= 1;
+
+        // Need the offset for the current buffer so we can recalculate the byte pointer for new buffer.
+        size_t byteOffset = getByteOffset();
+
+        // Allocate a new buffer. Copy old buffer contents over. Delete old buffer.
+        uint8_t* newBuffer = new uint8_t[newCapacity];
+        memcpy(newBuffer, m_DataStart, m_Size);
+        delete[] m_DataStart;
+
+        // Update remaining properties.
+        m_DataStart = newBuffer;
+        m_DataPtr = m_DataStart + byteOffset;
+        m_DataEnd = m_DataStart + m_Size;
+        m_Capacity = newCapacity;
+    }
+}
+
+void MemoryStream::expandLengthIfNeeded(size_t bitsToWrite)
+{
+    size_t newEndBitOffset = ((m_DataPtr - m_DataStart) * 8) + m_BitOffset + bitsToWrite;
+    size_t newEndByteOffset = (newEndBitOffset / 8) + (newEndBitOffset % 8 != 0);   // Integer ceil()
+
+    // If we're gonna write past m_DataEnd.
+    if (m_DataStart + newEndByteOffset > m_DataEnd)
+    {
+        // Update capacity if needed.
+        if (newEndByteOffset > m_Capacity)
+            expandCapacityIfNeeded(bitsToWrite);
+
+        // Update size.
+        m_DataEnd = m_DataStart + newEndByteOffset;
+        m_Size = newEndByteOffset;
+    }
 }
 
 #endif  // MEMORY_STREAM_H
