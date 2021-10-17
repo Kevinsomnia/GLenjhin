@@ -188,12 +188,11 @@ uint8_t MemoryStream::readUInt8(uint8_t numBits)
     validateEnoughSpace(numBits);
 
     uint8_t result;
-    uint8_t currByte = *m_DataPtr;
     uint8_t bitsLeft = 8 - m_BitOffset;
     
     if (numBits <= bitsLeft)
     {
-        result = (currByte >> m_BitOffset) & MASK_BITS(numBits);
+        result = (*m_DataPtr >> m_BitOffset) & MASK_BITS(numBits);
 
         if (numBits == bitsLeft)
         {
@@ -207,10 +206,10 @@ uint8_t MemoryStream::readUInt8(uint8_t numBits)
     }
     else
     {
-        result = (currByte >> m_BitOffset) & MASK_BITS(bitsLeft);
-        uint8_t nextByte = *(++m_DataPtr);
+        // Spans 2 bytes.
+        result = (*m_DataPtr++ >> m_BitOffset) & MASK_BITS(bitsLeft);
         uint8_t leftoverBits = numBits - bitsLeft;
-        result |= (nextByte & MASK_BITS(leftoverBits)) << bitsLeft;
+        result |= (*m_DataPtr & MASK_BITS(leftoverBits)) << bitsLeft;
         m_BitOffset = leftoverBits;
     }
 
