@@ -5,10 +5,10 @@ MeshPrimitives::Cube::Cube() : Mesh()
     const uint32_t NUM_VERTICES = 24;
     Vertex vertices[NUM_VERTICES] = {
         // +Z
-        Vertex(Vector3(-0.5f, 0.5f, 0.5f), Vector3::forward, Vector2(0.0f, 1.0f)),
-        Vertex(Vector3(0.5f, 0.5f, 0.5f), Vector3::forward, Vector2(1.0f, 1.0f)),
-        Vertex(Vector3(-0.5f, -0.5f, 0.5f), Vector3::forward, Vector2(0.0f, 0.0f)),
-        Vertex(Vector3(0.5f, -0.5f, 0.5f), Vector3::forward, Vector2(1.0f, 0.0f)),
+        Vertex(Vector3(-0.5f, 0.5f, 0.5f), Vector3::forward, Vector2(1.0f, 1.0f)),
+        Vertex(Vector3(0.5f, 0.5f, 0.5f), Vector3::forward, Vector2(0.0f, 1.0f)),
+        Vertex(Vector3(-0.5f, -0.5f, 0.5f), Vector3::forward, Vector2(1.0f, 0.0f)),
+        Vertex(Vector3(0.5f, -0.5f, 0.5f), Vector3::forward, Vector2(0.0f, 0.0f)),
 
         // -Z
         Vertex(Vector3(-0.5f, 0.5f, -0.5f), Vector3::back, Vector2(0.0f, 1.0f)),
@@ -17,10 +17,10 @@ MeshPrimitives::Cube::Cube() : Mesh()
         Vertex(Vector3(0.5f, -0.5f, -0.5f), Vector3::back, Vector2(1.0f, 0.0f)),
 
         // +X
-        Vertex(Vector3(0.5f, 0.5f, 0.5f), Vector3::right, Vector2(0.0f, 1.0f)),
-        Vertex(Vector3(0.5f, 0.5f, -0.5f), Vector3::right, Vector2(1.0f, 1.0f)),
-        Vertex(Vector3(0.5f, -0.5f, 0.5f), Vector3::right, Vector2(0.0f, 0.0f)),
-        Vertex(Vector3(0.5f, -0.5f, -0.5f), Vector3::right, Vector2(1.0f, 0.0f)),
+        Vertex(Vector3(0.5f, 0.5f, 0.5f), Vector3::right, Vector2(1.0f, 1.0f)),
+        Vertex(Vector3(0.5f, 0.5f, -0.5f), Vector3::right, Vector2(0.0f, 1.0f)),
+        Vertex(Vector3(0.5f, -0.5f, 0.5f), Vector3::right, Vector2(1.0f, 0.0f)),
+        Vertex(Vector3(0.5f, -0.5f, -0.5f), Vector3::right, Vector2(0.0f, 0.0f)),
 
         // -X
         Vertex(Vector3(-0.5f, 0.5f, 0.5f), Vector3::left, Vector2(0.0f, 1.0f)),
@@ -35,10 +35,10 @@ MeshPrimitives::Cube::Cube() : Mesh()
         Vertex(Vector3(0.5f, 0.5f, -0.5f), Vector3::up, Vector2(1.0f, 0.0f)),
 
         // -Y
-        Vertex(Vector3(-0.5f, -0.5f, 0.5f), Vector3::down, Vector2(0.0f, 1.0f)),
-        Vertex(Vector3(0.5f, -0.5f, 0.5f), Vector3::down, Vector2(1.0f, 1.0f)),
-        Vertex(Vector3(-0.5f, -0.5f, -0.5f), Vector3::down, Vector2(0.0f, 0.0f)),
-        Vertex(Vector3(0.5f, -0.5f, -0.5f), Vector3::down, Vector2(1.0f, 0.0f)),
+        Vertex(Vector3(-0.5f, -0.5f, 0.5f), Vector3::down, Vector2(1.0f, 1.0f)),
+        Vertex(Vector3(0.5f, -0.5f, 0.5f), Vector3::down, Vector2(0.0f, 1.0f)),
+        Vertex(Vector3(-0.5f, -0.5f, -0.5f), Vector3::down, Vector2(1.0f, 0.0f)),
+        Vertex(Vector3(0.5f, -0.5f, -0.5f), Vector3::down, Vector2(0.0f, 0.0f)),
     };
     const uint32_t NUM_INDICES = 12*3;
     uint32_t indices[NUM_INDICES] = {
@@ -70,10 +70,10 @@ MeshPrimitives::Quad::Quad() : Mesh()
     // Single-sied quad that faces +Z
     const uint32_t NUM_VERTICES = 4;
     Vertex vertices[NUM_VERTICES] = {
-        Vertex(Vector3(-0.5f, 0.5f, 0.0f), Vector3::forward, Vector2(0.0f, 1.0f)),
-        Vertex(Vector3(0.5f, 0.5f, 0.0f), Vector3::forward, Vector2(1.0f, 1.0f)),
-        Vertex(Vector3(-0.5f, -0.5f, 0.0f), Vector3::forward, Vector2(0.0f, 0.0f)),
-        Vertex(Vector3(0.5f, -0.5f, 0.0f), Vector3::forward, Vector2(1.0f, 0.0f))
+        Vertex(Vector3(-0.5f, 0.5f, 0.0f), Vector3::forward, Vector2(1.0f, 1.0f)),
+        Vertex(Vector3(0.5f, 0.5f, 0.0f), Vector3::forward, Vector2(0.0f, 1.0f)),
+        Vertex(Vector3(-0.5f, -0.5f, 0.0f), Vector3::forward, Vector2(1.0f, 0.0f)),
+        Vertex(Vector3(0.5f, -0.5f, 0.0f), Vector3::forward, Vector2(0.0f, 0.0f))
     };
     const uint32_t NUM_INDICES = 2*3;
     uint32_t indices[NUM_INDICES] = {

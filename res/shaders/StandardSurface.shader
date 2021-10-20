@@ -21,7 +21,7 @@ void main()
     wNormal = normalize(worldNormal.xyz);
 
     gl_Position = u_VP * worldPos;
-    v_UV = aUV;
+    v_UV = vec2(aUV.x, 1.0 - aUV.y);
 }
 
 

@@ -21,7 +21,7 @@ Scene::Scene()
     Texture2D* surfaceTexture = new Texture2D();
     surfaceMat->setTexture("u_MainTex", surfaceTexture);
 
-    Entity* plane = new Entity(Vector3::zero, rotationToRad(Vector3(-90.0f, 0.0f, 0.0f)), Vector3::one * 100.0f);
+    Entity* plane = new Entity(Vector3::zero, rotationToRad(Vector3(-90.0f, 180.0f, 0.0f)), Vector3::one * 20.0f);
     plane->setupRenderer(MeshPrimitives::quad, surfaceMat);
     m_Entities.push_back(plane);
 
