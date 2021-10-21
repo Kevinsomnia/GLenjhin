@@ -174,8 +174,6 @@ MeshPrimitives::Sphere::Sphere(uint16_t resolution) : Mesh()
         indices[i++] = nextStripStartVertex - 1;
     }
 
-    cout << i << '/' << indexCount << endl;
-
     setup(vertices.data(), vertices.size(), indices, indexCount);
 }
 
