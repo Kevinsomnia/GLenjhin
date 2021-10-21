@@ -78,11 +78,114 @@ MeshPrimitives::Quad::Quad() : Mesh()
     setup(vertices.data(), vertices.size(), indices.data(), indices.size());
 }
 
-MeshPrimitives::Cube* MeshPrimitives::cube = nullptr;
-MeshPrimitives::Quad* MeshPrimitives::quad = nullptr;
+MeshPrimitives::Sphere::Sphere(uint16_t resolution) : Mesh()
+{
+    resolution = std::max(3Ui16, resolution);
+
+    // Spacing values for vertex positions and UVs.
+    float thetaSpacing = PI_FLOAT * 2.0f / resolution;  // Horizontal angle per iteration.
+    float phiSpacing = PI_FLOAT / (resolution - 1);     // Vertical angle per iteration.
+    Vector2 uvSpacing(1.0f / resolution, 1.0f / (resolution - 1));
+
+    // Compute vertex positions.
+    std::vector<Vertex> vertices;
+
+    // Each ring will contain ('resolution' + 1) points (longitude).
+    // The starting and ending column will have two different vertices at the same location.
+    for (uint16_t i = 0; i <= resolution; i++)
+    {
+        float theta = i * thetaSpacing;
+        float x = sin(theta);
+        float z = cos(theta);
+
+        // Form 'resolution' rings around sphere, top to bottom (latitude).
+        float phi = PI_FLOAT * 0.5f;
+        for (uint16_t j = 0; j < resolution; j++)
+        {
+            // Radius of the ring.
+            float r = cos(phi) * 0.5f;
+            float y = sin(phi) * 0.5f;  // equivalent to r * tan(phi)
+
+            float rx = r * x;
+            float rz = r * z;
+
+            Vector3 pos = Vector3(rx, y, rz);
+            // Position is already normalized, but length is 0.5 so we just double the vector to correct it.
+            Vector3 normal = pos * 2.0f;
+
+            float uvX = i * uvSpacing.getX();
+            float uvY = j * uvSpacing.getY();
+
+            // For the poles, those vertices will be the midpoint between two columns in the UV.
+            // See this image for reference: https://upload.wikimedia.org/wikipedia/commons/0/04/UVMapping.png
+            // Specifically look at the top and bottom row on the UV map.
+            if (j == 0 || j == resolution - 1)
+                uvX += uvSpacing.getX() * 0.5f;
+
+            // We're starting at the top of the sphere, which means we are starting at the top of the texture, so flip Y.
+            // Also, flip X since the triangles are facing outwards.
+            Vector2 flippedUV = Vector2(1.0f - uvX, 1.0f - uvY);
+            vertices.push_back(Vertex(pos, normal, flippedUV));
+
+            phi -= phiSpacing;
+        }
+    }
+
+    // We now have vertices ordered by latitude first (going down column), then moving to next longitude (to the next column).
+    // We can calculate number of triangles by computing triangle count for a column strip, and multiplying by the 'resolution' (column count).
+    // There are ('resolution'-3) quads, and 2 triangles for both poles for each strip.
+    size_t triangleStripCount = 2 * (resolution - 2);
+    size_t triangleCount = triangleStripCount * resolution;
+    size_t indexCount = triangleCount * 3;
+    uint32_t* indices = new uint32_t[indexCount];
+
+    size_t i = 0;   // Indices index
+    const size_t northPoleVertexIndex = 0;
+    size_t southPoleVertexIndex = vertices.size() - 1;
+
+    for (uint16_t x = 0; x < resolution; x++)
+    {
+        // Traversing down a column of vertices.
+        size_t currStripStartVertex = x * resolution;
+        size_t nextStripStartVertex = currStripStartVertex + resolution;
+
+        // Handle north pole triangle.
+        indices[i++] = currStripStartVertex;
+        indices[i++] = nextStripStartVertex + 1;
+        indices[i++] = currStripStartVertex + 1;
+
+        // Form quads in between poles.
+        for (uint16_t y = 1; y < resolution - 2; y++)
+        {
+            // Top triangle.
+            indices[i++] = currStripStartVertex + y;
+            indices[i++] = nextStripStartVertex + y;
+            indices[i++] = nextStripStartVertex + y + 1;
+
+            // Bottom triangle.
+            indices[i++] = currStripStartVertex + y;
+            indices[i++] = nextStripStartVertex + y + 1;
+            indices[i++] = currStripStartVertex + y + 1;
+        }
+
+        // // Handle south pole triangle.
+        indices[i++] = nextStripStartVertex - 2;
+        indices[i++] = nextStripStartVertex + resolution - 2;
+        indices[i++] = nextStripStartVertex - 1;
+    }
+
+    cout << i << '/' << indexCount << endl;
+
+    setup(vertices.data(), vertices.size(), indices, indexCount);
+}
+
+Mesh* MeshPrimitives::cube = nullptr;
+Mesh* MeshPrimitives::quad = nullptr;
+Mesh* MeshPrimitives::sphere = nullptr;
 
 void MeshPrimitives::Init()
 {
     cube = new Cube();
     quad = new Quad();
+    sphere = new Sphere(32);
 }

@@ -2,7 +2,9 @@
 #define MESHPRIMITIVES_H
 
 #include <array>
+#include <vector>
 
+#include "../Math/Math.h"
 #include "Mesh.h"
 
 class MeshPrimitives
@@ -20,8 +22,16 @@ public:
         Quad();
     };
 
-    static Cube* cube;
-    static Quad* quad;
+    class Sphere: public Mesh
+    {
+    public:
+        Sphere() = delete;
+        Sphere(uint16_t resolution);
+    };
+
+    static Mesh* cube;
+    static Mesh* quad;
+    static Mesh* sphere;
     static void Init();
 };
 

@@ -3,7 +3,7 @@
 
 #include <math.h>
 
-#define PI 3.14159265358979323846
-#define PI_FLOAT 3.14159265358979323846f
+static const double PI = 3.14159265358979323846;
+static const float PI_FLOAT = 3.14159265358979323846f;
 
 #endif // MATH_H

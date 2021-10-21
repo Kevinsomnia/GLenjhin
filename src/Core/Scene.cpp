@@ -27,8 +27,8 @@ Scene::Scene()
 
     for (int i = 0; i < 10; i++)
     {
-        Entity* entity = new Entity(Vector3(-0.65f, 0.45f, 2.95f), Vector3::zero, Vector3::one);
-        entity->setupRenderer(MeshPrimitives::cube, surfaceMat);
+        Entity* entity = new Entity(Vector3(-0.65f, 0.45f, 2.95f), Vector3::zero, Vector3::one * 0.4f);
+        entity->setupRenderer(i % 2 == 0 ? MeshPrimitives::sphere : MeshPrimitives::cube, surfaceMat);
         m_Entities.push_back(entity);
     }
 }
@@ -67,11 +67,6 @@ void Scene::update()
             (float)t * 30.0f,
             (float)t * 35.0f
         )));
-        entity->getTransform()->setScale(Vector3(
-            (float)sin(t * 1.5) * 0.03f + 0.45f,
-            (float)cos(t * 1.6) * 0.05f + 0.45f,
-            (float)sin(t * 1.7) * 0.03f + 0.45f
-        ));
     }
 
     if (m_Camera)
@@ -82,7 +77,7 @@ void Scene::update()
         m_Camera->getTransform()->rotate(rotateDelta);
 
         // Free fly
-        float moveSpeed = 3.0f;
+        float moveSpeed = 6.0f;
 
         if (Input::GetKey(KeyCode::LeftShift))
         {
