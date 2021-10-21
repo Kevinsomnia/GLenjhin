@@ -1,6 +1,8 @@
 #ifndef MESHPRIMITIVES_H
 #define MESHPRIMITIVES_H
 
+#include <array>
+
 #include "Mesh.h"
 
 class MeshPrimitives
