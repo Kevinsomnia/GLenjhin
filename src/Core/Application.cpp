@@ -64,8 +64,6 @@ int main()
     GameContainer game = GameContainer(window);
 
     double deltaTime = 0.0;
-    double elapsedTime = 0.0;
-    uint32_t frames = 0;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -82,19 +80,6 @@ int main()
 
         // Application timer
         deltaTime = clockTicksToSeconds(frameEndTick - frameStartTick);
-
-        // Print frame rate
-        elapsedTime += deltaTime;
-        frames++;
-
-        if (elapsedTime > 1.0)
-        {
-            double fps = (frames / elapsedTime);
-            elapsedTime = 0.0;
-            frames = 0;
-
-            cout << "FPS: " << fps << endl;
-        }
     }
 
     glfwTerminate();

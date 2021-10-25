@@ -1,6 +1,8 @@
 #include "GameContainer.h"
 
-GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_CurrentScene(nullptr), m_ImGuiIO(nullptr)
+GameContainer::GameContainer(GLFWwindow* window)
+    : m_MainWindow(window), m_CurrentScene(nullptr), m_ImGuiIO(nullptr), m_DisplayDebugOverlay(true),
+    m_FrameCountInLastSecond(0), m_LastFPSRecordTime(0.0), m_FPS(0.0f)
 {
     // Enable depth testing
     glEnable(GL_DEPTH_TEST);
@@ -27,6 +29,7 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Curre
 
 GameContainer::~GameContainer()
 {
+    delete m_CurrentScene;
 }
 
 void GameContainer::update(double deltaTime)
@@ -34,19 +37,21 @@ void GameContainer::update(double deltaTime)
     Time::Timestep(deltaTime);
     Input::Poll();
 
-    if (Input::GetMouseButtonDown(MouseButton::Left) || Input::GetMouseButtonDown(MouseButton::Right))
-    {
-        // We are not hovering over any GUI element
-        if (!m_ImGuiIO->WantCaptureMouse)
-            Input::SetMouseCursorState(MouseCursorState::Locked);
-    }
-    else if (Input::GetKeyDown(KeyCode::Escape))
-    {
-        Input::SetMouseCursorState(MouseCursorState::Default);
-    }
+    handleMouseCursorState();
 
     if (m_CurrentScene)
         m_CurrentScene->update();
+
+    handleFPSCounter();
+
+    // Toggle debug overlay with F1 key
+    if (Input::GetKeyDown(KeyCode::F1))
+    {
+        m_DisplayDebugOverlay = !m_DisplayDebugOverlay;
+        m_FPS = 0.0f;
+        m_LastFPSRecordTime = Time::GetTime();
+        m_FrameCountInLastSecond = 0;
+    }
 }
 
 void GameContainer::render()
@@ -66,7 +71,65 @@ void GameContainer::render()
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
+void GameContainer::handleMouseCursorState()
+{
+    if (Input::GetMouseButtonDown(MouseButton::Left) || Input::GetMouseButtonDown(MouseButton::Right))
+    {
+        // We are not hovering over any GUI element
+        if (!m_ImGuiIO->WantCaptureMouse)
+            Input::SetMouseCursorState(MouseCursorState::Locked);
+    }
+    else if (Input::GetKeyDown(KeyCode::Escape))
+    {
+        Input::SetMouseCursorState(MouseCursorState::Default);
+    }
+}
+
+void GameContainer::handleFPSCounter()
+{
+    if (!m_DisplayDebugOverlay)
+        return;
+
+    m_FrameCountInLastSecond++;
+    double t = Time::GetTime();
+    double elapsedTime = t - m_LastFPSRecordTime;
+
+    if (elapsedTime >= 1.0)
+    {
+        m_FPS = (m_FrameCountInLastSecond / static_cast<float>(elapsedTime));
+        m_FrameCountInLastSecond = 0;
+        m_LastFPSRecordTime = t;
+    }
+}
 
 void GameContainer::onGUI()
 {
+    drawDebugOverlay();
+}
+
+void GameContainer::drawDebugOverlay()
+{
+    if (m_DisplayDebugOverlay)
+    {
+        const ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoTitleBar |
+                                            ImGuiWindowFlags_NoResize |
+                                            ImGuiWindowFlags_NoMove |
+                                            ImGuiWindowFlags_NoCollapse |
+                                            ImGuiWindowFlags_NoInputs |
+                                            ImGuiWindowFlags_AlwaysAutoResize;
+
+        ImGui::SetNextWindowPos(ImVec2(0, 0));
+        ImGuiStyle& guiStyle = ImGui::GetStyle();
+        float prevAlpha = guiStyle.Alpha;
+        guiStyle.Alpha = 0.6f;
+        ImGui::Begin("Debug", &m_DisplayDebugOverlay, windowFlags);
+        {
+            guiStyle.Alpha = prevAlpha;
+
+            // FPS counter
+            float frameTime = (m_FPS > 0.0f) ? 1000.0f / m_FPS : 0.0f;
+            ImGui::Text("%.2f FPS (%.2f ms)", m_FPS, frameTime);
+        }
+        ImGui::End();
+    }
 }

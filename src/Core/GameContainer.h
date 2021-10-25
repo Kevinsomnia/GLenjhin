@@ -21,13 +21,24 @@ class GameContainer
 public:
     GameContainer(GLFWwindow* window);
     ~GameContainer();
+
+    // Behavior
     void update(double deltaTime);
     void render();
+    inline void handleMouseCursorState();
+    inline void handleFPSCounter();
+
+    // GUI
     void onGUI();
+    void drawDebugOverlay();
 private:
     GLFWwindow* m_MainWindow;
     Scene* m_CurrentScene;
     ImGuiIO* m_ImGuiIO;
+    bool m_DisplayDebugOverlay;
+    uint32_t m_FrameCountInLastSecond;
+    double m_LastFPSRecordTime;
+    float m_FPS;
 };
 
 #endif // GAMECONTAINER_H
