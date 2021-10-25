@@ -18,6 +18,8 @@ using std::endl;
 
 class GameContainer
 {
+    const double FPS_UPDATE_INTERVAL = 0.5;
+
 public:
     GameContainer(GLFWwindow* window);
     ~GameContainer();

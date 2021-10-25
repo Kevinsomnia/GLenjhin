@@ -94,7 +94,7 @@ void GameContainer::handleFPSCounter()
     double t = Time::GetTime();
     double elapsedTime = t - m_LastFPSRecordTime;
 
-    if (elapsedTime >= 1.0)
+    if (elapsedTime >= FPS_UPDATE_INTERVAL)
     {
         m_FPS = (m_FrameCountInLastSecond / static_cast<float>(elapsedTime));
         m_FrameCountInLastSecond = 0;
@@ -130,6 +130,6 @@ void GameContainer::handleDebugOverlay()
         ImGui::End();
     }
 
-    // Other logic
+    // Logic
     glfwSwapInterval(m_VSync);
 }
