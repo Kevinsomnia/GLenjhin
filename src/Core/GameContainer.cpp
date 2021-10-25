@@ -2,7 +2,7 @@
 
 GameContainer::GameContainer(GLFWwindow* window)
     : m_MainWindow(window), m_CurrentScene(nullptr), m_ImGuiIO(nullptr), m_DisplayDebugOverlay(true),
-    m_FrameCountInLastSecond(0), m_LastFPSRecordTime(0.0), m_FPS(0.0f)
+    m_FrameCountInLastSecond(0), m_LastFPSRecordTime(0.0), m_FPS(0.0f), m_VSync(true)
 {
     // Enable depth testing
     glEnable(GL_DEPTH_TEST);
@@ -104,32 +104,32 @@ void GameContainer::handleFPSCounter()
 
 void GameContainer::onGUI()
 {
-    drawDebugOverlay();
+    handleDebugOverlay();
 }
 
-void GameContainer::drawDebugOverlay()
+void GameContainer::handleDebugOverlay()
 {
+    // Drawing
     if (m_DisplayDebugOverlay)
     {
         const ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoTitleBar |
-                                            ImGuiWindowFlags_NoResize |
+                                            (ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize) |
                                             ImGuiWindowFlags_NoMove |
                                             ImGuiWindowFlags_NoCollapse |
-                                            ImGuiWindowFlags_NoInputs |
-                                            ImGuiWindowFlags_AlwaysAutoResize;
+                                            (ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus);
 
         ImGui::SetNextWindowPos(ImVec2(0, 0));
-        ImGuiStyle& guiStyle = ImGui::GetStyle();
-        float prevAlpha = guiStyle.Alpha;
-        guiStyle.Alpha = 0.6f;
         ImGui::Begin("Debug", &m_DisplayDebugOverlay, windowFlags);
         {
-            guiStyle.Alpha = prevAlpha;
-
             // FPS counter
             float frameTime = (m_FPS > 0.0f) ? 1000.0f / m_FPS : 0.0f;
             ImGui::Text("%.2f FPS (%.2f ms)", m_FPS, frameTime);
+
+            ImGui::Checkbox("V-Sync", &m_VSync);
         }
         ImGui::End();
     }
+
+    // Other logic
+    glfwSwapInterval(m_VSync);
 }

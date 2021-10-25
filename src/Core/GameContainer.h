@@ -29,8 +29,8 @@ public:
     inline void handleFPSCounter();
 
     // GUI
-    void onGUI();
-    void drawDebugOverlay();
+    inline void onGUI();
+    inline void handleDebugOverlay();
 private:
     GLFWwindow* m_MainWindow;
     Scene* m_CurrentScene;
@@ -39,6 +39,7 @@ private:
     uint32_t m_FrameCountInLastSecond;
     double m_LastFPSRecordTime;
     float m_FPS;
+    bool m_VSync;
 };
 
 #endif // GAMECONTAINER_H

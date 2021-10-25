@@ -55,9 +55,6 @@ int main()
     // Enable Linear color space (sRGB)
     glEnable(GL_FRAMEBUFFER_SRGB);
 
-    // Disable v-sync
-    glfwSwapInterval(0);
-
     cout << "Running OpenGL " << glGetString(GL_VERSION) << endl;
 
     // Create GameContainer for update loop and other game object setup
