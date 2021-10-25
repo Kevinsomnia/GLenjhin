@@ -112,6 +112,41 @@ bool Input::GetMouseButtonUp(MouseButton button)
     return pressState == KeyPressState::Released || pressState == KeyPressState::Tapped;
 }
 
+MouseCursorState Input::GetMouseCursorState()
+{
+    int glfwCursorMode = glfwGetInputMode(m_Inst->m_Window, GLFW_CURSOR);
+
+    switch (glfwCursorMode)
+    {
+        case GLFW_CURSOR_DISABLED:
+            return MouseCursorState::Locked;
+        case GLFW_CURSOR_HIDDEN:
+            return MouseCursorState::Hidden;
+        default:
+            return MouseCursorState::Default;
+    }
+}
+
+void Input::SetMouseCursorState(MouseCursorState state)
+{
+    int glfwCursorMode;
+
+    switch (state)
+    {
+        case MouseCursorState::Locked:
+            glfwCursorMode = GLFW_CURSOR_DISABLED;
+            break;
+        case MouseCursorState::Hidden:
+            glfwCursorMode = GLFW_CURSOR_HIDDEN;
+            break;
+        default:
+            glfwCursorMode = GLFW_CURSOR_NORMAL;
+            break;
+    }
+
+    glfwSetInputMode(m_Inst->m_Window, GLFW_CURSOR, glfwCursorMode);
+}
+
 KeyPressState Input::GetNewKeyPressState(KeyPressState currentState, bool isKeyDown)
 {
     if (isKeyDown)

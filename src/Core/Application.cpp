@@ -58,9 +58,6 @@ int main()
     // Disable v-sync
     glfwSwapInterval(0);
 
-    // Input mouse look
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
     cout << "Running OpenGL " << glGetString(GL_VERSION) << endl;
 
     // Create GameContainer for update loop and other game object setup

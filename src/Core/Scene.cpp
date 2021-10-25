@@ -71,36 +71,41 @@ void Scene::update()
 
     if (m_Camera)
     {
-        // Mouse look
-        Vector2 mouseDelta = Input::GetMouseMoveDelta() * 0.075f;
-        Vector3 rotateDelta = rotationToRad(Vector3(mouseDelta.getY(), mouseDelta.getX(), 0.0f));
-        m_Camera->getTransform()->rotate(rotateDelta);
+        bool allowInput = Input::GetMouseCursorState() == MouseCursorState::Locked;
 
-        // Free fly
-        float moveSpeed = 6.0f;
-
-        if (Input::GetKey(KeyCode::LeftShift))
+        if (allowInput)
         {
-            moveSpeed *= 3.0f;
+            // Mouse look
+            Vector2 mouseDelta = Input::GetMouseMoveDelta() * 0.075f;
+            Vector3 rotateDelta = rotationToRad(Vector3(mouseDelta.getY(), mouseDelta.getX(), 0.0f));
+            m_Camera->getTransform()->rotate(rotateDelta);
+
+            // Free fly
+            float moveSpeed = 6.0f;
+
+            if (Input::GetKey(KeyCode::LeftShift))
+            {
+                moveSpeed *= 3.0f;
+            }
+
+            Vector3 moveDelta = getMoveAxis() * moveSpeed * (float)dt;
+            m_Camera->getTransform()->translate(moveDelta, Space::Local);
+
+            bool space = Input::GetKey(KeyCode::Space);
+            bool ctrl = Input::GetKey(KeyCode::LeftCtrl) || Input::GetKey(KeyCode::RightCtrl);
+            float y = 0.0f;
+
+            if (space && !ctrl)
+            {
+                y = 1.0f;
+            }
+            else if (ctrl && !space)
+            {
+                y = -1.0f;
+            }
+
+            m_Camera->getTransform()->translate(Vector3(0.0f, y, 0.0f) * moveSpeed * (float)dt, Space::World);
         }
-
-        Vector3 moveDelta = getMoveAxis() * moveSpeed * (float)dt;
-        m_Camera->getTransform()->translate(moveDelta, Space::Local);
-
-        bool space = Input::GetKey(KeyCode::Space);
-        bool ctrl = Input::GetKey(KeyCode::LeftCtrl) || Input::GetKey(KeyCode::RightCtrl);
-        float y = 0.0f;
-
-        if (space && !ctrl)
-        {
-            y = 1.0f;
-        }
-        else if (ctrl && !space)
-        {
-            y = -1.0f;
-        }
-
-        m_Camera->getTransform()->translate(Vector3(0.0f, y, 0.0f) * moveSpeed * (float)dt, Space::World);
 
         // Update and upload view projection.
         m_Camera->update();

@@ -1,6 +1,6 @@
 #include "GameContainer.h"
 
-GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_CurrentScene(nullptr)
+GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_CurrentScene(nullptr), m_ImGuiIO(nullptr)
 {
     // Enable depth testing
     glEnable(GL_DEPTH_TEST);
@@ -16,6 +16,10 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Curre
     ImGui::CreateContext();
     ImGui_ImplOpenGL3_Init();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
+    m_ImGuiIO = &ImGui::GetIO();
+
+    // Lock mouse movement by default to enable free look + movement
+    Input::SetMouseCursorState(MouseCursorState::Locked);
 
     // Load scene.
     m_CurrentScene = new Scene();
@@ -29,6 +33,17 @@ void GameContainer::update(double deltaTime)
 {
     Time::Timestep(deltaTime);
     Input::Poll();
+
+    if (Input::GetMouseButtonDown(MouseButton::Left) || Input::GetMouseButtonDown(MouseButton::Right))
+    {
+        // We are not hovering over any GUI element
+        if (!m_ImGuiIO->WantCaptureMouse)
+            Input::SetMouseCursorState(MouseCursorState::Locked);
+    }
+    else if (Input::GetKeyDown(KeyCode::Escape))
+    {
+        Input::SetMouseCursorState(MouseCursorState::Default);
+    }
 
     if (m_CurrentScene)
         m_CurrentScene->update();

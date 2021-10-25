@@ -27,6 +27,7 @@ public:
 private:
     GLFWwindow* m_MainWindow;
     Scene* m_CurrentScene;
+    ImGuiIO* m_ImGuiIO;
 };
 
 #endif // GAMECONTAINER_H

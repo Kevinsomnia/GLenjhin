@@ -21,6 +21,13 @@ enum class KeyPressState
     Tapped		// Pressed and released in the same frame
 };
 
+enum class MouseCursorState
+{
+    Default,
+    Hidden,
+    Locked
+};
+
 class Input
 {
 public:
@@ -36,6 +43,9 @@ public:
     static bool GetMouseButton(MouseButton button);
     static bool GetMouseButtonDown(MouseButton button);
     static bool GetMouseButtonUp(MouseButton button);
+
+    static MouseCursorState GetMouseCursorState();
+    static void SetMouseCursorState(MouseCursorState state);
 private:
     GLFWwindow* m_Window;
     Vector2 m_CurrMousePos;
