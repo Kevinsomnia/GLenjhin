@@ -4,6 +4,7 @@
 #define IMGUI_IMPL_OPENGL_ES3
 
 #include <iostream>
+#include "../GUI/GUIWindows.h"
 #include "../Interaction/Input.h"
 #include "../Renderer/MeshPrimitives.h"
 #include "Scene.h"
@@ -29,19 +30,14 @@ public:
     void render();
     inline void handleMouseCursorState();
     inline void handleFPSCounter();
-
-    // GUI
     inline void onGUI();
-    inline void handleDebugOverlay();
 private:
     GLFWwindow* m_MainWindow;
     Scene* m_CurrentScene;
+    DebugOverlayWindow* m_DebugOverlayWindow;
     ImGuiIO* m_ImGuiIO;
-    bool m_DisplayDebugOverlay;
     uint32_t m_FrameCountInLastSecond;
     double m_LastFPSRecordTime;
-    float m_FPS;
-    bool m_VSync;
 };
 
 #endif // GAMECONTAINER_H

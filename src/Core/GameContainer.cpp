@@ -1,8 +1,7 @@
 #include "GameContainer.h"
 
 GameContainer::GameContainer(GLFWwindow* window)
-    : m_MainWindow(window), m_CurrentScene(nullptr), m_ImGuiIO(nullptr), m_DisplayDebugOverlay(true),
-    m_FrameCountInLastSecond(0), m_LastFPSRecordTime(0.0), m_FPS(0.0f), m_VSync(true)
+    : m_MainWindow(window), m_CurrentScene(nullptr), m_DebugOverlayWindow(nullptr), m_ImGuiIO(nullptr), m_FrameCountInLastSecond(0), m_LastFPSRecordTime(0.0)
 {
     // Enable depth testing
     glEnable(GL_DEPTH_TEST);
@@ -25,11 +24,15 @@ GameContainer::GameContainer(GLFWwindow* window)
 
     // Load scene.
     m_CurrentScene = new Scene();
+
+    // GUI windows
+    m_DebugOverlayWindow = new DebugOverlayWindow();
 }
 
 GameContainer::~GameContainer()
 {
     delete m_CurrentScene;
+    delete m_DebugOverlayWindow;
 }
 
 void GameContainer::update(double deltaTime)
@@ -47,8 +50,7 @@ void GameContainer::update(double deltaTime)
     // Toggle debug overlay with F1 key
     if (Input::GetKeyDown(KeyCode::F1))
     {
-        m_DisplayDebugOverlay = !m_DisplayDebugOverlay;
-        m_FPS = 0.0f;
+        m_DebugOverlayWindow->toggleVisible();
         m_LastFPSRecordTime = Time::GetTime();
         m_FrameCountInLastSecond = 0;
     }
@@ -87,7 +89,7 @@ void GameContainer::handleMouseCursorState()
 
 void GameContainer::handleFPSCounter()
 {
-    if (!m_DisplayDebugOverlay)
+    if (!m_DebugOverlayWindow->getVisible())
         return;
 
     m_FrameCountInLastSecond++;
@@ -96,7 +98,7 @@ void GameContainer::handleFPSCounter()
 
     if (elapsedTime >= FPS_UPDATE_INTERVAL)
     {
-        m_FPS = (m_FrameCountInLastSecond / static_cast<float>(elapsedTime));
+        m_DebugOverlayWindow->setFPS(m_FrameCountInLastSecond / static_cast<float>(elapsedTime));
         m_FrameCountInLastSecond = 0;
         m_LastFPSRecordTime = t;
     }
@@ -104,32 +106,5 @@ void GameContainer::handleFPSCounter()
 
 void GameContainer::onGUI()
 {
-    handleDebugOverlay();
-}
-
-void GameContainer::handleDebugOverlay()
-{
-    // Drawing
-    if (m_DisplayDebugOverlay)
-    {
-        const ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoTitleBar |
-                                            (ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize) |
-                                            ImGuiWindowFlags_NoMove |
-                                            ImGuiWindowFlags_NoCollapse |
-                                            (ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus);
-
-        ImGui::SetNextWindowPos(ImVec2(0, 0));
-        ImGui::Begin("Debug", &m_DisplayDebugOverlay, windowFlags);
-        {
-            // FPS counter
-            float frameTime = (m_FPS > 0.0f) ? 1000.0f / m_FPS : 0.0f;
-            ImGui::Text("%.2f FPS (%.2f ms)", m_FPS, frameTime);
-
-            ImGui::Checkbox("V-Sync", &m_VSync);
-        }
-        ImGui::End();
-    }
-
-    // Logic
-    glfwSwapInterval(m_VSync);
+    m_DebugOverlayWindow->draw();
 }
