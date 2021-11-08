@@ -1,9 +1,13 @@
 #include "GameContainer.h"
 
+GameContainer* GameContainer::m_Instance = nullptr;
+
 GameContainer::GameContainer(GLFWwindow* window)
-    : m_MainWindow(window), m_CurrentScene(nullptr), m_DebugOverlayWindow(nullptr), m_ImGuiIO(nullptr), m_FrameCountInLastSecond(0), m_LastFPSRecordTime(0.0)
+    : m_MainWindow(window), m_CurrentScene(nullptr), m_DebugOverlayWindow(nullptr), m_TexPickerWindow(nullptr), m_ImGuiIO(nullptr),
+    m_FrameCountInLastSecond(0), m_LastFPSRecordTime(0.0)
 {
-    // Enable depth testing
+    m_Instance = this;
+
     glEnable(GL_DEPTH_TEST);
     // Enable back face culling
     glEnable(GL_CULL_FACE);
@@ -27,12 +31,17 @@ GameContainer::GameContainer(GLFWwindow* window)
 
     // GUI windows
     m_DebugOverlayWindow = new DebugOverlayWindow();
+    m_TexPickerWindow = new TexturePickerWindow(&HandleSelectedNewTexture);
 }
 
 GameContainer::~GameContainer()
 {
+    if (m_Instance == this)
+        m_Instance = nullptr;
+
     delete m_CurrentScene;
     delete m_DebugOverlayWindow;
+    delete m_TexPickerWindow;
 }
 
 void GameContainer::update(double deltaTime)
@@ -107,4 +116,13 @@ void GameContainer::handleFPSCounter()
 void GameContainer::onGUI()
 {
     m_DebugOverlayWindow->draw();
+    m_TexPickerWindow->draw();
+}
+
+void GameContainer::HandleSelectedNewTexture(const std::string& path)
+{
+    if (!m_Instance)
+        return;
+
+    m_Instance->m_CurrentScene->setNewTexture(path);
 }

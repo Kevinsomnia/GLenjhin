@@ -105,6 +105,9 @@
     <ClCompile Include="src\GUI\DebugOverlayWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\GUI\TexturePickerWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\Core\ImageLib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

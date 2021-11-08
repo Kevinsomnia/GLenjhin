@@ -1,12 +1,17 @@
 #ifndef GUI_WINDOWS_H
 #define GUI_WINDOWS_H
 
+#include <filesystem>
+#include <functional>
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <string>
+#include <vector>
 
 #include "imgui.h"
 
+namespace fs = std::filesystem;
 using std::cout;
 using std::endl;
 
@@ -26,6 +31,16 @@ private:
 
     void updateVSync();
     void updateMSAA();
+};
+
+class TexturePickerWindow
+{
+public:
+    TexturePickerWindow(std::function<void(const std::string&)> selectCallback);
+    void draw();
+private:
+    std::vector<fs::path> m_TexturePaths;
+    std::function<void(const std::string&)> m_TexSelectCallback;
 };
 
 #endif GUI_WINDOWS_H

@@ -32,12 +32,17 @@ public:
     inline void handleFPSCounter();
     inline void onGUI();
 private:
+    static GameContainer* m_Instance;
+
     GLFWwindow* m_MainWindow;
     Scene* m_CurrentScene;
     DebugOverlayWindow* m_DebugOverlayWindow;
+    TexturePickerWindow* m_TexPickerWindow;
     ImGuiIO* m_ImGuiIO;
     uint32_t m_FrameCountInLastSecond;
     double m_LastFPSRecordTime;
+
+    static void HandleSelectedNewTexture(const std::string& path);
 };
 
 #endif // GAMECONTAINER_H

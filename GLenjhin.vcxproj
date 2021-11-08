@@ -26,6 +26,7 @@
     <ClCompile Include="src\Core\ShaderCompiler.cpp" />
     <ClCompile Include="src\Core\Time.cpp" />
     <ClCompile Include="src\GUI\DebugOverlayWindow.cpp" />
+    <ClCompile Include="src\GUI\TexturePickerWindow.cpp" />
     <ClCompile Include="src\Interaction\Input.cpp" />
     <ClCompile Include="src\Math\Convert.cpp" />
     <ClCompile Include="src\Math\Matrix4x4.cpp" />

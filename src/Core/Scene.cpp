@@ -122,6 +122,15 @@ void Scene::draw()
     }
 }
 
+void Scene::setNewTexture(const std::string& texturePath)
+{
+    if (m_CurrTexture)
+        delete m_CurrTexture;
+
+    m_CurrTexture = new Texture2D(texturePath);
+    m_CurrMat->setTexture("u_MainTex", m_CurrTexture);
+}
+
 Vector3 Scene::getMoveAxis() const
 {
     bool w = Input::GetKey(KeyCode::W);

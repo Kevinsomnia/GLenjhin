@@ -21,6 +21,7 @@ public:
     ~Scene();
     void update();
     void draw();
+    void setNewTexture(const std::string& texturePath);
 private:
     Camera* m_Camera;
     Material* m_CurrMat;
