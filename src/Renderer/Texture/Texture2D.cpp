@@ -2,8 +2,8 @@
 
 Texture2D::Texture2D() : Texture()
 {
-    glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
-    glTextureStorage2D(m_TextureID, 1, GL_RGB8, 4, 2); // no mips for now
+    glGenTextures(1, &m_TextureID);
+    glBindTexture(GL_TEXTURE_2D, m_TextureID);
 
     glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -23,7 +23,8 @@ Texture2D::Texture2D() : Texture()
         0x00, 0x00, 0xFF
     };
 
-    glTextureSubImage2D(m_TextureID, 0, 0, 0, 4, 2, GL_RGB, GL_UNSIGNED_BYTE, data);
+    // TODO: mipmaps
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB, 4, 2, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 }
 
 Texture2D::~Texture2D()
