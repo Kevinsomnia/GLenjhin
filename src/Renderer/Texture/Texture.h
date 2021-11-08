@@ -4,6 +4,8 @@
 #include <iostream>
 #include <GL/glew.h>
 
+#include "../../Core/ImageLib.h"
+
 using std::cout;
 using std::endl;
 
@@ -17,12 +19,14 @@ public:
 protected:
     uint32_t m_TextureID;
     uint32_t m_BindSlotIndex;
+    uint8_t* m_Pixels;
+    bool m_Mipmaps;
 };
 
 class Texture2D : public Texture
 {
 public:
-    Texture2D();
+    Texture2D(const std::string& filePath, bool generateMipmaps = true, bool readable = false);
     ~Texture2D();
 };
 

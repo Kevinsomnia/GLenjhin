@@ -17,18 +17,18 @@ Scene::Scene()
 
     // Load shader and material
     Shader* surfaceShader = new Shader("res/shaders/StandardSurface.shader");
-    Material* surfaceMat = new Material(surfaceShader);
-    Texture2D* surfaceTexture = new Texture2D();
-    surfaceMat->setTexture("u_MainTex", surfaceTexture);
+    m_CurrMat = new Material(surfaceShader);
+    m_CurrTexture = new Texture2D("res\\textures\\test_grid.png");
+    m_CurrMat->setTexture("u_MainTex", m_CurrTexture);
 
     Entity* plane = new Entity(Vector3::zero, rotationToRad(Vector3(-90.0f, 180.0f, 0.0f)), Vector3::one * 20.0f);
-    plane->setupRenderer(MeshPrimitives::quad, surfaceMat);
+    plane->setupRenderer(MeshPrimitives::quad, m_CurrMat);
     m_Entities.push_back(plane);
 
     for (int i = 0; i < 10; i++)
     {
         Entity* entity = new Entity(Vector3(-0.65f, 0.45f, 2.95f), Vector3::zero, Vector3::one * 0.4f);
-        entity->setupRenderer(i % 2 == 0 ? MeshPrimitives::sphere : MeshPrimitives::cube, surfaceMat);
+        entity->setupRenderer(i % 2 == 0 ? MeshPrimitives::sphere : MeshPrimitives::cube, m_CurrMat);
         m_Entities.push_back(entity);
     }
 }
@@ -36,6 +36,8 @@ Scene::Scene()
 Scene::~Scene()
 {
     delete m_Camera;
+    delete m_CurrMat;
+    delete m_CurrTexture;
 
     for (Entity* entity : m_Entities)
         delete entity;

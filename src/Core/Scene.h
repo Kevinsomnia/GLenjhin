@@ -23,6 +23,8 @@ public:
     void draw();
 private:
     Camera* m_Camera;
+    Material* m_CurrMat;
+    Texture2D* m_CurrTexture;
     std::vector<Entity*> m_Entities;
     std::vector<Light*> m_Lights;
 
