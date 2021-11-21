@@ -22,8 +22,10 @@ private:
     bool m_Visible;
     float m_FPS;
     bool m_VSync;
+    bool m_MSAA;
 
     void updateVSync();
+    void updateMSAA();
 };
 
 #endif GUI_WINDOWS_H
