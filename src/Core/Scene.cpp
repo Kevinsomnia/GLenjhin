@@ -16,7 +16,7 @@ Scene::Scene()
     m_Lights.push_back(sun);
 
     // Load shader and material
-    Shader* surfaceShader = new Shader("res/shaders/StandardSurface.shader");
+    Shader* surfaceShader = new Shader("res\\shaders\\StandardSurface.shader");
     m_CurrMat = new Material(surfaceShader);
     m_CurrTexture = new Texture2D("res\\textures\\test_grid.png");
     m_CurrMat->setTexture("u_MainTex", m_CurrTexture);
@@ -116,10 +116,11 @@ void Scene::update()
 
 void Scene::draw()
 {
+    if (!m_Camera)
+        return;
+
     for (size_t i = 0; i < m_Entities.size(); i++)
-    {
         m_Entities[i]->draw(*m_Camera, m_Lights);
-    }
 }
 
 void Scene::setNewTexture(const std::string& texturePath)

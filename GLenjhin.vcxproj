@@ -33,6 +33,7 @@
     <ClCompile Include="src\Math\Vector.cpp" />
     <ClCompile Include="src\Renderer\Camera.cpp" />
     <ClCompile Include="src\Renderer\Entity.cpp" />
+    <ClCompile Include="src\Renderer\FullscreenTriangle.cpp" />
     <ClCompile Include="src\Renderer\Lighting\DirectionalLight.cpp" />
     <ClCompile Include="src\Renderer\Lighting\Light.cpp" />
     <ClCompile Include="src\Renderer\Material.cpp" />
@@ -70,6 +71,7 @@
     <ClInclude Include="src\Math\Vector.h" />
     <ClInclude Include="src\Renderer\Camera.h" />
     <ClInclude Include="src\Renderer\Entity.h" />
+    <ClInclude Include="src\Renderer\FullscreenTriangle.h" />
     <ClInclude Include="src\Renderer\Lighting\Lighting.h" />
     <ClInclude Include="src\Renderer\Material.h" />
     <ClInclude Include="src\Renderer\Mesh.h" />

@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <GL/glew.h>
-#include "../Renderer/Lighting/Lighting.h"
+#include "Lighting/Lighting.h"
 #include "Material.h"
 #include "Mesh.h"
 
