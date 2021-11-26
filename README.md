@@ -9,6 +9,7 @@ Compiled with MSVC, C++17
 - Primitive meshes
 - Blinn-Phong shading
 - Custom memory/binary stream implementation
+- Custom image library
 
 ## Dependencies
 
