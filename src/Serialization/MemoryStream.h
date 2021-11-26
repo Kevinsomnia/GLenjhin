@@ -27,9 +27,11 @@ public:
     MemoryStream(uint8_t* buffer, size_t bufferSize);
     ~MemoryStream();
 
-    inline size_t getByteOffset() const;
-    inline uint8_t getBitOffset() const;
+    inline size_t byteOffset() const;
+    inline uint8_t bitOffset() const;
     inline void setPosition(size_t byteOffset, uint8_t bitOffset = 0);
+    inline void setPtrPosition(uint8_t* ptr);
+    inline void setSize(size_t bytes);
     inline void advance(int64_t bytes, int64_t bits = 0);
     // Reset to previous byte boundary (sets bit offset to 0). Does nothing if we're already on one.
     inline void floorToByteBoundary();
@@ -39,7 +41,10 @@ public:
     inline uint8_t* begin() const;
     inline uint8_t* end() const;
     inline size_t size() const;
+    inline size_t capacity() const;
     inline bool hasData() const;
+    inline void allocateSpace(uint32_t numBytes, uint32_t numBits = 0);
+    inline uint8_t* getBufferCopy() const;
 
     operator uint8_t*() const { return m_DataPtr; }
 
@@ -118,12 +123,12 @@ private:
 // GENERAL FUNCTIONS
 // =========================
 
-size_t MemoryStream::getByteOffset() const
+size_t MemoryStream::byteOffset() const
 {
     return static_cast<size_t>(m_DataPtr - m_DataStart);
 }
 
-uint8_t MemoryStream::getBitOffset() const
+uint8_t MemoryStream::bitOffset() const
 {
     return m_BitOffset;
 }
@@ -132,6 +137,38 @@ void MemoryStream::setPosition(size_t byteOffset, uint8_t bitOffset)
 {
     m_DataPtr = m_DataStart + byteOffset;
     m_BitOffset = bitOffset & 7;
+}
+
+void MemoryStream::setPtrPosition(uint8_t* ptr)
+{
+    if (ptr < m_DataStart || ptr > m_DataEnd)
+        throw std::out_of_range("MemoryStream: Attempting to set pointer position out of range");
+
+    m_DataPtr = ptr;
+    m_BitOffset = 0;
+}
+
+void MemoryStream::setSize(size_t bytes)
+{
+    if (bytes > m_Size)
+    {
+        size_t extraBits = (8 - m_BitOffset) & 7;
+        extraBits += (m_Size - bytes) * 8;
+        expandLengthIfNeeded(extraBits);
+    }
+    else
+    {
+        // Reduction will not clear bytes or shrink capacity/buffer.
+        m_Size = bytes;
+        m_DataEnd = m_DataStart + m_Size;
+
+        // Clamp pointer.
+        if (m_DataPtr >= m_DataEnd)
+        {
+            m_DataPtr = m_DataEnd;
+            m_BitOffset = 0;
+        }
+    }
 }
 
 void MemoryStream::advance(int64_t bytes, int64_t bits)
@@ -189,9 +226,31 @@ size_t MemoryStream::size() const
     return m_Size;
 }
 
+size_t MemoryStream::capacity() const
+{
+    return m_Capacity;
+}
+
 bool MemoryStream::hasData() const
 {
     return m_DataPtr < m_DataEnd;
+}
+
+void MemoryStream::allocateSpace(uint32_t numBytes, uint32_t numBits)
+{
+    expandCapacityIfNeeded(static_cast<size_t>(numBytes * 8) + static_cast<size_t>(numBits));
+}
+
+uint8_t* MemoryStream::getBufferCopy() const
+{
+    uint8_t* result = new uint8_t[m_Size];
+    memcpy(result, m_DataStart, m_Size);
+
+    // Clear remaining bits in last byte if necessary (we don't automatically do this for performance)
+    if (m_Size > 0 && m_BitOffset != 0)
+        result[m_Size - 1] &= MASK_BITS(m_BitOffset);
+
+    return result;
 }
 
 
@@ -478,6 +537,9 @@ void MemoryStream::writeDouble(double value)
 
 void MemoryStream::write(uint8_t* data, uint32_t size)
 {
+    if (size == 0)
+        return;
+
     if (m_BitOffset == 0)
     {
         expandLengthIfNeeded(size * 8);
@@ -872,8 +934,7 @@ void MemoryStream::expandCapacityIfNeeded(size_t bitsNeeded)
         while (newCapacity < minCapacity)
             newCapacity <<= 1;
 
-        // Need the offset for the current buffer so we can recalculate the byte pointer for new buffer.
-        size_t byteOffset = getByteOffset();
+        size_t origByteOffset = byteOffset();
 
         // Allocate a new buffer. Copy old buffer contents over. Delete old buffer.
         uint8_t* newBuffer = new uint8_t[newCapacity];
@@ -884,7 +945,7 @@ void MemoryStream::expandCapacityIfNeeded(size_t bitsNeeded)
 
         // Update remaining properties.
         m_DataStart = newBuffer;
-        m_DataPtr = m_DataStart + byteOffset;
+        m_DataPtr = m_DataStart + origByteOffset;
         m_DataEnd = m_DataStart + m_Size;
         m_Capacity = newCapacity;
         m_CreatedData = true;
