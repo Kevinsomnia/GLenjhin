@@ -22,8 +22,6 @@ in vec2 v_UV;
 
 out vec4 fragColor;
 
-const float EXPOSURE = 3.5;
-
 void main()
 {
     const float DDX = 1.0 / 1600.0;

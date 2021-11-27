@@ -20,6 +20,7 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
 
     // Image effects
     m_ImageEffectChain = new ImageEffectChain();
+    m_ImageEffectChain->add(new Bloom());
     m_ImageEffectChain->add(new Tonemapping());
 
     // TODO: optimize this abomination
@@ -77,6 +78,10 @@ void GameContainer::update(double deltaTime)
 
 void GameContainer::render()
 {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
     // Render scene into FP framebuffer for HDR.
     glBindFramebuffer(GL_FRAMEBUFFER, m_ScreenBuffer->id());
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -88,10 +93,6 @@ void GameContainer::render()
     glBindFramebuffer(GL_FRAMEBUFFER, NULL);
     m_ImageEffectChain->render(m_ScreenBuffer);
 
-    // GUI overlay
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
     onGUI();
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

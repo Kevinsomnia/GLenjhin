@@ -35,3 +35,8 @@ void Texture::setWrapMode(TextureWrapMode wrapMode)
     glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_S, mode);
     glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_T, mode);
 }
+
+Vector2 Texture::texelSize() const
+{
+    return Vector2(1.0f / m_Width, 1.0f / m_Height);
+}

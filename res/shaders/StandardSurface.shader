@@ -46,7 +46,7 @@ void main()
 {
     // needs uniform
     vec3 ambient = vec3(0.1);
-    float shininess = 64.0;
+    float shininess = 128.0;
 
     // Lambert
     float nDotL = max(0.0, dot(-u_DirLightDir, wNormal));

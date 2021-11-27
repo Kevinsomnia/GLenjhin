@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 
 #include "../../Core/ImageLib.h"
+#include "../../Math/Vector.h"
 
 using std::cout;
 using std::cerr;
@@ -95,6 +96,7 @@ public:
     uint32_t id() const { return m_TextureID; }
     uint32_t width() const { return m_Width; }
     uint32_t height() const { return m_Height; }
+    Vector2 texelSize() const;
 protected:
     uint32_t m_TextureID;
     uint8_t* m_Pixels;
