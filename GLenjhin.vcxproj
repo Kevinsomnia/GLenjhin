@@ -33,6 +33,7 @@
     <ClCompile Include="src\Math\Vector.cpp" />
     <ClCompile Include="src\Renderer\Camera.cpp" />
     <ClCompile Include="src\Renderer\Entity.cpp" />
+    <ClCompile Include="src\Renderer\FullscreenTriangle.cpp" />
     <ClCompile Include="src\Renderer\Lighting\DirectionalLight.cpp" />
     <ClCompile Include="src\Renderer\Lighting\Light.cpp" />
     <ClCompile Include="src\Renderer\Material.cpp" />
@@ -40,6 +41,7 @@
     <ClCompile Include="src\Renderer\MeshPrimitives.cpp" />
     <ClCompile Include="src\Renderer\MeshRenderer.cpp" />
     <ClCompile Include="src\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Renderer\Skybox.cpp" />
     <ClCompile Include="src\Renderer\Texture\Texture.cpp" />
     <ClCompile Include="src\Renderer\Texture\Texture2D.cpp" />
     <ClCompile Include="src\Renderer\Transform.cpp" />
@@ -70,12 +72,14 @@
     <ClInclude Include="src\Math\Vector.h" />
     <ClInclude Include="src\Renderer\Camera.h" />
     <ClInclude Include="src\Renderer\Entity.h" />
+    <ClInclude Include="src\Renderer\FullscreenTriangle.h" />
     <ClInclude Include="src\Renderer\Lighting\Lighting.h" />
     <ClInclude Include="src\Renderer\Material.h" />
     <ClInclude Include="src\Renderer\Mesh.h" />
     <ClInclude Include="src\Renderer\MeshPrimitives.h" />
     <ClInclude Include="src\Renderer\MeshRenderer.h" />
     <ClInclude Include="src\Renderer\Shader.h" />
+    <ClInclude Include="src\Renderer\Skybox.h" />
     <ClInclude Include="src\Renderer\Texture\Texture.h" />
     <ClInclude Include="src\Renderer\Transform.h" />
     <ClInclude Include="src\Serialization\MemoryStream.h" />

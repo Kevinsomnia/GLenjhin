@@ -1,0 +1,58 @@
+#pragma vertex
+#version 330 core
+
+layout(location = 0) in vec2 aPosition;
+
+uniform mat4 u_VP;
+
+out vec2 v_UV;
+out vec3 v_RayDir;
+
+void main()
+{
+    gl_Position = vec4(aPosition, 0.0, 1.0);
+    v_UV = vec2(aPosition.x + 1.0, 1.0 - aPosition.y) * 0.5;
+    v_RayDir = inverse(mat3(u_VP)) * vec3(aPosition.xy, 1.0);
+}
+
+
+
+#pragma fragment
+#version 330 core
+
+uniform sampler2D u_MainTex;
+
+in vec2 v_UV;
+in vec3 v_RayDir;
+
+out vec4 fragColor;
+
+const float PI = 3.141592653589793;
+
+void main()
+{
+    // Interpolated ray direction won't always be normalized, even if it was already normalized in vertex shader.
+    vec3 worldDir = normalize(v_RayDir);
+
+    // [-pi/2, pi/2] -> [-0.25, 0.25]
+    float x = atan(worldDir.x / worldDir.z) * 0.5 / PI;
+
+    if ((worldDir.x >= 0.0 && worldDir.z < 0.0) || (worldDir.x < 0.0 && worldDir.z < 0.0))
+    {
+        // x can be negative or positive.
+        x += 0.5;
+    }
+    else if (worldDir.x < 0.0 && worldDir.z >= 0.0)
+    {
+        // x is negative
+        x += 1.0;
+    }
+
+    vec2 uv = vec2(
+        x,
+        (-asin(worldDir.y) / PI) + 0.5
+    );
+
+    vec4 color = textureLod(u_MainTex, uv, 0);
+    fragColor = vec4(color.rgb, 1.0);
+}

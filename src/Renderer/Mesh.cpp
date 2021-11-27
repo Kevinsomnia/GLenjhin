@@ -45,7 +45,7 @@ void Mesh::setup(Vertex* vertices, uint32_t vertexCount, uint32_t* indices, uint
     size_t stride = sizeof(Vertex);
 
     // Create a vertex buffer
-    unsigned int vbo;
+    uint32_t vbo;
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, vertexCount * stride, vertices, GL_STATIC_DRAW);

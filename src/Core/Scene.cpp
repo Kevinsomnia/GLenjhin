@@ -12,11 +12,13 @@ Scene::Scene()
     );
 
     // Setup lighting
-    Light* sun = new DirectionalLight(Vector3::zero, rotationToRad(Vector3(30.0f, 50.0f, 0.0f)));
+    Light* sun = new DirectionalLight(Vector3::zero, rotationToRad(Vector3(31.0f, 34.75f, 0.0f)));
     m_Lights.push_back(sun);
 
+    m_Skybox = new Skybox("res\\textures\\DaySkybox.png");
+
     // Load shader and material
-    Shader* surfaceShader = new Shader("res/shaders/StandardSurface.shader");
+    Shader* surfaceShader = new Shader("res\\shaders\\StandardSurface.shader");
     m_CurrMat = new Material(surfaceShader);
     m_CurrTexture = new Texture2D("res\\textures\\test_grid.png");
     m_CurrMat->setTexture("u_MainTex", m_CurrTexture);
@@ -116,10 +118,14 @@ void Scene::update()
 
 void Scene::draw()
 {
+    if (!m_Camera)
+        return;
+
+    if (m_Skybox)
+        m_Skybox->draw(*m_Camera);
+
     for (size_t i = 0; i < m_Entities.size(); i++)
-    {
         m_Entities[i]->draw(*m_Camera, m_Lights);
-    }
 }
 
 void Scene::setNewTexture(const std::string& texturePath)
