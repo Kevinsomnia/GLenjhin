@@ -15,10 +15,8 @@ public:
     Texture();
     ~Texture();
     virtual void bind(uint32_t slotIndex);
-    int getBindSlotIndex() const;
 protected:
     uint32_t m_TextureID;
-    uint32_t m_BindSlotIndex;
     uint8_t* m_Pixels;
     bool m_Mipmaps;
 };
