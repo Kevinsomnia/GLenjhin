@@ -41,7 +41,7 @@ private:
     Scene* m_CurrentScene;
     uint32_t m_ScreenFboID;
     BufferTexture* m_ColorBuffer;
-    Tonemapping* m_Tonemapping;
+    ImageEffectChain* m_ImageEffectChain;
     DebugOverlayWindow* m_DebugOverlayWindow;
     TexturePickerWindow* m_TexPickerWindow;
     ImGuiIO* m_ImGuiIO;

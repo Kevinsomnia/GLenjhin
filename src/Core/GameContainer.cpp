@@ -41,7 +41,8 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     glBindFramebuffer(GL_FRAMEBUFFER, NULL);
 
     // Image effects
-    m_Tonemapping = new Tonemapping();
+    m_ImageEffectChain = new ImageEffectChain();
+    m_ImageEffectChain->add(new Tonemapping());
 
     // ImGui
     ImGui::CreateContext();
@@ -108,7 +109,7 @@ void GameContainer::render()
 
     // Display framebuffer contents after running through post-processing chain.
     glBindFramebuffer(GL_FRAMEBUFFER, NULL);
-    m_Tonemapping->render(m_ColorBuffer);
+    m_ImageEffectChain->render(m_ColorBuffer);
 
     // GUI overlay
     ImGui_ImplOpenGL3_NewFrame();
