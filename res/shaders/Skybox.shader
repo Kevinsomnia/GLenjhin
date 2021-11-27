@@ -27,30 +27,16 @@ in vec3 v_RayDir;
 
 out vec4 fragColor;
 
-const float PI = 3.141592653589793;
+const float ONE_OVER_PI = 1.0 / 3.141592653589793;
 
 void main()
 {
     // Interpolated ray direction won't always be normalized, even if it was already normalized in vertex shader.
     vec3 worldDir = normalize(v_RayDir);
 
-    // [-pi/2, pi/2] -> [-0.25, 0.25]
-    float x = atan(worldDir.x / worldDir.z) * 0.5 / PI;
-
-    if ((worldDir.x >= 0.0 && worldDir.z < 0.0) || (worldDir.x < 0.0 && worldDir.z < 0.0))
-    {
-        // x can be negative or positive.
-        x += 0.5;
-    }
-    else if (worldDir.x < 0.0 && worldDir.z >= 0.0)
-    {
-        // x is negative
-        x += 1.0;
-    }
-
     vec2 uv = vec2(
-        x,
-        (-asin(worldDir.y) / PI) + 0.5
+        atan(worldDir.x, worldDir.z) * 0.5 * ONE_OVER_PI,   // [0, 2pi] -> [0, 1]
+        (-asin(worldDir.y) * ONE_OVER_PI) + 0.5
     );
 
     vec4 color = textureLod(u_MainTex, uv, 0);
