@@ -25,7 +25,7 @@ GaussianBlur::~GaussianBlur()
     m_DownsampleFboID = NULL;
 }
 
-void GaussianBlur::render(Texture* readBufferTex, uint32_t writeBufferID)
+void GaussianBlur::render(BufferTexture* readBufferTex, uint32_t writeBufferID)
 {
     // Downsample
     glViewport(0, 0, m_DownsampleBuffer->width(), m_DownsampleBuffer->height());

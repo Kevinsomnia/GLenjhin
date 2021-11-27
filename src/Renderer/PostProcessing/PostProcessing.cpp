@@ -14,7 +14,7 @@ ImageEffect::~ImageEffect()
     delete m_Triangle;
 }
 
-void ImageEffect::render(Texture* readBufferTex, uint32_t writeBufferID)
+void ImageEffect::render(BufferTexture* readBufferTex, uint32_t writeBufferID)
 {
     // Render `readBufferTex` to quad and output to writeBuffer FBO.
     glBindFramebuffer(GL_FRAMEBUFFER, writeBufferID);

@@ -8,7 +8,7 @@ class GaussianBlur : public ImageEffect
 public:
     GaussianBlur();
     ~GaussianBlur();
-    void render(Texture* readBufferTex, uint32_t writeBufferID) override;
+    void render(BufferTexture* readBufferTex, uint32_t writeBufferID) override;
 private:
     uint32_t m_DownsampleFboID;
     BufferTexture* m_DownsampleBuffer;

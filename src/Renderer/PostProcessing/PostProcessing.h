@@ -14,7 +14,7 @@ class ImageEffect
 public:
     ImageEffect(const std::string& shaderPath);
     ~ImageEffect();
-    virtual void render(Texture* readBufferTex, uint32_t writeBufferID);
+    virtual void render(BufferTexture* readBufferTex, uint32_t writeBufferID);
 protected:
     Shader* m_Shader;
     Material* m_Material;

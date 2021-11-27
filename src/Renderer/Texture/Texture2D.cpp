@@ -6,10 +6,16 @@ Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool rea
 {
     PNG::Result result = PNG::Load(filePath);
 
-    if (!result.isValid())
+    if (result.isValid())
+    {
+        m_Pixels = result.pixels;
+    }
+    else
+    {
+        m_Pixels = nullptr;
         return;
+    }
 
-    m_Pixels = result.pixels;
     m_Mipmaps = generateMipmaps;
 
     TextureEnumParams params = TextureEnumParams::FromFormat(result.info.hasAlpha() ? TextureFormat::RGBA32 : TextureFormat::RGB24, /*sRGB=*/true);
@@ -38,4 +44,6 @@ Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool rea
 
 Texture2D::~Texture2D()
 {
+    if (m_Pixels)
+        delete[] m_Pixels;
 }
