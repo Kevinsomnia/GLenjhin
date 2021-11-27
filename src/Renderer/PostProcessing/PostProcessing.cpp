@@ -32,13 +32,13 @@ void ImageEffect::render(BufferTexture* source, BufferTexture* destination, Mate
 ImageEffectChain::ImageEffectChain()
 {
     // Create 2 color buffers for ping-ponging, since we can't read and write to the same buffer when iterating through image effects.
-    for (int i = 0; i < m_ColorBuffers.size(); i++)
+    for (size_t i = 0; i < m_ColorBuffers.size(); i++)
         m_ColorBuffers[i] = new BufferTexture(1600, 900, /*depth=*/ 0, TextureFormat::RGBAHalf);
 }
 
 ImageEffectChain::~ImageEffectChain()
 {
-    for (int i = 0; i < m_ColorBuffers.size(); i++)
+    for (size_t i = 0; i < m_ColorBuffers.size(); i++)
         delete m_ColorBuffers[i];
 }
 

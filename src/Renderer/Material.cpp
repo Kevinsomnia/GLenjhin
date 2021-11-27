@@ -22,6 +22,22 @@ void Material::unbind() const
     glUseProgram(NULL);
 }
 
+void Material::setFloat(const string& uniformName, float v)
+{
+    int uniformId = getShaderUniformLocation(uniformName);
+
+    if (uniformId != -1)
+        m_UniformFloats[uniformId] = v;
+}
+
+void Material::setVector(const string& uniformName, const Vector2& v)
+{
+    int uniformId = getShaderUniformLocation(uniformName);
+
+    if (uniformId != -1)
+        m_UniformVec2[uniformId] = v;
+}
+
 void Material::setVector(const string& uniformName, const Vector3& v)
 {
     int uniformId = getShaderUniformLocation(uniformName);
@@ -66,11 +82,17 @@ int Material::getShaderUniformLocation(const string& name) const
 
 void Material::setUniforms() const
 {
+    for (const auto& pair : m_UniformFloats)
+        glUniform1f(pair.first, pair.second);
+    for (const auto& pair : m_UniformVec2)
+        glUniform2fv(pair.first, 1, pair.second);
     for (const auto& pair : m_UniformVec3)
         glUniform3fv(pair.first, 1, pair.second);
+
     for (const auto& pair : m_UniformMat4)
         glUniformMatrix4fv(pair.first, 1, GL_FALSE, pair.second);
 
+    // TEXTURES
     uint32_t unitIndex = 0;
     for (const auto& pair : m_UniformTex)
     {
