@@ -2,7 +2,7 @@
 
 uint32_t FullscreenTriangle::VAO_ID = 0;
 
-FullscreenTriangle::FullscreenTriangle(Material* material) : m_Material(material)
+FullscreenTriangle::FullscreenTriangle(Material* mat) : m_Material(mat)
 {
     std::array<float, 3*2> positions = {
         -1.0f, -1.0f,
@@ -26,7 +26,12 @@ FullscreenTriangle::~FullscreenTriangle()
 {
 }
 
-void FullscreenTriangle::draw()
+void FullscreenTriangle::setMaterial(Material* mat)
+{
+    m_Material = mat;
+}
+
+void FullscreenTriangle::draw() const
 {
     bool prevDepthTest = glIsEnabled(GL_DEPTH_TEST);
 

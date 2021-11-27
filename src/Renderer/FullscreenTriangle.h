@@ -10,9 +10,10 @@ using std::endl;
 class FullscreenTriangle
 {
 public:
-    FullscreenTriangle(Material* material);
+    FullscreenTriangle(Material* mat);
     ~FullscreenTriangle();
-    void draw();
+    void setMaterial(Material* mat);
+    void draw() const;
 private:
     static uint32_t VAO_ID;
 
