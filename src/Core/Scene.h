@@ -7,6 +7,7 @@
 #include "../Renderer/Camera.h"
 #include "../Renderer/Entity.h"
 #include "../Renderer/MeshPrimitives.h"
+#include "../Renderer/Skybox.h"
 #include "../Renderer/Lighting/Lighting.h"
 #include "../Renderer/Texture/Texture.h"
 #include "Time.h"
@@ -24,6 +25,7 @@ public:
     void setNewTexture(const std::string& texturePath);
 private:
     Camera* m_Camera;
+    Skybox* m_Skybox;
     Material* m_CurrMat;
     Texture2D* m_CurrTexture;
     std::vector<Entity*> m_Entities;
