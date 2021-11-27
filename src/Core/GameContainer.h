@@ -6,7 +6,10 @@
 #include <iostream>
 #include "../GUI/GUIWindows.h"
 #include "../Interaction/Input.h"
+#include "../Renderer/Texture/Texture.h"
 #include "../Renderer/MeshPrimitives.h"
+#include "../Renderer/PostProcessing/PostProcessing.h"
+#include "../Renderer/PostProcessing/Tonemapping.h"
 #include "Scene.h"
 #include "Time.h"
 
@@ -36,6 +39,9 @@ private:
 
     GLFWwindow* m_MainWindow;
     Scene* m_CurrentScene;
+    uint32_t m_ScreenFboID;
+    BufferTexture* m_ColorBuffer;
+    ImageEffectChain* m_ImageEffectChain;
     DebugOverlayWindow* m_DebugOverlayWindow;
     TexturePickerWindow* m_TexPickerWindow;
     ImGuiIO* m_ImGuiIO;

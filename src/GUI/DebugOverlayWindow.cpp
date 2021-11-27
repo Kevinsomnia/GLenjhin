@@ -1,9 +1,8 @@
 #include "GUIWindows.h"
 
-DebugOverlayWindow::DebugOverlayWindow() : m_Visible(true), m_FPS(0.0f), m_VSync(true), m_MSAA(true)
+DebugOverlayWindow::DebugOverlayWindow() : m_Visible(true), m_FPS(0.0f), m_VSync(true)
 {
     updateVSync();
-    updateMSAA();
 }
 
 void DebugOverlayWindow::draw()
@@ -25,8 +24,6 @@ void DebugOverlayWindow::draw()
 
             if (ImGui::Checkbox("V-Sync", &m_VSync))
                 updateVSync();
-            if (ImGui::Checkbox("4x MSAA", &m_MSAA))
-                updateMSAA();
         }
         ImGui::End();
     }
@@ -51,16 +48,4 @@ void DebugOverlayWindow::setFPS(float fps)
 void DebugOverlayWindow::updateVSync()
 {
     glfwSwapInterval(m_VSync);
-}
-
-void DebugOverlayWindow::updateMSAA()
-{
-    if (m_MSAA)
-    {
-        glEnable(GL_MULTISAMPLE);
-    }
-    else
-    {
-        glDisable(GL_MULTISAMPLE);
-    }
 }
