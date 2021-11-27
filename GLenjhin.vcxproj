@@ -40,6 +40,8 @@
     <ClCompile Include="src\Renderer\Mesh.cpp" />
     <ClCompile Include="src\Renderer\MeshPrimitives.cpp" />
     <ClCompile Include="src\Renderer\MeshRenderer.cpp" />
+    <ClCompile Include="src\Renderer\PostProcessing\PostProcessing.cpp" />
+    <ClCompile Include="src\Renderer\PostProcessing\Tonemapping.cpp" />
     <ClCompile Include="src\Renderer\Shader.cpp" />
     <ClCompile Include="src\Renderer\Skybox.cpp" />
     <ClCompile Include="src\Renderer\Texture\BufferTexture.cpp" />
@@ -79,6 +81,8 @@
     <ClInclude Include="src\Renderer\Mesh.h" />
     <ClInclude Include="src\Renderer\MeshPrimitives.h" />
     <ClInclude Include="src\Renderer\MeshRenderer.h" />
+    <ClInclude Include="src\Renderer\PostProcessing\PostProcessing.h" />
+    <ClInclude Include="src\Renderer\PostProcessing\Tonemapping.h" />
     <ClInclude Include="src\Renderer\Shader.h" />
     <ClInclude Include="src\Renderer\Skybox.h" />
     <ClInclude Include="src\Renderer\Texture\Texture.h" />

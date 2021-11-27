@@ -15,6 +15,34 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     Input::Init(window);
     MeshPrimitives::Init();
 
+    // Frame/screen buffers
+    glGenFramebuffers(1, &m_ScreenFboID);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_ScreenFboID);
+
+    // Color buffer
+    m_ColorBuffer = new BufferTexture(1600, 900, TextureFormat::RGBAHalf);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColorBuffer->id(), 0);
+    // Depth buffer
+    uint32_t depthRboID;
+    glGenRenderbuffers(1, &depthRboID);
+    glBindRenderbuffer(GL_RENDERBUFFER, depthRboID);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1600, 900);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRboID);
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    {
+        cerr << "HDR framebuffer (RGBAHalf) failed to initialize. This graphics device doesn't support HDR." << endl;
+        glDeleteFramebuffers(1, &m_ScreenFboID);
+        m_ScreenFboID = NULL;
+        delete m_ColorBuffer;
+        m_ColorBuffer = nullptr;
+    }
+
+    glBindFramebuffer(GL_FRAMEBUFFER, NULL);
+
+    // Image effects
+    m_Tonemapping = new Tonemapping();
+
     // ImGui
     ImGui::CreateContext();
     ImGui_ImplOpenGL3_Init();
@@ -36,6 +64,12 @@ GameContainer::~GameContainer()
 {
     if (m_Instance == this)
         m_Instance = nullptr;
+
+    glDeleteFramebuffers(1, &m_ScreenFboID);
+    m_ScreenFboID = NULL;
+
+    if (m_ColorBuffer)
+        delete m_ColorBuffer;
 
     delete m_CurrentScene;
     delete m_DebugOverlayWindow;
@@ -65,11 +99,18 @@ void GameContainer::update(double deltaTime)
 
 void GameContainer::render()
 {
+    // Render scene into FP framebuffer for HDR.
+    glBindFramebuffer(GL_FRAMEBUFFER, m_ScreenFboID);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if (m_CurrentScene)
         m_CurrentScene->draw();
 
+    // Display framebuffer contents after running through post-processing chain.
+    glBindFramebuffer(GL_FRAMEBUFFER, NULL);
+    m_Tonemapping->render(m_ColorBuffer);
+
+    // GUI overlay
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
