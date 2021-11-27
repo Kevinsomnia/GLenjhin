@@ -21,7 +21,9 @@ Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool rea
     glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, m_Mipmaps ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
     glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, params.internalFormat, result.info.width, result.info.height, 0, params.texFormat, params.valueType, m_Pixels);
+    m_Width = result.info.width;
+    m_Height = result.info.height;
+    glTexImage2D(GL_TEXTURE_2D, 0, params.internalFormat, m_Width, m_Height, 0, params.texFormat, params.valueType, m_Pixels);
 
     if (m_Mipmaps)
         glGenerateMipmap(GL_TEXTURE_2D);

@@ -1,6 +1,6 @@
 #include "Texture.h"
 
-Texture::Texture() : m_Pixels(nullptr), m_TextureID(0), m_Mipmaps(false)
+Texture::Texture() : m_Pixels(nullptr), m_TextureID(0), m_Width(0), m_Height(0), m_Mipmaps(false)
 {
 }
 

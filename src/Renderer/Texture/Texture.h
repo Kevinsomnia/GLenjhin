@@ -47,9 +47,13 @@ public:
     ~Texture();
     virtual void bind(uint32_t slotIndex) const;
     uint32_t id() const { return m_TextureID; }
+    uint32_t width() const { return m_Width; }
+    uint32_t height() const { return m_Height; }
 protected:
     uint32_t m_TextureID;
     uint8_t* m_Pixels;
+    uint32_t m_Width;
+    uint32_t m_Height;
     bool m_Mipmaps;
 };
 
