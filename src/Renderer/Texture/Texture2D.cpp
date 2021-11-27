@@ -12,10 +12,7 @@ Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool rea
     m_Pixels = result.pixels;
     m_Mipmaps = generateMipmaps;
 
-    bool hasAlpha = result.info.hasAlpha();
-    uint32_t texFormatBitDepth = hasAlpha ? GL_RGBA8 : GL_RGB8;
-    uint32_t texInternalFormat = hasAlpha ? GL_SRGB_ALPHA : GL_SRGB;
-    uint32_t texFormat = hasAlpha ? GL_RGBA : GL_RGB;
+    TextureEnumParams params = TextureEnumParams::FromFormat(result.info.hasAlpha() ? TextureFormat::RGBA32 : TextureFormat::RGB24, /*sRGB=*/true);
 
     glGenTextures(1, &m_TextureID);
     glBindTexture(GL_TEXTURE_2D, m_TextureID);
@@ -24,7 +21,7 @@ Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool rea
     glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, m_Mipmaps ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
     glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, texInternalFormat, result.info.width, result.info.height, 0, texFormat, GL_UNSIGNED_BYTE, m_Pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, params.internalFormat, result.info.width, result.info.height, 0, params.texFormat, params.valueType, m_Pixels);
 
     if (m_Mipmaps)
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -39,5 +36,4 @@ Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool rea
 
 Texture2D::~Texture2D()
 {
-    glDeleteTextures(1, &m_TextureID);
 }

@@ -42,6 +42,7 @@
     <ClCompile Include="src\Renderer\MeshRenderer.cpp" />
     <ClCompile Include="src\Renderer\Shader.cpp" />
     <ClCompile Include="src\Renderer\Skybox.cpp" />
+    <ClCompile Include="src\Renderer\Texture\BufferTexture.cpp" />
     <ClCompile Include="src\Renderer\Texture\Texture.cpp" />
     <ClCompile Include="src\Renderer\Texture\Texture2D.cpp" />
     <ClCompile Include="src\Renderer\Transform.cpp" />

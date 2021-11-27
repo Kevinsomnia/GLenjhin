@@ -2,9 +2,7 @@
 
 GameContainer* GameContainer::m_Instance = nullptr;
 
-GameContainer::GameContainer(GLFWwindow* window)
-    : m_MainWindow(window), m_CurrentScene(nullptr), m_DebugOverlayWindow(nullptr), m_TexPickerWindow(nullptr), m_ImGuiIO(nullptr),
-    m_FrameCountInLastSecond(0), m_LastFPSRecordTime(0.0)
+GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_FrameCountInLastSecond(0), m_LastFPSRecordTime(0.0)
 {
     m_Instance = this;
 
