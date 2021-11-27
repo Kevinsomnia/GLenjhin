@@ -2,13 +2,37 @@
 
 using ImageLib::PNG;
 
+Texture2D::Texture2D(int width, int height, TextureFormat colorFormat) : Texture()
+{
+    m_Width = width;
+    m_Height = height;
+    m_Pixels = nullptr;
+    m_Mipmaps = false;
+
+    glGenTextures(1, &m_TextureID);
+    glBindTexture(GL_TEXTURE_2D, m_TextureID);
+
+    // TODO: set filtering parameter linear
+    glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    // TODO: set wrap mode repeat
+
+    GLTextureParams params = GLTextureParams::FromFormat(colorFormat, /*sRGB=*/false);
+    glTexImage2D(GL_TEXTURE_2D, 0, params.internalFormat, m_Width, m_Height, 0, params.texFormat, params.valueType, m_Pixels);
+}
+
+// Import texture from PNG file.
 Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool readable) : Texture()
 {
     PNG::Result result = PNG::Load(filePath);
 
     if (result.isValid())
     {
+        m_Width = result.info.width;
+        m_Height = result.info.height;
         m_Pixels = result.pixels;
+        m_Mipmaps = generateMipmaps;
     }
     else
     {
@@ -16,19 +40,16 @@ Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool rea
         return;
     }
 
-    m_Mipmaps = generateMipmaps;
-
-    TextureEnumParams params = TextureEnumParams::FromFormat(result.info.hasAlpha() ? TextureFormat::RGBA32 : TextureFormat::RGB24, /*sRGB=*/true);
-
     glGenTextures(1, &m_TextureID);
     glBindTexture(GL_TEXTURE_2D, m_TextureID);
 
-    // TODO: filtering parameter.
+    // TODO: set filtering parameter linear
     glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, m_Mipmaps ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
     glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    m_Width = result.info.width;
-    m_Height = result.info.height;
+    // TODO: set wrap mode repeat
+
+    GLTextureParams params = GLTextureParams::FromFormat(result.info.hasAlpha() ? TextureFormat::RGBA32 : TextureFormat::RGB24, /*sRGB=*/true);
     glTexImage2D(GL_TEXTURE_2D, 0, params.internalFormat, m_Width, m_Height, 0, params.texFormat, params.valueType, m_Pixels);
 
     if (m_Mipmaps)

@@ -17,25 +17,25 @@ enum class TextureFormat
     RGBAHalf    // 16 bits per channel (floating point), RGBA
 };
 
-struct TextureEnumParams
+struct GLTextureParams
 {
     GLint internalFormat;
     GLint texFormat;
     GLint valueType;
 
-    static TextureEnumParams FromFormat(TextureFormat format, bool sRGB)
+    static GLTextureParams FromFormat(TextureFormat format, bool sRGB)
     {
         switch (format)
         {
             case TextureFormat::RGB24:
-                return TextureEnumParams { sRGB ? GL_SRGB : GL_RGB, GL_RGB, GL_UNSIGNED_BYTE };
+                return GLTextureParams { sRGB ? GL_SRGB : GL_RGB, GL_RGB, GL_UNSIGNED_BYTE };
             case TextureFormat::RGBA32:
-                return TextureEnumParams { sRGB ? GL_SRGB_ALPHA : GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE };
+                return GLTextureParams { sRGB ? GL_SRGB_ALPHA : GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE };
             case TextureFormat::RGBAHalf:
-                return TextureEnumParams { GL_RGBA16F, GL_RGBA, GL_HALF_FLOAT };
+                return GLTextureParams { GL_RGBA16F, GL_RGBA, GL_HALF_FLOAT };
             default:
-                cerr << "Invalid TextureFormat" << endl;
-                return TextureEnumParams();
+                cerr << "Invalid TextureFormat: cannot convert from TextureFormat to TextureGLParams" << endl;
+                return GLTextureParams();
         }
     }
 };
@@ -60,6 +60,7 @@ protected:
 class Texture2D : public Texture
 {
 public:
+    Texture2D(int width, int height, TextureFormat colorFormat);
     Texture2D(const std::string& filePath, bool generateMipmaps = true, bool readable = false);
     ~Texture2D();
 };
@@ -67,7 +68,7 @@ public:
 class BufferTexture : public Texture
 {
 public:
-    BufferTexture(int width, int height, TextureFormat format);
+    BufferTexture(int width, int height, TextureFormat colorFormat);
     ~BufferTexture();
 };
 
