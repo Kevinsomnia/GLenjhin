@@ -12,8 +12,8 @@ void Material::bind() const
 {
     if (m_Shader)
     {
-        setUniforms();
         m_Shader->use();
+        setUniforms();
     }
 }
 
