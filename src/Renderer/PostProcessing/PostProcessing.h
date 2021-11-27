@@ -15,7 +15,7 @@ public:
     ImageEffect(const std::string& shaderPath);
     ~ImageEffect();
     virtual void render(Texture* readBufferTex, uint32_t writeBufferID);
-private:
+protected:
     Shader* m_Shader;
     Material* m_Material;
     FullscreenTriangle* m_Triangle;

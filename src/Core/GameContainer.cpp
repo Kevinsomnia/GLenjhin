@@ -44,6 +44,10 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     m_ImageEffectChain = new ImageEffectChain();
     m_ImageEffectChain->add(new Tonemapping());
 
+    // TODO: optimize this abomination
+    // for (int i = 0; i < 16; i++)
+    //     m_ImageEffectChain->add(new GaussianBlur());
+
     // ImGui
     ImGui::CreateContext();
     ImGui_ImplOpenGL3_Init();
