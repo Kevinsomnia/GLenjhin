@@ -16,7 +16,7 @@ Texture2D::Texture2D(int width, int height, TextureFormat colorFormat) : Texture
     setWrapMode(TextureWrapMode::Repeat);
 
     GLTextureParams params = GLTextureParams::FromFormat(colorFormat, /*sRGB=*/false);
-    glTexImage2D(GL_TEXTURE_2D, 0, params.internalFormat, m_Width, m_Height, 0, params.texFormat, params.valueType, m_Pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, params.internalFormat, m_Width, m_Height, 0, params.texFormat, params.valueType, nullptr);
 }
 
 // Import texture from PNG file.

@@ -40,8 +40,7 @@ private:
 
     GLFWwindow* m_MainWindow;
     Scene* m_CurrentScene;
-    uint32_t m_ScreenFboID;
-    BufferTexture* m_ColorBuffer;
+    BufferTexture* m_ScreenBuffer;
     ImageEffectChain* m_ImageEffectChain;
     DebugOverlayWindow* m_DebugOverlayWindow;
     TexturePickerWindow* m_TexPickerWindow;

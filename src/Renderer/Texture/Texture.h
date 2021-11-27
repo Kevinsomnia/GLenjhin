@@ -116,8 +116,17 @@ public:
 class BufferTexture : public Texture
 {
 public:
-    BufferTexture(int width, int height, TextureFormat colorFormat);
+    BufferTexture(int width, int height, int depth, TextureFormat colorFormat);
     ~BufferTexture();
+    Texture2D* colorTexture() const;
+    void bind(uint32_t slotIndex) const override;
+    void setFilterMode(TextureFilterMode filterMode) override;
+    void setWrapMode(TextureWrapMode wrapMode) override;
+protected:
+    Texture2D* m_ColorTexture;
+    uint32_t m_DepthTextureID;  // prob will be an readable texture later
+
+    void internalDispose();
 };
 
 #endif  // TEXTURE_H

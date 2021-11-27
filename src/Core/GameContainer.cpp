@@ -15,30 +15,8 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     Input::Init(window);
     MeshPrimitives::Init();
 
-    // Frame/screen buffers
-    glGenFramebuffers(1, &m_ScreenFboID);
-    glBindFramebuffer(GL_FRAMEBUFFER, m_ScreenFboID);
-
-    // Color buffer
-    m_ColorBuffer = new BufferTexture(1600, 900, TextureFormat::RGBAHalf);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColorBuffer->id(), 0);
-    // Depth buffer
-    uint32_t depthRboID;
-    glGenRenderbuffers(1, &depthRboID);
-    glBindRenderbuffer(GL_RENDERBUFFER, depthRboID);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1600, 900);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRboID);
-
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-    {
-        cerr << "HDR framebuffer (RGBAHalf) failed to initialize. This graphics device doesn't support HDR." << endl;
-        glDeleteFramebuffers(1, &m_ScreenFboID);
-        m_ScreenFboID = NULL;
-        delete m_ColorBuffer;
-        m_ColorBuffer = nullptr;
-    }
-
-    glBindFramebuffer(GL_FRAMEBUFFER, NULL);
+    // HDR screen buffer
+    m_ScreenBuffer = new BufferTexture(1600, 900, /*depth=*/ 32, TextureFormat::RGBAHalf);
 
     // Image effects
     m_ImageEffectChain = new ImageEffectChain();
@@ -70,12 +48,7 @@ GameContainer::~GameContainer()
     if (m_Instance == this)
         m_Instance = nullptr;
 
-    glDeleteFramebuffers(1, &m_ScreenFboID);
-    m_ScreenFboID = NULL;
-
-    if (m_ColorBuffer)
-        delete m_ColorBuffer;
-
+    delete m_ScreenBuffer;
     delete m_CurrentScene;
     delete m_DebugOverlayWindow;
     delete m_TexPickerWindow;
@@ -105,7 +78,7 @@ void GameContainer::update(double deltaTime)
 void GameContainer::render()
 {
     // Render scene into FP framebuffer for HDR.
-    glBindFramebuffer(GL_FRAMEBUFFER, m_ScreenFboID);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_ScreenBuffer->id());
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if (m_CurrentScene)
@@ -113,7 +86,7 @@ void GameContainer::render()
 
     // Display framebuffer contents after running through post-processing chain.
     glBindFramebuffer(GL_FRAMEBUFFER, NULL);
-    m_ImageEffectChain->render(m_ColorBuffer);
+    m_ImageEffectChain->render(m_ScreenBuffer);
 
     // GUI overlay
     ImGui_ImplOpenGL3_NewFrame();

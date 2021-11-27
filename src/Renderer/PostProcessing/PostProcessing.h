@@ -14,7 +14,7 @@ class ImageEffect
 public:
     ImageEffect(const std::string& shaderPath);
     ~ImageEffect();
-    virtual void render(BufferTexture* readBufferTex, uint32_t writeBufferID);
+    virtual void render(BufferTexture* source, BufferTexture* destination);
 protected:
     Shader* m_Shader;
     Material* m_Material;
@@ -29,10 +29,7 @@ public:
     void add(ImageEffect* effect);
     void render(BufferTexture* screen);
 private:
-    static const int NUM_BUFFERS = 2;
-
-    uint32_t m_FboIDs[NUM_BUFFERS];
-    BufferTexture* m_ColorBuffers[NUM_BUFFERS];
+    std::array<BufferTexture*, 2> m_ColorBuffers;
     std::vector<ImageEffect*> m_Effects;
 };
 
