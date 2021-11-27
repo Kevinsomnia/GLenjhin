@@ -17,6 +17,50 @@ enum class TextureFormat
     RGBAHalf    // 16 bits per channel (floating point), RGBA
 };
 
+enum class TextureWrapMode
+{
+    Repeat, // GL_REPEAT
+    Clamp,  // GL_CLAMP_TO_EDGE
+    Mirror  // GL_MIRRORED_REPEAT
+};
+
+static GLint GetGLTextureWrapMode(TextureWrapMode mode)
+{
+    switch (mode)
+    {
+        case TextureWrapMode::Repeat:
+            return GL_REPEAT;
+        case TextureWrapMode::Clamp:
+            return GL_CLAMP_TO_EDGE;
+        case TextureWrapMode::Mirror:
+            return GL_MIRRORED_REPEAT;
+        default:
+            cerr << "Unimplemented TextureWrapMode conversion " << static_cast<uint32_t>(mode) << endl;
+            return GL_NONE;
+    }
+}
+
+enum class TextureFilterMode
+{
+    Point,      // GL_NEAREST
+    Bilinear,   // GL_LINEAR
+    // Trilinear TODO: make this functional
+};
+
+static GLint GetGLTextureFilterMode(TextureFilterMode mode, bool mipmap = false, bool minification = true)
+{
+    switch (mode)
+    {
+        case TextureFilterMode::Point:
+            return mipmap && minification ? GL_NEAREST_MIPMAP_NEAREST : GL_NEAREST;
+        case TextureFilterMode::Bilinear:
+            return mipmap && minification ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR;
+        default:
+            cerr << "Unimplemented TextureFilterMode conversion " << static_cast<uint32_t>(mode) << endl;
+            return GL_NONE;
+    }
+}
+
 struct GLTextureParams
 {
     GLint internalFormat;
@@ -34,7 +78,7 @@ struct GLTextureParams
             case TextureFormat::RGBAHalf:
                 return GLTextureParams { GL_RGBA16F, GL_RGBA, GL_HALF_FLOAT };
             default:
-                cerr << "Invalid TextureFormat: cannot convert from TextureFormat to TextureGLParams" << endl;
+                cerr << "Unimplemented TextureFormat to TextureGLParams conversion " << static_cast<uint32_t>(format) << endl;
                 return GLTextureParams();
         }
     }
@@ -46,6 +90,8 @@ public:
     Texture();
     ~Texture();
     virtual void bind(uint32_t slotIndex) const;
+    virtual void setFilterMode(TextureFilterMode filterMode);
+    virtual void setWrapMode(TextureWrapMode wrapMode);
     uint32_t id() const { return m_TextureID; }
     uint32_t width() const { return m_Width; }
     uint32_t height() const { return m_Height; }
@@ -55,6 +101,8 @@ protected:
     uint32_t m_Width;
     uint32_t m_Height;
     bool m_Mipmaps;
+    TextureFilterMode m_FilterMode;
+    TextureWrapMode m_WrapMode;
 };
 
 class Texture2D : public Texture

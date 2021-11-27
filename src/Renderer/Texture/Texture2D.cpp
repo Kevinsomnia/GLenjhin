@@ -12,11 +12,8 @@ Texture2D::Texture2D(int width, int height, TextureFormat colorFormat) : Texture
     glGenTextures(1, &m_TextureID);
     glBindTexture(GL_TEXTURE_2D, m_TextureID);
 
-    // TODO: set filtering parameter linear
-    glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // TODO: set wrap mode repeat
+    setFilterMode(TextureFilterMode::Bilinear);
+    setWrapMode(TextureWrapMode::Repeat);
 
     GLTextureParams params = GLTextureParams::FromFormat(colorFormat, /*sRGB=*/false);
     glTexImage2D(GL_TEXTURE_2D, 0, params.internalFormat, m_Width, m_Height, 0, params.texFormat, params.valueType, m_Pixels);
@@ -43,11 +40,8 @@ Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool rea
     glGenTextures(1, &m_TextureID);
     glBindTexture(GL_TEXTURE_2D, m_TextureID);
 
-    // TODO: set filtering parameter linear
-    glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, m_Mipmaps ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
-    glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // TODO: set wrap mode repeat
+    setFilterMode(TextureFilterMode::Bilinear);
+    setWrapMode(TextureWrapMode::Repeat);
 
     GLTextureParams params = GLTextureParams::FromFormat(result.info.hasAlpha() ? TextureFormat::RGBA32 : TextureFormat::RGB24, /*sRGB=*/true);
     glTexImage2D(GL_TEXTURE_2D, 0, params.internalFormat, m_Width, m_Height, 0, params.texFormat, params.valueType, m_Pixels);
