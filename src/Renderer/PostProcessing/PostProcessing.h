@@ -15,6 +15,7 @@ public:
     ImageEffect(const std::string& shaderPath);
     ~ImageEffect();
     virtual void render(BufferTexture* source, BufferTexture* destination);
+    void render(BufferTexture* source, BufferTexture* destination, Material* mat);
 protected:
     Shader* m_Shader;
     Material* m_Material;

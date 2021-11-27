@@ -4,7 +4,7 @@ ImageEffect::ImageEffect(const std::string& shaderPath)
 {
     m_Shader = new Shader(shaderPath);
     m_Material = new Material(m_Shader);
-    m_Triangle = new FullscreenTriangle(m_Material);
+    m_Triangle = new FullscreenTriangle(nullptr);
 }
 
 ImageEffect::~ImageEffect()
@@ -16,10 +16,15 @@ ImageEffect::~ImageEffect()
 
 void ImageEffect::render(BufferTexture* source, BufferTexture* destination)
 {
+    render(source, destination, m_Material);
+}
+
+void ImageEffect::render(BufferTexture* source, BufferTexture* destination, Material* mat)
+{
     // Render `readBufferTex` to quad and output to writeBuffer FBO.
     glBindFramebuffer(GL_FRAMEBUFFER, destination ? destination->id() : NULL);
-    m_Material->setTexture("u_MainTex", source->colorTexture());
-    m_Material->bind();
+    mat->setTexture("u_MainTex", source->colorTexture());
+    m_Triangle->setMaterial(mat);
     m_Triangle->draw();
 }
 
