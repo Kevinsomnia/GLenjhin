@@ -132,6 +132,9 @@
     <ClCompile Include="src\Renderer\PostProcessing\Bloom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Renderer\PostProcessing\GlobalFog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Application.h">
@@ -258,6 +261,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Renderer\PostProcessing\Bloom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\PostProcessing\GlobalFog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

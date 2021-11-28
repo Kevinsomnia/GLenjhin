@@ -5,7 +5,7 @@ BufferTexture::BufferTexture(int width, int height, int depth, TextureFormat col
     m_Width = width;
     m_Height = height;
     m_ColorTexture = nullptr;
-    m_DepthTextureID = NULL;
+    m_DepthTexture = nullptr;
 
     glGenFramebuffers(1, &m_TextureID);
     glBindFramebuffer(GL_FRAMEBUFFER, m_TextureID);
@@ -15,21 +15,21 @@ BufferTexture::BufferTexture(int width, int height, int depth, TextureFormat col
 
     if (depth != 0)
     {
-        GLint depthMode = GL_DEPTH_COMPONENT16;
+        TextureFormat depthMode = TextureFormat::Depth16;
 
         if (depth == 24)
         {
-            depthMode = GL_DEPTH_COMPONENT24;
+            depthMode = TextureFormat::Depth24;
         }
         else if (depth == 32)
         {
-            depthMode = GL_DEPTH_COMPONENT32;
+            depthMode = TextureFormat::Depth32;
         }
 
-        glGenRenderbuffers(1, &m_DepthTextureID);
-        glBindRenderbuffer(GL_RENDERBUFFER, m_DepthTextureID);
-        glRenderbufferStorage(GL_RENDERBUFFER, depthMode, width, height);
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DepthTextureID);
+        // Depth texture should always have point filtering. Might change in the future.
+        m_DepthTexture = new Texture2D(width, height, depthMode);
+        m_DepthTexture->setFilterMode(TextureFilterMode::Point);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthTexture->id(), 0);
     }
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE)
@@ -57,6 +57,11 @@ Texture2D* BufferTexture::colorTexture() const
     return m_ColorTexture;
 }
 
+Texture2D* BufferTexture::depthTexture() const
+{
+    return m_DepthTexture;
+}
+
 void BufferTexture::bind(uint32_t slotIndex) const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_TextureID);
@@ -66,14 +71,16 @@ void BufferTexture::setFilterMode(TextureFilterMode filterMode)
 {
     m_FilterMode = filterMode;
     m_ColorTexture->setFilterMode(filterMode);
-    // TODO: set depth texture filter mode if that becomes a Texture2D.
+    // Don't change depth texture filter mode from point filtering.
 }
 
 void BufferTexture::setWrapMode(TextureWrapMode wrapMode)
 {
     m_WrapMode = wrapMode;
     m_ColorTexture->setWrapMode(wrapMode);
-    // TODO: set depth texture filter mode if that becomes a Texture2D.
+
+    if (m_DepthTexture)
+        m_DepthTexture->setWrapMode(wrapMode);
 }
 
 void BufferTexture::internalDispose()
@@ -87,9 +94,9 @@ void BufferTexture::internalDispose()
         m_ColorTexture = nullptr;
     }
 
-    if (m_DepthTextureID != NULL)
+    if (m_DepthTexture)
     {
-        glDeleteFramebuffers(1, &m_DepthTextureID);
-        m_DepthTextureID = NULL;
+        delete m_DepthTexture;
+        m_DepthTexture = nullptr;
     }
 }

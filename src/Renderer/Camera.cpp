@@ -5,6 +5,14 @@ Camera::Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float 
 {
     m_Transform = new Transform(pos, rot, Vector3::one);
     update();
+
+    // This needs to update whenever near or far clip plane changes.
+    m_ProjectionParams = Vector4(
+        m_NearClip,
+        m_FarClip,
+        m_FarClip - m_NearClip,
+        2.0f * m_NearClip * m_FarClip
+    );
 }
 
 Camera::~Camera()
@@ -30,4 +38,9 @@ Transform* Camera::getTransform() const
 Matrix4x4 Camera::getViewProjMatrix() const
 {
     return m_ViewProjMatrix;
+}
+
+Vector4 Camera::getProjectionParams() const
+{
+    return m_ProjectionParams;
 }

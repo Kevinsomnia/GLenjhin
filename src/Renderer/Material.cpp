@@ -46,6 +46,14 @@ void Material::setVector(const string& uniformName, const Vector3& v)
         m_UniformVec3[uniformId] = v;
 }
 
+void Material::setVector(const string& uniformName, const Vector4& v)
+{
+    int uniformId = getShaderUniformLocation(uniformName);
+
+    if (uniformId != -1)
+        m_UniformVec4[uniformId] = v;
+}
+
 void Material::setMatrix(const string& uniformName, const Matrix4x4& mat)
 {
     int uniformId = getShaderUniformLocation(uniformName);
@@ -88,6 +96,8 @@ void Material::setUniforms() const
         glUniform2fv(pair.first, 1, pair.second);
     for (const auto& pair : m_UniformVec3)
         glUniform3fv(pair.first, 1, pair.second);
+    for (const auto& pair : m_UniformVec4)
+        glUniform4fv(pair.first, 1, pair.second);
 
     for (const auto& pair : m_UniformMat4)
         glUniformMatrix4fv(pair.first, 1, GL_FALSE, pair.second);

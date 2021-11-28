@@ -6,8 +6,6 @@
 #include "../Material.h"
 #include "PostProcessing.h"
 
-#include "imgui.h"
-
 class Bloom : public ImageEffect
 {
 public:

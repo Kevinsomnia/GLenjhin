@@ -58,6 +58,11 @@ Scene::~Scene()
     m_Lights.clear();
 }
 
+Camera* Scene::getCamera() const
+{
+    return m_Camera;
+}
+
 void Scene::update()
 {
     double t = Time::GetTime();

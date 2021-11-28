@@ -15,11 +15,15 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     Input::Init(window);
     MeshPrimitives::Init();
 
+    // Load scene.
+    m_CurrentScene = new Scene();
+
     // HDR screen buffer
     m_ScreenBuffer = new BufferTexture(1600, 900, /*depth=*/ 32, TextureFormat::RGBAHalf);
 
     // Image effects
-    m_ImageEffectChain = new ImageEffectChain();
+    m_ImageEffectChain = new ImageEffectChain(m_CurrentScene->getCamera());
+    m_ImageEffectChain->add(new GlobalFog());
     m_ImageEffectChain->add(new Bloom());
     m_ImageEffectChain->add(new Tonemapping());
     // m_ImageEffectChain->add(new GaussianBlur());     // TODO: runtime toggle
@@ -32,9 +36,6 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
 
     // Lock mouse movement by default to enable free look + movement
     Input::SetMouseCursorState(MouseCursorState::Locked);
-
-    // Load scene.
-    m_CurrentScene = new Scene();
 
     // GUI windows
     m_DebugOverlayWindow = new DebugOverlayWindow();

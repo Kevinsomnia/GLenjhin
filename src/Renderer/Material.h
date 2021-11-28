@@ -23,6 +23,7 @@ public:
     void setFloat(const string& uniformName, float v);
     void setVector(const string& uniformName, const Vector2& v);
     void setVector(const string& uniformName, const Vector3& v);
+    void setVector(const string& uniformName, const Vector4& v);
     void setMatrix(const string& uniformName, const Matrix4x4& mat);
     void setTexture(const string& uniformName, Texture* tex);
 private:
@@ -32,6 +33,7 @@ private:
     std::unordered_map<GLint, float> m_UniformFloats;
     std::unordered_map<GLint, Vector2> m_UniformVec2;
     std::unordered_map<GLint, Vector3> m_UniformVec3;
+    std::unordered_map<GLint, Vector4> m_UniformVec4;
     std::unordered_map<GLint, Matrix4x4> m_UniformMat4;
     std::unordered_map<GLint, Texture*> m_UniformTex;
 
