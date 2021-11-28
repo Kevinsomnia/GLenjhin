@@ -25,7 +25,7 @@ TexturePickerWindow::TexturePickerWindow(std::function<void(const std::string&)>
 
 void TexturePickerWindow::draw()
 {
-    ImGui::Begin("Texture Picker");
+    if (ImGui::Begin("Texture Picker"))
     {
         ImGui::Text("%d textures", m_TexturePaths.size());
         ImGui::BeginChild("TextureList");
