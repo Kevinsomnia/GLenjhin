@@ -47,8 +47,13 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     Input::SetMouseCursorState(MouseCursorState::Locked);
 
     // GUI windows
-    m_DebugOverlayWindow = new DebugOverlayWindow();
     m_TexPickerWindow = new TexturePickerWindow(&HandleSelectedNewTexture);
+
+    m_DebugTexturesWindow = new DebugTextureListWindow("Buffers Debug");
+    m_DebugTexturesWindow->setOpen(false);
+    m_DebugTexturesWindow->add(m_ScreenBuffer->depthTexture(), "Depth", /*flip=*/ true);
+
+    m_DebugOverlayWindow = new DebugOverlayWindow(m_DebugTexturesWindow);
 }
 
 GameContainer::~GameContainer()
@@ -192,6 +197,7 @@ void GameContainer::onGUI()
 {
     m_DebugOverlayWindow->draw();
     m_TexPickerWindow->draw();
+    m_DebugTexturesWindow->draw();
 }
 
 void GameContainer::HandleSelectedNewTexture(const std::string& path)

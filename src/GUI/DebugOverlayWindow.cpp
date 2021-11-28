@@ -1,6 +1,7 @@
 #include "GUIWindows.h"
 
-DebugOverlayWindow::DebugOverlayWindow() : m_Visible(true), m_FPS(0.0f), m_VSync(true)
+DebugOverlayWindow::DebugOverlayWindow(DebugTextureListWindow* debugBuffersWindow)
+    : m_Visible(true), m_FPS(0.0f), m_VSync(true), m_DebugBuffersWindow(debugBuffersWindow)
 {
     updateVSync();
 }
@@ -15,6 +16,7 @@ void DebugOverlayWindow::draw()
                                             ImGuiWindowFlags_NoCollapse |
                                             (ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus);
 
+        ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
         ImGui::SetNextWindowPos(ImVec2(0, 0));
         ImGui::Begin("Debug", NULL, windowFlags);
         {
@@ -24,8 +26,14 @@ void DebugOverlayWindow::draw()
 
             if (ImGui::Checkbox("V-Sync", &m_VSync))
                 updateVSync();
+
+            if (m_DebugBuffersWindow && !m_DebugBuffersWindow->isOpen() && ImGui::Button("Debug Buffers"))
+            {
+                m_DebugBuffersWindow->setOpen(true);
+            }
         }
         ImGui::End();
+        ImGui::PopStyleColor();
     }
 }
 

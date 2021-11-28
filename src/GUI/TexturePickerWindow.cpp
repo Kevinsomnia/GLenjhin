@@ -1,6 +1,6 @@
 #include "GUIWindows.h"
 
-TexturePickerWindow::TexturePickerWindow(std::function<void(const std::string&)> selectCallback)
+TexturePickerWindow::TexturePickerWindow(std::function<void(const std::string&)> selectCallback) : m_WindowOpened(true)
 {
     std::string baseDirPath = "res\\textures";
 
@@ -25,7 +25,10 @@ TexturePickerWindow::TexturePickerWindow(std::function<void(const std::string&)>
 
 void TexturePickerWindow::draw()
 {
-    if (ImGui::Begin("Texture Picker"))
+    if (!m_WindowOpened)
+        return;
+
+    if (ImGui::Begin("Texture Picker", &m_WindowOpened))
     {
         ImGui::Text("%d textures", m_TexturePaths.size());
         ImGui::BeginChild("TextureList");

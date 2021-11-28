@@ -46,11 +46,13 @@ private:
     Camera* m_MainCamera;
     BufferTexture* m_ScreenBuffer;
     ImageEffectChain* m_ImageEffectChain;
-    DebugOverlayWindow* m_DebugOverlayWindow;
-    TexturePickerWindow* m_TexPickerWindow;
     ImGuiIO* m_ImGuiIO;
     uint32_t m_FrameCountInLastSecond;
     double m_LastFPSRecordTime;
+
+    TexturePickerWindow* m_TexPickerWindow;
+    DebugTextureListWindow* m_DebugTexturesWindow;
+    DebugOverlayWindow* m_DebugOverlayWindow;
 
     static void HandleSelectedNewTexture(const std::string& path);
 
