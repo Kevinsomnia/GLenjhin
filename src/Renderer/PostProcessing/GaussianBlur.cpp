@@ -1,6 +1,6 @@
 #include "GaussianBlur.h"
 
-GaussianBlur::GaussianBlur() : ImageEffect("res\\shaders\\PostProcessing\\Copy.shader")
+GaussianBlur::GaussianBlur() : ImageEffect("res\\shaders\\PostProcessing\\Common\\Copy.shader")
 {
     const int SCR_WIDTH = 1600;
     const int SCR_HEIGHT = 900;
@@ -44,9 +44,14 @@ void GaussianBlur::render(BufferTexture* source, BufferTexture* destination)
         m_BlurMat->setVector("u_Stride", strideHorizontal);
         ImageEffect::render(bt1, bt2, m_BlurMat);
         m_BlurMat->setVector("u_Stride", strideVertical);
+
+        if (i == BLUR_ITERATIONS - 1)
+        {
+            // Target the destination buffer / screen for the last blit.
+            glViewport(0, 0, source->width(), source->height());
+            bt1 = destination;
+        }
+
         ImageEffect::render(bt2, bt1, m_BlurMat);
     }
-
-    glViewport(0, 0, source->width(), source->height());
-    ImageEffect::render(m_Buffers[0], destination);
 }
