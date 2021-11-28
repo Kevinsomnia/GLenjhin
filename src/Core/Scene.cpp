@@ -28,11 +28,16 @@ Scene::Scene()
     plane->setupRenderer(MeshPrimitives::quad, m_CurrMat);
     m_Entities.push_back(plane);
 
+    Entity* wall = new Entity(Vector3(0.5f, 1.5f, 0.0f), Vector3::zero, Vector3(0.25f, 3.0f, 15.0f));
+    wall->setupRenderer(MeshPrimitives::cube, m_CurrMat);
+    m_Entities.push_back(wall);
+
     for (int i = 0; i < 10; i++)
     {
         Entity* entity = new Entity(Vector3(-0.65f, 0.45f, 2.95f), Vector3::zero, Vector3::one * 0.4f);
         entity->setupRenderer(i % 2 == 0 ? MeshPrimitives::sphere : MeshPrimitives::cube, i == 4 ? emissiveMat : m_CurrMat);
         m_Entities.push_back(entity);
+        m_DynamicEntities.push_back(entity);
     }
 }
 
@@ -49,6 +54,7 @@ Scene::~Scene()
         delete light;
 
     m_Entities.clear();
+    m_DynamicEntities.clear();
     m_Lights.clear();
 }
 
@@ -57,15 +63,15 @@ void Scene::update()
     double t = Time::GetTime();
     double dt = Time::GetDeltaTime();
 
-    for (size_t i = 1; i < m_Entities.size(); i++)
+    for (size_t i = 0; i < m_DynamicEntities.size(); i++)
     {
         t += 2.48529;
-        Entity* entity = m_Entities[i];
+        Entity* entity = m_DynamicEntities[i];
 
         entity->getTransform()->setPosition(Vector3(
-            (float)cos(t * 0.5),
-            (float)sin(t * 0.6) * 0.5f + 3.0f,
-            (float)sin(t * 0.1) * 7.0f
+            (float)cos(t * 0.7),
+            (float)sin(t * 0.8) * 0.5f + 2.0f,
+            (float)sin(t * 0.175) * 7.0f
         ));
         entity->getTransform()->setRotation(rotationToRad(Vector3(
             (float)t * 25.0f,

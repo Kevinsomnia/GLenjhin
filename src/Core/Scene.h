@@ -29,6 +29,7 @@ private:
     Material* m_CurrMat;
     Texture2D* m_CurrTexture;
     std::vector<Entity*> m_Entities;
+    std::vector<Entity*> m_DynamicEntities;
     std::vector<Light*> m_Lights;
 
     Vector3 getMoveAxis() const;
