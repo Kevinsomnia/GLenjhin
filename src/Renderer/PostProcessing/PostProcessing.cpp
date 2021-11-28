@@ -60,24 +60,20 @@ void ImageEffectChain::render(BufferTexture* screen)
     for (size_t i = 0; i < m_Effects.size(); i++)
     {
         ImageEffect* effect = m_Effects[i];
+        bool isLast = i == m_Effects.size() - 1;
+        effect->setContext(m_Camera, screen);
 
-        if (effect)
+        if (i == 0)
         {
-            bool isLast = i == m_Effects.size() - 1;
-            effect->setContext(m_Camera, screen);
-
-            if (i == 0)
-            {
-                // If there's only 1 effect, blit from quad and render directly to screen FBO.
-                // If there's more than 1 effect, render to the first FBO.
-                effect->render(screen, isLast ? nullptr : m_ColorBuffers[pingPongFlag]);
-            }
-            else
-            {
-                // Blit from current FBO to the other FBO and swap. If it's the last effect, then blit to screen FBO.
-                effect->render(m_ColorBuffers[pingPongFlag], isLast ? nullptr : m_ColorBuffers[!pingPongFlag]);
-                pingPongFlag = !pingPongFlag;
-            }
+            // If there's only 1 effect, blit from quad and render directly to screen FBO.
+            // If there's more than 1 effect, render to the first FBO.
+            effect->render(screen, isLast ? nullptr : m_ColorBuffers[pingPongFlag]);
+        }
+        else
+        {
+            // Blit from current FBO to the other FBO and swap. If it's the last effect, then blit to screen FBO.
+            effect->render(m_ColorBuffers[pingPongFlag], isLast ? nullptr : m_ColorBuffers[!pingPongFlag]);
+            pingPongFlag = !pingPongFlag;
         }
     }
 }
