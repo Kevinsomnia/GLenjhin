@@ -23,7 +23,7 @@ in vec2 v_UV;
 
 out vec4 fragColor;
 
-const float THRESHOLD = 1.3;
+const float THRESHOLD = 1.0;
 const float PFC = 0.30102999566;    // pre-calculated: -log10(EXPOSURE); EXPOSURE = 0.5
 const float CUTOFF = THRESHOLD + (PFC * 10.0);
 
