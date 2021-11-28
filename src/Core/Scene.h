@@ -20,20 +20,16 @@ class Scene
 public:
     Scene();
     ~Scene();
-    Camera* getCamera() const;
     void update();
-    void draw();
+    void draw(const Camera& camera, bool drawSkybox = true);
     void setNewTexture(const std::string& texturePath);
 private:
-    Camera* m_Camera;
     Skybox* m_Skybox;
     Material* m_CurrMat;
     Texture2D* m_CurrTexture;
     std::vector<Entity*> m_Entities;
     std::vector<Entity*> m_DynamicEntities;
     std::vector<Light*> m_Lights;
-
-    Vector3 getMoveAxis() const;
 };
 
 #endif // SCENE_H

@@ -2,15 +2,6 @@
 
 Scene::Scene()
 {
-    // Setup camera
-    m_Camera = new Camera(
-        Vector3(0.0f, 1.0f, 0.0f),
-        Vector3::zero,
-        70.0f,		// FOV
-        0.1f,		// Near
-        1000.0f		// Far
-    );
-
     // Setup lighting
     Light* sun = new DirectionalLight(Vector3::zero, rotationToRad(Vector3(31.0f, 34.75f, 0.0f)));
     m_Lights.push_back(sun);
@@ -43,7 +34,6 @@ Scene::Scene()
 
 Scene::~Scene()
 {
-    delete m_Camera;
     delete m_CurrMat;
     delete m_CurrTexture;
 
@@ -58,15 +48,9 @@ Scene::~Scene()
     m_Lights.clear();
 }
 
-Camera* Scene::getCamera() const
-{
-    return m_Camera;
-}
-
 void Scene::update()
 {
     double t = Time::GetTime();
-    double dt = Time::GetDeltaTime();
 
     for (size_t i = 0; i < m_DynamicEntities.size(); i++)
     {
@@ -84,60 +68,15 @@ void Scene::update()
             (float)t * 35.0f
         )));
     }
-
-    if (m_Camera)
-    {
-        bool allowInput = Input::GetMouseCursorState() == MouseCursorState::Locked;
-
-        if (allowInput)
-        {
-            // Mouse look
-            Vector2 mouseDelta = Input::GetMouseMoveDelta() * 0.075f;
-            Vector3 rotateDelta = rotationToRad(Vector3(mouseDelta.getY(), mouseDelta.getX(), 0.0f));
-            m_Camera->getTransform()->rotate(rotateDelta);
-
-            // Free fly
-            float moveSpeed = 6.0f;
-
-            if (Input::GetKey(KeyCode::LeftShift))
-            {
-                moveSpeed *= 3.0f;
-            }
-
-            Vector3 moveDelta = getMoveAxis() * moveSpeed * (float)dt;
-            m_Camera->getTransform()->translate(moveDelta, Space::Local);
-
-            bool space = Input::GetKey(KeyCode::Space);
-            bool ctrl = Input::GetKey(KeyCode::LeftCtrl) || Input::GetKey(KeyCode::RightCtrl);
-            float y = 0.0f;
-
-            if (space && !ctrl)
-            {
-                y = 1.0f;
-            }
-            else if (ctrl && !space)
-            {
-                y = -1.0f;
-            }
-
-            m_Camera->getTransform()->translate(Vector3(0.0f, y, 0.0f) * moveSpeed * (float)dt, Space::World);
-        }
-
-        // Update and upload view projection.
-        m_Camera->update();
-    }
 }
 
-void Scene::draw()
+void Scene::draw(const Camera& camera, bool drawSkybox)
 {
-    if (!m_Camera)
-        return;
-
-    if (m_Skybox)
-        m_Skybox->draw(*m_Camera);
+    if (m_Skybox && drawSkybox)
+        m_Skybox->draw(camera);
 
     for (size_t i = 0; i < m_Entities.size(); i++)
-        m_Entities[i]->draw(*m_Camera, m_Lights);
+        m_Entities[i]->draw(camera, m_Lights);
 }
 
 void Scene::setNewTexture(const std::string& texturePath)
@@ -147,39 +86,4 @@ void Scene::setNewTexture(const std::string& texturePath)
 
     m_CurrTexture = new Texture2D(texturePath);
     m_CurrMat->setTexture("u_MainTex", m_CurrTexture);
-}
-
-Vector3 Scene::getMoveAxis() const
-{
-    bool w = Input::GetKey(KeyCode::W);
-    bool s = Input::GetKey(KeyCode::S);
-    bool a = Input::GetKey(KeyCode::A);
-    bool d = Input::GetKey(KeyCode::D);
-
-    float x = 0.0f, z = 0.0f;
-
-    if (d && !a)
-    {
-        x = 1.0f;
-    }
-    else if (a && !d)
-    {
-        x = -1.0f;
-    }
-
-    if (w && !s)
-    {
-        z = 1.0f;
-    }
-    else if (s && !w)
-    {
-        z = -1.0f;
-    }
-
-    Vector3 result(x, 0.0f, z);
-
-    if (result.getSqrMagnitude() > 1.0f)
-        result.normalize();
-
-    return result;
 }

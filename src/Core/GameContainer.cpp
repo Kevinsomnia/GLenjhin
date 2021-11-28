@@ -15,14 +15,20 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     Input::Init(window);
     MeshPrimitives::Init();
 
-    // Load scene.
-    m_CurrentScene = new Scene();
+    // Setup camera
+    m_MainCamera = new Camera(
+        Vector3(0.0f, 1.0f, 0.0f),
+        Vector3::zero,
+        70.0f,		// FOV
+        0.1f,		// Near
+        1000.0f		// Far
+    );
 
     // HDR screen buffer
     m_ScreenBuffer = new BufferTexture(1600, 900, /*depth=*/ 32, TextureFormat::RGBAHalf);
 
     // Image effects
-    m_ImageEffectChain = new ImageEffectChain(m_CurrentScene->getCamera());
+    m_ImageEffectChain = new ImageEffectChain(m_MainCamera);
     m_ImageEffectChain->add(new GlobalFog());
     m_ImageEffectChain->add(new Bloom());
     m_ImageEffectChain->add(new Tonemapping());
@@ -33,6 +39,9 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     ImGui_ImplOpenGL3_Init();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     m_ImGuiIO = &ImGui::GetIO();
+
+    // Load scene.
+    m_CurrentScene = new Scene();
 
     // Lock mouse movement by default to enable free look + movement
     Input::SetMouseCursorState(MouseCursorState::Locked);
@@ -48,6 +57,7 @@ GameContainer::~GameContainer()
         m_Instance = nullptr;
 
     delete m_ScreenBuffer;
+    delete m_MainCamera;
     delete m_CurrentScene;
     delete m_DebugOverlayWindow;
     delete m_TexPickerWindow;
@@ -63,6 +73,7 @@ void GameContainer::update(double deltaTime)
     if (m_CurrentScene)
         m_CurrentScene->update();
 
+    handleCameraMovement(deltaTime);
     handleFPSCounter();
 
     // Toggle debug overlay with F1 key
@@ -80,20 +91,70 @@ void GameContainer::render()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    // Render scene into FP framebuffer for HDR.
-    glBindFramebuffer(GL_FRAMEBUFFER, m_ScreenBuffer->id());
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (m_MainCamera)
+    {
+        // Render scene into FP framebuffer for HDR.
+        glBindFramebuffer(GL_FRAMEBUFFER, m_ScreenBuffer->id());
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    if (m_CurrentScene)
-        m_CurrentScene->draw();
+        if (m_CurrentScene)
+            m_CurrentScene->draw(*m_MainCamera);
 
-    // Display framebuffer contents after running through post-processing chain.
-    glBindFramebuffer(GL_FRAMEBUFFER, NULL);
-    m_ImageEffectChain->render(m_ScreenBuffer);
+        // Display framebuffer contents after running through post-processing chain.
+        glBindFramebuffer(GL_FRAMEBUFFER, NULL);
+        m_ImageEffectChain->render(m_ScreenBuffer);
+    }
 
     onGUI();
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+void GameContainer::handleCameraMovement(double deltaTime)
+{
+    if (!m_MainCamera)
+        return;
+
+    bool allowInput = Input::GetMouseCursorState() == MouseCursorState::Locked;
+
+    if (allowInput)
+    {
+        Transform* cameraTrans = m_MainCamera->getTransform();
+
+        // Mouse look
+        Vector2 mouseDelta = Input::GetMouseMoveDelta() * 0.075f;
+        Vector3 rotateDelta = rotationToRad(Vector3(mouseDelta.getY(), mouseDelta.getX(), 0.0f));
+        cameraTrans->rotate(rotateDelta);
+
+        // Free fly
+        float moveSpeed = 6.0f;
+
+        if (Input::GetKey(KeyCode::LeftShift))
+        {
+            moveSpeed *= 3.0f;
+        }
+
+        Vector3 moveDelta = getMoveAxis() * moveSpeed * (float)deltaTime;
+        cameraTrans->translate(moveDelta, Space::Local);
+
+        bool space = Input::GetKey(KeyCode::Space);
+        bool ctrl = Input::GetKey(KeyCode::LeftCtrl) || Input::GetKey(KeyCode::RightCtrl);
+        float y = 0.0f;
+
+        if (space && !ctrl)
+        {
+            y = 1.0f;
+        }
+        else if (ctrl && !space)
+        {
+            y = -1.0f;
+        }
+
+        cameraTrans->translate(Vector3(0.0f, y, 0.0f) * moveSpeed * (float)deltaTime, Space::World);
+    }
+
+    // Update and upload view projection.
+    m_MainCamera->update();
 }
 
 void GameContainer::handleMouseCursorState()
@@ -140,3 +201,39 @@ void GameContainer::HandleSelectedNewTexture(const std::string& path)
 
     m_Instance->m_CurrentScene->setNewTexture(path);
 }
+
+Vector3 GameContainer::getMoveAxis() const
+{
+    bool w = Input::GetKey(KeyCode::W);
+    bool s = Input::GetKey(KeyCode::S);
+    bool a = Input::GetKey(KeyCode::A);
+    bool d = Input::GetKey(KeyCode::D);
+
+    float x = 0.0f, z = 0.0f;
+
+    if (d && !a)
+    {
+        x = 1.0f;
+    }
+    else if (a && !d)
+    {
+        x = -1.0f;
+    }
+
+    if (w && !s)
+    {
+        z = 1.0f;
+    }
+    else if (s && !w)
+    {
+        z = -1.0f;
+    }
+
+    Vector3 result(x, 0.0f, z);
+
+    if (result.getSqrMagnitude() > 1.0f)
+        result.normalize();
+
+    return result;
+}
+

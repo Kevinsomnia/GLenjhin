@@ -34,6 +34,7 @@ public:
     // Behavior
     void update(double deltaTime);
     void render();
+    inline void handleCameraMovement(double deltaTime);
     inline void handleMouseCursorState();
     inline void handleFPSCounter();
     inline void onGUI();
@@ -42,6 +43,7 @@ private:
 
     GLFWwindow* m_MainWindow;
     Scene* m_CurrentScene;
+    Camera* m_MainCamera;
     BufferTexture* m_ScreenBuffer;
     ImageEffectChain* m_ImageEffectChain;
     DebugOverlayWindow* m_DebugOverlayWindow;
@@ -51,6 +53,8 @@ private:
     double m_LastFPSRecordTime;
 
     static void HandleSelectedNewTexture(const std::string& path);
+
+    inline Vector3 getMoveAxis() const;
 };
 
 #endif // GAMECONTAINER_H
