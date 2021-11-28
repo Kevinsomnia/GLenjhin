@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "imgui.h"
+#include "../Renderer/Texture/Texture.h"
 
 namespace fs = std::filesystem;
 using std::cout;
@@ -39,6 +40,26 @@ public:
 private:
     std::vector<fs::path> m_TexturePaths;
     std::function<void(const std::string&)> m_TexSelectCallback;
+};
+
+class DebugTextureListWindow
+{
+public:
+    DebugTextureListWindow(const char* windowName);
+    ~DebugTextureListWindow();
+    void draw();
+    void add(Texture* tex, bool flipY = false);
+    void remove(Texture* tex);
+    void clear();
+private:
+    struct Element
+    {
+        Texture* texture;
+        bool flipY;
+    };
+
+    const char* m_WindowName;
+    std::vector<Element> m_Elements;
 };
 
 #endif GUI_WINDOWS_H
