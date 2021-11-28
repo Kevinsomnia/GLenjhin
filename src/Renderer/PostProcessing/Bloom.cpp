@@ -65,6 +65,6 @@ void Bloom::render(BufferTexture* source, BufferTexture* destination)
     currBuffer = m_Buffers[1];
     m_Material->setTexture("u_ScreenTex", source->colorTexture());
     m_Material->setVector("u_BlurSize", currBuffer->texelSize() * BLUR_SIZE);
-    glViewport(0, 0, 1600, 900);
+    glViewport(0, 0, source->width(), source->height());
     ImageEffect::render(currBuffer, destination);
 }

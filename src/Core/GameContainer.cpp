@@ -22,10 +22,7 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     m_ImageEffectChain = new ImageEffectChain();
     m_ImageEffectChain->add(new Bloom());
     m_ImageEffectChain->add(new Tonemapping());
-
-    // TODO: optimize this abomination
-    // for (int i = 0; i < 16; i++)
-    //     m_ImageEffectChain->add(new GaussianBlur());
+    // m_ImageEffectChain->add(new GaussianBlur());     // TODO: runtime toggle
 
     // ImGui
     ImGui::CreateContext();

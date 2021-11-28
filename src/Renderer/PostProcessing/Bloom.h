@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "../Material.h"
-#include "../Texture/Texture.h"
 #include "PostProcessing.h"
 
 #include "imgui.h"
