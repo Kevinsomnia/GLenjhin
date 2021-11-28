@@ -8,9 +8,11 @@ Compiled with MSVC, C++17
 
 - Primitive meshes
 - Blinn-Phong shading
-- HDR and post processing effects
+- HDR and post processing effects pipeline
   - Bloom
   - Tonemapping
+  - Fullscreen Gaussian blur
+  - Fog
 - Custom memory/binary stream implementation
 - Custom image library
 

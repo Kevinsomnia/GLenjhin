@@ -11,6 +11,7 @@
 #include "../Renderer/PostProcessing/PostProcessing.h"
 #include "../Renderer/PostProcessing/Bloom.h"
 #include "../Renderer/PostProcessing/GaussianBlur.h"
+#include "../Renderer/PostProcessing/GlobalFog.h"
 #include "../Renderer/PostProcessing/Tonemapping.h"
 #include "Scene.h"
 #include "Time.h"

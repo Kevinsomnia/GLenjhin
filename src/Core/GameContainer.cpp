@@ -23,6 +23,7 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
 
     // Image effects
     m_ImageEffectChain = new ImageEffectChain(m_CurrentScene->getCamera());
+    m_ImageEffectChain->add(new GlobalFog());
     m_ImageEffectChain->add(new Bloom());
     m_ImageEffectChain->add(new Tonemapping());
     // m_ImageEffectChain->add(new GaussianBlur());     // TODO: runtime toggle
