@@ -44,17 +44,17 @@ out vec4 color;
 
 void main()
 {
-    // needs uniform
-    vec3 ambient = vec3(0.1);
+    vec3 ambient = vec3(0.1);   // needs uniform
+    vec3 nrm = normalize(wNormal);
     float shininess = 128.0;
 
     // Lambert
-    float nDotL = max(0.0, dot(-u_DirLightDir, wNormal));
+    float nDotL = max(0.0, dot(-u_DirLightDir, nrm));
 
     // Blinn-Phong
     vec3 viewDir = normalize(u_CameraPos - wPos);
     vec3 halfDir = normalize(viewDir - u_DirLightDir);
-    float specContrib = max(0.0, dot(halfDir, wNormal));
+    float specContrib = max(0.0, dot(halfDir, nrm));
 
     vec4 albedo = texture(u_MainTex, v_UV);
     float specular = pow(specContrib, shininess);
