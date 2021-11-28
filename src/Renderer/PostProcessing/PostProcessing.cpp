@@ -28,8 +28,14 @@ void ImageEffect::render(BufferTexture* source, BufferTexture* destination, Mate
     m_Triangle->draw();
 }
 
+void ImageEffect::setContext(Camera* camera, BufferTexture* screen)
+{
+    m_Camera = camera;
+    m_ScreenBuffer = screen;
+}
 
-ImageEffectChain::ImageEffectChain()
+
+ImageEffectChain::ImageEffectChain(Camera* camera) : m_Camera(camera)
 {
     // Create 2 color buffers for ping-ponging, since we can't read and write to the same buffer when iterating through image effects.
     for (size_t i = 0; i < m_ColorBuffers.size(); i++)
@@ -58,6 +64,7 @@ void ImageEffectChain::render(BufferTexture* screen)
         if (effect)
         {
             bool isLast = i == m_Effects.size() - 1;
+            effect->setContext(m_Camera, screen);
 
             if (i == 0)
             {

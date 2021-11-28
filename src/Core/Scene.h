@@ -20,6 +20,7 @@ class Scene
 public:
     Scene();
     ~Scene();
+    Camera* getCamera() const;
     void update();
     void draw();
     void setNewTexture(const std::string& texturePath);

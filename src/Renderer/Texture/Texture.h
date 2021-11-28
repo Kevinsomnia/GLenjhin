@@ -15,7 +15,10 @@ enum class TextureFormat
 {
     RGB24,      // 8 bits per channel, RGB
     RGBA32,     // 8 bits per channel, RGBA
-    RGBAHalf    // 16 bits per channel (floating point), RGBA
+    RGBAHalf,   // 16 bits per channel (floating point), RGBA
+    Depth16,    // 16-bit floating point depth texture
+    Depth24,    // 24-bit floating point depth texture
+    Depth32     // 32-bit floating point depth texture
 };
 
 enum class TextureWrapMode
@@ -78,6 +81,12 @@ struct GLTextureParams
                 return GLTextureParams { sRGB ? GL_SRGB_ALPHA : GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE };
             case TextureFormat::RGBAHalf:
                 return GLTextureParams { GL_RGBA16F, GL_RGBA, GL_HALF_FLOAT };
+            case TextureFormat::Depth16:
+                return GLTextureParams { GL_DEPTH_COMPONENT16, GL_DEPTH_COMPONENT, GL_HALF_FLOAT };
+            case TextureFormat::Depth24:
+                return GLTextureParams { GL_DEPTH_COMPONENT24, GL_DEPTH_COMPONENT, GL_FLOAT };
+            case TextureFormat::Depth32:
+                return GLTextureParams { GL_DEPTH_COMPONENT32, GL_DEPTH_COMPONENT, GL_FLOAT };
             default:
                 cerr << "Unimplemented TextureFormat to TextureGLParams conversion " << static_cast<uint32_t>(format) << endl;
                 return GLTextureParams();
@@ -121,12 +130,13 @@ public:
     BufferTexture(int width, int height, int depth, TextureFormat colorFormat);
     ~BufferTexture();
     Texture2D* colorTexture() const;
+    Texture2D* depthTexture() const;
     void bind(uint32_t slotIndex) const override;
     void setFilterMode(TextureFilterMode filterMode) override;
     void setWrapMode(TextureWrapMode wrapMode) override;
 protected:
     Texture2D* m_ColorTexture;
-    uint32_t m_DepthTextureID;  // prob will be an readable texture later
+    Texture2D* m_DepthTexture;
 
     void internalDispose();
 };
