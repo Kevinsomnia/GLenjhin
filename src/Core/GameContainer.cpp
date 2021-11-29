@@ -19,20 +19,14 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     m_MainCamera = new Camera(
         Vector3(0.0f, 1.0f, 0.0f),
         Vector3::zero,
-        70.0f,		// FOV
-        0.1f,		// Near
-        1000.0f		// Far
+        /*fieldOfView=*/ 75.0f,
+        /*nearClip=*/ 0.1f,
+        /*farClip=*/ 1000.0f
     );
-
-    // HDR screen buffer
-    m_ScreenBuffer = new BufferTexture(1600, 900, /*depth=*/ 32, TextureFormat::RGBAHalf);
-
-    // Image effects
-    m_ImageEffectChain = new ImageEffectChain(m_MainCamera);
-    m_ImageEffectChain->add(new GlobalFog());
-    m_ImageEffectChain->add(new Bloom());
-    m_ImageEffectChain->add(new Tonemapping());
-    // m_ImageEffectChain->add(new GaussianBlur());     // TODO: runtime toggle
+    m_MainCamera->addImageEffect(new GlobalFog());
+    m_MainCamera->addImageEffect(new Bloom());
+    m_MainCamera->addImageEffect(new Tonemapping());
+    // m_MainCamera->addImageEffect(new GaussianBlur());     // TODO: runtime toggle
 
     // ImGui
     ImGui::CreateContext();
@@ -49,9 +43,9 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     // GUI windows
     m_TexPickerWindow = new TexturePickerWindow(&HandleSelectedNewTexture);
 
-    m_DebugTexturesWindow = new DebugTextureListWindow("Buffers Debug");
+    m_DebugTexturesWindow = new DebugTextureListWindow("Debug Buffers");
     m_DebugTexturesWindow->setOpen(false);
-    m_DebugTexturesWindow->add(m_ScreenBuffer->depthTexture(), "Depth", /*flip=*/ true);
+    m_MainCamera->addBuffersToDebugWindow(*m_DebugTexturesWindow);
 
     m_DebugOverlayWindow = new DebugOverlayWindow(m_DebugTexturesWindow);
 }
@@ -61,7 +55,6 @@ GameContainer::~GameContainer()
     if (m_Instance == this)
         m_Instance = nullptr;
 
-    delete m_ScreenBuffer;
     delete m_MainCamera;
     delete m_CurrentScene;
     delete m_DebugOverlayWindow;
@@ -98,16 +91,8 @@ void GameContainer::render()
 
     if (m_MainCamera)
     {
-        // Render scene into FP framebuffer for HDR.
-        glBindFramebuffer(GL_FRAMEBUFFER, m_ScreenBuffer->id());
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        if (m_CurrentScene)
-            m_CurrentScene->draw(*m_MainCamera);
-
-        // Display framebuffer contents after running through post-processing chain.
-        glBindFramebuffer(GL_FRAMEBUFFER, NULL);
-        m_ImageEffectChain->render(m_ScreenBuffer);
+        m_MainCamera->draw(m_CurrentScene);
+        m_MainCamera->blitToScreen();
     }
 
     onGUI();

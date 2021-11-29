@@ -13,6 +13,11 @@ using std::cout;
 using std::cerr;
 using std::endl;
 
+
+// Forward declaration
+class Camera;
+
+
 class Entity
 {
 public:

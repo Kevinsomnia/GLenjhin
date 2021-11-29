@@ -15,13 +15,19 @@
 using std::cout;
 using std::endl;
 
+
+// Forward declaration
+class Camera;
+class Entity;
+
+
 class Scene
 {
 public:
     Scene();
     ~Scene();
     void update();
-    void draw(const Camera& camera, bool drawSkybox = true);
+    void draw(const Camera& camera, bool drawSkybox) const;
     void setNewTexture(const std::string& texturePath);
 private:
     Skybox* m_Skybox;

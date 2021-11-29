@@ -16,8 +16,8 @@ Skybox::~Skybox()
     delete m_Texture;
 }
 
-void Skybox::draw(const Camera& cam)
+void Skybox::draw(const Matrix4x4& vp)
 {
-    m_Material->setMatrix("u_VP", cam.getViewProjMatrix());
+    m_Material->setMatrix("u_VP", vp);
     m_Triangle->draw();
 }

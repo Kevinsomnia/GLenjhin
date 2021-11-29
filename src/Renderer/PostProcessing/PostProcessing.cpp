@@ -37,7 +37,11 @@ void ImageEffect::setContext(Camera* camera, BufferTexture* screen)
 
 ImageEffectChain::ImageEffectChain(Camera* camera) : m_Camera(camera)
 {
+    m_CopyMat = new Material(new Shader("res\\shaders\\PostProcessing\\Common\\Copy.shader"));
+    m_Triangle = new FullscreenTriangle(m_CopyMat);
+
     // Create 2 color buffers for ping-ponging, since we can't read and write to the same buffer when iterating through image effects.
+    // TODO: only initialize 1 buffer if we don't have more than one effect, or any buffers at all if there are no image effects (add logic in ImageEffectChain::add).
     for (size_t i = 0; i < m_ColorBuffers.size(); i++)
         m_ColorBuffers[i] = new BufferTexture(1600, 900, /*depth=*/ 0, TextureFormat::RGBAHalf);
 }
@@ -46,6 +50,9 @@ ImageEffectChain::~ImageEffectChain()
 {
     for (size_t i = 0; i < m_ColorBuffers.size(); i++)
         delete m_ColorBuffers[i];
+
+    delete m_CopyMat;
+    delete m_Triangle;
 }
 
 void ImageEffectChain::add(ImageEffect* effect)
@@ -53,27 +60,34 @@ void ImageEffectChain::add(ImageEffect* effect)
     m_Effects.push_back(effect);
 }
 
-void ImageEffectChain::render(BufferTexture* screen)
+void ImageEffectChain::render(BufferTexture* source)
 {
     bool pingPongFlag = false;
 
     for (size_t i = 0; i < m_Effects.size(); i++)
     {
         ImageEffect* effect = m_Effects[i];
-        bool isLast = i == m_Effects.size() - 1;
-        effect->setContext(m_Camera, screen);
+        effect->setContext(m_Camera, source);
 
         if (i == 0)
         {
-            // If there's only 1 effect, blit from quad and render directly to screen FBO.
-            // If there's more than 1 effect, render to the first FBO.
-            effect->render(screen, isLast ? nullptr : m_ColorBuffers[pingPongFlag]);
+            // The first image effect will always blit from `source` to the first color buffer.
+            effect->render(source, m_ColorBuffers[pingPongFlag]);
         }
         else
         {
-            // Blit from current FBO to the other FBO and swap. If it's the last effect, then blit to screen FBO.
-            effect->render(m_ColorBuffers[pingPongFlag], isLast ? nullptr : m_ColorBuffers[!pingPongFlag]);
+            // Blit from `pingPongFlag` (read) FBO to the `!pingPongFlag` (write) FBO, then flip the bit.
+            effect->render(m_ColorBuffers[pingPongFlag], m_ColorBuffers[!pingPongFlag]);
             pingPongFlag = !pingPongFlag;
         }
+    }
+
+    if (m_Effects.size() > 0)
+    {
+        // Copy final color buffer back into `source`, as long as we processed at least one effect.
+        glBindFramebuffer(GL_FRAMEBUFFER, source->id());
+        m_CopyMat->setTexture("u_MainTex", m_ColorBuffers[pingPongFlag]->colorTexture());
+        m_Triangle->draw();
+        glBindFramebuffer(GL_FRAMEBUFFER, NULL);
     }
 }
