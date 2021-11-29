@@ -16,6 +16,7 @@ enum class TextureFormat
     RGB24,      // 8 bits per channel, RGB
     RGBA32,     // 8 bits per channel, RGBA
     RGBAHalf,   // 16 bits per channel (floating point), RGBA
+    RGBAFloat,   // 32 bits per channel (floating point), RGBA
     Depth16,    // 16-bit floating point depth texture
     Depth24,    // 24-bit floating point depth texture
     Depth32     // 32-bit floating point depth texture
@@ -81,6 +82,8 @@ struct GLTextureParams
                 return GLTextureParams { sRGB ? GL_SRGB_ALPHA : GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE };
             case TextureFormat::RGBAHalf:
                 return GLTextureParams { GL_RGBA16F, GL_RGBA, GL_HALF_FLOAT };
+            case TextureFormat::RGBAFloat:
+                return GLTextureParams { GL_RGBA32F, GL_RGBA, GL_FLOAT };
             case TextureFormat::Depth16:
                 return GLTextureParams { GL_DEPTH_COMPONENT16, GL_DEPTH_COMPONENT, GL_HALF_FLOAT };
             case TextureFormat::Depth24:

@@ -138,6 +138,9 @@
     <ClCompile Include="src\GUI\DebugTextureListWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Renderer\Deferred\GeometryBuffers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Application.h">
@@ -267,6 +270,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Renderer\PostProcessing\GlobalFog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\Deferred\GeometryBuffers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

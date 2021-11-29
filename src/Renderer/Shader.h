@@ -14,10 +14,10 @@ class Shader
 public:
     Shader(const string& shaderPath);
     ~Shader();
-    void use() const;
-    const uint32_t getShaderId() const;
+    inline void use() const { glUseProgram(m_ShaderID); }
+    inline uint32_t id() const { return m_ShaderID; }
 private:
-    uint32_t m_ShaderId;
+    uint32_t m_ShaderID;
 };
 
 #endif // SHADER_H

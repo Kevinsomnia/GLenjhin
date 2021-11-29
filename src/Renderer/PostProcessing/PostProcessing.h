@@ -22,10 +22,9 @@ public:
     ~ImageEffect();
     virtual void render(BufferTexture* source, BufferTexture* destination);
     void render(BufferTexture* source, BufferTexture* destination, Material* mat);
-    void setContext(Camera* camera, BufferTexture* screen);
+    void setCamera(Camera* camera);
 protected:
     Camera* m_Camera;
-    BufferTexture* m_ScreenBuffer;
     Shader* m_Shader;
     Material* m_Material;
     FullscreenTriangle* m_Triangle;

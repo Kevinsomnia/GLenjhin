@@ -13,13 +13,28 @@ void Material::bind() const
     if (m_Shader)
     {
         m_Shader->use();
-        setUniforms();
+        updateUniforms();
     }
 }
 
 void Material::unbind() const
 {
     glUseProgram(NULL);
+}
+
+Texture* Material::getTexture(const string& uniformName) const
+{
+    int uniformId = getShaderUniformLocation(uniformName);
+
+    if (uniformId == -1)
+        return nullptr;
+
+    auto iter = m_UniformTex.find(uniformId);
+
+    if (iter == m_UniformTex.end())
+        return nullptr;
+
+    return (*iter).second;
 }
 
 void Material::setFloat(const string& uniformName, float v)
@@ -64,31 +79,16 @@ void Material::setMatrix(const string& uniformName, const Matrix4x4& mat)
 
 void Material::setTexture(const string& uniformName, Texture* tex)
 {
+    if (!tex)
+        return;
+
     int uniformId = getShaderUniformLocation(uniformName);
 
     if (uniformId != -1)
         m_UniformTex[uniformId] = tex;
 }
 
-int Material::getShaderUniformLocation(const string& name) const
-{
-    if (!m_Shader)
-    {
-        cerr << "Tried to get uniform location, but there was no shader assigned to this material!" << endl;
-        return -1;
-    }
-
-    uint32_t programId = m_Shader->getShaderId();
-    glUseProgram(programId);
-    int uniformId = glGetUniformLocation(programId, name.c_str());
-
-    if (uniformId == GL_INVALID_OPERATION || uniformId == GL_INVALID_VALUE)
-        return -1;
-
-    return uniformId;
-}
-
-void Material::setUniforms() const
+void Material::updateUniforms() const
 {
     for (const auto& pair : m_UniformFloats)
         glUniform1f(pair.first, pair.second);
@@ -110,4 +110,29 @@ void Material::setUniforms() const
         glUniform1i(pair.first, unitIndex);
         unitIndex++;
     }
+}
+
+int Material::getShaderUniformLocation(const string& name) const
+{
+    if (!m_Shader)
+    {
+        cerr << "Tried to get uniform location, but there was no shader assigned to this material!" << endl;
+        return -1;
+    }
+
+    GLint prevShaderID = GL_NONE;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &prevShaderID);
+
+    // We will need to bind the shader temporarily to retrieve the location, since another shader
+    // might be already bound when we're attempting to retrieve this uniform.
+    m_Shader->use();
+    int uniformId = glGetUniformLocation(m_Shader->id(), name.c_str());
+
+    // Restore to previous shader program since we're done retrieving the uniform location.
+    glUseProgram(prevShaderID);
+
+    if (uniformId == GL_INVALID_OPERATION || uniformId == GL_INVALID_VALUE)
+        return -1;
+
+    return uniformId;
 }

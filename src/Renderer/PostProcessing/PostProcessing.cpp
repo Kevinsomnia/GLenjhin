@@ -28,10 +28,9 @@ void ImageEffect::render(BufferTexture* source, BufferTexture* destination, Mate
     m_Triangle->draw();
 }
 
-void ImageEffect::setContext(Camera* camera, BufferTexture* screen)
+void ImageEffect::setCamera(Camera* camera)
 {
     m_Camera = camera;
-    m_ScreenBuffer = screen;
 }
 
 
@@ -67,7 +66,7 @@ void ImageEffectChain::render(BufferTexture* source)
     for (size_t i = 0; i < m_Effects.size(); i++)
     {
         ImageEffect* effect = m_Effects[i];
-        effect->setContext(m_Camera, source);
+        effect->setCamera(m_Camera);
 
         if (i == 0)
         {

@@ -33,6 +33,7 @@
     <ClCompile Include="src\Math\Matrix4x4.cpp" />
     <ClCompile Include="src\Math\Vector.cpp" />
     <ClCompile Include="src\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Renderer\Deferred\GeometryBuffers.cpp" />
     <ClCompile Include="src\Renderer\Entity.cpp" />
     <ClCompile Include="src\Renderer\FullscreenTriangle.cpp" />
     <ClCompile Include="src\Renderer\Lighting\DirectionalLight.cpp" />
@@ -78,6 +79,7 @@
     <ClInclude Include="src\Math\Matrix4x4.h" />
     <ClInclude Include="src\Math\Vector.h" />
     <ClInclude Include="src\Renderer\Camera.h" />
+    <ClInclude Include="src\Renderer\Deferred\GeometryBuffers.h" />
     <ClInclude Include="src\Renderer\Entity.h" />
     <ClInclude Include="src\Renderer\FullscreenTriangle.h" />
     <ClInclude Include="src\Renderer\Lighting\Lighting.h" />

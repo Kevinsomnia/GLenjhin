@@ -27,6 +27,7 @@ public:
     Scene();
     ~Scene();
     void update();
+    void drawGeometryPass(const Camera& camera, Material& geometryMat) const;
     void draw(const Camera& camera, bool drawSkybox) const;
     void setNewTexture(const std::string& texturePath);
 private:

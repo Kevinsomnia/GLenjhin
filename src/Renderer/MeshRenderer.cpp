@@ -8,20 +8,28 @@ MeshRenderer::~MeshRenderer()
 {
 }
 
-void MeshRenderer::draw(const Vector3& cameraPos, const Matrix4x4& vp, const Matrix4x4& model, const std::vector<Light*>& lights)
+void MeshRenderer::drawMeshDirect() const
+{
+    m_Mesh->bind();
+    m_Mesh->draw();
+}
+
+void MeshRenderer::draw(const Vector3& cameraPos, const Matrix4x4& vp, const Matrix4x4& model, const std::vector<Light*>& lights) const
 {
     if (m_Material)
     {
-        m_Material->setMatrix("u_VP", vp);
-        m_Material->setMatrix("u_Model", model);
-        m_Material->setVector("u_CameraPos", cameraPos);
-        m_Material->bind();
+        Material& mat = *m_Material;
+
+        mat.setMatrix("u_VP", vp);
+        mat.setMatrix("u_Model", model);
+        mat.setVector("u_CameraPos", cameraPos);
+        mat.bind();
+        
+        // NOTE: multiple lights of same type are not supported!
+        for (Light* light : lights)
+            light->bind(mat);
     }
 
-    // NOTE: multiple lights of same type are not supported!
-    for (Light* light : lights)
-        light->bind(m_Material);
 
-    m_Mesh->bind();
-    m_Mesh->draw();
+    drawMeshDirect();
 }

@@ -20,12 +20,14 @@ public:
     ~Material();
     void bind() const;
     void unbind() const;
+    Texture* getTexture(const string& uniformName) const;
     void setFloat(const string& uniformName, float v);
     void setVector(const string& uniformName, const Vector2& v);
     void setVector(const string& uniformName, const Vector3& v);
     void setVector(const string& uniformName, const Vector4& v);
     void setMatrix(const string& uniformName, const Matrix4x4& mat);
     void setTexture(const string& uniformName, Texture* tex);
+    void updateUniforms() const;
 private:
     Shader* m_Shader;
 
@@ -38,7 +40,6 @@ private:
     std::unordered_map<GLint, Texture*> m_UniformTex;
 
     int getShaderUniformLocation(const string& name) const;
-    void setUniforms() const;
 };
 
 #endif // MATERIAL_H

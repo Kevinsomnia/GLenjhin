@@ -70,6 +70,15 @@ void Scene::update()
     }
 }
 
+void Scene::drawGeometryPass(const Camera& camera, Material& geometryMat) const
+{
+    geometryMat.setMatrix("u_VP", camera.getViewProjMatrix());
+    geometryMat.bind();
+
+    for (size_t i = 0; i < m_Entities.size(); i++)
+        m_Entities[i]->drawGeometryPass(camera, geometryMat);
+}
+
 void Scene::draw(const Camera& camera, bool drawSkybox) const
 {
     if (m_Skybox && drawSkybox)

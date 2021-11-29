@@ -4,8 +4,6 @@ BufferTexture::BufferTexture(int width, int height, int depth, TextureFormat col
 {
     m_Width = width;
     m_Height = height;
-    m_ColorTexture = nullptr;
-    m_DepthTexture = nullptr;
 
     glGenFramebuffers(1, &m_TextureID);
     glBindFramebuffer(GL_FRAMEBUFFER, m_TextureID);
@@ -89,14 +87,8 @@ void BufferTexture::internalDispose()
     m_TextureID = NULL;
 
     if (m_ColorTexture)
-    {
         delete m_ColorTexture;
-        m_ColorTexture = nullptr;
-    }
 
     if (m_DepthTexture)
-    {
         delete m_DepthTexture;
-        m_DepthTexture = nullptr;
-    }
 }
