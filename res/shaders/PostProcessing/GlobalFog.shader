@@ -46,11 +46,12 @@ void main()
 
     // Interpolated ray direction won't always be normalized, even if it was already normalized in vertex shader.
     vec3 worldDir = normalize(v_RayDir);
-    float linearDepth = LinearDepth01(texture2D(u_DepthTex, v_UV).r);
+    float rawDepth = texture2D(u_DepthTex, v_UV).r;
+    float linearDepth = LinearDepth01(rawDepth);
     float fogFactor = linearDepth * u_ProjectionParams.y * FOG_DENSITY;
 
     // Exponential squared falloff. Ignore skybox (1.0 depth)
-    fogFactor = linearDepth < 1.0 ? exp2(-fogFactor * fogFactor) : 1.0;
+    fogFactor = rawDepth < 1.0 ? exp2(-fogFactor * fogFactor) : 1.0;
 
     fogFactor = clamp(fogFactor, 0.0, 1.0);
     fragColor = vec4(mix(FOG_COLOR, scene.rgb, fogFactor), 1.0);

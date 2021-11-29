@@ -168,7 +168,7 @@ MeshPrimitives::Sphere::Sphere(uint16_t resolution) : Mesh()
             indices[i++] = currStripStartVertex + y + 1;
         }
 
-        // // Handle south pole triangle.
+        // Handle south pole triangle.
         indices[i++] = nextStripStartVertex - 2;
         indices[i++] = nextStripStartVertex + resolution - 2;
         indices[i++] = nextStripStartVertex - 1;
