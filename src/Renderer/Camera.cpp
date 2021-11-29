@@ -35,12 +35,13 @@ void Camera::update()
         );
 }
 
-void Camera::draw()
+void Camera::draw(const Scene* scene)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_BufferTex->id());
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Render scene
+    if (scene)
+        scene->draw(*this, /*drawSkybox=*/ true);
 
     glBindFramebuffer(GL_FRAMEBUFFER, NULL);
     m_ImageEffectChain->render(m_BufferTex);

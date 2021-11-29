@@ -70,10 +70,10 @@ void Scene::update()
     }
 }
 
-void Scene::draw(const Camera& camera, bool drawSkybox)
+void Scene::draw(const Camera& camera, bool drawSkybox) const
 {
     if (m_Skybox && drawSkybox)
-        m_Skybox->draw(camera);
+        m_Skybox->draw(camera.getViewProjMatrix());
 
     for (size_t i = 0; i < m_Entities.size(); i++)
         m_Entities[i]->draw(camera, m_Lights);

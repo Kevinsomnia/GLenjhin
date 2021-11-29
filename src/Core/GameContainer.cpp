@@ -92,12 +92,7 @@ void GameContainer::render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if (m_MainCamera)
-    {
-        m_MainCamera->draw();
-
-        if (m_CurrentScene)
-            m_CurrentScene->draw(*m_MainCamera);
-    }
+        m_MainCamera->draw(m_CurrentScene);
 
     onGUI();
     ImGui::Render();

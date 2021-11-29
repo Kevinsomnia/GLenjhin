@@ -2,7 +2,7 @@
 #define SKYBOX_H
 
 #include <iostream>
-#include "Camera.h"
+#include "../Math/Matrix4x4.h"
 #include "FullscreenTriangle.h"
 
 using std::cout;
@@ -13,7 +13,7 @@ class Skybox
 public:
     Skybox(const std::string& texturePath);
     ~Skybox();
-    void draw(const Camera& vp);
+    void draw(const Matrix4x4& vp);
 private:
     Texture2D* m_Texture;
     Material* m_Material;

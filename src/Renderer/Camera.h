@@ -3,6 +3,7 @@
 
 #include <iostream>
 
+#include "../Core/Scene.h"
 #include "../GUI/GUIWindows.h"
 #include "../Math/Matrix4x4.h"
 #include "Texture/Texture.h"
@@ -16,6 +17,7 @@ using std::endl;
 // Forward declaration
 class ImageEffect;
 class ImageEffectChain;
+class Scene;
 
 
 class Camera
@@ -24,7 +26,7 @@ public:
     Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float nearClip, float farClip);
     ~Camera();
     void update();
-    void draw();
+    void draw(const Scene* scene);
     void addImageEffect(ImageEffect* effect);
     void addBuffersToDebugWindow(DebugTextureListWindow& window) const;
     Transform* getTransform() const;
