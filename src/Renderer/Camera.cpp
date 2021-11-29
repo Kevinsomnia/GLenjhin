@@ -17,12 +17,16 @@ Camera::Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float 
     // Camera's main buffer to write to (default to HDR + depth buffer).
     m_BufferTex = new BufferTexture(1600, 900, /*depth=*/ 32, TextureFormat::RGBAHalf);
     m_ImageEffectChain = new ImageEffectChain(this);
+    m_BlitMat = new Material(new Shader("res\\shaders\\PostProcessing\\Common\\Copy.shader"));
+    m_BlitTriangle = new FullscreenTriangle(m_BlitMat);
 }
 
 Camera::~Camera()
 {
     delete m_Transform;
     delete m_BufferTex;
+    delete m_BlitMat;
+    delete m_BlitTriangle;
 }
 
 void Camera::update()
@@ -37,6 +41,7 @@ void Camera::update()
 
 void Camera::draw(const Scene* scene)
 {
+    // Store scene color in buffer tex
     glBindFramebuffer(GL_FRAMEBUFFER, m_BufferTex->id());
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -44,7 +49,18 @@ void Camera::draw(const Scene* scene)
         scene->draw(*this, /*drawSkybox=*/ true);
 
     glBindFramebuffer(GL_FRAMEBUFFER, NULL);
+
+    // Post processing
     m_ImageEffectChain->render(m_BufferTex);
+}
+
+void Camera::blitToScreen() const
+{
+    // Render our buffer texture's color to the screen/default FBO.
+    // This is not done automatically since sometimes we don't want the buffer to display on the screen.
+    glBindFramebuffer(GL_FRAMEBUFFER, NULL);
+    m_BlitMat->setTexture("u_MainTex", m_BufferTex->colorTexture());
+    m_BlitTriangle->draw();
 }
 
 void Camera::addImageEffect(ImageEffect* effect)

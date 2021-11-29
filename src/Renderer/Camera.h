@@ -27,6 +27,7 @@ public:
     ~Camera();
     void update();
     void draw(const Scene* scene);
+    void blitToScreen() const;
     void addImageEffect(ImageEffect* effect);
     void addBuffersToDebugWindow(DebugTextureListWindow& window) const;
     Transform* getTransform() const;
@@ -41,6 +42,8 @@ private:
     Transform* m_Transform;
     BufferTexture* m_BufferTex;
     ImageEffectChain* m_ImageEffectChain;
+    Material* m_BlitMat;
+    FullscreenTriangle* m_BlitTriangle;
     Matrix4x4 m_ViewProjMatrix;
     Vector4 m_ProjectionParams;
     float m_FieldOfView;

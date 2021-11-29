@@ -19,9 +19,9 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     m_MainCamera = new Camera(
         Vector3(0.0f, 1.0f, 0.0f),
         Vector3::zero,
-        70.0f,		// FOV
-        0.1f,		// Near
-        1000.0f		// Far
+        /*fieldOfView=*/ 75.0f,
+        /*nearClip=*/ 0.1f,
+        /*farClip=*/ 1000.0f
     );
     m_MainCamera->addImageEffect(new GlobalFog());
     m_MainCamera->addImageEffect(new Bloom());
@@ -89,10 +89,11 @@ void GameContainer::render()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     if (m_MainCamera)
+    {
         m_MainCamera->draw(m_CurrentScene);
+        m_MainCamera->blitToScreen();
+    }
 
     onGUI();
     ImGui::Render();
