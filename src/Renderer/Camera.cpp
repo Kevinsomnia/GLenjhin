@@ -13,11 +13,16 @@ Camera::Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float 
         m_FarClip - m_NearClip,
         2.0f * m_NearClip * m_FarClip
     );
+
+    // Camera's main buffer to write to (default to HDR + depth buffer).
+    m_BufferTex = new BufferTexture(1600, 900, /*depth=*/ 32, TextureFormat::RGBAHalf);
+    m_ImageEffectChain = new ImageEffectChain(this);
 }
 
 Camera::~Camera()
 {
     delete m_Transform;
+    delete m_BufferTex;
 }
 
 void Camera::update()
@@ -28,6 +33,27 @@ void Camera::update()
             m_Transform->getPosition(),
             m_Transform->getRotation()
         );
+}
+
+void Camera::draw()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, m_BufferTex->id());
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // Render scene
+
+    glBindFramebuffer(GL_FRAMEBUFFER, NULL);
+    m_ImageEffectChain->render(m_BufferTex);
+}
+
+void Camera::addImageEffect(ImageEffect* effect)
+{
+    m_ImageEffectChain->add(effect);
+}
+
+void Camera::addBuffersToDebugWindow(DebugTextureListWindow& window) const
+{
+    window.add(m_BufferTex->depthTexture(), "Depth", /*flip=*/ true);
 }
 
 Transform* Camera::getTransform() const

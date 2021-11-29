@@ -6,9 +6,7 @@
 #include <iostream>
 #include "../GUI/GUIWindows.h"
 #include "../Interaction/Input.h"
-#include "../Renderer/Texture/Texture.h"
 #include "../Renderer/MeshPrimitives.h"
-#include "../Renderer/PostProcessing/PostProcessing.h"
 #include "../Renderer/PostProcessing/Bloom.h"
 #include "../Renderer/PostProcessing/GaussianBlur.h"
 #include "../Renderer/PostProcessing/GlobalFog.h"
@@ -44,8 +42,6 @@ private:
     GLFWwindow* m_MainWindow;
     Scene* m_CurrentScene;
     Camera* m_MainCamera;
-    BufferTexture* m_ScreenBuffer;
-    ImageEffectChain* m_ImageEffectChain;
     ImGuiIO* m_ImGuiIO;
     uint32_t m_FrameCountInLastSecond;
     double m_LastFPSRecordTime;

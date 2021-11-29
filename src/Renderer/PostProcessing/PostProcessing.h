@@ -10,6 +10,11 @@
 #include "../Shader.h"
 #include "../Texture/Texture.h"
 
+
+// Forward declaration
+class Camera;
+
+
 class ImageEffect
 {
 public:
