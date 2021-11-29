@@ -44,6 +44,13 @@ GeometryBuffers::~GeometryBuffers()
     internalDispose();
 }
 
+void GeometryBuffers::setGBufferTextures(Material& mat) const
+{
+    mat.setTexture("u_Position", m_PositionGBuffer);
+    mat.setTexture("u_Normal", m_NormalGBuffer);
+    mat.setTexture("u_AlbedoSpec", m_AlbedoSpecGBuffer);
+}
+
 void GeometryBuffers::internalDispose()
 {
     glDeleteFramebuffers(1, &m_FboID);

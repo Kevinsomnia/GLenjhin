@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "../Texture/Texture.h"
+#include "../Material.h"
 
 using std::cout;
 using std::cerr;
@@ -13,6 +14,7 @@ class GeometryBuffers
 public:
     GeometryBuffers(int width, int height);
     ~GeometryBuffers();
+    void setGBufferTextures(Material& mat) const;
     uint32_t id() const { return m_FboID; }
     Texture2D* positionGBuffer() const { return m_PositionGBuffer; }
     Texture2D* normalGBuffer() const { return m_NormalGBuffer; }

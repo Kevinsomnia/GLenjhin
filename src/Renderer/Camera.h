@@ -27,7 +27,7 @@ public:
     Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float nearClip, float farClip);
     ~Camera();
     void update();
-    void draw(const Scene* scene);
+    void draw(Scene* scene);
     void blitToScreen() const;
     void addImageEffect(ImageEffect* effect);
     void addBuffersToDebugWindow(DebugTextureListWindow& window) const;
@@ -45,8 +45,9 @@ private:
     BufferTexture* m_ColorBuffer;
     ImageEffectChain* m_ImageEffectChain;
     Material* m_DeferredGeometryMat;
+    Material* m_DeferredLightingMat;
     Material* m_BlitMat;
-    FullscreenTriangle* m_BlitTriangle;
+    FullscreenTriangle* m_FullscreenTriangle;
     Matrix4x4 m_ViewProjMatrix;
     Vector4 m_ProjectionParams;
     float m_FieldOfView;
