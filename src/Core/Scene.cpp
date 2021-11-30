@@ -9,11 +9,11 @@ Scene::Scene()
     m_Skybox = new Skybox("res\\textures\\DaySkybox.png");
 
     // Load shader and material
-    m_CurrMat = new Material(new Shader("res\\shaders\\StandardSurface.shader"));
+    m_CurrMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
     m_CurrTexture = new Texture2D("res\\textures\\test_grid.png");
     m_CurrMat->setTexture("u_MainTex", m_CurrTexture);
 
-    Material* emissiveMat = new Material(new Shader("res\\shaders\\Emissive.shader"));
+    Material* emissiveMat = new Material(new Shader("res\\shaders\\Emissive.glsl"));
 
     Entity* plane = new Entity(Vector3::zero, rotationToRad(Vector3(-90.0f, 180.0f, 0.0f)), Vector3::one * 20.0f);
     plane->setupRenderer(MeshPrimitives::quad, m_CurrMat);
@@ -70,11 +70,23 @@ void Scene::update()
     }
 }
 
-void Scene::draw(const Camera& camera, bool drawSkybox) const
+void Scene::drawGeometryPass(const Camera& camera, Material& geometryMat) const
 {
-    if (m_Skybox && drawSkybox)
-        m_Skybox->draw(camera.getViewProjMatrix());
+    geometryMat.setMatrix("u_VP", camera.getViewProjMatrix());
+    geometryMat.bind();
 
+    for (size_t i = 0; i < m_Entities.size(); i++)
+        m_Entities[i]->drawGeometryPass(camera, geometryMat);
+}
+
+void Scene::drawSkybox(const Camera& camera) const
+{
+    if (m_Skybox)
+        m_Skybox->draw(camera.getViewProjMatrix());
+}
+
+void Scene::drawEntities(const Camera& camera) const
+{
     for (size_t i = 0; i < m_Entities.size(); i++)
         m_Entities[i]->draw(camera, m_Lights);
 }

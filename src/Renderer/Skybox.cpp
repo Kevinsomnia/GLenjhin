@@ -2,11 +2,11 @@
 
 Skybox::Skybox(const std::string& texturePath)
 {
-    Shader* shader = new Shader("res\\shaders\\Skybox.shader");
+    Shader* shader = new Shader("res\\shaders\\Skybox.glsl");
     m_Texture = new Texture2D(texturePath, false);
     m_Material = new Material(shader);
     m_Material->setTexture("u_MainTex", m_Texture);
-    m_Triangle = new FullscreenTriangle(m_Material);
+    m_Triangle = new FullscreenTriangle(m_Material, /*depthTest=*/ true);
 }
 
 Skybox::~Skybox()

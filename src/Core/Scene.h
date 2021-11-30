@@ -27,8 +27,11 @@ public:
     Scene();
     ~Scene();
     void update();
-    void draw(const Camera& camera, bool drawSkybox) const;
+    void drawGeometryPass(const Camera& camera, Material& geometryMat) const;
+    void drawSkybox(const Camera& camera) const;
+    void drawEntities(const Camera& camera) const;
     void setNewTexture(const std::string& texturePath);
+    std::vector<Light*>& lights() { return m_Lights; };
 private:
     Skybox* m_Skybox;
     Material* m_CurrMat;

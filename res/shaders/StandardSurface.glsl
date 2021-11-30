@@ -8,20 +8,19 @@ layout(location = 2) in vec2 aUV;
 uniform mat4 u_VP;
 uniform mat4 u_Model;
 
-out vec3 wPos;
-out vec3 wNormal;
+out vec3 v_Pos;
+out vec3 v_Normal;
 out vec2 v_UV;
 
 void main()
 {
     vec4 worldPos = u_Model * aPosition;
-    vec4 worldNormal = u_Model * vec4(aNormal, 0.0);
 
-    wPos = worldPos.xyz;
-    wNormal = normalize(worldNormal.xyz);
+    v_Pos = worldPos.xyz;
+    v_Normal = transpose(inverse(mat3(u_Model))) * aNormal;
+    v_UV = vec2(aUV.x, 1.0 - aUV.y);
 
     gl_Position = u_VP * worldPos;
-    v_UV = vec2(aUV.x, 1.0 - aUV.y);
 }
 
 
@@ -35,24 +34,23 @@ uniform vec3 u_DirLightColor;
 
 uniform sampler2D u_MainTex;
 
+in vec3 v_Pos;
+in vec3 v_Normal;
 in vec2 v_UV;
-
-in vec3 wPos;
-in vec3 wNormal;
 
 out vec4 color;
 
 void main()
 {
     vec3 ambient = vec3(0.1);   // needs uniform
-    vec3 nrm = normalize(wNormal);
+    vec3 nrm = normalize(v_Normal);
     float shininess = 128.0;
 
     // Lambert
     float nDotL = max(0.0, dot(-u_DirLightDir, nrm));
 
     // Blinn-Phong
-    vec3 viewDir = normalize(u_CameraPos - wPos);
+    vec3 viewDir = normalize(u_CameraPos - v_Pos);
     vec3 halfDir = normalize(viewDir - u_DirLightDir);
     float specContrib = max(0.0, dot(halfDir, nrm));
 

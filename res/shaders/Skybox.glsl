@@ -10,9 +10,9 @@ out vec3 v_RayDir;
 
 void main()
 {
-    gl_Position = vec4(aPosition, 0.0, 1.0);
     v_UV = vec2(aPosition.x + 1.0, 1.0 - aPosition.y) * 0.5;
     v_RayDir = inverse(mat3(u_VP)) * vec3(aPosition.xy, 1.0);
+    gl_Position = vec4(aPosition, 1.0, 1.0);
 }
 
 

@@ -2,7 +2,7 @@
 
 using ImageLib::PNG;
 
-Texture2D::Texture2D(int width, int height, TextureFormat colorFormat) : Texture()
+Texture2D::Texture2D(uint32_t width, uint32_t height, TextureFormat colorFormat) : Texture()
 {
     m_Width = width;
     m_Height = height;

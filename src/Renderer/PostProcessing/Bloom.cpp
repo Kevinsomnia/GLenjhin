@@ -1,6 +1,6 @@
 #include "Bloom.h"
 
-Bloom::Bloom() : ImageEffect("res\\shaders\\PostProcessing\\Bloom\\Combine.shader")
+Bloom::Bloom() : ImageEffect("res\\shaders\\PostProcessing\\Bloom\\Combine.glsl")
 {
     const int SCR_WIDTH = 1600;
     const int SCR_HEIGHT = 900;
@@ -18,9 +18,9 @@ Bloom::Bloom() : ImageEffect("res\\shaders\\PostProcessing\\Bloom\\Combine.shade
             break;
     }
 
-    m_PrefilterMat = new Material(new Shader("res\\shaders\\PostProcessing\\Bloom\\Prefilter.shader"));
-    m_DownsampleMat = new Material(new Shader("res\\shaders\\PostProcessing\\Bloom\\Downsample.shader"));
-    m_UpsampleMat = new Material(new Shader("res\\shaders\\PostProcessing\\Bloom\\Upsample.shader"));
+    m_PrefilterMat = new Material(new Shader("res\\shaders\\PostProcessing\\Bloom\\Prefilter.glsl"));
+    m_DownsampleMat = new Material(new Shader("res\\shaders\\PostProcessing\\Bloom\\Downsample.glsl"));
+    m_UpsampleMat = new Material(new Shader("res\\shaders\\PostProcessing\\Bloom\\Upsample.glsl"));
 }
 
 Bloom::~Bloom()

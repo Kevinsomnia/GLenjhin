@@ -28,16 +28,15 @@ void ImageEffect::render(BufferTexture* source, BufferTexture* destination, Mate
     m_Triangle->draw();
 }
 
-void ImageEffect::setContext(Camera* camera, BufferTexture* screen)
+void ImageEffect::setCamera(Camera* camera)
 {
     m_Camera = camera;
-    m_ScreenBuffer = screen;
 }
 
 
 ImageEffectChain::ImageEffectChain(Camera* camera) : m_Camera(camera)
 {
-    m_CopyMat = new Material(new Shader("res\\shaders\\PostProcessing\\Common\\Copy.shader"));
+    m_CopyMat = new Material(new Shader("res\\shaders\\PostProcessing\\Common\\Copy.glsl"));
     m_Triangle = new FullscreenTriangle(m_CopyMat);
 
     // Create 2 color buffers for ping-ponging, since we can't read and write to the same buffer when iterating through image effects.
@@ -67,7 +66,7 @@ void ImageEffectChain::render(BufferTexture* source)
     for (size_t i = 0; i < m_Effects.size(); i++)
     {
         ImageEffect* effect = m_Effects[i];
-        effect->setContext(m_Camera, source);
+        effect->setCamera(m_Camera);
 
         if (i == 0)
         {

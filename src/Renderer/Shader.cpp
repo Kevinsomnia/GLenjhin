@@ -1,22 +1,12 @@
 #include "Shader.h"
 
-Shader::Shader(const string& shaderPath) : m_ShaderId(0)
+Shader::Shader(const string& shaderPath)
 {
     ShaderParseResult parsedResults = parseShader(shaderPath);
-    m_ShaderId = createShader(parsedResults);
+    m_ShaderID = createShader(parsedResults);
 }
 
 Shader::~Shader()
 {
-    glDeleteProgram(m_ShaderId);
-}
-
-void Shader::use() const
-{
-    glUseProgram(m_ShaderId);
-}
-
-const uint32_t Shader::getShaderId() const
-{
-    return m_ShaderId;
+    glDeleteProgram(m_ShaderID);
 }

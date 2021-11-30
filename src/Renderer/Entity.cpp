@@ -28,6 +28,18 @@ void Entity::setupRenderer(Mesh* mesh, Material* material)
     m_Renderer = new MeshRenderer(mesh, material);
 }
 
+void Entity::drawGeometryPass(const Camera& cam, Material& geometryMat) const
+{
+    if (m_Renderer)
+    {
+        geometryMat.setMatrix("u_Model", m_Transform->getTRS());
+        geometryMat.setTexture("u_AlbedoTex", m_Renderer->getMaterial()->getTexture("u_MainTex"));
+        geometryMat.updateUniforms();
+
+        m_Renderer->drawMeshDirect();
+    }
+}
+
 void Entity::draw(const Camera& cam, const std::vector<Light*>& lights) const
 {
     if (m_Renderer)
@@ -39,14 +51,4 @@ void Entity::draw(const Camera& cam, const std::vector<Light*>& lights) const
             lights
         );
     }
-}
-
-Transform* Entity::getTransform() const
-{
-    return m_Transform;
-}
-
-MeshRenderer* Entity::getRenderer() const
-{
-    return m_Renderer;
 }

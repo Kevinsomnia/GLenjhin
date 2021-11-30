@@ -7,6 +7,7 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     m_Instance = this;
 
     glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);     // for skybox to work (renders at NDC Z 1.0)
     // Enable back face culling
     glEnable(GL_CULL_FACE);
 
@@ -21,7 +22,8 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
         Vector3::zero,
         /*fieldOfView=*/ 75.0f,
         /*nearClip=*/ 0.1f,
-        /*farClip=*/ 5000.0f
+        /*farClip=*/ 5000.0f,
+        /*deferred=*/ true
     );
     m_MainCamera->addImageEffect(new GlobalFog());
     m_MainCamera->addImageEffect(new Bloom());

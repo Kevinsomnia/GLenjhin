@@ -1,11 +1,9 @@
 #include "Texture.h"
 
-BufferTexture::BufferTexture(int width, int height, int depth, TextureFormat colorFormat) : Texture()
+BufferTexture::BufferTexture(uint32_t width, uint32_t height, uint32_t depth, TextureFormat colorFormat) : Texture()
 {
     m_Width = width;
     m_Height = height;
-    m_ColorTexture = nullptr;
-    m_DepthTexture = nullptr;
 
     glGenFramebuffers(1, &m_TextureID);
     glBindFramebuffer(GL_FRAMEBUFFER, m_TextureID);
@@ -15,19 +13,8 @@ BufferTexture::BufferTexture(int width, int height, int depth, TextureFormat col
 
     if (depth != 0)
     {
-        TextureFormat depthMode = TextureFormat::Depth16;
-
-        if (depth == 24)
-        {
-            depthMode = TextureFormat::Depth24;
-        }
-        else if (depth == 32)
-        {
-            depthMode = TextureFormat::Depth32;
-        }
-
         // Depth texture should always have point filtering. Might change in the future.
-        m_DepthTexture = new Texture2D(width, height, depthMode);
+        m_DepthTexture = new Texture2D(width, height, GetDepthTextureFormat(depth));
         m_DepthTexture->setFilterMode(TextureFilterMode::Point);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthTexture->id(), 0);
     }
@@ -89,14 +76,8 @@ void BufferTexture::internalDispose()
     m_TextureID = NULL;
 
     if (m_ColorTexture)
-    {
         delete m_ColorTexture;
-        m_ColorTexture = nullptr;
-    }
 
     if (m_DepthTexture)
-    {
         delete m_DepthTexture;
-        m_DepthTexture = nullptr;
-    }
 }
