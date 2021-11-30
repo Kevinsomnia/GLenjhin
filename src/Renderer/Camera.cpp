@@ -139,9 +139,9 @@ void Camera::addBuffersToDebugWindow(DebugTextureListWindow& window) const
 {
     if (m_GBuffers)
     {
-        window.add(m_GBuffers->positionGBuffer(), "GBuffer: World Position (RGB)", /*flip=*/ true);
-        window.add(m_GBuffers->normalGBuffer(), "GBuffer: World Normal (RGB)", /*flip=*/ true);
-        window.add(m_GBuffers->albedoSpecGBuffer(), "GBuffer: Albedo (RGB) Specular (A)", /*flip=*/ true);
-        window.add(m_GBuffers->depthTexture(), "Depth", /*flip=*/ true);
+        window.add(m_GBuffers->positionGBuffer(), "GBuffer [RGBAFloat]: World Position (RGB)", /*flip=*/ true);
+        window.add(m_GBuffers->normalSmoothGBuffer(), "GBuffer [RGBAHalf]: World Normal (RGB) Smoothness (A)", /*flip=*/ true);
+        window.add(m_GBuffers->albedoMetalGBuffer(), "GBuffer [RGBA32]: Albedo (RGB) Metallic (A)", /*flip=*/ true);
+        window.add(m_GBuffers->depthTexture(), "Depth (R) [Float]", /*flip=*/ true);
     }
 }

@@ -7,10 +7,10 @@ GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height, uint32_t depth
 
     m_PositionGBuffer = new Texture2D(width, height, TextureFormat::RGBAFloat);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_PositionGBuffer->id(), 0);
-    m_NormalGBuffer = new Texture2D(width, height, TextureFormat::RGBAHalf);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_NormalGBuffer->id(), 0);
-    m_AlbedoSpecGBuffer = new Texture2D(width, height, TextureFormat::RGBA32);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_AlbedoSpecGBuffer->id(), 0);
+    m_NormalSmoothGBuffer = new Texture2D(width, height, TextureFormat::RGBAHalf);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_NormalSmoothGBuffer->id(), 0);
+    m_AlbedoMetalGBuffer = new Texture2D(width, height, TextureFormat::RGBA32);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_AlbedoMetalGBuffer->id(), 0);
 
     std::array<GLenum, 3> colorAttachments = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
     glDrawBuffers(colorAttachments.size(), colorAttachments.data());
@@ -24,11 +24,11 @@ GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height, uint32_t depth
     {
         // Finish setup
         m_PositionGBuffer->setFilterMode(TextureFilterMode::Point);
-        m_NormalGBuffer->setFilterMode(TextureFilterMode::Point);
-        m_AlbedoSpecGBuffer->setFilterMode(TextureFilterMode::Point);
+        m_NormalSmoothGBuffer->setFilterMode(TextureFilterMode::Point);
+        m_AlbedoMetalGBuffer->setFilterMode(TextureFilterMode::Point);
         m_PositionGBuffer->setWrapMode(TextureWrapMode::Clamp);
-        m_NormalGBuffer->setWrapMode(TextureWrapMode::Clamp);
-        m_AlbedoSpecGBuffer->setWrapMode(TextureWrapMode::Clamp);
+        m_NormalSmoothGBuffer->setWrapMode(TextureWrapMode::Clamp);
+        m_AlbedoMetalGBuffer->setWrapMode(TextureWrapMode::Clamp);
     }
     else
     {
@@ -47,8 +47,8 @@ GeometryBuffers::~GeometryBuffers()
 void GeometryBuffers::setGBufferTextures(Material& mat) const
 {
     mat.setTexture("u_Position", m_PositionGBuffer);
-    mat.setTexture("u_Normal", m_NormalGBuffer);
-    mat.setTexture("u_AlbedoSpec", m_AlbedoSpecGBuffer);
+    mat.setTexture("u_NormalSmooth", m_NormalSmoothGBuffer);
+    mat.setTexture("u_AlbedoMetal", m_AlbedoMetalGBuffer);
 }
 
 void GeometryBuffers::internalDispose()
@@ -57,6 +57,7 @@ void GeometryBuffers::internalDispose()
     m_FboID = NULL;
 
     delete m_PositionGBuffer;
-    delete m_NormalGBuffer;
+    delete m_NormalSmoothGBuffer;
+    delete m_AlbedoMetalGBuffer;
     delete m_DepthTexture;
 }

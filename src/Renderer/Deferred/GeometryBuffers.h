@@ -19,16 +19,16 @@ public:
     uint32_t width() const { return m_Width; }
     uint32_t height() const { return m_Height; }
     Texture2D* positionGBuffer() const { return m_PositionGBuffer; }
-    Texture2D* normalGBuffer() const { return m_NormalGBuffer; }
-    Texture2D* albedoSpecGBuffer() const { return m_AlbedoSpecGBuffer; }
+    Texture2D* normalSmoothGBuffer() const { return m_NormalSmoothGBuffer; }
+    Texture2D* albedoMetalGBuffer() const { return m_AlbedoMetalGBuffer; }
     Texture2D* depthTexture() const { return m_DepthTexture; }
 protected:
     uint32_t m_FboID;
     uint32_t m_Width;
     uint32_t m_Height;
     Texture2D* m_PositionGBuffer;
-    Texture2D* m_NormalGBuffer;
-    Texture2D* m_AlbedoSpecGBuffer;
+    Texture2D* m_NormalSmoothGBuffer;
+    Texture2D* m_AlbedoMetalGBuffer;
     Texture2D* m_DepthTexture;
 
     void internalDispose();

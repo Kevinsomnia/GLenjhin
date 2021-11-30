@@ -29,8 +29,8 @@ void main()
 #version 330 core
 
 layout(location = 0) out vec4 gPosition;
-layout(location = 1) out vec4 gNormal;
-layout(location = 2) out vec4 gAlbedoSpec;
+layout(location = 1) out vec4 gNormalSmoothness;
+layout(location = 2) out vec4 gAlbedoMetallic;
 
 in vec3 v_Position;
 in vec3 v_Normal;
@@ -41,6 +41,6 @@ uniform sampler2D u_AlbedoTex;
 void main()
 {
     gPosition = vec4(v_Position, 1.0);
-    gNormal = vec4(normalize(v_Normal), 1.0);
-    gAlbedoSpec = vec4(texture2D(u_AlbedoTex, v_UV).rgb, 1.0);
+    gNormalSmoothness = vec4(normalize(v_Normal), 1.0);
+    gAlbedoMetallic = vec4(texture2D(u_AlbedoTex, v_UV).rgb, 1.0);
 }
