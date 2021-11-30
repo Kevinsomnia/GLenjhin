@@ -1,6 +1,6 @@
 #include "GeometryBuffers.h"
 
-GeometryBuffers::GeometryBuffers(int width, int height)
+GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height) : m_Width(width), m_Height(height)
 {
     glGenFramebuffers(1, &m_FboID);
     glBindFramebuffer(GL_FRAMEBUFFER, m_FboID);

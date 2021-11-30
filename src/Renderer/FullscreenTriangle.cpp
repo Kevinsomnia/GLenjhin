@@ -2,7 +2,7 @@
 
 uint32_t FullscreenTriangle::VAO_ID = 0;
 
-FullscreenTriangle::FullscreenTriangle(Material* mat) : m_Material(mat)
+FullscreenTriangle::FullscreenTriangle(Material* mat, bool depthTest) : m_Material(mat), m_DepthTest(depthTest)
 {
     std::array<float, 3*2> positions = {
         -1.0f, -1.0f,
@@ -35,8 +35,18 @@ void FullscreenTriangle::draw() const
 {
     bool prevDepthTest = glIsEnabled(GL_DEPTH_TEST);
 
-    if (prevDepthTest)
-        glDisable(GL_DEPTH_TEST);
+    // Set depth test flag
+    if (m_DepthTest != prevDepthTest)
+    {
+        if (m_DepthTest)
+        {
+            glEnable(GL_DEPTH_TEST);
+        }
+        else
+        {
+            glDisable(GL_DEPTH_TEST);
+        }
+    }
 
     if (m_Material)
         m_Material->bind();
@@ -44,12 +54,16 @@ void FullscreenTriangle::draw() const
     glBindVertexArray(VAO_ID);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
-    if (prevDepthTest)
+    // Restore depth test flag
+    if (m_DepthTest != prevDepthTest)
     {
-        glEnable(GL_DEPTH_TEST);
-    }
-    else
-    {
-        glDisable(GL_DEPTH_TEST);
+        if (prevDepthTest)
+        {
+            glEnable(GL_DEPTH_TEST);
+        }
+        else
+        {
+            glDisable(GL_DEPTH_TEST);
+        }
     }
 }

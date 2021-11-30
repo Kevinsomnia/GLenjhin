@@ -42,7 +42,7 @@ public:
 private:
     Transform* m_Transform;
     GeometryBuffers* m_GBuffers;
-    BufferTexture* m_ColorBuffer;
+    BufferTexture* m_RenderTargetBuffer;
     ImageEffectChain* m_ImageEffectChain;
     Material* m_DeferredGeometryMat;
     Material* m_DeferredLightingMat;

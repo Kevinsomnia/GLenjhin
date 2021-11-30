@@ -79,11 +79,14 @@ void Scene::drawGeometryPass(const Camera& camera, Material& geometryMat) const
         m_Entities[i]->drawGeometryPass(camera, geometryMat);
 }
 
-void Scene::draw(const Camera& camera, bool drawSkybox) const
+void Scene::drawSkybox(const Camera& camera) const
 {
-    if (m_Skybox && drawSkybox)
+    if (m_Skybox)
         m_Skybox->draw(camera.getViewProjMatrix());
+}
 
+void Scene::drawEntities(const Camera& camera) const
+{
     for (size_t i = 0; i < m_Entities.size(); i++)
         m_Entities[i]->draw(camera, m_Lights);
 }

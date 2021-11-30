@@ -122,7 +122,7 @@ protected:
 class Texture2D : public Texture
 {
 public:
-    Texture2D(int width, int height, TextureFormat colorFormat);
+    Texture2D(uint32_t width, uint32_t height, TextureFormat colorFormat);
     Texture2D(const std::string& filePath, bool generateMipmaps = true, bool readable = false);
     ~Texture2D();
 };
@@ -130,7 +130,7 @@ public:
 class BufferTexture : public Texture
 {
 public:
-    BufferTexture(int width, int height, int depth, TextureFormat colorFormat);
+    BufferTexture(uint32_t width, uint32_t height, uint32_t depth, TextureFormat colorFormat);
     ~BufferTexture();
     Texture2D* colorTexture() const;
     Texture2D* depthTexture() const;

@@ -12,16 +12,21 @@ using std::endl;
 class GeometryBuffers
 {
 public:
-    GeometryBuffers(int width, int height);
+    GeometryBuffers(uint32_t width, uint32_t height);
     ~GeometryBuffers();
     void setGBufferTextures(Material& mat) const;
     uint32_t id() const { return m_FboID; }
+    uint32_t width() const { return m_Width; }
+    uint32_t height() const { return m_Height; }
+    uint32_t depth() const { return 32; }   // If this changes, be sure to change depth mode of m_DepthTexture.
     Texture2D* positionGBuffer() const { return m_PositionGBuffer; }
     Texture2D* normalGBuffer() const { return m_NormalGBuffer; }
     Texture2D* albedoSpecGBuffer() const { return m_AlbedoSpecGBuffer; }
     Texture2D* depthTexture() const { return m_DepthTexture; }
 protected:
     uint32_t m_FboID;
+    uint32_t m_Width;
+    uint32_t m_Height;
     Texture2D* m_PositionGBuffer;
     Texture2D* m_NormalGBuffer;
     Texture2D* m_AlbedoSpecGBuffer;

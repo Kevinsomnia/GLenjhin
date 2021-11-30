@@ -1,6 +1,6 @@
 #include "Texture.h"
 
-BufferTexture::BufferTexture(int width, int height, int depth, TextureFormat colorFormat) : Texture()
+BufferTexture::BufferTexture(uint32_t width, uint32_t height, uint32_t depth, TextureFormat colorFormat) : Texture()
 {
     m_Width = width;
     m_Height = height;

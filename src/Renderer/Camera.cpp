@@ -23,7 +23,7 @@ Camera::Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float 
     m_DeferredLightingMat = new Material(new Shader("res\\shaders\\Deferred\\DeferredLighting.glsl"));
     m_GBuffers->setGBufferTextures(*m_DeferredLightingMat);
 
-    m_ColorBuffer = new BufferTexture(SCR_WIDTH, SCR_HEIGHT, /*depth=*/ 32, TextureFormat::RGBAHalf);
+    m_RenderTargetBuffer = new BufferTexture(SCR_WIDTH, SCR_HEIGHT, m_GBuffers->depth(), TextureFormat::RGBAHalf);
     m_ImageEffectChain = new ImageEffectChain(this);
     m_BlitMat = new Material(new Shader("res\\shaders\\PostProcessing\\Common\\Copy.glsl"));
     m_FullscreenTriangle = new FullscreenTriangle(m_BlitMat);
@@ -32,7 +32,7 @@ Camera::Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float 
 Camera::~Camera()
 {
     delete m_Transform;
-    delete m_ColorBuffer;
+    delete m_RenderTargetBuffer;
     delete m_BlitMat;
     delete m_FullscreenTriangle;
 
@@ -67,8 +67,8 @@ void Camera::draw(Scene* scene)
             scene->drawGeometryPass(*this, *m_DeferredGeometryMat);
 
         // Second pass: calculate lighting in screen-space, output to color buffer
-        glBindFramebuffer(GL_FRAMEBUFFER, m_ColorBuffer->id());
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glBindFramebuffer(GL_FRAMEBUFFER, m_RenderTargetBuffer->id());
+        glClear(GL_COLOR_BUFFER_BIT);
 
         if (scene)
         {
@@ -81,23 +81,36 @@ void Camera::draw(Scene* scene)
         m_DeferredLightingMat->bind();
         m_FullscreenTriangle->setMaterial(m_DeferredLightingMat);
         m_FullscreenTriangle->draw();
-        glBindFramebuffer(GL_FRAMEBUFFER, NULL);
+
+        // Blit GBuffer depth to buffer texture depth so that forward-rendered objects (e.g. skybox, transparent objects) display properly.
+        // It is important for both depth buffers to be in the same format.
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, m_GBuffers->id());
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_RenderTargetBuffer->id());
+        glBlitFramebuffer(0, 0, m_GBuffers->width(), m_GBuffers->height(), 0, 0, m_RenderTargetBuffer->width(), m_RenderTargetBuffer->height(), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+
+        // Render skybox
+        if (scene)
+            scene->drawSkybox(*this);
     }
     else
     {
         // === Forward ===
-        // Store scene color in buffer tex
-        glBindFramebuffer(GL_FRAMEBUFFER, m_ColorBuffer->id());
+        // Store scene color in buffer texture
+        glBindFramebuffer(GL_FRAMEBUFFER, m_RenderTargetBuffer->id());
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         if (scene)
-            scene->draw(*this, /*drawSkybox=*/ true);
+        {
+            Camera& cam = *this;
+            scene->drawSkybox(cam);
+            scene->drawEntities(cam);
+        }
 
         glBindFramebuffer(GL_FRAMEBUFFER, NULL);
     }
 
     // Post processing
-    m_ImageEffectChain->render(m_ColorBuffer);
+    m_ImageEffectChain->render(m_RenderTargetBuffer);
 }
 
 void Camera::blitToScreen() const
@@ -105,7 +118,7 @@ void Camera::blitToScreen() const
     // Render our buffer texture's color to the screen/default FBO.
     // This is not done automatically since sometimes we don't want the buffer to display on the screen.
     glBindFramebuffer(GL_FRAMEBUFFER, NULL);
-    m_BlitMat->setTexture("u_MainTex", m_ColorBuffer->colorTexture());
+    m_BlitMat->setTexture("u_MainTex", m_RenderTargetBuffer->colorTexture());
     m_FullscreenTriangle->setMaterial(m_BlitMat);
     m_FullscreenTriangle->draw();
 }
