@@ -30,7 +30,7 @@ Bloom::~Bloom()
 void Bloom::render(BufferTexture* source, BufferTexture* destination)
 {
     // Pre-filter and isolate bright pixels.
-    m_PrefilterMat->setVector("u_TexelSize", source->texelSize());
+    m_PrefilterMat->setVector2("u_TexelSize", source->texelSize());
     ImageEffect::render(source, m_Buffers[0], m_PrefilterMat);
 
     BufferTexture* currBuffer = nullptr;
@@ -42,7 +42,7 @@ void Bloom::render(BufferTexture* source, BufferTexture* destination)
         currBuffer = m_Buffers[i];
         nextBuffer = m_Buffers[i + 1];
 
-        m_DownsampleMat->setVector("u_TexelSize", currBuffer->texelSize());
+        m_DownsampleMat->setVector2("u_TexelSize", currBuffer->texelSize());
 
         glViewport(0, 0, nextBuffer->width(), nextBuffer->height());
         ImageEffect::render(currBuffer, nextBuffer, m_DownsampleMat);
@@ -55,7 +55,7 @@ void Bloom::render(BufferTexture* source, BufferTexture* destination)
         nextBuffer = m_Buffers[i - 1];
 
         m_UpsampleMat->setTexture("u_PrevTex", currBuffer->colorTexture());
-        m_UpsampleMat->setVector("u_BlurSize", currBuffer->texelSize() * BLUR_SIZE);
+        m_UpsampleMat->setVector2("u_BlurSize", currBuffer->texelSize() * BLUR_SIZE);
 
         glViewport(0, 0, nextBuffer->width(), nextBuffer->height());
         ImageEffect::render(currBuffer, nextBuffer, m_UpsampleMat);
@@ -64,7 +64,7 @@ void Bloom::render(BufferTexture* source, BufferTexture* destination)
     // Upsample final bloom texture and accumulate color to screen.
     currBuffer = m_Buffers[1];
     m_Material->setTexture("u_ScreenTex", source->colorTexture());
-    m_Material->setVector("u_BlurSize", currBuffer->texelSize() * BLUR_SIZE);
+    m_Material->setVector2("u_BlurSize", currBuffer->texelSize() * BLUR_SIZE);
     glViewport(0, 0, source->width(), source->height());
     ImageEffect::render(currBuffer, destination);
 }

@@ -13,7 +13,8 @@ Scene::Scene()
     m_CurrTexture = new Texture2D("res\\textures\\test_grid.png");
     m_CurrMat->setTexture("u_MainTex", m_CurrTexture);
 
-    Material* emissiveMat = new Material(new Shader("res\\shaders\\Emissive.glsl"));
+    Material* sphereMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));   // yes this will leak memory. temp solution.
+    sphereMat->setColor("u_EmissionColor", Color(1.25f, 2.0f, 0.75f, 1.0f));
 
     Entity* plane = new Entity(Vector3::zero, rotationToRad(Vector3(-90.0f, 180.0f, 0.0f)), Vector3::one * 20.0f);
     plane->setupRenderer(MeshPrimitives::quad, m_CurrMat);
@@ -26,7 +27,8 @@ Scene::Scene()
     for (int i = 0; i < 10; i++)
     {
         Entity* entity = new Entity(Vector3(-0.65f, 0.45f, 2.95f), Vector3::zero, Vector3::one * 0.4f);
-        entity->setupRenderer(i % 2 == 0 ? MeshPrimitives::sphere : MeshPrimitives::cube, i == 4 ? emissiveMat : m_CurrMat);
+        bool isSphere = i % 5 == 0;
+        entity->setupRenderer(isSphere ? MeshPrimitives::sphere : MeshPrimitives::cube, isSphere ? sphereMat : m_CurrMat);
         m_Entities.push_back(entity);
         m_DynamicEntities.push_back(entity);
     }

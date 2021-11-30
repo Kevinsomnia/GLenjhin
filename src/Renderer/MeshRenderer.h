@@ -18,8 +18,8 @@ public:
     inline void drawMeshDirect() const;
     void draw(const Vector3& cameraPos, const Matrix4x4& vp, const Matrix4x4& model, const std::vector<Light*>& lights) const;
 
-    Mesh* getMesh() const { return m_Mesh; }
-    Material* getMaterial() const { return m_Material; }
+    Mesh* mesh() const { return m_Mesh; }
+    Material* material() const { return m_Material; }
 private:
     Mesh* m_Mesh;
     Material* m_Material;

@@ -84,7 +84,7 @@ void Camera::draw(Scene* scene)
                 light->bind(*m_DeferredLightingMat);
         }
 
-        m_DeferredLightingMat->setVector("u_CameraPos", m_Transform->getPosition());
+        m_DeferredLightingMat->setVector3("u_CameraPos", m_Transform->getPosition());
         m_DeferredLightingMat->bind();
         m_FullscreenTriangle->setMaterial(m_DeferredLightingMat);
         m_FullscreenTriangle->draw();
@@ -112,9 +112,9 @@ void Camera::draw(Scene* scene)
             scene->drawSkybox(cam);
             scene->drawEntities(cam);
         }
-
-        glBindFramebuffer(GL_FRAMEBUFFER, NULL);
     }
+
+    glBindFramebuffer(GL_FRAMEBUFFER, NULL);
 
     // Post processing
     m_ImageEffectChain->render(m_RenderTargetBuffer);
@@ -142,6 +142,7 @@ void Camera::addBuffersToDebugWindow(DebugTextureListWindow& window) const
         window.add(m_GBuffers->positionGBuffer(), "GBuffer [RGBAFloat]: World Position (RGB)", /*flip=*/ true);
         window.add(m_GBuffers->normalSmoothGBuffer(), "GBuffer [RGBAHalf]: World Normal (RGB) Smoothness (A)", /*flip=*/ true);
         window.add(m_GBuffers->albedoMetalGBuffer(), "GBuffer [RGBA32]: Albedo (RGB) Metallic (A)", /*flip=*/ true);
+        window.add(m_GBuffers->emissionGBuffer(), "GBuffer [RGBAHalf]: Emission (RGB)", /*flip=*/ true);
         window.add(m_GBuffers->depthTexture(), "Depth (R) [Float]", /*flip=*/ true);
     }
 }

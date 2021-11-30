@@ -24,7 +24,7 @@ GaussianBlur::~GaussianBlur()
 void GaussianBlur::render(BufferTexture* source, BufferTexture* destination)
 {
     Vector2 screenTexelSize = source->texelSize();
-    m_DownsampleMat->setVector("u_TexelSize", screenTexelSize);
+    m_DownsampleMat->setVector2("u_TexelSize", screenTexelSize);
 
     // Downsample
     BufferTexture* downsampledBuffer = m_Buffers[0];
@@ -41,9 +41,9 @@ void GaussianBlur::render(BufferTexture* source, BufferTexture* destination)
         BufferTexture* bt2 = m_Buffers[1];
         glViewport(0, 0, bt1->width(), bt1->height());
 
-        m_BlurMat->setVector("u_Stride", strideHorizontal);
+        m_BlurMat->setVector2("u_Stride", strideHorizontal);
         ImageEffect::render(bt1, bt2, m_BlurMat);
-        m_BlurMat->setVector("u_Stride", strideVertical);
+        m_BlurMat->setVector2("u_Stride", strideVertical);
 
         if (i == BLUR_ITERATIONS - 1)
         {

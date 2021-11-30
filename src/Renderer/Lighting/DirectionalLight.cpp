@@ -10,5 +10,5 @@ void DirectionalLight::bind(Material& mat) const
     Light::bind(mat);
 
     Vector3 fwd = m_Transform->getTRS().multiplyVector(Vector3::forward);
-    mat.setVector("u_DirLightDir", fwd);
+    mat.setVector3("u_DirLightDir", fwd);
 }

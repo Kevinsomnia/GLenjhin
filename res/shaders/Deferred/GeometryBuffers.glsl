@@ -31,16 +31,19 @@ void main()
 layout(location = 0) out vec4 gPosition;
 layout(location = 1) out vec4 gNormalSmoothness;
 layout(location = 2) out vec4 gAlbedoMetallic;
+layout(location = 3) out vec4 gEmission;
 
 in vec3 v_Position;
 in vec3 v_Normal;
 in vec2 v_UV;
 
 uniform sampler2D u_AlbedoTex;
+uniform vec4 u_EmissionColor;
 
 void main()
 {
     gPosition = vec4(v_Position, 1.0);
     gNormalSmoothness = vec4(normalize(v_Normal), 1.0);
     gAlbedoMetallic = vec4(texture2D(u_AlbedoTex, v_UV).rgb, 1.0);
+    gEmission = vec4(u_EmissionColor.rgb, 1.0);
 }

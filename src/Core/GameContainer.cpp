@@ -230,4 +230,3 @@ Vector3 GameContainer::getMoveAxis() const
 
     return result;
 }
-

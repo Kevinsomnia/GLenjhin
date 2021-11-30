@@ -33,6 +33,7 @@ uniform vec3 u_DirLightDir;
 uniform vec3 u_DirLightColor;
 
 uniform sampler2D u_MainTex;
+uniform vec4 u_EmissionColor;
 
 in vec3 v_Pos;
 in vec3 v_Normal;
@@ -40,6 +41,7 @@ in vec2 v_UV;
 
 out vec4 color;
 
+// Forward rendering
 void main()
 {
     vec3 ambient = vec3(0.1);   // needs uniform
@@ -56,5 +58,5 @@ void main()
 
     vec4 albedo = texture(u_MainTex, v_UV);
     float specular = pow(specContrib, shininess);
-    color = vec4((albedo.rgb * mix(ambient, vec3(1.0), nDotL)) + specular, 1.0);
+    color = vec4((albedo.rgb * mix(ambient, vec3(1.0), nDotL)) + specular + u_EmissionColor.rgb, 1.0);
 }

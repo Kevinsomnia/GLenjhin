@@ -7,6 +7,7 @@
 #include <glad/glad.h>
 #include "../Math/Matrix4x4.h"
 #include "Texture/Texture.h"
+#include "Color.h"
 #include "Shader.h"
 
 using std::cout;
@@ -20,11 +21,14 @@ public:
     ~Material();
     void bind() const;
     void unbind() const;
+    Vector4 getVector4(const string& uniformName) const;
+    Color getColor(const string& uniformName) const;
     Texture* getTexture(const string& uniformName) const;
     void setFloat(const string& uniformName, float v);
-    void setVector(const string& uniformName, const Vector2& v);
-    void setVector(const string& uniformName, const Vector3& v);
-    void setVector(const string& uniformName, const Vector4& v);
+    void setVector2(const string& uniformName, const Vector2& v);
+    void setVector3(const string& uniformName, const Vector3& v);
+    void setVector4(const string& uniformName, const Vector4& v);
+    void setColor(const string& uniformName, const Color& v);
     void setMatrix(const string& uniformName, const Matrix4x4& mat);
     void setTexture(const string& uniformName, Texture* tex);
     void updateUniforms() const;

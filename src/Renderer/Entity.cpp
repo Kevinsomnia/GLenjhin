@@ -33,7 +33,10 @@ void Entity::drawGeometryPass(const Camera& cam, Material& geometryMat) const
     if (m_Renderer)
     {
         geometryMat.setMatrix("u_Model", m_Transform->getTRS());
-        geometryMat.setTexture("u_AlbedoTex", m_Renderer->getMaterial()->getTexture("u_MainTex"));
+
+        Material* entityMat = m_Renderer->material();
+        geometryMat.setTexture("u_AlbedoTex", entityMat->getTexture("u_MainTex"));
+        geometryMat.setColor("u_EmissionColor", entityMat->getColor("u_EmissionColor"));
         geometryMat.updateUniforms();
 
         m_Renderer->drawMeshDirect();

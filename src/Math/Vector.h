@@ -15,13 +15,13 @@ struct Vector2
 
     float values[2];
 
-    inline float getX() const;
-    inline float getY() const;
-    inline void setX(float x);
-    inline void setY(float y);
-    inline float getMagnitude() const;
-    inline float getSqrMagnitude() const;
-    inline Vector2 getNormalized() const;
+    inline float getX() const { return values[0]; }
+    inline float getY() const { return values[1]; }
+    inline void setX(float x) { values[0] = x; }
+    inline void setY(float y) { values[1] = y; }
+    inline float getMagnitude() const { return sqrt(getSqrMagnitude()); }
+    inline float getSqrMagnitude() const { return values[0] * values[0] + values[1] * values[1]; }
+    inline Vector2 getNormalized() const { return *this / getMagnitude(); }
     inline void normalize();
 
     Vector2 operator +(const Vector2& other) const;
@@ -57,41 +57,6 @@ struct Vector2
     }
 };
 
-inline float Vector2::getX() const
-{
-    return values[0];
-}
-
-inline float Vector2::getY() const
-{
-    return values[1];
-}
-
-inline void Vector2::setX(float x)
-{
-    values[0] = x;
-}
-
-inline void Vector2::setY(float y)
-{
-    values[1] = y;
-}
-
-inline float Vector2::getMagnitude() const
-{
-    return sqrt(getSqrMagnitude());
-}
-
-inline float Vector2::getSqrMagnitude() const
-{
-    return values[0] * values[0] + values[1] * values[1];
-}
-
-inline Vector2 Vector2::getNormalized() const
-{
-    return *this / getMagnitude();
-}
-
 inline void Vector2::normalize()
 {
     float oneOverMagnitude = 1.0f / getMagnitude();
@@ -110,15 +75,15 @@ struct Vector3
 
     float values[3];
 
-    inline float getX() const;
-    inline float getY() const;
-    inline float getZ() const;
-    inline void setX(float x);
-    inline void setY(float y);
-    inline void setZ(float z);
-    inline float getMagnitude() const;
-    inline float getSqrMagnitude() const;
-    inline Vector3 getNormalized() const;
+    inline float getX() const { return values[0]; }
+    inline float getY() const { return values[1]; }
+    inline float getZ() const { return values[2]; }
+    inline void setX(float x) { values[0] = x; }
+    inline void setY(float y) { values[1] = y; }
+    inline void setZ(float z) { values[2] = z; }
+    inline float getMagnitude() const { return sqrt(getSqrMagnitude()); }
+    inline float getSqrMagnitude() const { return values[0] * values[0] + values[1] * values[1] + values[2] * values[2]; }
+    inline Vector3 getNormalized() const { return *this / getMagnitude(); }
     inline void normalize();
 
     Vector3 operator +(const Vector3& other) const;
@@ -156,51 +121,6 @@ struct Vector3
     }
 };
 
-inline float Vector3::getX() const
-{
-    return values[0];
-}
-
-inline float Vector3::getY() const
-{
-    return values[1];
-}
-
-inline float Vector3::getZ() const
-{
-    return values[2];
-}
-
-inline void Vector3::setX(float x)
-{
-    values[0] = x;
-}
-
-inline void Vector3::setY(float y)
-{
-    values[1] = y;
-}
-
-inline void Vector3::setZ(float z)
-{
-    values[2] = z;
-}
-
-inline float Vector3::getMagnitude() const
-{
-    return sqrt(getSqrMagnitude());
-}
-
-inline float Vector3::getSqrMagnitude() const
-{
-    return values[0] * values[0] + values[1] * values[1] + values[2] * values[2];
-}
-
-inline Vector3 Vector3::getNormalized() const
-{
-    return *this / getMagnitude();
-}
-
 inline void Vector3::normalize()
 {
     float oneOverMagnitude = 1.0f / getMagnitude();
@@ -219,17 +139,17 @@ struct Vector4
 
     float values[4];
 
-    inline float getX() const;
-    inline float getY() const;
-    inline float getZ() const;
-    inline float getW() const;
-    inline void setX(float x);
-    inline void setY(float y);
-    inline void setZ(float z);
-    inline void setW(float w);
-    inline float getMagnitude() const;
-    inline float getSqrMagnitude() const;
-    inline Vector4 getNormalized() const;
+    inline float getX() const { return values[0]; }
+    inline float getY() const { return values[1]; }
+    inline float getZ() const { return values[2]; }
+    inline float getW() const { return values[3]; }
+    inline void setX(float x) { values[0] = x; }
+    inline void setY(float y) { values[1] = y; }
+    inline void setZ(float z) { values[2] = z; }
+    inline void setW(float w) { values[3] = w; }
+    inline float getMagnitude() const { return sqrt(getSqrMagnitude()); }
+    inline float getSqrMagnitude() const { return values[0] * values[0] + values[1] * values[1] + values[2] * values[2] + values[3] * values[3]; }
+    inline Vector4 getNormalized() const { return *this / getMagnitude(); }
     inline void normalize();
 
     Vector4 operator +(const Vector4& other) const;
@@ -259,61 +179,6 @@ struct Vector4
         return os;
     }
 };
-
-inline float Vector4::getX() const
-{
-    return values[0];
-}
-
-inline float Vector4::getY() const
-{
-    return values[1];
-}
-
-inline float Vector4::getZ() const
-{
-    return values[2];
-}
-
-inline float Vector4::getW() const
-{
-    return values[3];
-}
-
-inline void Vector4::setX(float x)
-{
-    values[0] = x;
-}
-
-inline void Vector4::setY(float y)
-{
-    values[1] = y;
-}
-
-inline void Vector4::setZ(float z)
-{
-    values[2] = z;
-}
-
-inline void Vector4::setW(float w)
-{
-    values[3] = w;
-}
-
-inline float Vector4::getMagnitude() const
-{
-    return sqrt(getSqrMagnitude());
-}
-
-inline float Vector4::getSqrMagnitude() const
-{
-    return values[0] * values[0] + values[1] * values[1] + values[2] * values[2] + values[3] * values[3];
-}
-
-inline Vector4 Vector4::getNormalized() const
-{
-    return *this / getMagnitude();
-}
 
 inline void Vector4::normalize()
 {
