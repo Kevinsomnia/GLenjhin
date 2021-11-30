@@ -13,19 +13,8 @@ BufferTexture::BufferTexture(uint32_t width, uint32_t height, uint32_t depth, Te
 
     if (depth != 0)
     {
-        TextureFormat depthMode = TextureFormat::Depth16;
-
-        if (depth == 24)
-        {
-            depthMode = TextureFormat::Depth24;
-        }
-        else if (depth == 32)
-        {
-            depthMode = TextureFormat::Depth32;
-        }
-
         // Depth texture should always have point filtering. Might change in the future.
-        m_DepthTexture = new Texture2D(width, height, depthMode);
+        m_DepthTexture = new Texture2D(width, height, GetDepthTextureFormat(depth));
         m_DepthTexture->setFilterMode(TextureFilterMode::Point);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthTexture->id(), 0);
     }

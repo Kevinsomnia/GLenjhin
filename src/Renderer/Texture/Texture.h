@@ -22,6 +22,19 @@ enum class TextureFormat
     Depth32     // 32-bit floating point depth texture
 };
 
+static TextureFormat GetDepthTextureFormat(uint32_t depth)
+{
+    switch (depth)
+    {
+        case 32:
+            return TextureFormat::Depth32;
+        case 24:
+            return TextureFormat::Depth24;
+        default:
+            return TextureFormat::Depth16;
+    }
+}
+
 enum class TextureWrapMode
 {
     Repeat, // GL_REPEAT

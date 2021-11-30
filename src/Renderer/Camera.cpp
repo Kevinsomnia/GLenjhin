@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-Camera::Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float nearClip, float farClip)
+Camera::Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float nearClip, float farClip, bool deferred)
     : m_FieldOfView(fieldOfView), m_NearClip(nearClip), m_FarClip(farClip)
 {
     m_Transform = new Transform(pos, rot, Vector3::one);
@@ -14,16 +14,23 @@ Camera::Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float 
         2.0f * m_NearClip * m_FarClip
     );
 
-    const int SCR_WIDTH = 1600;
-    const int SCR_HEIGHT = 900;
+    const uint32_t SCR_WIDTH = 1600;
+    const uint32_t SCR_HEIGHT = 900;
+    const uint32_t DEPTH = 32;
 
-    // Deferred
-    m_GBuffers = new GeometryBuffers(SCR_WIDTH, SCR_HEIGHT);
-    m_DeferredGeometryMat = new Material(new Shader("res\\shaders\\Deferred\\GeometryBuffers.glsl"));
-    m_DeferredLightingMat = new Material(new Shader("res\\shaders\\Deferred\\DeferredLighting.glsl"));
-    m_GBuffers->setGBufferTextures(*m_DeferredLightingMat);
+    if (deferred)
+    {
+        m_GBuffers = new GeometryBuffers(SCR_WIDTH, SCR_HEIGHT, DEPTH);
+        m_DeferredGeometryMat = new Material(new Shader("res\\shaders\\Deferred\\GeometryBuffers.glsl"));
+        m_DeferredLightingMat = new Material(new Shader("res\\shaders\\Deferred\\DeferredLighting.glsl"));
+        m_GBuffers->setGBufferTextures(*m_DeferredLightingMat);
+    }
+    else
+    {
+        m_GBuffers = nullptr;
+    }
 
-    m_RenderTargetBuffer = new BufferTexture(SCR_WIDTH, SCR_HEIGHT, m_GBuffers->depth(), TextureFormat::RGBAHalf);
+    m_RenderTargetBuffer = new BufferTexture(SCR_WIDTH, SCR_HEIGHT, DEPTH, TextureFormat::RGBAHalf);
     m_ImageEffectChain = new ImageEffectChain(this);
     m_BlitMat = new Material(new Shader("res\\shaders\\PostProcessing\\Common\\Copy.glsl"));
     m_FullscreenTriangle = new FullscreenTriangle(m_BlitMat);
@@ -130,8 +137,11 @@ void Camera::addImageEffect(ImageEffect* effect)
 
 void Camera::addBuffersToDebugWindow(DebugTextureListWindow& window) const
 {
-    window.add(m_GBuffers->positionGBuffer(), "GBuffer: World Position (RGB)", /*flip=*/ true);
-    window.add(m_GBuffers->normalGBuffer(), "GBuffer: World Normal (RGB)", /*flip=*/ true);
-    window.add(m_GBuffers->albedoSpecGBuffer(), "GBuffer: Albedo (RGB) Specular (A)", /*flip=*/ true);
-    window.add(m_GBuffers->depthTexture(), "Depth", /*flip=*/ true);
+    if (m_GBuffers)
+    {
+        window.add(m_GBuffers->positionGBuffer(), "GBuffer: World Position (RGB)", /*flip=*/ true);
+        window.add(m_GBuffers->normalGBuffer(), "GBuffer: World Normal (RGB)", /*flip=*/ true);
+        window.add(m_GBuffers->albedoSpecGBuffer(), "GBuffer: Albedo (RGB) Specular (A)", /*flip=*/ true);
+        window.add(m_GBuffers->depthTexture(), "Depth", /*flip=*/ true);
+    }
 }

@@ -22,7 +22,8 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
         Vector3::zero,
         /*fieldOfView=*/ 75.0f,
         /*nearClip=*/ 0.1f,
-        /*farClip=*/ 5000.0f
+        /*farClip=*/ 5000.0f,
+        /*deferred=*/ true
     );
     m_MainCamera->addImageEffect(new GlobalFog());
     m_MainCamera->addImageEffect(new Bloom());

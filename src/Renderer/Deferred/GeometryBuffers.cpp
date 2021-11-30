@@ -1,6 +1,6 @@
 #include "GeometryBuffers.h"
 
-GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height) : m_Width(width), m_Height(height)
+GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height, uint32_t depth) : m_Width(width), m_Height(height)
 {
     glGenFramebuffers(1, &m_FboID);
     glBindFramebuffer(GL_FRAMEBUFFER, m_FboID);
@@ -16,7 +16,7 @@ GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height) : m_Width(widt
     glDrawBuffers(colorAttachments.size(), colorAttachments.data());
 
     // Depth texture should always have point filtering. Might change in the future.
-    m_DepthTexture = new Texture2D(width, height, TextureFormat::Depth32);
+    m_DepthTexture = new Texture2D(width, height, GetDepthTextureFormat(depth));
     m_DepthTexture->setFilterMode(TextureFilterMode::Point);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthTexture->id(), 0);
 

@@ -24,13 +24,15 @@ class Scene;
 class Camera
 {
 public:
-    Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float nearClip, float farClip);
+    Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float nearClip, float farClip, bool deferred);
     ~Camera();
     void update();
     void draw(Scene* scene);
     void blitToScreen() const;
     void addImageEffect(ImageEffect* effect);
     void addBuffersToDebugWindow(DebugTextureListWindow& window) const;
+    inline bool isDeferred() const { return m_GBuffers; }
+    Texture2D* getDepthTexture() { return isDeferred() ? m_GBuffers->depthTexture() : m_RenderTargetBuffer->depthTexture(); }
     GeometryBuffers* getGBuffers() const { return m_GBuffers; }
     Transform* getTransform() const { return m_Transform; }
     Matrix4x4 getViewProjMatrix() const { return m_ViewProjMatrix; }
