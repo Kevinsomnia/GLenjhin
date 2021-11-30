@@ -1,6 +1,6 @@
 #include "GaussianBlur.h"
 
-GaussianBlur::GaussianBlur() : ImageEffect("res\\shaders\\PostProcessing\\Common\\Copy.shader")
+GaussianBlur::GaussianBlur() : ImageEffect("res\\shaders\\PostProcessing\\Common\\Copy.glsl")
 {
     const int SCR_WIDTH = 1600;
     const int SCR_HEIGHT = 900;
@@ -11,8 +11,8 @@ GaussianBlur::GaussianBlur() : ImageEffect("res\\shaders\\PostProcessing\\Common
     for (size_t i = 0; i < m_Buffers.size(); i++)
         m_Buffers[i] = new BufferTexture(WIDTH, HEIGHT, /*depth=*/ 0, TextureFormat::RGB24);
 
-    m_DownsampleMat = new Material(new Shader("res\\shaders\\PostProcessing\\GaussianBlur\\Downsample.shader"));
-    m_BlurMat = new Material(new Shader("res\\shaders\\PostProcessing\\GaussianBlur\\Blur.shader"));
+    m_DownsampleMat = new Material(new Shader("res\\shaders\\PostProcessing\\GaussianBlur\\Downsample.glsl"));
+    m_BlurMat = new Material(new Shader("res\\shaders\\PostProcessing\\GaussianBlur\\Blur.glsl"));
 }
 
 GaussianBlur::~GaussianBlur()

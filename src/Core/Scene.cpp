@@ -9,11 +9,11 @@ Scene::Scene()
     m_Skybox = new Skybox("res\\textures\\DaySkybox.png");
 
     // Load shader and material
-    m_CurrMat = new Material(new Shader("res\\shaders\\StandardSurface.shader"));
+    m_CurrMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
     m_CurrTexture = new Texture2D("res\\textures\\test_grid.png");
     m_CurrMat->setTexture("u_MainTex", m_CurrTexture);
 
-    Material* emissiveMat = new Material(new Shader("res\\shaders\\Emissive.shader"));
+    Material* emissiveMat = new Material(new Shader("res\\shaders\\Emissive.glsl"));
 
     Entity* plane = new Entity(Vector3::zero, rotationToRad(Vector3(-90.0f, 180.0f, 0.0f)), Vector3::one * 20.0f);
     plane->setupRenderer(MeshPrimitives::quad, m_CurrMat);

@@ -19,13 +19,13 @@ Camera::Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float 
 
     // Deferred
     m_GBuffers = new GeometryBuffers(SCR_WIDTH, SCR_HEIGHT);
-    m_DeferredGeometryMat = new Material(new Shader("res\\shaders\\Deferred\\GeometryBuffers.shader"));
-    m_DeferredLightingMat = new Material(new Shader("res\\shaders\\Deferred\\DeferredLighting.shader"));
+    m_DeferredGeometryMat = new Material(new Shader("res\\shaders\\Deferred\\GeometryBuffers.glsl"));
+    m_DeferredLightingMat = new Material(new Shader("res\\shaders\\Deferred\\DeferredLighting.glsl"));
     m_GBuffers->setGBufferTextures(*m_DeferredLightingMat);
 
     m_ColorBuffer = new BufferTexture(SCR_WIDTH, SCR_HEIGHT, /*depth=*/ 32, TextureFormat::RGBAHalf);
     m_ImageEffectChain = new ImageEffectChain(this);
-    m_BlitMat = new Material(new Shader("res\\shaders\\PostProcessing\\Common\\Copy.shader"));
+    m_BlitMat = new Material(new Shader("res\\shaders\\PostProcessing\\Common\\Copy.glsl"));
     m_FullscreenTriangle = new FullscreenTriangle(m_BlitMat);
 }
 
