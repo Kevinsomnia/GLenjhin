@@ -393,7 +393,7 @@ namespace ImageLib
 
             size_t deflateStreamSize = deflateStream.size();
             size_t completeBytesCount = deflateStreamSize - (deflateStream.bitOffset() != 0);
-            uint32_t scanlinesAvailable = (completeBytesCount - streamScanlineOffset) / scanlineWidth;
+            size_t scanlinesAvailable = (completeBytesCount - streamScanlineOffset) / scanlineWidth;
 
             if (scanlinesAvailable != 0)
             {
@@ -618,7 +618,7 @@ namespace ImageLib
         return false;
     }
 
-    bool PNG::Unfilter(MemoryStream& stream, const Metadata& meta, uint8_t*& prevScanline, uint8_t*& currScanline, uint32_t scanlineCount)
+    bool PNG::Unfilter(MemoryStream& stream, const Metadata& meta, uint8_t*& prevScanline, uint8_t*& currScanline, size_t scanlineCount)
     {
         uint8_t bitDepth = meta.bitDepth;
         uint8_t bytesPerPixel = meta.bytesPerPixel();

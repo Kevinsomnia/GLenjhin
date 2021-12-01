@@ -38,7 +38,7 @@ void DebugTextureListWindow::draw()
             ImVec2 size = ImVec2(static_cast<float>(tex->width()), static_cast<float>(tex->height()));
             ImVec2 uv0 = e.flipY ? ImVec2(0.0f, 1.0f) : ImVec2(0.0f, 0.0f);
             ImVec2 uv1 = e.flipY ? ImVec2(1.0f, 0.0f) : ImVec2(1.0f, 1.0f);
-            ImGui::Image(reinterpret_cast<ImTextureID>(tex->id()), size, uv0, uv1);
+            ImGui::Image((ImTextureID)tex->id(), size, uv0, uv1);
 
             ImGui::Dummy(ImVec2(0.0f, 20.0f));
         }

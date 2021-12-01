@@ -198,7 +198,7 @@ namespace ImageLib
         static bool Inflate(MemoryStream& stream, const Metadata& meta, const std::unique_ptr<uint8_t[]>& outPixels);
         static void InflateParseHuffmanCodes(MemoryStream& stream, std::unique_ptr<CanonicalHuffman>& litLenCodes, std::unique_ptr<CanonicalHuffman>& distCodes);
         static bool InflateHuffman(MemoryStream& stream, MemoryStream& outStream, const std::unique_ptr<CanonicalHuffman>& litLenCodes, const std::unique_ptr<CanonicalHuffman>& distCodes);
-        static bool Unfilter(MemoryStream& stream, const Metadata& meta, uint8_t*& prevScanline, uint8_t*& currScanline, uint32_t scanlineCount);
+        static bool Unfilter(MemoryStream& stream, const Metadata& meta, uint8_t*& prevScanline, uint8_t*& currScanline, size_t scanlineCount);
         static uint8_t PaethPredictor(uint8_t left, uint8_t up, uint8_t upLeft);
     };
 };

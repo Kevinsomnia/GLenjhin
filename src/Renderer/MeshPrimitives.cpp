@@ -146,8 +146,8 @@ MeshPrimitives::Sphere::Sphere(uint16_t resolution) : Mesh()
     for (uint16_t x = 0; x < resolution; x++)
     {
         // Traversing down a column of vertices.
-        size_t currStripStartVertex = x * resolution;
-        size_t nextStripStartVertex = currStripStartVertex + resolution;
+        uint32_t currStripStartVertex = x * resolution;
+        uint32_t nextStripStartVertex = currStripStartVertex + resolution;
 
         // Handle north pole triangle.
         indices[i++] = currStripStartVertex;

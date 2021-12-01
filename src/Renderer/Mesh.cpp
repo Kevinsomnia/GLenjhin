@@ -5,7 +5,7 @@ Mesh::Mesh()
 {
 }
 
-Mesh::Mesh(Vertex* vertices, uint32_t vertexCount, uint32_t* indices, uint32_t indexCount)
+Mesh::Mesh(Vertex* vertices, size_t vertexCount, uint32_t* indices, size_t indexCount)
     : m_Vertices(nullptr), m_VertexCount(0), m_Indices(nullptr), m_TriangleCount(0), m_VaoId(0), m_IboId(0)
 {
     setup(vertices, vertexCount, indices, indexCount);
@@ -32,7 +32,7 @@ void Mesh::draw() const
     glDrawElements(GL_TRIANGLES, m_TriangleCount * 3, GL_UNSIGNED_INT, nullptr);
 }
 
-void Mesh::setup(Vertex* vertices, uint32_t vertexCount, uint32_t* indices, uint32_t indexCount)
+void Mesh::setup(Vertex* vertices, size_t vertexCount, uint32_t* indices, size_t indexCount)
 {
     m_Vertices = vertices;
     m_VertexCount = vertexCount;
