@@ -2,7 +2,7 @@
 #define TEXTURE_H
 
 #include <iostream>
-#include <GL/glew.h>
+#include <glad/glad.h>
 
 #include "../../Core/ImageLib.h"
 #include "../../Math/Vector.h"

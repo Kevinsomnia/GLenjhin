@@ -40,9 +40,9 @@ int main()
 
     glfwMakeContextCurrent(window);
 
-    if (glewInit() != GLEW_OK)
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        cout << "Failed to initialize GLEW" << endl;
+        cout << "Failed to initialize Glad" << endl;
         glfwTerminate();
         return 1;
     }

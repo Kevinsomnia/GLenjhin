@@ -2,7 +2,7 @@
 #define SHADER_H
 
 #include <iostream>
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include "../Core/ShaderCompiler.h"
 
 using std::cout;

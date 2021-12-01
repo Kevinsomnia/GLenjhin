@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include "../Math/Matrix4x4.h"
 #include "Texture/Texture.h"
 #include "Shader.h"

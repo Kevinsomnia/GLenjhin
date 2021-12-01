@@ -2,7 +2,7 @@
 #define MESHRENDERER_H
 
 #include <iostream>
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include "Lighting/Lighting.h"
 #include "Material.h"
 #include "Mesh.h"

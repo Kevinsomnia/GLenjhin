@@ -54,6 +54,7 @@
     <ClCompile Include="src\Renderer\Texture\Texture2D.cpp" />
     <ClCompile Include="src\Renderer\Transform.cpp" />
     <ClCompile Include="src\Serialization\MemoryStream.cpp" />
+    <ClCompile Include="vendor\Glad\src\glad.c" />
     <ClCompile Include="vendor\imgui\imgui.cpp" />
     <ClCompile Include="vendor\imgui\imgui_demo.cpp" />
     <ClCompile Include="vendor\imgui\imgui_draw.cpp" />
@@ -98,6 +99,8 @@
     <ClInclude Include="src\Renderer\Transform.h" />
     <ClInclude Include="src\Serialization\MemoryStream.h" />
     <ClInclude Include="src\Serialization\MemoryStream.Tests.h" />
+    <ClInclude Include="vendor\Glad\include\glad\glad.h" />
+    <ClInclude Include="vendor\Glad\include\KHR\khrplatform.h" />
     <ClInclude Include="vendor\imgui\imconfig.h" />
     <ClInclude Include="vendor\imgui\imgui.h" />
     <ClInclude Include="vendor\imgui\imgui_impl_glfw.h" />
@@ -176,16 +179,17 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN64;GLEW_STATIC</PreprocessorDefinitions>
+      <PreprocessorDefinitions>
+      </PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)vendor\imgui;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glew-2.1.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)vendor\Glad\include;$(SolutionDir)vendor\imgui;$(SolutionDir)Dependencies\GLFW\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>User32.lib;Gdi32.lib;Shell32.lib;glfw3.lib;glew32s.lib;opengl32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\glew-2.1.0\lib\Release\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>User32.lib;Gdi32.lib;Shell32.lib;glfw3.lib;opengl32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -194,9 +198,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN64;GLEW_STATIC</PreprocessorDefinitions>
+      <PreprocessorDefinitions>
+      </PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)vendor\imgui;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glew-2.1.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)vendor\Glad\include;$(SolutionDir)vendor\imgui;$(SolutionDir)Dependencies\GLFW\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -204,24 +209,25 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>User32.lib;Gdi32.lib;Shell32.lib;glfw3.lib;glew32s.lib;opengl32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\glew-2.1.0\lib\Release\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>User32.lib;Gdi32.lib;Shell32.lib;glfw3.lib;opengl32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN64;GLEW_STATIC</PreprocessorDefinitions>
+      <PreprocessorDefinitions>
+      </PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)vendor\imgui;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glew-2.1.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)vendor\Glad\include;$(SolutionDir)vendor\imgui;$(SolutionDir)Dependencies\GLFW\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\glew-2.1.0\lib\Release\x64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>User32.lib;Gdi32.lib;Shell32.lib;glfw3.lib;glew32s.lib;opengl32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019</AdditionalLibraryDirectories>
+      <AdditionalDependencies>User32.lib;Gdi32.lib;Shell32.lib;glfw3.lib;opengl32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -230,9 +236,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN64;GLEW_STATIC</PreprocessorDefinitions>
+      <PreprocessorDefinitions>
+      </PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)vendor\imgui;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glew-2.1.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)vendor\Glad\include;$(SolutionDir)vendor\imgui;$(SolutionDir)Dependencies\GLFW\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -240,8 +247,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\glew-2.1.0\lib\Release\x64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>User32.lib;Gdi32.lib;Shell32.lib;glfw3.lib;glew32s.lib;opengl32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019</AdditionalLibraryDirectories>
+      <AdditionalDependencies>User32.lib;Gdi32.lib;Shell32.lib;glfw3.lib;opengl32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

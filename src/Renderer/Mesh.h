@@ -2,7 +2,7 @@
 #define MESH_H
 
 #include <iostream>
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include "../Math/Vector.h"
 
 using std::cout;
