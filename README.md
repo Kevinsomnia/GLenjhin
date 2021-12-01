@@ -2,7 +2,9 @@
 
 Some C++/OpenGL rendering practice. It's pronounced "glen jin".
 
-Compiled with MSVC, C++17
+Compiled with MSVC, C++17.
+
+Supports Windows 64-bit only.
 
 ## Features
 
@@ -18,6 +20,6 @@ Compiled with MSVC, C++17
 
 ## Dependencies
 
-- [GLFW 3.3.4](https://www.glfw.org/)
+- [GLFW 3.3.5](https://www.glfw.org/)
 - [GLEW 2.1.0](http://glew.sourceforge.net/)
 - [Dear ImGui](https://github.com/ocornut/imgui)
