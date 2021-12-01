@@ -29,7 +29,7 @@ void Mesh::unbind() const
 
 void Mesh::draw() const
 {
-    glDrawElements(GL_TRIANGLES, m_TriangleCount * 3, GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, static_cast<uint32_t>(m_TriangleCount) * 3, GL_UNSIGNED_INT, nullptr);
 }
 
 void Mesh::setup(Vertex* vertices, size_t vertexCount, uint32_t* indices, size_t indexCount)
@@ -42,7 +42,7 @@ void Mesh::setup(Vertex* vertices, size_t vertexCount, uint32_t* indices, size_t
     // Create and bind a vertex array
     glGenVertexArrays(1, &m_VaoId);
     glBindVertexArray(m_VaoId);
-    size_t stride = sizeof(Vertex);
+    uint32_t stride = sizeof(Vertex);
 
     // Create a vertex buffer
     uint32_t vbo;

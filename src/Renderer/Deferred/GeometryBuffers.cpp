@@ -12,8 +12,9 @@ GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height, uint32_t depth
     m_AlbedoMetalGBuffer = new Texture2D(width, height, TextureFormat::RGBA32);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_AlbedoMetalGBuffer->id(), 0);
 
-    std::array<GLenum, 3> colorAttachments = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
-    glDrawBuffers(colorAttachments.size(), colorAttachments.data());
+    const GLuint ATTACHMENT_COUNT = 3;
+    GLenum colorAttachments[ATTACHMENT_COUNT] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+    glDrawBuffers(ATTACHMENT_COUNT, colorAttachments);
 
     // Depth texture should always have point filtering. Might change in the future.
     m_DepthTexture = new Texture2D(width, height, GetDepthTextureFormat(depth));
