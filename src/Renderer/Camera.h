@@ -1,6 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include <assert.h>
 #include <iostream>
 
 #include "../Core/Scene.h"
@@ -19,6 +20,26 @@ using std::endl;
 class ImageEffect;
 class ImageEffectChain;
 class Scene;
+
+
+// Controls which buffers the camera should render to.
+enum class CameraBufferFlags : uint32_t
+{
+    None = 0,
+    Color = 1 << 0,
+    Depth = 1 << 1,
+    Default = Color | Depth
+};
+constexpr CameraBufferFlags operator |(const CameraBufferFlags lhs, const CameraBufferFlags rhs) { return CameraBufferFlags(uint32_t(lhs) | uint32_t(rhs)); }
+constexpr CameraBufferFlags operator |=(const CameraBufferFlags lhs, const CameraBufferFlags rhs) { return CameraBufferFlags(uint32_t(lhs) | uint32_t(rhs)); }
+constexpr CameraBufferFlags operator &(const CameraBufferFlags lhs, const CameraBufferFlags rhs) { return CameraBufferFlags(uint32_t(lhs) & uint32_t(rhs)); }
+constexpr CameraBufferFlags operator &=(const CameraBufferFlags lhs, const CameraBufferFlags rhs) { return CameraBufferFlags(uint32_t(lhs) & uint32_t(rhs)); }
+constexpr CameraBufferFlags operator ~(const CameraBufferFlags flags) { return CameraBufferFlags(~uint32_t(flags)); }
+inline std::ostream& operator<<(std::ostream& os, const CameraBufferFlags& flags)
+{
+    os << static_cast<uint32_t>(flags);
+    return os;
+}
 
 
 class Camera
@@ -49,7 +70,7 @@ public:
         float size;
     };
 
-    Camera(const Vector3& pos, const Vector3& rot, Projection& projection, bool deferred);
+    Camera(const Vector3& pos, const Vector3& rot, Projection& projection, CameraBufferFlags bufferFlags, bool deferred);
     ~Camera();
     void update();
     void draw(Scene* scene);

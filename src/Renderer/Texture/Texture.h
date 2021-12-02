@@ -1,6 +1,7 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
+#include <assert.h>
 #include <iostream>
 #include <glad/glad.h>
 
@@ -13,10 +14,11 @@ using std::endl;
 
 enum class TextureFormat
 {
+    None,       // Can be used to signify disabled/unused texture
     RGB24,      // 8 bits per channel, RGB
     RGBA32,     // 8 bits per channel, RGBA
     RGBAHalf,   // 16 bits per channel (floating point), RGBA
-    RGBAFloat,   // 32 bits per channel (floating point), RGBA
+    RGBAFloat,  // 32 bits per channel (floating point), RGBA
     Depth16,    // 16-bit floating point depth texture
     Depth24,    // 24-bit floating point depth texture
     Depth32     // 32-bit floating point depth texture
@@ -30,6 +32,8 @@ static TextureFormat GetDepthTextureFormat(uint32_t depth)
             return TextureFormat::Depth32;
         case 24:
             return TextureFormat::Depth24;
+        case 0:
+            return TextureFormat::None;
         default:
             return TextureFormat::Depth16;
     }
@@ -105,9 +109,12 @@ struct GLTextureParams
                 return GLTextureParams { GL_DEPTH_COMPONENT24, GL_DEPTH_COMPONENT, GL_FLOAT };
             case TextureFormat::Depth32:
                 return GLTextureParams { GL_DEPTH_COMPONENT32, GL_DEPTH_COMPONENT, GL_FLOAT };
+            case TextureFormat::None:
+                cerr << "You must provide a TextureFormat for a valid conversion" << endl;
+                return GLTextureParams { GL_NONE, GL_NONE, GL_NONE };
             default:
                 cerr << "Unimplemented TextureFormat to TextureGLParams conversion " << static_cast<uint32_t>(format) << endl;
-                return GLTextureParams();
+                return GLTextureParams { GL_NONE, GL_NONE, GL_NONE };
         }
     }
 };

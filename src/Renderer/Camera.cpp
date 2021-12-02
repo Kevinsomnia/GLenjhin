@@ -8,13 +8,15 @@ Camera::PerspectiveProjection::PerspectiveProjection(float nearClip, float farCl
 Camera::OrthographicProjection::OrthographicProjection(float nearClip, float farClip, float size)
     : Projection(nearClip, farClip), size(size) { }
 
-Camera::Camera(const Vector3& pos, const Vector3& rot, Projection& projection, bool deferred)
+Camera::Camera(const Vector3& pos, const Vector3& rot, Projection& projection, CameraBufferFlags bufferFlags, bool deferred)
     : m_NearClip(projection.nearClip), m_FarClip(projection.farClip), m_FieldOfView(60.0f), m_OrthoSize(1.0f)
 {
+    assert(bufferFlags != CameraBufferFlags::None);
+
     const uint32_t SCR_WIDTH = 1600;
     const uint32_t SCR_HEIGHT = 900;
     const float SCR_ASPECT = SCR_WIDTH / static_cast<float>(SCR_HEIGHT);
-    const uint32_t DEPTH = 32;
+    uint32_t depthBits = (bufferFlags & CameraBufferFlags::Depth) != CameraBufferFlags::None ? 32 : 0;
 
     m_Transform = new Transform(pos, rot, Vector3::one);
 
@@ -42,7 +44,7 @@ Camera::Camera(const Vector3& pos, const Vector3& rot, Projection& projection, b
 
     if (deferred)
     {
-        m_GBuffers = new GeometryBuffers(SCR_WIDTH, SCR_HEIGHT, DEPTH);
+        m_GBuffers = new GeometryBuffers(SCR_WIDTH, SCR_HEIGHT, depthBits);
         m_DeferredGeometryMat = new Material(new Shader("res\\shaders\\Deferred\\GeometryBuffers.glsl"));
         m_DeferredLightingMat = new Material(new Shader("res\\shaders\\Deferred\\DeferredLighting.glsl"));
         m_GBuffers->setGBufferTextures(*m_DeferredLightingMat);
@@ -52,7 +54,8 @@ Camera::Camera(const Vector3& pos, const Vector3& rot, Projection& projection, b
         m_GBuffers = nullptr;
     }
 
-    m_RenderTargetBuffer = new BufferTexture(SCR_WIDTH, SCR_HEIGHT, DEPTH, TextureFormat::RGBAHalf);
+    TextureFormat colorFormat = (bufferFlags & CameraBufferFlags::Color) != CameraBufferFlags::None ? TextureFormat::RGBAHalf : TextureFormat::None;
+    m_RenderTargetBuffer = new BufferTexture(SCR_WIDTH, SCR_HEIGHT, depthBits, colorFormat);
     m_ImageEffectChain = new ImageEffectChain(this);
     m_BlitMat = new Material(new Shader("res\\shaders\\PostProcessing\\Common\\Copy.glsl"));
     m_FullscreenTriangle = new FullscreenTriangle(m_BlitMat);
