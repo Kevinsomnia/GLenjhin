@@ -61,8 +61,8 @@ static GLint GetGLTextureWrapMode(TextureWrapMode mode)
 enum class TextureFilterMode
 {
     Point,      // GL_NEAREST
-    Bilinear,   // GL_LINEAR
-    // Trilinear TODO: make this functional
+    Bilinear,   // GL_LINEAR / GL_LINEAR_MIPMAP_NEAREST
+    Trilinear   // GL_LINEAR / GL_LINEAR_MIPMAP_LINEAR
 };
 
 static GLint GetGLTextureFilterMode(TextureFilterMode mode, bool mipmap = false, bool minification = true)
@@ -72,6 +72,8 @@ static GLint GetGLTextureFilterMode(TextureFilterMode mode, bool mipmap = false,
         case TextureFilterMode::Point:
             return mipmap && minification ? GL_NEAREST_MIPMAP_NEAREST : GL_NEAREST;
         case TextureFilterMode::Bilinear:
+            return mipmap && minification ? GL_LINEAR_MIPMAP_NEAREST : GL_LINEAR;
+        case TextureFilterMode::Trilinear:
             return mipmap && minification ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR;
         default:
             cerr << "Unimplemented TextureFilterMode conversion " << static_cast<uint32_t>(mode) << endl;
