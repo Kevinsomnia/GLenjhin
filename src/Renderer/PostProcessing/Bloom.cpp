@@ -21,6 +21,9 @@ Bloom::Bloom() : ImageEffect("res\\shaders\\PostProcessing\\Bloom\\Combine.glsl"
     m_PrefilterMat = new Material(new Shader("res\\shaders\\PostProcessing\\Bloom\\Prefilter.glsl"));
     m_DownsampleMat = new Material(new Shader("res\\shaders\\PostProcessing\\Bloom\\Downsample.glsl"));
     m_UpsampleMat = new Material(new Shader("res\\shaders\\PostProcessing\\Bloom\\Upsample.glsl"));
+
+    m_PrefilterMat->setFloat("u_Threshold", 1.0f);
+    m_PrefilterMat->setFloat("u_SoftKnee", 0.5f);
 }
 
 Bloom::~Bloom()
