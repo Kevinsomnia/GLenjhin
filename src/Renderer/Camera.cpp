@@ -1,8 +1,21 @@
 #include "Camera.h"
 
-Camera::Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float nearClip, float farClip, bool deferred)
-    : m_FieldOfView(fieldOfView), m_NearClip(nearClip), m_FarClip(farClip)
+Camera::Projection::Projection(float nearClip, float farClip)
+    : nearClip(nearClip), farClip(farClip) { }
+Camera::Projection::~Projection() { /* no-op. just here to make dynamic_cast work. */ }
+Camera::PerspectiveProjection::PerspectiveProjection(float nearClip, float farClip, float fieldOfView)
+    : Projection(nearClip, farClip), fieldOfView(fieldOfView) { }
+Camera::OrthographicProjection::OrthographicProjection(float nearClip, float farClip, float size)
+    : Projection(nearClip, farClip), size(size) { }
+
+Camera::Camera(const Vector3& pos, const Vector3& rot, Projection& projection, bool deferred)
+    : m_NearClip(projection.nearClip), m_FarClip(projection.farClip), m_FieldOfView(60.0f), m_OrthoSize(1.0f)
 {
+    const uint32_t SCR_WIDTH = 1600;
+    const uint32_t SCR_HEIGHT = 900;
+    const float SCR_ASPECT = SCR_WIDTH / static_cast<float>(SCR_HEIGHT);
+    const uint32_t DEPTH = 32;
+
     m_Transform = new Transform(pos, rot, Vector3::one);
 
     // This needs to update whenever near or far clip plane changes.
@@ -13,9 +26,19 @@ Camera::Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float 
         2.0f * m_NearClip * m_FarClip
     );
 
-    const uint32_t SCR_WIDTH = 1600;
-    const uint32_t SCR_HEIGHT = 900;
-    const uint32_t DEPTH = 32;
+    PerspectiveProjection* perspective = dynamic_cast<PerspectiveProjection*>(&projection);
+
+    if (perspective)
+    {
+        m_FieldOfView = perspective->fieldOfView;
+        m_ProjMatrix = Matrix4x4::Perspective(m_FieldOfView, SCR_ASPECT, m_NearClip, m_FarClip);
+    }
+    else
+    {
+        OrthographicProjection* orthographic = static_cast<OrthographicProjection*>(&projection);
+        m_OrthoSize = orthographic->size;
+        m_ProjMatrix = Matrix4x4::Orthographic(m_OrthoSize, SCR_ASPECT, m_NearClip, m_FarClip);
+    }
 
     if (deferred)
     {
@@ -54,7 +77,7 @@ Camera::~Camera()
 void Camera::update()
 {
     m_ViewProjMatrix = 
-        Matrix4x4::Perspective(m_FieldOfView, 16.0f / 9.0f, m_NearClip, m_FarClip) *
+        m_ProjMatrix *
         Matrix4x4::View(
             m_Transform->getPosition(),
             m_Transform->getRotation()

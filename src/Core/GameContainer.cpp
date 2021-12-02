@@ -18,14 +18,12 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     MeshPrimitives::Init();
 
     // Setup camera
-    m_MainCamera = new Camera(
-        Vector3(0.0f, 1.0f, 0.0f),
-        Vector3::zero,
-        /*fieldOfView=*/ 75.0f,
+    auto projection = Camera::PerspectiveProjection(
         /*nearClip=*/ 0.1f,
         /*farClip=*/ 5000.0f,
-        /*deferred=*/ true
+        /*fieldOfView=*/ 75.0f
     );
+    m_MainCamera = new Camera(/*pos=*/ Vector3(0.0f, 1.0f, 0.0f), /*rot=*/ Vector3::zero, projection, /*deferred=*/ true);
     m_MainCamera->addImageEffect(new GlobalFog());
     m_MainCamera->addImageEffect(new Bloom());
     m_MainCamera->addImageEffect(new Tonemapping());

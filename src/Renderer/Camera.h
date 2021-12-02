@@ -24,7 +24,32 @@ class Scene;
 class Camera
 {
 public:
-    Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float nearClip, float farClip, bool deferred);
+    struct Projection
+    {
+    public:
+        float nearClip;
+        float farClip;
+    protected:
+        Projection() = delete;
+        Projection(float nearClip, float farClip);
+        virtual ~Projection();
+    };
+
+    struct PerspectiveProjection : public Projection
+    {
+        PerspectiveProjection(float nearClip, float farClip, float fieldOfView);
+
+        float fieldOfView;
+    };
+
+    struct OrthographicProjection : public Projection
+    {
+        OrthographicProjection(float nearClip, float farClip, float size);
+
+        float size;
+    };
+
+    Camera(const Vector3& pos, const Vector3& rot, Projection& projection, bool deferred);
     ~Camera();
     void update();
     void draw(Scene* scene);
@@ -53,10 +78,13 @@ private:
     Material* m_BlitMat;
     FullscreenTriangle* m_FullscreenTriangle;
     Matrix4x4 m_ViewProjMatrix;
+
     Vector4 m_ProjectionParams;
-    float m_FieldOfView;
+    Matrix4x4 m_ProjMatrix;
     float m_NearClip;
     float m_FarClip;
+    float m_FieldOfView;
+    float m_OrthoSize;
 };
 
 #endif // CAMERA_H
