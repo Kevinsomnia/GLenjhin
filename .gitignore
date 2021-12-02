@@ -423,3 +423,6 @@ FodyWeavers.xsd
 
 # ImGui
 imgui.ini
+
+# Test textures (usually too large to include, or temporary)
+res/textures/test/*
