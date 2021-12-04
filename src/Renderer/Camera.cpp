@@ -122,8 +122,12 @@ void Camera::draw(Scene* scene)
 
 void Camera::blitToScreen() const
 {
+    const int SCREEN_WIDTH = 1600;
+    const int SCREEN_HEIGHT = 900;
+
     // Render our buffer texture's color to the screen/default FBO.
     // This is not done automatically since sometimes we don't want the buffer to display on the screen.
+    glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glBindFramebuffer(GL_FRAMEBUFFER, NULL);
     m_BlitMat->setTexture("u_MainTex", m_RenderTargetBuffer->colorTexture());
     m_FullscreenTriangle->setMaterial(m_BlitMat);
