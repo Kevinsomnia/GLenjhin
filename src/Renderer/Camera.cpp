@@ -4,7 +4,6 @@ Camera::Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float 
     : m_FieldOfView(fieldOfView), m_NearClip(nearClip), m_FarClip(farClip)
 {
     m_Transform = new Transform(pos, rot, Vector3::one);
-    update();
 
     // This needs to update whenever near or far clip plane changes.
     m_ProjectionParams = Vector4(
@@ -34,6 +33,7 @@ Camera::Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float 
     m_ImageEffectChain = new ImageEffectChain(this);
     m_BlitMat = new Material(new Shader("res\\shaders\\PostProcessing\\Common\\Copy.glsl"));
     m_FullscreenTriangle = new FullscreenTriangle(m_BlitMat);
+    update();
 }
 
 Camera::~Camera()
