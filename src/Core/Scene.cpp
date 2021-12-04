@@ -54,6 +54,9 @@ void Scene::update()
 {
     double t = Time::GetTime();
 
+    for (Light* light : m_Lights)
+        light->update();
+
     for (size_t i = 0; i < m_DynamicEntities.size(); i++)
     {
         t += 2.48529;
@@ -78,7 +81,16 @@ void Scene::drawGeometryPass(const Camera& camera, Material& geometryMat) const
     geometryMat.bind();
 
     for (size_t i = 0; i < m_Entities.size(); i++)
-        m_Entities[i]->drawGeometryPass(camera, geometryMat);
+        m_Entities[i]->drawGeometryPass(geometryMat);
+}
+
+void Scene::drawShadowPass(const Light& light, Material& shadowMat) const
+{
+    shadowMat.setMatrix("u_L", light.getLightMatrix());
+    shadowMat.bind();
+
+    for (size_t i = 0; i < m_Entities.size(); i++)
+        m_Entities[i]->drawShadowPass(shadowMat);
 }
 
 void Scene::drawSkybox(const Camera& camera) const
@@ -94,6 +106,12 @@ void Scene::drawEntities(const Camera& camera) const
 
     for (size_t i = 0; i < m_Entities.size(); i++)
         m_Entities[i]->draw(camera, lights);
+}
+
+void Scene::renderLightShadows() const
+{
+    for (Light* light : m_Lights)
+        light->renderShadows(this);
 }
 
 void Scene::setNewTexture(const std::string& texturePath)

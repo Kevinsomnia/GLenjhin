@@ -77,16 +77,13 @@ Camera::~Camera()
 
 void Camera::update()
 {
-    m_ViewProjMatrix = 
-        m_ProjMatrix *
-        Matrix4x4::View(
-            m_Transform->getPosition(),
-            m_Transform->getRotation()
-        );
+    m_ViewProjMatrix = m_ProjMatrix * Matrix4x4::View(m_Transform->getPosition(), m_Transform->getRotation());
 }
 
-void Camera::draw(Scene* scene)
+void Camera::draw(Scene* scene, bool drawSkybox)
 {
+    glViewport(0, 0, m_RenderTargetBuffer->width(), m_RenderTargetBuffer->height());
+
     if (m_GBuffers)
     {
         // === Deferred ===
@@ -106,6 +103,16 @@ void Camera::draw(Scene* scene)
             // NOTE: multiple lights of same type are not supported!
             for (Light* light : scene->lights())
                 light->bind(*m_DeferredLightingMat);
+
+            // TODO: support any # of lights.
+            if ((scene->lights()).size() > 0)
+            {
+                Light* dirLight = scene->lights()[0];
+                Texture2D* shadowMap = dirLight->getShadowMap();
+                m_DeferredLightingMat->setTexture("u_DirShadows", shadowMap);
+                m_DeferredLightingMat->setVector2("u_DirShadowsTexelSize", shadowMap->texelSize());
+                m_DeferredLightingMat->setMatrix("u_DirLightMatrix", dirLight->getLightMatrix());
+            }
         }
 
         m_DeferredLightingMat->setVector3("u_CameraPos", m_Transform->getPosition());
@@ -120,7 +127,7 @@ void Camera::draw(Scene* scene)
         glBlitFramebuffer(0, 0, m_GBuffers->width(), m_GBuffers->height(), 0, 0, m_RenderTargetBuffer->width(), m_RenderTargetBuffer->height(), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 
         // Render skybox
-        if (scene)
+        if (scene && drawSkybox)
             scene->drawSkybox(*this);
     }
     else
@@ -133,7 +140,10 @@ void Camera::draw(Scene* scene)
         if (scene)
         {
             Camera& cam = *this;
-            scene->drawSkybox(cam);
+
+            if (drawSkybox)
+                scene->drawSkybox(cam);
+
             scene->drawEntities(cam);
         }
     }
@@ -171,6 +181,7 @@ void Camera::addBuffersToDebugWindow(DebugTextureListWindow& window) const
         window.add(m_GBuffers->normalSmoothGBuffer(), "GBuffer [RGBAHalf]: World Normal (RGB) Smoothness (A)", /*flip=*/ true);
         window.add(m_GBuffers->albedoMetalGBuffer(), "GBuffer [RGBA32]: Albedo (RGB) Metallic (A)", /*flip=*/ true);
         window.add(m_GBuffers->emissionGBuffer(), "GBuffer [RGBAHalf]: Emission (RGB)", /*flip=*/ true);
-        window.add(m_GBuffers->depthTexture(), "Depth (R) [Float]", /*flip=*/ true);
     }
+
+    window.add(getDepthTexture(), "Camera Depth (R) [Float]", /*flip=*/ true);
 }

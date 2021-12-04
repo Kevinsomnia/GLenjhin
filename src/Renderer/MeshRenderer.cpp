@@ -29,6 +29,5 @@ void MeshRenderer::draw(const Vector3& cameraPos, const Matrix4x4& vp, const Mat
             light->bind(mat);
     }
 
-
     drawMeshDirect();
 }

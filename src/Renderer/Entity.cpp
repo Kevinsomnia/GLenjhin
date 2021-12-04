@@ -28,16 +28,27 @@ void Entity::setupRenderer(Mesh* mesh, Material* material)
     m_Renderer = new MeshRenderer(mesh, material);
 }
 
-void Entity::drawGeometryPass(const Camera& cam, Material& geometryMat) const
+void Entity::drawGeometryPass(Material& geometryMat) const
 {
     if (m_Renderer)
     {
-        geometryMat.setMatrix("u_Model", m_Transform->getTRS());
-
         Material* entityMat = m_Renderer->material();
+
+        geometryMat.setMatrix("u_Model", m_Transform->getTRS());
         geometryMat.setTexture("u_AlbedoTex", entityMat->getTexture("u_MainTex"));
         geometryMat.setColor("u_EmissionColor", entityMat->getColor("u_EmissionColor"));
         geometryMat.updateUniforms();
+
+        m_Renderer->drawMeshDirect();
+    }
+}
+
+void Entity::drawShadowPass(Material& shadowMat) const
+{
+    if (m_Renderer)
+    {
+        shadowMat.setMatrix("u_Model", m_Transform->getTRS());
+        shadowMat.updateUniforms();
 
         m_Renderer->drawMeshDirect();
     }

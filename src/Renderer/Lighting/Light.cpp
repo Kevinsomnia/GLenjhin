@@ -3,8 +3,5 @@
 Light::Light(const Vector3& pos, const Vector3& rot)
 {
     m_Transform = new Transform(pos, rot, Vector3::one);
-}
-
-void Light::bind(Material& mat) const
-{
+    m_ShadowMat = new Material(new Shader("res\\shaders\\Lighting\\ShadowPass.glsl"));
 }

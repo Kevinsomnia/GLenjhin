@@ -49,7 +49,10 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
 
     m_DebugTexturesWindow = new DebugTextureListWindow("Debug Buffers");
     m_DebugTexturesWindow->setOpen(false);
-    m_MainCamera->addBuffersToDebugWindow(*m_DebugTexturesWindow);
+    DebugTextureListWindow& textureListWindow = *m_DebugTexturesWindow;
+    m_MainCamera->addBuffersToDebugWindow(textureListWindow);
+    for (Light* light : m_CurrentScene->lights())
+        light->addBuffersToDebugWindow(textureListWindow);
 
     m_DebugOverlayWindow = new DebugOverlayWindow(m_DebugTexturesWindow);
 }
@@ -93,9 +96,12 @@ void GameContainer::render()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
+    if (m_CurrentScene)
+        m_CurrentScene->renderLightShadows();
+
     if (m_MainCamera)
     {
-        m_MainCamera->draw(m_CurrentScene);
+        m_MainCamera->draw(m_CurrentScene, /*drawSkybox=*/ true);
         m_MainCamera->blitToScreen();
     }
 

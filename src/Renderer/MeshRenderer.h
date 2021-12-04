@@ -10,6 +10,11 @@
 using std::cout;
 using std::endl;
 
+
+// Forward declaration
+class Light;
+
+
 class MeshRenderer
 {
 public:
