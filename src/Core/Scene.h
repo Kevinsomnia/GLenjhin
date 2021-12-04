@@ -38,6 +38,7 @@ private:
     Texture2D* m_CurrTexture;
     std::vector<Entity*> m_Entities;
     std::vector<Entity*> m_DynamicEntities;
+    const std::vector<Light*> m_EmptyLightsList;  // An empty list for deferred path.
     std::vector<Light*> m_Lights;
 };
 

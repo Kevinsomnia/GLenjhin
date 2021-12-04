@@ -89,8 +89,11 @@ void Scene::drawSkybox(const Camera& camera) const
 
 void Scene::drawEntities(const Camera& camera) const
 {
+    // Only pass lights to each entity if the camera is rendering forward.
+    const std::vector<Light*>& lights = camera.isDeferred() ? m_EmptyLightsList : m_Lights;
+
     for (size_t i = 0; i < m_Entities.size(); i++)
-        m_Entities[i]->draw(camera, m_Lights);
+        m_Entities[i]->draw(camera, lights);
 }
 
 void Scene::setNewTexture(const std::string& texturePath)
