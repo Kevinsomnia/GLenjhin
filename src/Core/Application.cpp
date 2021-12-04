@@ -64,7 +64,7 @@ int main()
 
     while (!glfwWindowShouldClose(window))
     {
-        clock_t frameStartTick = clock();
+        steady_clock::time_point frameStart = high_resolution_clock::now();
 
         game.update(deltaTime);
         game.render();
@@ -73,10 +73,11 @@ int main()
         glfwSwapBuffers(window);
 
         glfwPollEvents();
-        clock_t frameEndTick = clock();
+        steady_clock::time_point frameEnd = high_resolution_clock::now();
 
         // Application timer
-        deltaTime = clockTicksToSeconds(frameEndTick - frameStartTick);
+        duration<double> elapsed = frameEnd - frameStart;
+        deltaTime = elapsed.count();
     }
 
     glfwTerminate();
