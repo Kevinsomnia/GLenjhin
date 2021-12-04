@@ -14,7 +14,7 @@ Scene::Scene()
     m_CurrMat->setTexture("u_MainTex", m_CurrTexture);
 
     Material* sphereMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));   // yes this will leak memory. temp solution.
-    sphereMat->setColor("u_EmissionColor", Color(1.25f, 2.0f, 0.75f, 1.0f));
+    sphereMat->setColor("u_EmissionColor", Color(0.5f, 1.5f, 0.25f, 1.0f));
 
     Entity* plane = new Entity(Vector3::zero, rotationToRad(Vector3(-90.0f, 180.0f, 0.0f)), Vector3::one * 20.0f);
     plane->setupRenderer(MeshPrimitives::quad, m_CurrMat);

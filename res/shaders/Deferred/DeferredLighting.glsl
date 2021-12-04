@@ -40,14 +40,46 @@ const float EPSILON = 0.000001;
 const float MIN_SHADOW_BIAS = 0.00002;
 const float MAX_SHADOW_BIAS = 0.0004;
 
-float BilinearSampleShadowMap(sampler2D tex, vec2 texelSize, vec2 uv)
+float SampleShadowMap(sampler2D tex, vec3 uv, vec3 worldLightDir, vec3 worldNormal)
 {
-    vec4 delta = texelSize.xyxy * vec4(1.0, 1.0, -1.0, -1.0);
-    float value = texture2D(tex, uv + delta.zy).r;
-    return value;
+    float lightDepth = texture2D(tex, uv.xy).r;
+    float fragDepth = uv.z;
+    // Test if the light's depth is behind this fragment's depth. If so, return 0.
+    // Since depth buffer is point filtered, we need to account for imprecision by using a bias value.
+    // "Steeper" angles get affected more by this imprecision so we want to add more bias in those cases.
+    float bias = mix(MIN_SHADOW_BIAS, MAX_SHADOW_BIAS, clamp(1.0 - dot(-worldLightDir, worldNormal), 0.0, 1.0));
+    return clamp((lightDepth - (fragDepth - bias)) / EPSILON, 0.0, 1.0);
 }
 
-float ShadowAttenuation(vec4 dirLightFragPos, vec3 worldLightDir, vec3 worldNormal)
+float BilinearSampleShadowMap(sampler2D tex, vec2 texelSize, vec3 uv, vec3 worldLightDir, vec3 worldNormal)
+{
+    vec2 samplePoint = (uv.xy / texelSize) + vec2(0.5);
+    vec2 samplePointFloor = floor(samplePoint);
+    vec2 samplePointFract = samplePoint - samplePointFloor;
+    samplePoint = samplePointFloor * texelSize;
+
+    vec3 delta = texelSize.xyx * vec3(1.0, 1.0, 0.0);
+
+    float bottomLeft = SampleShadowMap(tex, vec3(samplePoint, uv.z), worldLightDir, worldNormal);
+    float bottomRight = SampleShadowMap(tex, vec3(samplePoint + delta.xz, uv.z), worldLightDir, worldNormal);
+    float bottom = mix(bottomLeft, bottomRight, samplePointFract.x);
+
+    float topLeft = SampleShadowMap(tex, vec3(samplePoint + delta.zy, uv.z), worldLightDir, worldNormal);
+    float topRight = SampleShadowMap(tex, vec3(samplePoint + delta.xy, uv.z), worldLightDir, worldNormal);
+    float top = mix(topLeft, topRight, samplePointFract.x);
+
+    return mix(bottom, top, samplePointFract.y);
+}
+
+#define PCF_SAMPLE_COUNT 16
+vec2 pcfOffsetsJittered[PCF_SAMPLE_COUNT] = vec2[] (
+    vec2(0.4455, 0.25109), vec2(0.40033, 0.98933), vec2(1.16506, 1.07249), vec2(0.13022, 1.97584),
+    vec2(-0.74049, 0.46329), vec2(-0.87497, 0.88598), vec2(-1.26421, 0.97358), vec2(-1.72868, 0.92694),
+    vec2(-0.41143, -0.28414), vec2(-0.62969, -0.90792), vec2(-1.51151, -0.36388), vec2(-1.24892, -1.20944),
+    vec2(0.66761, -0.52171), vec2(1.0005, -0.22421), vec2(1.65966, -0.0889), vec2(1.04328, -1.49243)
+);
+
+float ShadowAttenuation(sampler2D tex, vec2 texelSize, vec4 dirLightFragPos, vec3 worldLightDir, vec3 worldNormal)
 {
     // Perspective divide to get light-space NDC coords.
     vec3 lightCoords = dirLightFragPos.xyz / dirLightFragPos.w;
@@ -56,17 +88,14 @@ float ShadowAttenuation(vec4 dirLightFragPos, vec3 worldLightDir, vec3 worldNorm
     if (lightCoords.z > 1.0)
         return 1.0;
 
-    // Normalize from 0 to 1.
+    // Normalize XYZ coordinates.
     lightCoords = (lightCoords * 0.5) + 0.5;
 
-    // Sample light's depth map.
-    float lightDepth = BilinearSampleShadowMap(u_DirShadows, u_DirShadowsTexelSize, lightCoords.xy);
-    float fragDepth = lightCoords.z;
-    // Test if the light's depth is behind this fragment's depth. If so, return 0.
-    // Since depth buffer is point filtered, we need to account for imprecision by using a bias value.
-    // "Steeper" angles get affected more by this imprecision so we want to add more bias in those cases.
-    float bias = mix(MIN_SHADOW_BIAS, MAX_SHADOW_BIAS, clamp(1.0 - dot(-worldLightDir, worldNormal), 0.0, 1.0));
-    return clamp((lightDepth - (fragDepth - bias)) / EPSILON, 0.0, 1.0);
+    // Apply PCF
+    float result = 0.0;
+    for (int i = 0; i < PCF_SAMPLE_COUNT; ++i)
+        result += BilinearSampleShadowMap(tex, texelSize, lightCoords + vec3(pcfOffsetsJittered[i] * texelSize, 0.0), worldLightDir, worldNormal);
+    return result / PCF_SAMPLE_COUNT;
 }
 
 void main()
@@ -77,8 +106,9 @@ void main()
     vec4 emission = texture2D(u_Emission, v_UV);
 
     vec3 ambient = vec3(0.1);   // needs uniform
-    float shadow = ShadowAttenuation(u_DirLightMatrix * position, u_DirLightDir, normalsSmoothness.xyz);
-    float nDotL = max(0.0, dot(-u_DirLightDir, normalsSmoothness.xyz) * shadow);
+    float nDotL = dot(-u_DirLightDir, normalsSmoothness.xyz);
+    float shadow = (nDotL > 0.0) ? ShadowAttenuation(u_DirShadows, u_DirShadowsTexelSize, u_DirLightMatrix * position, u_DirLightDir, normalsSmoothness.xyz) : 0.0;
+    nDotL = max(0.0, nDotL * shadow);
 
     vec3 viewDir = normalize(u_CameraPos - position.xyz);
     vec3 halfDir = normalize(viewDir - u_DirLightDir);

@@ -51,8 +51,6 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     m_DebugTexturesWindow->setOpen(false);
     DebugTextureListWindow& textureListWindow = *m_DebugTexturesWindow;
     m_MainCamera->addBuffersToDebugWindow(textureListWindow);
-    for (Light* light : m_CurrentScene->lights())
-        light->addBuffersToDebugWindow(textureListWindow);
 
     m_DebugOverlayWindow = new DebugOverlayWindow(m_DebugTexturesWindow);
 }

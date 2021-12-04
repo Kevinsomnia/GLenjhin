@@ -58,8 +58,3 @@ Texture2D* DirectionalLight::getShadowMap() const
 
     return nullptr;
 }
-
-void DirectionalLight::addBuffersToDebugWindow(DebugTextureListWindow& window) const
-{
-    window.add(m_DepthCamera->getDepthTexture(), "Directional Light Shadowmap", /*flipY=*/ true);
-}
