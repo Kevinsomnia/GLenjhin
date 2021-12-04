@@ -17,13 +17,16 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     Input::Init(window);
     MeshPrimitives::Init();
 
+    int screenWidth, screenHeight;
+    glfwGetWindowSize(window, &screenWidth, &screenHeight);
+
     // Setup camera
     auto projection = Camera::PerspectiveProjection(
         /*nearClip=*/ 0.1f,
         /*farClip=*/ 5000.0f,
         /*fieldOfView=*/ 75.0f
     );
-    m_MainCamera = new Camera(/*pos=*/ Vector3(0.0f, 1.0f, 0.0f), /*rot=*/ Vector3::zero, projection, CameraBufferFlags::Default, /*deferred=*/ true);
+    m_MainCamera = new Camera(screenWidth, screenHeight, /*pos=*/ Vector3(0.0f, 1.0f, 0.0f), /*rot=*/ Vector3::zero, projection, CameraBufferFlags::Default, /*deferred=*/ true);
     m_MainCamera->addImageEffect(new GlobalFog());
     m_MainCamera->addImageEffect(new Bloom());
     m_MainCamera->addImageEffect(new Tonemapping());

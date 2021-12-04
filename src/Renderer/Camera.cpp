@@ -8,14 +8,12 @@ Camera::PerspectiveProjection::PerspectiveProjection(float nearClip, float farCl
 Camera::OrthographicProjection::OrthographicProjection(float nearClip, float farClip, float size)
     : Projection(nearClip, farClip), size(size) { }
 
-Camera::Camera(const Vector3& pos, const Vector3& rot, Projection& projection, CameraBufferFlags bufferFlags, bool deferred)
+Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, const Vector3& rot, Projection& projection, CameraBufferFlags bufferFlags, bool deferred)
     : m_NearClip(projection.nearClip), m_FarClip(projection.farClip), m_FieldOfView(60.0f), m_OrthoSize(1.0f)
 {
     assert(bufferFlags != CameraBufferFlags::None);
 
-    const uint32_t SCR_WIDTH = 1600;
-    const uint32_t SCR_HEIGHT = 900;
-    const float SCR_ASPECT = SCR_WIDTH / static_cast<float>(SCR_HEIGHT);
+    float aspect = pixelWidth / static_cast<float>(pixelHeight);
     uint32_t depthBits = (bufferFlags & CameraBufferFlags::Depth) != CameraBufferFlags::None ? 32 : 0;
 
     m_Transform = new Transform(pos, rot, Vector3::one);
@@ -33,18 +31,18 @@ Camera::Camera(const Vector3& pos, const Vector3& rot, Projection& projection, C
     if (perspective)
     {
         m_FieldOfView = perspective->fieldOfView;
-        m_ProjMatrix = Matrix4x4::Perspective(m_FieldOfView, SCR_ASPECT, m_NearClip, m_FarClip);
+        m_ProjMatrix = Matrix4x4::Perspective(m_FieldOfView, aspect, m_NearClip, m_FarClip);
     }
     else
     {
         OrthographicProjection* orthographic = static_cast<OrthographicProjection*>(&projection);
         m_OrthoSize = orthographic->size;
-        m_ProjMatrix = Matrix4x4::Orthographic(m_OrthoSize, SCR_ASPECT, m_NearClip, m_FarClip);
+        m_ProjMatrix = Matrix4x4::Orthographic(m_OrthoSize, aspect, m_NearClip, m_FarClip);
     }
 
     if (deferred)
     {
-        m_GBuffers = new GeometryBuffers(SCR_WIDTH, SCR_HEIGHT, depthBits);
+        m_GBuffers = new GeometryBuffers(pixelWidth, pixelHeight, depthBits);
         m_DeferredGeometryMat = new Material(new Shader("res\\shaders\\Deferred\\GeometryBuffers.glsl"));
         m_DeferredLightingMat = new Material(new Shader("res\\shaders\\Deferred\\DeferredLighting.glsl"));
         m_GBuffers->setGBufferTextures(*m_DeferredLightingMat);
@@ -55,7 +53,7 @@ Camera::Camera(const Vector3& pos, const Vector3& rot, Projection& projection, C
     }
 
     TextureFormat colorFormat = (bufferFlags & CameraBufferFlags::Color) != CameraBufferFlags::None ? TextureFormat::RGBAHalf : TextureFormat::None;
-    m_RenderTargetBuffer = new BufferTexture(SCR_WIDTH, SCR_HEIGHT, depthBits, colorFormat);
+    m_RenderTargetBuffer = new BufferTexture(pixelWidth, pixelHeight, depthBits, colorFormat);
     m_ImageEffectChain = new ImageEffectChain(this);
     m_BlitMat = new Material(new Shader("res\\shaders\\PostProcessing\\Common\\Copy.glsl"));
     m_FullscreenTriangle = new FullscreenTriangle(m_BlitMat);

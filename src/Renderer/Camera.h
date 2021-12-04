@@ -70,7 +70,7 @@ public:
         float size;
     };
 
-    Camera(const Vector3& pos, const Vector3& rot, Projection& projection, CameraBufferFlags bufferFlags, bool deferred);
+    Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, const Vector3& rot, Projection& projection, CameraBufferFlags bufferFlags, bool deferred);
     ~Camera();
     void update();
     void draw(Scene* scene);
