@@ -2,14 +2,18 @@
 
 BufferTexture::BufferTexture(uint32_t width, uint32_t height, uint32_t depth, TextureFormat colorFormat) : Texture()
 {
+    assert(colorFormat != TextureFormat::None || depth != 0);
     m_Width = width;
     m_Height = height;
 
     glGenFramebuffers(1, &m_TextureID);
     glBindFramebuffer(GL_FRAMEBUFFER, m_TextureID);
 
-    m_ColorTexture = new Texture2D(width, height, colorFormat);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColorTexture->id(), 0);
+    if (colorFormat != TextureFormat::None)
+    {
+        m_ColorTexture = new Texture2D(width, height, colorFormat);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColorTexture->id(), 0);
+    }
 
     if (depth != 0)
     {
@@ -17,6 +21,13 @@ BufferTexture::BufferTexture(uint32_t width, uint32_t height, uint32_t depth, Te
         m_DepthTexture = new Texture2D(width, height, GetDepthTextureFormat(depth));
         m_DepthTexture->setFilterMode(TextureFilterMode::Point);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthTexture->id(), 0);
+        
+        if (colorFormat == TextureFormat::None)
+        {
+            // Tell OpenGL we're rendering to depth only.
+            glReadBuffer(GL_NONE);
+            glDrawBuffer(GL_NONE);
+        }
     }
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE)
@@ -57,15 +68,16 @@ void BufferTexture::bind(uint32_t slotIndex) const
 void BufferTexture::setFilterMode(TextureFilterMode filterMode)
 {
     m_FilterMode = filterMode;
-    m_ColorTexture->setFilterMode(filterMode);
+    if (m_ColorTexture)
+        m_ColorTexture->setFilterMode(filterMode);
     // Don't change depth texture filter mode from point filtering.
 }
 
 void BufferTexture::setWrapMode(TextureWrapMode wrapMode)
 {
     m_WrapMode = wrapMode;
-    m_ColorTexture->setWrapMode(wrapMode);
-
+    if (m_ColorTexture)
+        m_ColorTexture->setWrapMode(wrapMode);
     if (m_DepthTexture)
         m_DepthTexture->setWrapMode(wrapMode);
 }
@@ -77,7 +89,6 @@ void BufferTexture::internalDispose()
 
     if (m_ColorTexture)
         delete m_ColorTexture;
-
     if (m_DepthTexture)
         delete m_DepthTexture;
 }

@@ -1,6 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include <assert.h>
 #include <iostream>
 
 #include "../Core/Scene.h"
@@ -21,13 +22,58 @@ class ImageEffectChain;
 class Scene;
 
 
+// Controls which buffers the camera should render to.
+enum class CameraBufferFlags : uint32_t
+{
+    None = 0,
+    Color = 1 << 0,
+    Depth = 1 << 1,
+    Default = Color | Depth
+};
+constexpr CameraBufferFlags operator |(const CameraBufferFlags lhs, const CameraBufferFlags rhs) { return CameraBufferFlags(uint32_t(lhs) | uint32_t(rhs)); }
+constexpr CameraBufferFlags operator |=(const CameraBufferFlags lhs, const CameraBufferFlags rhs) { return CameraBufferFlags(uint32_t(lhs) | uint32_t(rhs)); }
+constexpr CameraBufferFlags operator &(const CameraBufferFlags lhs, const CameraBufferFlags rhs) { return CameraBufferFlags(uint32_t(lhs) & uint32_t(rhs)); }
+constexpr CameraBufferFlags operator &=(const CameraBufferFlags lhs, const CameraBufferFlags rhs) { return CameraBufferFlags(uint32_t(lhs) & uint32_t(rhs)); }
+constexpr CameraBufferFlags operator ~(const CameraBufferFlags flags) { return CameraBufferFlags(~uint32_t(flags)); }
+inline std::ostream& operator<<(std::ostream& os, const CameraBufferFlags& flags)
+{
+    os << static_cast<uint32_t>(flags);
+    return os;
+}
+
+
 class Camera
 {
 public:
-    Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float nearClip, float farClip, bool deferred);
+    struct Projection
+    {
+    public:
+        float nearClip;
+        float farClip;
+    protected:
+        Projection() = delete;
+        Projection(float nearClip, float farClip);
+        virtual ~Projection();
+    };
+
+    struct PerspectiveProjection : public Projection
+    {
+        PerspectiveProjection(float nearClip, float farClip, float fieldOfView);
+
+        float fieldOfView;
+    };
+
+    struct OrthographicProjection : public Projection
+    {
+        OrthographicProjection(float nearClip, float farClip, float size);
+
+        float size;
+    };
+
+    Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, const Vector3& rot, Projection& projection, CameraBufferFlags bufferFlags, bool deferred);
     ~Camera();
     void update();
-    void draw(Scene* scene);
+    void draw(Scene* scene, bool drawSkybox);
     void blitToScreen() const;
     void addImageEffect(ImageEffect* effect);
     void addBuffersToDebugWindow(DebugTextureListWindow& window) const;
@@ -53,10 +99,13 @@ private:
     Material* m_BlitMat;
     FullscreenTriangle* m_FullscreenTriangle;
     Matrix4x4 m_ViewProjMatrix;
+
     Vector4 m_ProjectionParams;
-    float m_FieldOfView;
+    Matrix4x4 m_ProjMatrix;
     float m_NearClip;
     float m_FarClip;
+    float m_FieldOfView;
+    float m_OrthoSize;
 };
 
 #endif // CAMERA_H

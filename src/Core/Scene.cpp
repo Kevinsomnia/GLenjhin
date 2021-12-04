@@ -14,7 +14,7 @@ Scene::Scene()
     m_CurrMat->setTexture("u_MainTex", m_CurrTexture);
 
     Material* sphereMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));   // yes this will leak memory. temp solution.
-    sphereMat->setColor("u_EmissionColor", Color(1.25f, 2.0f, 0.75f, 1.0f));
+    sphereMat->setColor("u_EmissionColor", Color(0.5f, 1.5f, 0.25f, 1.0f));
 
     Entity* plane = new Entity(Vector3::zero, rotationToRad(Vector3(-90.0f, 180.0f, 0.0f)), Vector3::one * 20.0f);
     plane->setupRenderer(MeshPrimitives::quad, m_CurrMat);
@@ -54,6 +54,9 @@ void Scene::update()
 {
     double t = Time::GetTime();
 
+    for (Light* light : m_Lights)
+        light->update();
+
     for (size_t i = 0; i < m_DynamicEntities.size(); i++)
     {
         t += 2.48529;
@@ -78,7 +81,16 @@ void Scene::drawGeometryPass(const Camera& camera, Material& geometryMat) const
     geometryMat.bind();
 
     for (size_t i = 0; i < m_Entities.size(); i++)
-        m_Entities[i]->drawGeometryPass(camera, geometryMat);
+        m_Entities[i]->drawGeometryPass(geometryMat);
+}
+
+void Scene::drawShadowPass(const Light& light, Material& shadowMat) const
+{
+    shadowMat.setMatrix("u_L", light.getLightMatrix());
+    shadowMat.bind();
+
+    for (size_t i = 0; i < m_Entities.size(); i++)
+        m_Entities[i]->drawShadowPass(shadowMat);
 }
 
 void Scene::drawSkybox(const Camera& camera) const
@@ -94,6 +106,12 @@ void Scene::drawEntities(const Camera& camera) const
 
     for (size_t i = 0; i < m_Entities.size(); i++)
         m_Entities[i]->draw(camera, lights);
+}
+
+void Scene::renderLightShadows() const
+{
+    for (Light* light : m_Lights)
+        light->renderShadows(this);
 }
 
 void Scene::setNewTexture(const std::string& texturePath)

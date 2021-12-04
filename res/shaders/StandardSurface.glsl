@@ -39,7 +39,7 @@ in vec3 v_Pos;
 in vec3 v_Normal;
 in vec2 v_UV;
 
-out vec4 color;
+out vec4 fragColor;
 
 // Forward rendering
 void main()
@@ -58,5 +58,5 @@ void main()
 
     vec4 albedo = texture(u_MainTex, v_UV);
     float specular = pow(specContrib, shininess);
-    color = vec4((albedo.rgb * mix(ambient, vec3(1.0), nDotL)) + specular + u_EmissionColor.rgb, 1.0);
+    fragColor = vec4((albedo.rgb * mix(ambient, vec3(1.0), nDotL)) + specular + u_EmissionColor.rgb, 1.0);
 }

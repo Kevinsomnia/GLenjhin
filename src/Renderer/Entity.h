@@ -16,6 +16,10 @@ using std::endl;
 
 // Forward declaration
 class Camera;
+class Light;
+class Material;
+class Mesh;
+class MeshRenderer;
 
 
 class Entity
@@ -24,7 +28,8 @@ public:
     Entity(const Vector3& position, const Vector3& rotation, const Vector3& scale);
     ~Entity();
     void setupRenderer(Mesh* mesh, Material* material);
-    void drawGeometryPass(const Camera& camera, Material& geometryMat) const;
+    void drawGeometryPass(Material& geometryMat) const;
+    void drawShadowPass(Material& shadowMat) const;
     void draw(const Camera& camera, const std::vector<Light*>& lights) const;
 
     Transform* getTransform() const { return m_Transform; }

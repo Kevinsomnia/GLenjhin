@@ -19,6 +19,7 @@ using std::endl;
 // Forward declaration
 class Camera;
 class Entity;
+class Light;
 
 
 class Scene
@@ -28,8 +29,10 @@ public:
     ~Scene();
     void update();
     void drawGeometryPass(const Camera& camera, Material& geometryMat) const;
+    void drawShadowPass(const Light& light, Material& shadowMat) const;
     void drawSkybox(const Camera& camera) const;
     void drawEntities(const Camera& camera) const;
+    void renderLightShadows() const;
     void setNewTexture(const std::string& texturePath);
     std::vector<Light*>& lights() { return m_Lights; };
 private:

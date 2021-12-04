@@ -10,6 +10,8 @@ Supports Windows 64-bit only.
 
 - Primitive meshes
 - Blinn-Phong shading
+- Real-time soft shadows
+  - Directional lights
 - HDR and post processing effects pipeline
   - Bloom
   - Tonemapping

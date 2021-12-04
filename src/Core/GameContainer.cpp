@@ -17,15 +17,16 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     Input::Init(window);
     MeshPrimitives::Init();
 
+    int screenWidth, screenHeight;
+    glfwGetWindowSize(window, &screenWidth, &screenHeight);
+
     // Setup camera
-    m_MainCamera = new Camera(
-        Vector3(0.0f, 1.0f, 0.0f),
-        Vector3::zero,
-        /*fieldOfView=*/ 75.0f,
+    auto projection = Camera::PerspectiveProjection(
         /*nearClip=*/ 0.1f,
         /*farClip=*/ 5000.0f,
-        /*deferred=*/ true
+        /*fieldOfView=*/ 75.0f
     );
+    m_MainCamera = new Camera(screenWidth, screenHeight, /*pos=*/ Vector3(0.0f, 1.0f, 0.0f), /*rot=*/ Vector3::zero, projection, CameraBufferFlags::Default, /*deferred=*/ true);
     m_MainCamera->addImageEffect(new GlobalFog());
     m_MainCamera->addImageEffect(new Bloom());
     m_MainCamera->addImageEffect(new Tonemapping());
@@ -48,7 +49,8 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
 
     m_DebugTexturesWindow = new DebugTextureListWindow("Debug Buffers");
     m_DebugTexturesWindow->setOpen(false);
-    m_MainCamera->addBuffersToDebugWindow(*m_DebugTexturesWindow);
+    DebugTextureListWindow& textureListWindow = *m_DebugTexturesWindow;
+    m_MainCamera->addBuffersToDebugWindow(textureListWindow);
 
     m_DebugOverlayWindow = new DebugOverlayWindow(m_DebugTexturesWindow);
 }
@@ -92,9 +94,12 @@ void GameContainer::render()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
+    if (m_CurrentScene)
+        m_CurrentScene->renderLightShadows();
+
     if (m_MainCamera)
     {
-        m_MainCamera->draw(m_CurrentScene);
+        m_MainCamera->draw(m_CurrentScene, /*drawSkybox=*/ true);
         m_MainCamera->blitToScreen();
     }
 

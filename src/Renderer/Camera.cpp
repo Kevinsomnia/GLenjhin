@@ -1,8 +1,21 @@
 #include "Camera.h"
 
-Camera::Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float nearClip, float farClip, bool deferred)
-    : m_FieldOfView(fieldOfView), m_NearClip(nearClip), m_FarClip(farClip)
+Camera::Projection::Projection(float nearClip, float farClip)
+    : nearClip(nearClip), farClip(farClip) { }
+Camera::Projection::~Projection() { /* no-op. just here to make dynamic_cast work. */ }
+Camera::PerspectiveProjection::PerspectiveProjection(float nearClip, float farClip, float fieldOfView)
+    : Projection(nearClip, farClip), fieldOfView(fieldOfView) { }
+Camera::OrthographicProjection::OrthographicProjection(float nearClip, float farClip, float size)
+    : Projection(nearClip, farClip), size(size) { }
+
+Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, const Vector3& rot, Projection& projection, CameraBufferFlags bufferFlags, bool deferred)
+    : m_NearClip(projection.nearClip), m_FarClip(projection.farClip), m_FieldOfView(60.0f), m_OrthoSize(1.0f)
 {
+    assert(bufferFlags != CameraBufferFlags::None);
+
+    float aspect = pixelWidth / static_cast<float>(pixelHeight);
+    uint32_t depthBits = (bufferFlags & CameraBufferFlags::Depth) != CameraBufferFlags::None ? 32 : 0;
+
     m_Transform = new Transform(pos, rot, Vector3::one);
 
     // This needs to update whenever near or far clip plane changes.
@@ -13,13 +26,23 @@ Camera::Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float 
         2.0f * m_NearClip * m_FarClip
     );
 
-    const uint32_t SCR_WIDTH = 1600;
-    const uint32_t SCR_HEIGHT = 900;
-    const uint32_t DEPTH = 32;
+    PerspectiveProjection* perspective = dynamic_cast<PerspectiveProjection*>(&projection);
+
+    if (perspective)
+    {
+        m_FieldOfView = perspective->fieldOfView;
+        m_ProjMatrix = Matrix4x4::Perspective(m_FieldOfView, aspect, m_NearClip, m_FarClip);
+    }
+    else
+    {
+        OrthographicProjection* orthographic = static_cast<OrthographicProjection*>(&projection);
+        m_OrthoSize = orthographic->size;
+        m_ProjMatrix = Matrix4x4::Orthographic(m_OrthoSize, aspect, m_NearClip, m_FarClip);
+    }
 
     if (deferred)
     {
-        m_GBuffers = new GeometryBuffers(SCR_WIDTH, SCR_HEIGHT, DEPTH);
+        m_GBuffers = new GeometryBuffers(pixelWidth, pixelHeight, depthBits);
         m_DeferredGeometryMat = new Material(new Shader("res\\shaders\\Deferred\\GeometryBuffers.glsl"));
         m_DeferredLightingMat = new Material(new Shader("res\\shaders\\Deferred\\DeferredLighting.glsl"));
         m_GBuffers->setGBufferTextures(*m_DeferredLightingMat);
@@ -29,7 +52,8 @@ Camera::Camera(const Vector3& pos, const Vector3& rot, float fieldOfView, float 
         m_GBuffers = nullptr;
     }
 
-    m_RenderTargetBuffer = new BufferTexture(SCR_WIDTH, SCR_HEIGHT, DEPTH, TextureFormat::RGBAHalf);
+    TextureFormat colorFormat = (bufferFlags & CameraBufferFlags::Color) != CameraBufferFlags::None ? TextureFormat::RGBAHalf : TextureFormat::None;
+    m_RenderTargetBuffer = new BufferTexture(pixelWidth, pixelHeight, depthBits, colorFormat);
     m_ImageEffectChain = new ImageEffectChain(this);
     m_BlitMat = new Material(new Shader("res\\shaders\\PostProcessing\\Common\\Copy.glsl"));
     m_FullscreenTriangle = new FullscreenTriangle(m_BlitMat);
@@ -53,16 +77,13 @@ Camera::~Camera()
 
 void Camera::update()
 {
-    m_ViewProjMatrix = 
-        Matrix4x4::Perspective(m_FieldOfView, 16.0f / 9.0f, m_NearClip, m_FarClip) *
-        Matrix4x4::View(
-            m_Transform->getPosition(),
-            m_Transform->getRotation()
-        );
+    m_ViewProjMatrix = m_ProjMatrix * Matrix4x4::View(m_Transform->getPosition(), m_Transform->getRotation());
 }
 
-void Camera::draw(Scene* scene)
+void Camera::draw(Scene* scene, bool drawSkybox)
 {
+    glViewport(0, 0, m_RenderTargetBuffer->width(), m_RenderTargetBuffer->height());
+
     if (m_GBuffers)
     {
         // === Deferred ===
@@ -82,6 +103,16 @@ void Camera::draw(Scene* scene)
             // NOTE: multiple lights of same type are not supported!
             for (Light* light : scene->lights())
                 light->bind(*m_DeferredLightingMat);
+
+            // TODO: support any # of lights.
+            if ((scene->lights()).size() > 0)
+            {
+                Light* dirLight = scene->lights()[0];
+                Texture2D* shadowMap = dirLight->getShadowMap();
+                m_DeferredLightingMat->setTexture("u_DirShadows", shadowMap);
+                m_DeferredLightingMat->setVector2("u_DirShadowsTexelSize", shadowMap->texelSize());
+                m_DeferredLightingMat->setMatrix("u_DirLightMatrix", dirLight->getLightMatrix());
+            }
         }
 
         m_DeferredLightingMat->setVector3("u_CameraPos", m_Transform->getPosition());
@@ -96,7 +127,7 @@ void Camera::draw(Scene* scene)
         glBlitFramebuffer(0, 0, m_GBuffers->width(), m_GBuffers->height(), 0, 0, m_RenderTargetBuffer->width(), m_RenderTargetBuffer->height(), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 
         // Render skybox
-        if (scene)
+        if (scene && drawSkybox)
             scene->drawSkybox(*this);
     }
     else
@@ -109,7 +140,10 @@ void Camera::draw(Scene* scene)
         if (scene)
         {
             Camera& cam = *this;
-            scene->drawSkybox(cam);
+
+            if (drawSkybox)
+                scene->drawSkybox(cam);
+
             scene->drawEntities(cam);
         }
     }
@@ -147,6 +181,7 @@ void Camera::addBuffersToDebugWindow(DebugTextureListWindow& window) const
         window.add(m_GBuffers->normalSmoothGBuffer(), "GBuffer [RGBAHalf]: World Normal (RGB) Smoothness (A)", /*flip=*/ true);
         window.add(m_GBuffers->albedoMetalGBuffer(), "GBuffer [RGBA32]: Albedo (RGB) Metallic (A)", /*flip=*/ true);
         window.add(m_GBuffers->emissionGBuffer(), "GBuffer [RGBAHalf]: Emission (RGB)", /*flip=*/ true);
-        window.add(m_GBuffers->depthTexture(), "Depth (R) [Float]", /*flip=*/ true);
     }
+
+    window.add(getDepthTexture(), "Camera Depth (R) [Float]", /*flip=*/ true);
 }
