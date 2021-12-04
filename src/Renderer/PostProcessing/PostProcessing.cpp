@@ -39,10 +39,12 @@ ImageEffectChain::ImageEffectChain(Camera* camera) : m_Camera(camera)
     m_CopyMat = new Material(new Shader("res\\shaders\\PostProcessing\\Common\\Copy.glsl"));
     m_Triangle = new FullscreenTriangle(m_CopyMat);
 
+    BufferTexture* cameraTex = camera->getRenderTargetBuffer();
+
     // Create 2 color buffers for ping-ponging, since we can't read and write to the same buffer when iterating through image effects.
     // TODO: only initialize 1 buffer if we don't have more than one effect, or any buffers at all if there are no image effects (add logic in ImageEffectChain::add).
     for (size_t i = 0; i < m_ColorBuffers.size(); i++)
-        m_ColorBuffers[i] = new BufferTexture(1600, 900, /*depth=*/ 0, TextureFormat::RGBAHalf);
+        m_ColorBuffers[i] = new BufferTexture(cameraTex->width(), cameraTex->height(), /*depth=*/ 0, TextureFormat::RGBAHalf);
 }
 
 ImageEffectChain::~ImageEffectChain()
@@ -84,9 +86,9 @@ void ImageEffectChain::render(BufferTexture* source)
     if (m_Effects.size() > 0)
     {
         // Copy final color buffer back into `source`, as long as we processed at least one effect.
+        glViewport(0, 0, source->width(), source->height());
         glBindFramebuffer(GL_FRAMEBUFFER, source->id());
         m_CopyMat->setTexture("u_MainTex", m_ColorBuffers[pingPongFlag]->colorTexture());
         m_Triangle->draw();
-        glBindFramebuffer(GL_FRAMEBUFFER, NULL);
     }
 }

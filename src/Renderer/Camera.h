@@ -32,7 +32,9 @@ public:
     void addImageEffect(ImageEffect* effect);
     void addBuffersToDebugWindow(DebugTextureListWindow& window) const;
     inline bool isDeferred() const { return m_GBuffers; }
-    Texture2D* getDepthTexture() { return isDeferred() ? m_GBuffers->depthTexture() : m_RenderTargetBuffer->depthTexture(); }
+    BufferTexture* getRenderTargetBuffer() const { return m_RenderTargetBuffer; }
+    Texture2D* getColorTexture() const { return m_RenderTargetBuffer->colorTexture(); }
+    Texture2D* getDepthTexture() const { return isDeferred() ? m_GBuffers->depthTexture() : m_RenderTargetBuffer->depthTexture(); }
     GeometryBuffers* getGBuffers() const { return m_GBuffers; }
     Transform* getTransform() const { return m_Transform; }
     Matrix4x4 getViewProjMatrix() const { return m_ViewProjMatrix; }
