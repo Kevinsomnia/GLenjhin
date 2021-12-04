@@ -22,7 +22,8 @@ void ImageEffect::render(BufferTexture* source, BufferTexture* destination)
 void ImageEffect::render(BufferTexture* source, BufferTexture* destination, Material* mat)
 {
     // Render `readBufferTex` to quad and output to writeBuffer FBO.
-    glBindFramebuffer(GL_FRAMEBUFFER, destination ? destination->id() : NULL);
+    glViewport(0, 0, destination->width(), destination->height());
+    glBindFramebuffer(GL_FRAMEBUFFER, destination->id());
     mat->setTexture("u_MainTex", source->colorTexture());
     m_Triangle->setMaterial(mat);
     m_Triangle->draw();
