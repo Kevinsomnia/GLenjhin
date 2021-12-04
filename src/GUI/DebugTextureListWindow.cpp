@@ -19,6 +19,7 @@ void DebugTextureListWindow::draw()
     if (!m_WindowOpened)
         return;
 
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.05f, 0.05f, 0.05f, 1.0f));
     if (ImGui::Begin(m_WindowName, &m_WindowOpened, ImGuiWindowFlags_HorizontalScrollbar))
     {
         for (const Element& e : m_Elements)
@@ -44,6 +45,7 @@ void DebugTextureListWindow::draw()
         }
     }
     ImGui::End();
+    ImGui::PopStyleColor(/*count=*/ 1);
 }
 
 void DebugTextureListWindow::setOpen(bool open)

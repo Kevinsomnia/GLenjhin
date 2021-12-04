@@ -22,7 +22,21 @@ DirectionalLight::~DirectionalLight()
 void DirectionalLight::bind(Material& mat) const
 {
     Vector3 fwd = m_Transform->getTRS().multiplyVector(Vector3::forward);
+    Texture2D* shadowMap = m_DepthCamera ? m_DepthCamera->getDepthTexture() : nullptr;
     mat.setVector3("u_DirLightDir", fwd);
+
+    if (m_DepthCamera)
+    {
+        Texture2D* shadowMap = m_DepthCamera->getDepthTexture();
+        mat.setTexture("u_DirShadows", shadowMap);
+        mat.setVector2("u_DirShadowsTexelSize", shadowMap->texelSize());
+        mat.setMatrix("u_DirLightMatrix", m_DepthCamera->getViewProjMatrix());
+        mat.setColor("u_DirLightColor", Color(3.0f, 3.0f, 3.0f));
+    }
+    else
+    {
+        mat.setTexture("u_DirShadows", nullptr);
+    }
 }
 
 void DirectionalLight::update()
@@ -49,12 +63,4 @@ Matrix4x4 DirectionalLight::getLightMatrix() const
         return m_DepthCamera->getViewProjMatrix();
 
     return Matrix4x4::identity;
-}
-
-Texture2D* DirectionalLight::getShadowMap() const
-{
-    if (m_DepthCamera)
-        return m_DepthCamera->getDepthTexture();
-
-    return nullptr;
 }

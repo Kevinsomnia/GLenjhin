@@ -43,7 +43,7 @@ uniform vec4 u_EmissionColor;
 void main()
 {
     gPosition = vec4(v_Position, 1.0);
-    gNormalSmoothness = vec4(normalize(v_Normal), 1.0);
-    gAlbedoMetallic = vec4(texture2D(u_AlbedoTex, v_UV).rgb, 1.0);
+    gNormalSmoothness = vec4(normalize(v_Normal), 0.7);
+    gAlbedoMetallic = vec4(texture2D(u_AlbedoTex, v_UV).rgb, 0.1);
     gEmission = vec4(u_EmissionColor.rgb, 1.0);
 }

@@ -7,6 +7,7 @@
 struct Color
 {
     Color();
+    Color(float r, float g, float b);
     Color(float r, float g, float b, float a);
     Color(const float* arr);
 
@@ -38,19 +39,19 @@ struct Color
     float& operator [](int index);
 
     static Color clear() { return Color(0.0f, 0.0f, 0.0f, 0.0f); }
-    static Color black() { return Color(0.0f, 0.0f, 0.0f, 1.0f); }
-    static Color gray() { return Color(0.5f, 0.5f, 0.5f, 1.0f); }
-    static Color white() { return Color(1.0f, 1.0f, 1.0f, 1.0f); }
-    static Color red() { return Color(1.0f, 0.0f, 0.0f, 1.0f); }
-    static Color green() { return Color(0.0f, 1.0f, 0.0f, 1.0f); }
-    static Color blue() { return Color(0.0f, 0.0f, 1.0f, 1.0f); }
-    static Color azure() { return Color(0.0f, 0.5f, 1.0f, 1.0f); }
-    static Color yellow() { return Color(1.0f, 1.0f, 0.0f, 1.0f); }
-    static Color cyan() { return Color(0.0f, 1.0f, 1.0f, 1.0f); }
-    static Color magenta() { return Color(1.0f, 0.0f, 1.0f, 1.0f); }
-    static Color pink() { return Color(1.0f, 0.0f, 0.5f, 1.0f); }
-    static Color orange() { return Color(1.0f, 0.5f, 0.0f, 1.0f); }
-    static Color purple() { return Color(0.5f, 0.0f, 1.0f, 1.0f); }
+    static Color black() { return Color(0.0f, 0.0f, 0.0f); }
+    static Color gray() { return Color(0.5f, 0.5f, 0.5f); }
+    static Color white() { return Color(1.0f, 1.0f, 1.0f); }
+    static Color red() { return Color(1.0f, 0.0f, 0.0f); }
+    static Color green() { return Color(0.0f, 1.0f, 0.0f); }
+    static Color blue() { return Color(0.0f, 0.0f, 1.0f); }
+    static Color azure() { return Color(0.0f, 0.5f, 1.0f); }
+    static Color yellow() { return Color(1.0f, 1.0f, 0.0f); }
+    static Color cyan() { return Color(0.0f, 1.0f, 1.0f); }
+    static Color magenta() { return Color(1.0f, 0.0f, 1.0f); }
+    static Color pink() { return Color(1.0f, 0.0f, 0.5f); }
+    static Color orange() { return Color(1.0f, 0.5f, 0.0f); }
+    static Color purple() { return Color(0.5f, 0.0f, 1.0f); }
 
     friend std::ostream& operator<<(std::ostream& os, const Color& v)
     {

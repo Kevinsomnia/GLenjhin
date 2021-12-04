@@ -3,7 +3,7 @@
 Scene::Scene()
 {
     // Setup lighting
-    Light* sun = new DirectionalLight(Vector3::zero, rotationToRad(Vector3(31.0f, 34.75f, 0.0f)));
+    Light* sun = new DirectionalLight(Vector3::zero, rotationToRad(Vector3(28.5f, 36.0f, 0.0f)));
     m_Lights.push_back(sun);
 
     m_Skybox = new Skybox("res\\textures\\DaySkybox.png");
@@ -14,7 +14,7 @@ Scene::Scene()
     m_CurrMat->setTexture("u_MainTex", m_CurrTexture);
 
     Material* sphereMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));   // yes this will leak memory. temp solution.
-    sphereMat->setColor("u_EmissionColor", Color(0.5f, 1.5f, 0.25f, 1.0f));
+    sphereMat->setColor("u_EmissionColor", Color(0.5f, 1.5f, 0.25f));
 
     Entity* plane = new Entity(Vector3::zero, rotationToRad(Vector3(-90.0f, 180.0f, 0.0f)), Vector3::one * 20.0f);
     plane->setupRenderer(MeshPrimitives::quad, m_CurrMat);

@@ -100,21 +100,12 @@ void Camera::draw(Scene* scene, bool drawSkybox)
 
         if (scene)
         {
-            // NOTE: multiple lights of same type are not supported!
+            // NOTE: multiple lights of same type are not supported yet!
             for (Light* light : scene->lights())
                 light->bind(*m_DeferredLightingMat);
-
-            // TODO: support any # of lights.
-            if ((scene->lights()).size() > 0)
-            {
-                Light* dirLight = scene->lights()[0];
-                Texture2D* shadowMap = dirLight->getShadowMap();
-                m_DeferredLightingMat->setTexture("u_DirShadows", shadowMap);
-                m_DeferredLightingMat->setVector2("u_DirShadowsTexelSize", shadowMap->texelSize());
-                m_DeferredLightingMat->setMatrix("u_DirLightMatrix", dirLight->getLightMatrix());
-            }
         }
 
+        m_DeferredLightingMat->setColor("u_AmbientColor", Color(0.35f, 0.48f, 0.56f));
         m_DeferredLightingMat->setVector3("u_CameraPos", m_Transform->getPosition());
         m_DeferredLightingMat->bind();
         m_FullscreenTriangle->setMaterial(m_DeferredLightingMat);

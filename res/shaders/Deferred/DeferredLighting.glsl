@@ -26,19 +26,23 @@ uniform sampler2D u_Emission;
 uniform sampler2D u_DirShadows;
 uniform vec2 u_DirShadowsTexelSize;
 
+uniform vec4 u_AmbientColor;
 uniform vec3 u_CameraPos;
 uniform mat4 u_DirLightMatrix;
 uniform vec3 u_DirLightDir;
-uniform vec3 u_DirLightColor;
+uniform vec4 u_DirLightColor;
 
 in vec2 v_UV;
 
 out vec4 fragColor;
 
-const float SHININESS = 128.0;
 const float EPSILON = 0.000001;
 const float MIN_SHADOW_BIAS = 0.00002;
 const float MAX_SHADOW_BIAS = 0.0004;
+
+// ===================
+// SHADOWS
+// ===================
 
 float SampleShadowMap(sampler2D tex, vec3 uv, vec3 worldLightDir, vec3 worldNormal)
 {
@@ -98,6 +102,50 @@ float ShadowAttenuation(sampler2D tex, vec2 texelSize, vec4 dirLightFragPos, vec
     return result / PCF_SAMPLE_COUNT;
 }
 
+
+// ===================
+// PBR
+// ===================
+
+const float PI = 3.141592653589793;
+const float ONE_OVER_PI = 1.0 / PI;
+
+float DistributionGGX(vec3 normal, vec3 halfDir, float smoothness)
+{
+    float roughness = 1.0 - smoothness;
+
+    float a2 = roughness;
+    a2 *= a2;
+
+    float nDotH2 = dot(normal, halfDir);
+    nDotH2 *= nDotH2;
+
+    float denominator = 1.0 + nDotH2 * (a2 - 1.0);
+    denominator *= PI * denominator;
+    return a2 / denominator;
+}
+
+vec3 FresnelShlick(vec3 F, float cosTheta)
+{
+    // Fresnel term: 0.0 to 1.0.
+    return F + ((vec3(1.0) - F) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0));
+}
+
+float GeometryShlickGGX(float d, float roughness)
+{
+    float r = 1.0 + roughness;
+    float k = (r * r) / 8.0;
+    return d / (d * (1.0 - k) + k);
+}
+
+float GeometrySmith(float nDotL, float nDotV, float smoothness)
+{
+    // Micro-facet self-shadowing and light attenuation
+    float roughness = 1.0 - smoothness;
+    return GeometryShlickGGX(nDotL, roughness) * GeometryShlickGGX(nDotV, roughness);
+}
+
+
 void main()
 {
     vec4 position = texture2D(u_Position, v_UV);
@@ -105,15 +153,36 @@ void main()
     vec4 albedoMetallic = texture2D(u_AlbedoMetal, v_UV);
     vec4 emission = texture2D(u_Emission, v_UV);
 
-    vec3 ambient = vec3(0.1);   // needs uniform
-    float nDotL = dot(-u_DirLightDir, normalsSmoothness.xyz);
-    float shadow = (nDotL > 0.0) ? ShadowAttenuation(u_DirShadows, u_DirShadowsTexelSize, u_DirLightMatrix * position, u_DirLightDir, normalsSmoothness.xyz) : 0.0;
-    nDotL = max(0.0, nDotL * shadow);
-
+    // Per-view calculations.
+    vec3 F0 = mix(vec3(0.04), albedoMetallic.rgb, albedoMetallic.a);    // Di-electric / Metallic: specular color
     vec3 viewDir = normalize(u_CameraPos - position.xyz);
-    vec3 halfDir = normalize(viewDir - u_DirLightDir);
-    float specContrib = max(0.0, dot(halfDir, normalsSmoothness.xyz));
-    float specular = pow(specContrib, SHININESS) * shadow;
 
-    fragColor = vec4(albedoMetallic.rgb * mix(ambient, vec3(1.0), nDotL) + specular + emission.rgb, 1.0);
+    // Per-light calculations.
+    vec3 halfDir = normalize(viewDir - u_DirLightDir);
+    float nDotL = max(0.0, dot(normalsSmoothness.xyz, -u_DirLightDir));
+    float nDotV = max(0.0, dot(normalsSmoothness.xyz, viewDir));
+
+    vec3 L = vec3(0.0);
+
+    if (nDotL > 0.0)
+    {
+        float distribution = DistributionGGX(normalsSmoothness.xyz, halfDir, normalsSmoothness.a);
+        vec3 fresnel = FresnelShlick(F0, dot(viewDir, halfDir));
+        float geometry = GeometrySmith(nDotL, nDotV, normalsSmoothness.a);
+
+        // Compute Cook-Torrance BRDF for specular term: DFG / [4dot(wo, N)dot(wi, N)]
+        // Where wo = view direction (solid angle), wi = light direction
+        vec3 specular = (distribution * fresnel * geometry) / (4.0 * nDotV * nDotL + EPSILON);
+
+        // Energy conservation
+        vec3 kDiff = vec3(1.0) - fresnel;
+        kDiff *= 1.0 - albedoMetallic.a;
+
+        // Attenuate with shadowmap
+        float shadow = ShadowAttenuation(u_DirShadows, u_DirShadowsTexelSize, u_DirLightMatrix * position, u_DirLightDir, normalsSmoothness.xyz);
+        L += ((kDiff * ONE_OVER_PI * albedoMetallic.rgb) + specular) * u_DirLightColor.rgb * nDotL * shadow;
+    }
+
+    vec3 ambient = u_AmbientColor.rgb * albedoMetallic.rgb;  // TODO: skybox cubemap (irradiance)
+    fragColor = vec4(ambient + L + emission.rgb, 1.0);
 }

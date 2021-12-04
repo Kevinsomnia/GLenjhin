@@ -33,7 +33,7 @@ void DebugOverlayWindow::draw()
             }
         }
         ImGui::End();
-        ImGui::PopStyleColor();
+        ImGui::PopStyleColor(/*count=*/ 1);
     }
 }
 

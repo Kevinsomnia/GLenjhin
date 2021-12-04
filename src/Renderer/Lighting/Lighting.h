@@ -26,7 +26,6 @@ public:
     virtual void update() = 0;
     virtual void renderShadows(const Scene* scene) const = 0;
     virtual Matrix4x4 getLightMatrix() const = 0;
-    virtual Texture2D* getShadowMap() const = 0;
 protected:
     Light(const Vector3& pos, const Vector3& rot);
     Transform* m_Transform;
@@ -39,7 +38,6 @@ class DirectionalLight : public Light
     void update() override;
     void renderShadows(const Scene* scene) const override;
     Matrix4x4 getLightMatrix() const override;
-    Texture2D* getShadowMap() const override;
 public:
     DirectionalLight(const Vector3& pos, const Vector3& rot);
     ~DirectionalLight();
