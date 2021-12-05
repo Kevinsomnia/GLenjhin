@@ -24,17 +24,12 @@ void Material::unbind() const
 
 Vector4 Material::getVector4(const string& uniformName) const
 {
-    int uniformId = getShaderUniformLocation(uniformName);
+    auto iter = m_UniformVec4.find(uniformName);
 
-    if (uniformId == -1)
-        return Vector4::zero;
+    if (iter != m_UniformVec4.end())
+        return (*iter).second;
 
-    auto iter = m_UniformVec4.find(uniformId);
-
-    if (iter == m_UniformVec4.end())
-        return Vector4::zero;
-
-    return (*iter).second;
+    return Vector4::zero;
 }
 
 Color Material::getColor(const string& uniformName) const
@@ -44,101 +39,110 @@ Color Material::getColor(const string& uniformName) const
 
 Texture* Material::getTexture(const string& uniformName) const
 {
-    int uniformId = getShaderUniformLocation(uniformName);
+    auto iter = m_UniformTex.find(uniformName);
 
-    if (uniformId == -1)
-        return nullptr;
+    if (iter != m_UniformTex.end())
+        return (*iter).second;
 
-    auto iter = m_UniformTex.find(uniformId);
-
-    if (iter == m_UniformTex.end())
-        return nullptr;
-
-    return (*iter).second;
+    return nullptr;
 }
 
 void Material::setFloat(const string& uniformName, float v)
 {
-    int uniformId = getShaderUniformLocation(uniformName);
-
-    if (uniformId != -1)
-        m_UniformFloats[uniformId] = v;
+    m_UniformFloats[uniformName] = v;
 }
 
 void Material::setVector2(const string& uniformName, const Vector2& v)
 {
-    int uniformId = getShaderUniformLocation(uniformName);
-
-    if (uniformId != -1)
-        m_UniformVec2[uniformId] = v;
+    m_UniformVec2[uniformName] = v;
 }
 
 void Material::setVector3(const string& uniformName, const Vector3& v)
 {
-    int uniformId = getShaderUniformLocation(uniformName);
-
-    if (uniformId != -1)
-        m_UniformVec3[uniformId] = v;
+    m_UniformVec3[uniformName] = v;
 }
 
 void Material::setVector4(const string& uniformName, const Vector4& v)
 {
-    int uniformId = getShaderUniformLocation(uniformName);
-
-    if (uniformId != -1)
-        m_UniformVec4[uniformId] = v;
+    m_UniformVec4[uniformName] = v;
 }
 
 void Material::setColor(const string& uniformName, const Color& v)
 {
-    setVector4(uniformName, Vector4(v));
+    m_UniformVec4[uniformName] = Vector4(v);
 }
 
 void Material::setMatrix(const string& uniformName, const Matrix4x4& mat)
 {
-    int uniformId = getShaderUniformLocation(uniformName);
-
-    if (uniformId != -1)
-        m_UniformMat4[uniformId] = mat;
+    m_UniformMat4[uniformName] = mat;
 }
 
 void Material::setTexture(const string& uniformName, Texture* tex)
 {
-    int uniformId = getShaderUniformLocation(uniformName);
-
-    if (uniformId != -1)
-        m_UniformTex[uniformId] = tex;
+    m_UniformTex[uniformName] = tex;
 }
 
 void Material::updateUniforms() const
 {
+    // Vector1 (float) to Vector4
     for (const auto& pair : m_UniformFloats)
-        glUniform1f(pair.first, pair.second);
+    {
+        int id = getShaderUniformLocation(pair.first);
+
+        if (id != -1)
+            glUniform1f(id, pair.second);
+    }
     for (const auto& pair : m_UniformVec2)
-        glUniform2fv(pair.first, 1, pair.second);
+    {
+        int id = getShaderUniformLocation(pair.first);
+
+        if (id != -1)
+            glUniform2fv(id, 1, pair.second);
+    }
     for (const auto& pair : m_UniformVec3)
-        glUniform3fv(pair.first, 1, pair.second);
+    {
+        int id = getShaderUniformLocation(pair.first);
+
+        if (id != -1)
+            glUniform3fv(id, 1, pair.second);
+    }
     for (const auto& pair : m_UniformVec4)
-        glUniform4fv(pair.first, 1, pair.second);
+    {
+        int id = getShaderUniformLocation(pair.first);
 
+        if (id != -1)
+            glUniform4fv(id, 1, pair.second);
+    }
+
+    // Matrices
     for (const auto& pair : m_UniformMat4)
-        glUniformMatrix4fv(pair.first, 1, GL_FALSE, pair.second);
+    {
+        int id = getShaderUniformLocation(pair.first);
 
-    // TEXTURES
+        if (id != -1)
+            glUniformMatrix4fv(id, 1, GL_FALSE, pair.second);
+    }
+
+    // Texture units
     uint32_t unitIndex = 0;
     for (const auto& pair : m_UniformTex)
     {
-        if (pair.second)
-        {
-            pair.second->bind(unitIndex);
-        }
-        else
-        {
-            glBindTextureUnit(unitIndex, GL_NONE);
-        }
+        int id = getShaderUniformLocation(pair.first);
 
-        glUniform1i(pair.first, unitIndex);
-        unitIndex++;
+        if (id != -1)
+        {
+            if (pair.second)
+            {
+                pair.second->bind(unitIndex);
+            }
+            else
+            {
+                glBindTextureUnit(unitIndex, GL_NONE);
+            }
+
+            glUniform1i(id, unitIndex);
+            unitIndex++;
+        }
     }
 }
 

@@ -31,18 +31,17 @@ public:
     void setColor(const string& uniformName, const Color& v);
     void setMatrix(const string& uniformName, const Matrix4x4& mat);
     void setTexture(const string& uniformName, Texture* tex);
-    void updateUniforms() const;
 private:
     Shader* m_Shader;
 
-    // uniform mappings: uniform ID -> value
-    std::unordered_map<GLint, float> m_UniformFloats;
-    std::unordered_map<GLint, Vector2> m_UniformVec2;
-    std::unordered_map<GLint, Vector3> m_UniformVec3;
-    std::unordered_map<GLint, Vector4> m_UniformVec4;
-    std::unordered_map<GLint, Matrix4x4> m_UniformMat4;
-    std::unordered_map<GLint, Texture*> m_UniformTex;
+    std::unordered_map<string, float> m_UniformFloats;
+    std::unordered_map<string, Vector2> m_UniformVec2;
+    std::unordered_map<string, Vector3> m_UniformVec3;
+    std::unordered_map<string, Vector4> m_UniformVec4;
+    std::unordered_map<string, Matrix4x4> m_UniformMat4;
+    std::unordered_map<string, Texture*> m_UniformTex;
 
+    void updateUniforms() const;
     int getShaderUniformLocation(const string& name) const;
 };
 

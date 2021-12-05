@@ -80,7 +80,6 @@ void Scene::update()
 void Scene::drawGeometryPass(const Camera& camera, Material& geometryMat) const
 {
     geometryMat.setMatrix("u_VP", camera.getViewProjMatrix());
-    geometryMat.bind();
 
     for (size_t i = 0; i < m_Entities.size(); i++)
         m_Entities[i]->drawGeometryPass(geometryMat);
@@ -89,7 +88,6 @@ void Scene::drawGeometryPass(const Camera& camera, Material& geometryMat) const
 void Scene::drawShadowPass(const Light& light, Material& shadowMat) const
 {
     shadowMat.setMatrix("u_L", light.getLightMatrix());
-    shadowMat.bind();
 
     for (size_t i = 0; i < m_Entities.size(); i++)
         m_Entities[i]->drawShadowPass(shadowMat);

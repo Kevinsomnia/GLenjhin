@@ -37,7 +37,7 @@ void Entity::drawGeometryPass(Material& geometryMat) const
         geometryMat.setMatrix("u_Model", m_Transform->getTRS());
         geometryMat.setTexture("u_AlbedoTex", entityMat->getTexture("u_MainTex"));
         geometryMat.setColor("u_EmissionColor", entityMat->getColor("u_EmissionColor"));
-        geometryMat.updateUniforms();
+        geometryMat.bind();
 
         m_Renderer->drawMeshDirect();
     }
@@ -48,7 +48,7 @@ void Entity::drawShadowPass(Material& shadowMat) const
     if (m_Renderer)
     {
         shadowMat.setMatrix("u_Model", m_Transform->getTRS());
-        shadowMat.updateUniforms();
+        shadowMat.bind();
 
         m_Renderer->drawMeshDirect();
     }
