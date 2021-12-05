@@ -137,8 +137,9 @@ vec3 FresnelSchlick(vec3 F, float cosTheta)
 // This will darken at grazing angles with higher roughness values.
 float GeometrySchlickGGX(float d, float roughness)
 {
-    float d2 = d * d + EPSILON;
-    return 2.0 / (1.0 + sqrt(1.0 + roughness * roughness * ((1.0 - d2) / d2)));
+    float r = 1.0 + roughness;
+    float k = (r * r) / 8.0;
+    return d / (d * (1.0 - k) + k);
 }
 
 float GeometrySmith(float nDotL, float nDotV, float smoothness)
@@ -162,7 +163,7 @@ void main()
 
     // Per-light calculations.
     vec3 halfDir = normalize(viewDir - u_DirLightDir);
-    float nDotL = max(0.0, dot(normalsSmoothness.xyz, -u_DirLightDir));
+    float nDotL = dot(normalsSmoothness.xyz, -u_DirLightDir);
 
     if (nDotL > 0.0)
     {
