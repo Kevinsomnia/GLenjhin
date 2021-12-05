@@ -110,39 +110,41 @@ float ShadowAttenuation(sampler2D tex, vec2 texelSize, vec4 dirLightFragPos, vec
 const float PI = 3.141592653589793;
 const float ONE_OVER_PI = 1.0 / PI;
 
+// Micro-facets and light distribution/probability function.
 float DistributionGGX(vec3 normal, vec3 halfDir, float smoothness)
 {
     float roughness = 1.0 - smoothness;
-
     float a2 = roughness;
     a2 *= a2;
 
     float nDotH2 = dot(normal, halfDir);
     nDotH2 *= nDotH2;
 
-    float denominator = 1.0 + nDotH2 * (a2 - 1.0);
-    denominator *= PI * denominator;
-    return a2 / denominator;
+    float b2 = 1.0 + nDotH2 * (a2 - 1.0);
+    b2 *= b2;
+    return a2 / (PI * b2);
 }
 
-vec3 FresnelShlick(vec3 F, float cosTheta)
+// Simplified formula to approximate light interaction at different viewing angles.
+// F0 = light response at incidence direction N (0 angle)
+// cosTheta = dot(V, H), where V is viewDir, L is lightDir, and H is V+L
+vec3 FresnelSchlick(vec3 F, float cosTheta)
 {
-    // Fresnel term: 0.0 to 1.0.
     return F + ((vec3(1.0) - F) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0));
 }
 
-float GeometryShlickGGX(float d, float roughness)
+// Micro-facet self-shadowing and light attenuation.
+// This will darken at grazing angles with higher roughness values.
+float GeometrySchlickGGX(float d, float roughness)
 {
-    float r = 1.0 + roughness;
-    float k = (r * r) / 8.0;
-    return d / (d * (1.0 - k) + k);
+    float d2 = d * d + EPSILON;
+    return 2.0 / (1.0 + sqrt(1.0 + roughness * roughness * ((1.0 - d2) / d2)));
 }
 
 float GeometrySmith(float nDotL, float nDotV, float smoothness)
 {
-    // Micro-facet self-shadowing and light attenuation
     float roughness = 1.0 - smoothness;
-    return GeometryShlickGGX(nDotL, roughness) * GeometryShlickGGX(nDotV, roughness);
+    return GeometrySchlickGGX(nDotL, roughness) * GeometrySchlickGGX(nDotV, roughness);
 }
 
 
@@ -156,18 +158,18 @@ void main()
     // Per-view calculations.
     vec3 F0 = mix(vec3(0.04), albedoMetallic.rgb, albedoMetallic.a);    // Di-electric / Metallic: specular color
     vec3 viewDir = normalize(u_CameraPos - position.xyz);
+    vec3 L = vec3(0.0);
 
     // Per-light calculations.
     vec3 halfDir = normalize(viewDir - u_DirLightDir);
     float nDotL = max(0.0, dot(normalsSmoothness.xyz, -u_DirLightDir));
-    float nDotV = max(0.0, dot(normalsSmoothness.xyz, viewDir));
-
-    vec3 L = vec3(0.0);
 
     if (nDotL > 0.0)
     {
+        float nDotV = max(0.0, dot(normalsSmoothness.xyz, viewDir));
+
         float distribution = DistributionGGX(normalsSmoothness.xyz, halfDir, normalsSmoothness.a);
-        vec3 fresnel = FresnelShlick(F0, dot(viewDir, halfDir));
+        vec3 fresnel = FresnelSchlick(F0, dot(viewDir, halfDir));
         float geometry = GeometrySmith(nDotL, nDotV, normalsSmoothness.a);
 
         // Compute Cook-Torrance BRDF for specular term: DFG / [4dot(wo, N)dot(wi, N)]
@@ -180,7 +182,8 @@ void main()
 
         // Attenuate with shadowmap
         float shadow = ShadowAttenuation(u_DirShadows, u_DirShadowsTexelSize, u_DirLightMatrix * position, u_DirLightDir, normalsSmoothness.xyz);
-        L += ((kDiff * ONE_OVER_PI * albedoMetallic.rgb) + specular) * u_DirLightColor.rgb * nDotL * shadow;
+        vec3 brdf = (kDiff * ONE_OVER_PI * albedoMetallic.rgb) + specular;
+        L += brdf * u_DirLightColor.rgb * nDotL * shadow;
     }
 
     vec3 ambient = u_AmbientColor.rgb * albedoMetallic.rgb;  // TODO: skybox cubemap (irradiance)

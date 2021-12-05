@@ -7,7 +7,7 @@ GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height, uint32_t depth
 
     m_PositionGBuffer = new Texture2D(width, height, TextureFormat::RGBAFloat);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_PositionGBuffer->id(), 0);
-    m_NormalSmoothGBuffer = new Texture2D(width, height, TextureFormat::RGBAHalf);
+    m_NormalSmoothGBuffer = new Texture2D(width, height, TextureFormat::RGBAFloat);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_NormalSmoothGBuffer->id(), 0);
     m_AlbedoMetalGBuffer = new Texture2D(width, height, TextureFormat::RGBA32);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_AlbedoMetalGBuffer->id(), 0);
