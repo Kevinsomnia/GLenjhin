@@ -34,7 +34,6 @@ struct Color
     Color& operator *=(const Color& other);
     Color operator /(const Color& other) const;
     Color& operator /=(const Color& other);
-    Color operator -() const;
     operator const float* () const;
     float& operator [](int index);
 

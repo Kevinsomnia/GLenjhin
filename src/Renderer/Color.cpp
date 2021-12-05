@@ -40,7 +40,7 @@ Color& Color::operator -=(const Color& other)
 
 Color Color::operator *(float scalar) const
 {
-    return Color(values[0] * scalar, values[1] * scalar, values[2] * scalar, values[3] * scalar);
+    return Color(values[0] * scalar, values[1] * scalar, values[2] * scalar, values[3]);
 }
 
 Color& Color::operator *=(float scalar)
@@ -52,7 +52,7 @@ Color& Color::operator *=(float scalar)
 Color Color::operator /(float divisor) const
 {
     float scalar = 1.0f / divisor;
-    return Color(values[0] * scalar, values[1] * scalar, values[2] * scalar, values[3] * scalar);
+    return Color(values[0] * scalar, values[1] * scalar, values[2] * scalar, values[3]);
 }
 
 Color& Color::operator /=(float divisor)
@@ -81,11 +81,6 @@ Color& Color::operator /=(const Color& other)
 {
     *this = this->operator/(other);
     return *this;
-}
-
-Color Color::operator -() const
-{
-    return Color(-values[0], -values[1], -values[2], -values[3]);
 }
 
 Color::operator const float*() const
