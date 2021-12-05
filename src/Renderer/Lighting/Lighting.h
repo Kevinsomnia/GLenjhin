@@ -22,7 +22,7 @@ class Scene;
 class Light
 {
 public:
-    virtual void bind(Material& mat) const = 0;
+    virtual void setUniforms(Material& mat) const = 0;
     virtual void update() = 0;
     virtual void renderShadows(const Scene* scene) const = 0;
     virtual Matrix4x4 getLightMatrix() const = 0;
@@ -34,7 +34,7 @@ protected:
 
 class DirectionalLight : public Light
 {
-    void bind(Material& mat) const override;
+    void setUniforms(Material& mat) const override;
     void update() override;
     void renderShadows(const Scene* scene) const override;
     Matrix4x4 getLightMatrix() const override;

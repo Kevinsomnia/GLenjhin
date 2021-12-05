@@ -22,11 +22,12 @@ void MeshRenderer::draw(const Vector3& cameraPos, const Matrix4x4& vp, const Mat
         mat.setMatrix("u_VP", vp);
         mat.setMatrix("u_Model", model);
         mat.setVector3("u_CameraPos", cameraPos);
-        mat.bind();
         
         // NOTE: multiple lights of same type are not supported!
         for (Light* light : lights)
-            light->bind(mat);
+            light->setUniforms(mat);
+
+        mat.bind();
     }
 
     drawMeshDirect();

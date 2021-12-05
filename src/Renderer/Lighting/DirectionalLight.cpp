@@ -19,11 +19,12 @@ DirectionalLight::~DirectionalLight()
         delete m_DepthCamera;
 }
 
-void DirectionalLight::bind(Material& mat) const
+void DirectionalLight::setUniforms(Material& mat) const
 {
     Vector3 fwd = m_Transform->getTRS().multiplyVector(Vector3::forward);
     Texture2D* shadowMap = m_DepthCamera ? m_DepthCamera->getDepthTexture() : nullptr;
     mat.setVector3("u_DirLightDir", fwd);
+    mat.setColor("u_DirLightColor", Color(1.0f, 0.91f, 0.8f) * 2.0f);
 
     if (m_DepthCamera)
     {
@@ -31,7 +32,6 @@ void DirectionalLight::bind(Material& mat) const
         mat.setTexture("u_DirShadows", shadowMap);
         mat.setVector2("u_DirShadowsTexelSize", shadowMap->texelSize());
         mat.setMatrix("u_DirLightMatrix", m_DepthCamera->getViewProjMatrix());
-        mat.setColor("u_DirLightColor", Color(1.0f, 0.91f, 0.8f) * 2.0f);
     }
     else
     {

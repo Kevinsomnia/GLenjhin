@@ -28,7 +28,7 @@ Scene::Scene()
 
     for (int i = 0; i < 10; i++)
     {
-        Entity* entity = new Entity(Vector3(-0.65f, 0.45f, 2.95f), Vector3::zero, Vector3::one * 0.4f);
+        Entity* entity = new Entity(Vector3::zero, Vector3::zero, Vector3::one * 0.4f);
         Mesh* primitive = primitives[i % primitives.size()];
         entity->setupRenderer(primitive, primitive == MeshPrimitives::sphere ? sphereMat : m_CurrMat);
         m_Entities.push_back(entity);

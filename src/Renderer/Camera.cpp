@@ -102,7 +102,7 @@ void Camera::draw(Scene* scene, bool drawSkybox)
         {
             // NOTE: multiple lights of same type are not supported yet!
             for (Light* light : scene->lights())
-                light->bind(*m_DeferredLightingMat);
+                light->setUniforms(*m_DeferredLightingMat);
         }
 
         m_DeferredLightingMat->setColor("u_AmbientColor", Color::FromBytes(50, 77, 89));
