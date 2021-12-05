@@ -105,7 +105,7 @@ void Camera::draw(Scene* scene, bool drawSkybox)
                 light->bind(*m_DeferredLightingMat);
         }
 
-        m_DeferredLightingMat->setColor("u_AmbientColor", Color(0.35f, 0.48f, 0.56f));
+        m_DeferredLightingMat->setColor("u_AmbientColor", Color::FromBytes(50, 77, 89));
         m_DeferredLightingMat->setVector3("u_CameraPos", m_Transform->getPosition());
         m_DeferredLightingMat->bind();
         m_FullscreenTriangle->setMaterial(m_DeferredLightingMat);

@@ -22,7 +22,7 @@ in vec2 v_UV;
 
 out vec4 fragColor;
 
-const float EXPOSURE = 3.6;
+const float EXPOSURE = 3.25;
 
 void main()
 {

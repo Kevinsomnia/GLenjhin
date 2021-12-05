@@ -38,20 +38,22 @@ struct Color
     operator const float* () const;
     float& operator [](int index);
 
-    static Color clear() { return Color(0.0f, 0.0f, 0.0f, 0.0f); }
-    static Color black() { return Color(0.0f, 0.0f, 0.0f); }
-    static Color gray() { return Color(0.5f, 0.5f, 0.5f); }
-    static Color white() { return Color(1.0f, 1.0f, 1.0f); }
-    static Color red() { return Color(1.0f, 0.0f, 0.0f); }
-    static Color green() { return Color(0.0f, 1.0f, 0.0f); }
-    static Color blue() { return Color(0.0f, 0.0f, 1.0f); }
-    static Color azure() { return Color(0.0f, 0.5f, 1.0f); }
-    static Color yellow() { return Color(1.0f, 1.0f, 0.0f); }
-    static Color cyan() { return Color(0.0f, 1.0f, 1.0f); }
-    static Color magenta() { return Color(1.0f, 0.0f, 1.0f); }
-    static Color pink() { return Color(1.0f, 0.0f, 0.5f); }
-    static Color orange() { return Color(1.0f, 0.5f, 0.0f); }
-    static Color purple() { return Color(0.5f, 0.0f, 1.0f); }
+    static Color FromBytes(uint8_t r, uint8_t g, uint8_t b) { return FromBytes(r, g, b, 255); }
+    static Color FromBytes(uint8_t r, uint8_t g, uint8_t b, uint8_t a) { return Color(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f); }
+    static Color Clear() { return Color(0.0f, 0.0f, 0.0f, 0.0f); }
+    static Color Black() { return Color(0.0f, 0.0f, 0.0f); }
+    static Color Gray() { return Color(0.5f, 0.5f, 0.5f); }
+    static Color White() { return Color(1.0f, 1.0f, 1.0f); }
+    static Color Red() { return Color(1.0f, 0.0f, 0.0f); }
+    static Color Green() { return Color(0.0f, 1.0f, 0.0f); }
+    static Color Blue() { return Color(0.0f, 0.0f, 1.0f); }
+    static Color Azure() { return Color(0.0f, 0.5f, 1.0f); }
+    static Color Yellow() { return Color(1.0f, 1.0f, 0.0f); }
+    static Color Cyan() { return Color(0.0f, 1.0f, 1.0f); }
+    static Color Magenta() { return Color(1.0f, 0.0f, 1.0f); }
+    static Color Pink() { return Color(1.0f, 0.0f, 0.5f); }
+    static Color Orange() { return Color(1.0f, 0.5f, 0.0f); }
+    static Color Purple() { return Color(0.5f, 0.0f, 1.0f); }
 
     friend std::ostream& operator<<(std::ostream& os, const Color& v)
     {

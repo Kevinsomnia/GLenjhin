@@ -10,7 +10,7 @@ DirectionalLight::DirectionalLight(const Vector3& pos, const Vector3& rot)
     uint32_t depthTexID = m_DepthCamera->getDepthTexture()->id();
     glTextureParameteri(depthTexID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
     glTextureParameteri(depthTexID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-    glTextureParameterfv(depthTexID, GL_TEXTURE_BORDER_COLOR, Color::white());
+    glTextureParameterfv(depthTexID, GL_TEXTURE_BORDER_COLOR, Color::White());
 }
 
 DirectionalLight::~DirectionalLight()
@@ -31,7 +31,7 @@ void DirectionalLight::bind(Material& mat) const
         mat.setTexture("u_DirShadows", shadowMap);
         mat.setVector2("u_DirShadowsTexelSize", shadowMap->texelSize());
         mat.setMatrix("u_DirLightMatrix", m_DepthCamera->getViewProjMatrix());
-        mat.setColor("u_DirLightColor", Color(3.0f, 3.0f, 3.0f));
+        mat.setColor("u_DirLightColor", Color(1.0f, 0.91f, 0.8f) * 2.0f);
     }
     else
     {
