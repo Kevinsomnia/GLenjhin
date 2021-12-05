@@ -37,8 +37,8 @@ in vec2 v_UV;
 out vec4 fragColor;
 
 const float EPSILON = 0.000001;
-const float MIN_SHADOW_BIAS = 0.00002;
-const float MAX_SHADOW_BIAS = 0.0004;
+const float MIN_SHADOW_BIAS = 0.00003;
+const float MAX_SHADOW_BIAS = 0.0006;
 
 // ===================
 // SHADOWS
