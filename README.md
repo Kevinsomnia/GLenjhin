@@ -10,8 +10,7 @@ Supports Windows 64-bit only.
 
 - Primitive meshes
 - Lighting
-  - Physically-Based Rendering (PBR) for deferred rendering: GGX (diffuse term) / Cook-Torrance (specular term) / Schlick (fresnel approximation)
-  - Blinn-Phong lighting model for forward rendering.
+  - Physically-Based Rendering (PBR): GGX (diffuse term) / Cook-Torrance (specular term) / Schlick (fresnel approximation)
   - Real-time soft shadows (4x4 PCF)
   - Directional lights
 - HDR and post processing effects pipeline
@@ -19,9 +18,10 @@ Supports Windows 64-bit only.
   - Tonemapping
   - Fullscreen Gaussian blur
   - Fog
-- Custom memory/binary stream implementation
-- Custom image library
-  - PNG loader (WIP; RGB/RGBA, 8-bit support only)
+- I/O
+  - Custom memory/binary stream implementation with bit-level serialization/deserialization support
+  - Custom image library
+    - PNG loader (WIP; RGB/RGBA, 8-bit support only)
 
 ## Dependencies
 

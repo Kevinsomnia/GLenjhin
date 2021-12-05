@@ -182,7 +182,8 @@ void main()
         kDiff *= 1.0 - albedoMetallic.a;
 
         // Attenuate with shadowmap
-        float shadow = ShadowAttenuation(u_DirShadows, u_DirShadowsTexelSize, u_DirLightMatrix * position, u_DirLightDir, normalsSmoothness.xyz);
+        vec4 dirLightFragPos = u_DirLightMatrix * vec4(position.xyz, 1.0);
+        float shadow = ShadowAttenuation(u_DirShadows, u_DirShadowsTexelSize, dirLightFragPos, u_DirLightDir, normalsSmoothness.xyz);
         vec3 brdf = (kDiff * ONE_OVER_PI * albedoMetallic.rgb) + specular;
         L += brdf * u_DirLightColor.rgb * nDotL * shadow;
     }

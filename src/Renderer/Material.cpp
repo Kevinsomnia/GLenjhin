@@ -67,9 +67,9 @@ void Material::setVector4(const string& uniformName, const Vector4& v)
     m_UniformVec4[uniformName] = v;
 }
 
-void Material::setColor(const string& uniformName, const Color& v)
+void Material::setColor(const string& uniformName, const Color& c)
 {
-    m_UniformVec4[uniformName] = Vector4(v);
+    m_UniformVec4[uniformName] = Vector4(c);
 }
 
 void Material::setMatrix(const string& uniformName, const Matrix4x4& mat)

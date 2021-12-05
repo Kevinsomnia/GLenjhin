@@ -28,7 +28,7 @@ public:
     void setVector2(const string& uniformName, const Vector2& v);
     void setVector3(const string& uniformName, const Vector3& v);
     void setVector4(const string& uniformName, const Vector4& v);
-    void setColor(const string& uniformName, const Color& v);
+    void setColor(const string& uniformName, const Color& c);
     void setMatrix(const string& uniformName, const Matrix4x4& mat);
     void setTexture(const string& uniformName, Texture* tex);
 private:
