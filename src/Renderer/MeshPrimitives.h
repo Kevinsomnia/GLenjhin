@@ -29,9 +29,25 @@ public:
         Sphere(uint16_t resolution);
     };
 
+    class Capsule: public Mesh
+    {
+    public:
+        Capsule() = delete;
+        Capsule(uint16_t resolution);
+    };
+
+    class Cylinder: public Mesh
+    {
+    public:
+        Cylinder() = delete;
+        Cylinder(uint16_t resolution);
+    };
+
     static Mesh* cube;
     static Mesh* quad;
     static Mesh* sphere;
+    static Mesh* capsule;
+    static Mesh* cylinder;
     static void Init();
 };
 

@@ -24,11 +24,13 @@ Scene::Scene()
     wall->setupRenderer(MeshPrimitives::cube, m_CurrMat);
     m_Entities.push_back(wall);
 
+    std::array<Mesh*, 5> primitives { MeshPrimitives::cube, MeshPrimitives::capsule, MeshPrimitives::cylinder, MeshPrimitives::cube, MeshPrimitives::sphere };
+
     for (int i = 0; i < 10; i++)
     {
         Entity* entity = new Entity(Vector3(-0.65f, 0.45f, 2.95f), Vector3::zero, Vector3::one * 0.4f);
-        bool isSphere = i % 5 == 0;
-        entity->setupRenderer(isSphere ? MeshPrimitives::sphere : MeshPrimitives::cube, isSphere ? sphereMat : m_CurrMat);
+        Mesh* primitive = primitives[i % primitives.size()];
+        entity->setupRenderer(primitive, primitive == MeshPrimitives::sphere ? sphereMat : m_CurrMat);
         m_Entities.push_back(entity);
         m_DynamicEntities.push_back(entity);
     }
