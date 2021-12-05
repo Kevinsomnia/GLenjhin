@@ -32,6 +32,7 @@
     <ClCompile Include="src\IO\ModelLib.cpp" />
     <ClCompile Include="src\Math\Convert.cpp" />
     <ClCompile Include="src\Math\Matrix4x4.cpp" />
+    <ClCompile Include="src\Math\Quaternion.cpp" />
     <ClCompile Include="src\Math\Vector.cpp" />
     <ClCompile Include="src\Renderer\Camera.cpp" />
     <ClCompile Include="src\Renderer\Color.cpp" />
@@ -90,6 +91,7 @@
     <ClInclude Include="src\Math\Convert.h" />
     <ClInclude Include="src\Math\Math.h" />
     <ClInclude Include="src\Math\Matrix4x4.h" />
+    <ClInclude Include="src\Math\Quaternion.h" />
     <ClInclude Include="src\Math\Vector.h" />
     <ClInclude Include="src\Renderer\Camera.h" />
     <ClInclude Include="src\Renderer\Color.h" />

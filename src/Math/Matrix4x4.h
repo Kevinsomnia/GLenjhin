@@ -3,6 +3,7 @@
 #include <algorithm>
 #include "Convert.h"
 #include "Math.h"
+#include "Quaternion.h"
 #include "Vector.h"
 
 using std::cout;
@@ -32,10 +33,11 @@ public:
     static Matrix4x4 identity;
 
     static Matrix4x4 Translate(const Vector3& pos);
-    static Matrix4x4 Rotate(const Vector3& rot);
+    static Matrix4x4 Rotate(const Quaternion& rot);
     static Matrix4x4 Scale(const Vector3& scale);
-    static Matrix4x4 TRS(const Vector3& pos, const Vector3& rot, const Vector3& scale);
+    static Matrix4x4 TRS(const Vector3& pos, const Quaternion& rot, const Vector3& scale);
     static Matrix4x4 View(const Vector3& pos, const Vector3& rot);
+    static Matrix4x4 View(const Vector3& pos, const Quaternion& rot);
     static Matrix4x4 Orthographic(float size, float aspect, float near, float far);
     static Matrix4x4 Perspective(float fov, float aspect, float near, float far);
 

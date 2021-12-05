@@ -24,7 +24,7 @@ public:
     virtual void addBuffersToDebugWindow(DebugTextureListWindow& window) const = 0;
     Transform* getTransform() const { return m_Transform; }
 protected:
-    Light(const Vector3& pos, const Vector3& rot);
+    Light(const Vector3& pos, const Quaternion& rot);
     Transform* m_Transform;
     Material* m_ShadowMat;
 };
@@ -37,7 +37,7 @@ class DirectionalLight : public Light
     Matrix4x4 getLightMatrix() const override;
     void addBuffersToDebugWindow(DebugTextureListWindow& window) const override;
 public:
-    DirectionalLight(const Vector3& pos, const Vector3& rot);
+    DirectionalLight(const Vector3& pos, const Quaternion& rot);
     ~DirectionalLight();
 private:
     Camera* m_DepthCamera;

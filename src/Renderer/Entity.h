@@ -23,7 +23,7 @@ class MeshRenderer;
 class Entity
 {
 public:
-    Entity(const Vector3& position, const Vector3& rotation, const Vector3& scale);
+    Entity(const Vector3& position, const Quaternion& rotation, const Vector3& scale);
     ~Entity();
     void setupRenderer(Mesh* mesh, Material* material);
     void drawGeometryPass(Material& geometryMat) const;

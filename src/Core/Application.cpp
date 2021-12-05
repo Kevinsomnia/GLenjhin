@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "../Math/Quaternion.h"
 
 static void GLAPIENTRY openGLLogMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 {
@@ -18,6 +19,20 @@ static void GLAPIENTRY openGLLogMessage(GLenum source, GLenum type, GLuint id, G
 
 int main()
 {
+    Quaternion a = Quaternion::EulerDegrees(15.0f, 5.0f, 0.0f);
+    Quaternion b = Quaternion::EulerDegrees(15.0f, 4.0f, 2.0f);
+    cout << a.getEulerAnglesDegrees() << endl;
+    cout << a.getMagnitude() << endl;
+    a *= b;
+    cout << a.getEulerAnglesDegrees() << endl;
+    cout << a.getMagnitude() << endl;
+    cout << b.getEulerAnglesDegrees() << endl;
+    cout << b.getMagnitude() << endl;
+    cout << (a * b).getEulerAnglesDegrees() << endl;
+    cout << (a * b).getMagnitude() << endl;
+    cout << (Quaternion::identity * a).getEulerAnglesDegrees() << endl;
+    cout << (Quaternion::identity * b).getEulerAnglesDegrees() << endl;
+
     if (!glfwInit())
         return 1;
 

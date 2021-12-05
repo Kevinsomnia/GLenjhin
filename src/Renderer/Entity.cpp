@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-Entity::Entity(const Vector3& position, const Vector3& rotation, const Vector3& scale)
+Entity::Entity(const Vector3& position, const Quaternion& rotation, const Vector3& scale)
     : m_Renderer(nullptr)
 {
     m_Transform = new Transform(position, rotation, scale);

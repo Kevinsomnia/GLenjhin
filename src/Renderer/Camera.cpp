@@ -8,7 +8,7 @@ Camera::PerspectiveProjection::PerspectiveProjection(float nearClip, float farCl
 Camera::OrthographicProjection::OrthographicProjection(float nearClip, float farClip, float size)
     : Projection(nearClip, farClip), size(size) { }
 
-Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, const Vector3& rot, Projection& projection, CameraBufferFlags bufferFlags, bool deferred)
+Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, const Quaternion& rot, Projection& projection, CameraBufferFlags bufferFlags, bool deferred)
     : m_NearClip(projection.nearClip), m_FarClip(projection.farClip), m_FieldOfView(60.0f), m_OrthoSize(1.0f)
 {
     assert(bufferFlags != CameraBufferFlags::None);

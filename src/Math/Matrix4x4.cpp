@@ -74,33 +74,43 @@ Matrix4x4 Matrix4x4::Translate(const Vector3& pos)
     );
 }
 
-Matrix4x4 Matrix4x4::Rotate(const Vector3& rot)
+Matrix4x4 Matrix4x4::Rotate(const Quaternion& rot)
 {
-    float cosX = cos(rot.getX());
-    float cosY = cos(rot.getY());
-    float cosZ = cos(rot.getZ());
-    float sinX = sin(rot.getX());
-    float sinY = sin(rot.getY());
-    float sinZ = sin(rot.getZ());
+    const float* q = rot;
+    float x = q[0] * 2.0f;
+    float y = q[1] * 2.0f;
+    float z = q[2] * 2.0f;
+    float w = q[3];
 
-    // Be sure to update TRS() too if this ordering changes: ZYX
+    float xx = q[0] * x;
+    float xy = q[0] * y;
+    float xz = q[0] * z;
+    float yy = q[1] * y;
+    float yz = q[1] * z;
+    float zz = q[2] * z;
+    float wx = w * x;
+    float wy = w * y;
+    float wz = w * z;
+
+    // Ordering: ZYX
+    // Get orthogonal matrix (3x3)
     return Matrix4x4(
         Vector4(
-            cosZ * cosY,
-            -sinZ * cosX + cosZ * sinY * sinX,
-            sinZ * sinX + cosZ * sinY * cosX,
+            1.0f - (yy + zz),
+            xy - wz,
+            xz + wy,
             0.0f
         ),
         Vector4(
-            sinZ * cosY,
-            cosZ * cosX + sinZ * sinY * sinX,
-            cosZ * -sinX + sinZ * sinY * cosX,
+            xy + wz,
+            1.0f - (xx + zz),
+            yz - wx,
             0.0f
         ),
         Vector4(
-            -sinY,
-            cosY * sinX,
-            cosY * cosX,
+            xz - wy,
+            yz + wx,
+            1.0f - (xx + yy),
             0.0f
         ),
         Vector4(0.0f, 0.0f, 0.0f, 1.0f)
@@ -117,39 +127,48 @@ Matrix4x4 Matrix4x4::Scale(const Vector3& scale)
     );
 }
 
-Matrix4x4 Matrix4x4::TRS(const Vector3& pos, const Vector3& rot, const Vector3& scale)
+Matrix4x4 Matrix4x4::TRS(const Vector3& pos, const Quaternion& rot, const Vector3& scale)
 {
-    float cosX = cos(rot.getX());
-    float cosY = cos(rot.getY());
-    float cosZ = cos(rot.getZ());
-    float sinX = sin(rot.getX());
-    float sinY = sin(rot.getY());
-    float sinZ = sin(rot.getZ());
+    const float* q = rot;
+    float x = q[0] * 2.0f;
+    float y = q[1] * 2.0f;
+    float z = q[2] * 2.0f;
+    float w = q[3];
+
+    float xx = q[0] * x;
+    float xy = q[0] * y;
+    float xz = q[0] * z;
+    float yy = q[1] * y;
+    float yz = q[1] * z;
+    float zz = q[2] * z;
+    float wx = w * x;
+    float wy = w * y;
+    float wz = w * z;
 
     return Matrix4x4(
         Vector4(
-            (cosZ * cosY) * scale.getX(),
-            (-sinZ * cosX + cosZ * sinY * sinX) * scale.getY(),
-            (sinZ * sinX + cosZ * sinY * cosX) * scale.getZ(),
+            (1.0f - (yy + zz)) * scale.getX(),
+            (xy - wz) * scale.getY(),
+            (xz + wy) * scale.getZ(),
             pos.getX()
         ),
         Vector4(
-            (sinZ * cosY) * scale.getX(),
-            (cosZ * cosX + sinZ * sinY * sinX) * scale.getY(),
-            (cosZ * -sinX + sinZ * sinY * cosX) * scale.getZ(),
+            (xy + wz) * scale.getX(),
+            (1.0f - (xx + zz)) * scale.getY(),
+            (yz - wx) * scale.getZ(),
             pos.getY()
         ),
         Vector4(
-            (-sinY) * scale.getX(),
-            (cosY * sinX) * scale.getY(),
-            (cosY * cosX) * scale.getZ(),
+            (xz - wy) * scale.getX(),
+            (yz + wx) * scale.getY(),
+            (1.0f - (xx + yy)) * scale.getZ(),
             pos.getZ()
         ),
         Vector4(0.0f, 0.0f, 0.0f, 1.0f)
     );
 }
 
-Matrix4x4 Matrix4x4::View(const Vector3& pos, const Vector3& rot)
+Matrix4x4 Matrix4x4::View(const Vector3& pos, const Quaternion& rot)
 {
     Matrix4x4 rotMatrix = Matrix4x4::Rotate(rot);
 

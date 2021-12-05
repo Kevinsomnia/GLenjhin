@@ -1,6 +1,6 @@
 #include "Lighting.h"
 
-DirectionalLight::DirectionalLight(const Vector3& pos, const Vector3& rot)
+DirectionalLight::DirectionalLight(const Vector3& pos, const Quaternion& rot)
     : Light(pos, rot)
 {
     auto projection = Camera::OrthographicProjection(/*nearClip=*/ -200.0f, /*farClip=*/ 200.0f, /*size=*/ 14.0f);

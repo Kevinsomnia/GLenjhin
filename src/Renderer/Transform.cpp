@@ -1,11 +1,11 @@
 #include "Transform.h"
 
 Transform::Transform()
-    : m_Position(Vector3::zero), m_Rotation(Vector3::zero), m_Scale(Vector3::one), m_DirtyTRS(true)
+    : m_Position(Vector3::zero), m_Rotation(Quaternion::identity), m_Scale(Vector3::one), m_DirtyTRS(true)
 {
 }
 
-Transform::Transform(const Vector3& position, const Vector3& rotation, const Vector3& scale)
+Transform::Transform(const Vector3& position, const Quaternion& rotation, const Vector3& scale)
     : m_Position(position), m_Rotation(rotation), m_Scale(scale), m_DirtyTRS(true)
 {
 }
@@ -15,7 +15,7 @@ Vector3 Transform::getPosition() const
     return m_Position;
 }
 
-Vector3 Transform::getRotation() const
+Quaternion Transform::getRotation() const
 {
     return m_Rotation;
 }
@@ -52,7 +52,7 @@ void Transform::setPosition(const Vector3& position)
     m_DirtyTRS = true;
 }
 
-void Transform::setRotation(const Vector3& rotation)
+void Transform::setRotation(const Quaternion& rotation)
 {
     m_Rotation = rotation;
     m_DirtyTRS = true;
@@ -78,16 +78,9 @@ void Transform::translate(const Vector3& v, Space space)
     m_DirtyTRS = true;
 }
 
-void Transform::rotate(const Vector3& r, Space space)
+void Transform::rotate(const Vector3& radians, Space space)
 {
-    if (space == Space::World)
-    {
-        m_Rotation += r;
-    }
-    else
-    {
-        m_Rotation += getTRS().multiplyVector(r);
-    }
-
+    Vector3 eulers = (space == Space::World) ? radians : getTRS().multiplyVector(radians);
+    m_Rotation *= Quaternion::EulerRadians(eulers);
     m_DirtyTRS = true;
 }

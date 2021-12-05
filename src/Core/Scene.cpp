@@ -3,7 +3,7 @@
 Scene::Scene()
 {
     // Setup lighting
-    Light* sun = new DirectionalLight(Vector3::zero, rotationToRad(Vector3(28.5f, 36.0f, 0.0f)));
+    Light* sun = new DirectionalLight(Vector3::zero, Quaternion::EulerDegrees(28.5f, 36.0f, 0.0f));
     m_Lights.push_back(sun);
 
     m_Skybox = new Skybox("res\\textures\\DaySkybox.png");
@@ -55,11 +55,11 @@ Scene::Scene()
     whiteMat->setTexture("u_MSATex", Texture2D::msaDefaultTexture);
 
     // Create entities
-    Entity* plane = new Entity(Vector3::zero, rotationToRad(Vector3(-90.0f, 180.0f, 0.0f)), Vector3::one * 20.0f);
+    Entity* plane = new Entity(Vector3::zero, Quaternion::EulerDegrees(-90.0f, 180.0f, 0.0f), Vector3::one * 20.0f);
     plane->setupRenderer(MeshPrimitives::quad, m_GroundMat);
     m_Entities.push_back(plane);
 
-    Entity* wall = new Entity(Vector3(0.5f, 1.5f, 0.0f), Vector3::zero, Vector3(0.25f, 3.0f, 15.0f));
+    Entity* wall = new Entity(Vector3(0.5f, 1.5f, 0.0f), Quaternion::identity, Vector3(0.25f, 3.0f, 15.0f));
     wall->setupRenderer(MeshPrimitives::cube, wallMat);
     m_Entities.push_back(wall);
 
@@ -78,7 +78,7 @@ Scene::Scene()
 
     for (int i = 0; i < 10; i++)
     {
-        Entity* entity = new Entity(Vector3::zero, Vector3::zero, Vector3::one * 0.4f);
+        Entity* entity = new Entity(Vector3::zero, Quaternion::identity, Vector3::one * 0.4f);
         Mesh* primitive = primitives[i % primitives.size()];
         entity->setupRenderer(primitive, primitive == MeshPrimitives::sphere ? emissiveMat : basicMat);
         m_Entities.push_back(entity);
@@ -124,11 +124,11 @@ void Scene::update()
             (float)sin(ti * 0.8) * 0.5f + 2.0f,
             (float)sin(ti * 0.175) * 7.0f
         ));
-        trans->setRotation(rotationToRad(Vector3(
+        trans->setRotation(Quaternion::EulerDegrees(
             (float)ti * 25.0f,
             (float)ti * 30.0f,
             (float)ti * 35.0f
-        )));
+        ));
     }
 }
 

@@ -32,3 +32,9 @@ static T Clamp(const T& value, const T& min, const T& max)
 
     return value;
 }
+
+static float WrapAngle(float theta)
+{
+    const float TWO_PI = PI_FLOAT * 2.0f;
+    return theta - TWO_PI * floor(theta / TWO_PI);
+}
