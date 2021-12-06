@@ -14,7 +14,7 @@ Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, co
     assert(bufferFlags != CameraBufferFlags::None);
 
     float aspect = pixelWidth / static_cast<float>(pixelHeight);
-    uint32_t depthBits = (bufferFlags & CameraBufferFlags::Depth) != CameraBufferFlags::None ? 32 : 0;
+    uint8_t depthBits = (bufferFlags & CameraBufferFlags::Depth) != CameraBufferFlags::None ? 32 : 0;
 
     m_Transform = new Transform(pos, rot, Vector3::one);
 

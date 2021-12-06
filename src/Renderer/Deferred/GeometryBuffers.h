@@ -12,7 +12,7 @@ using std::endl;
 class GeometryBuffers
 {
 public:
-    GeometryBuffers(uint32_t width, uint32_t height, uint32_t depth);
+    GeometryBuffers(uint32_t width, uint32_t height, uint8_t depth);
     ~GeometryBuffers();
     void setGBufferTextures(Material& mat) const;
     uint32_t id() const { return m_FboID; }

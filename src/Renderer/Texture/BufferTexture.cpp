@@ -1,6 +1,6 @@
 #include "Texture.h"
 
-BufferTexture::BufferTexture(uint32_t width, uint32_t height, uint32_t depth, TextureFormat colorFormat) : Texture()
+BufferTexture::BufferTexture(uint32_t width, uint32_t height, uint8_t depth, TextureFormat colorFormat) : Texture()
 {
     assert(colorFormat != TextureFormat::None || depth != 0);
     m_Width = width;

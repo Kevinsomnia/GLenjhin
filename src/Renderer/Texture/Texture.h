@@ -24,7 +24,7 @@ enum class TextureFormat
     Depth32     // 32-bit floating point depth texture
 };
 
-static TextureFormat GetDepthTextureFormat(uint32_t depth)
+static TextureFormat GetDepthTextureFormat(uint8_t depth)
 {
     switch (depth)
     {
@@ -152,7 +152,7 @@ public:
 class BufferTexture : public Texture
 {
 public:
-    BufferTexture(uint32_t width, uint32_t height, uint32_t depth, TextureFormat colorFormat);
+    BufferTexture(uint32_t width, uint32_t height, uint8_t depth, TextureFormat colorFormat);
     ~BufferTexture();
     Texture2D* colorTexture() const;
     Texture2D* depthTexture() const;
