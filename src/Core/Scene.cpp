@@ -41,6 +41,9 @@ Scene::~Scene()
     delete m_CurrMat;
     delete m_CurrTexture;
 
+    if (m_Skybox)
+        delete m_Skybox;
+
     for (Entity* entity : m_Entities)
         delete entity;
 
@@ -62,14 +65,14 @@ void Scene::update()
     for (size_t i = 0; i < m_DynamicEntities.size(); i++)
     {
         t += 2.48529;
-        Entity* entity = m_DynamicEntities[i];
+        Transform* trans = m_DynamicEntities[i]->getTransform();
 
-        entity->getTransform()->setPosition(Vector3(
+        trans->setPosition(Vector3(
             (float)cos(t * 0.7),
             (float)sin(t * 0.8) * 0.5f + 2.0f,
             (float)sin(t * 0.175) * 7.0f
         ));
-        entity->getTransform()->setRotation(rotationToRad(Vector3(
+        trans->setRotation(rotationToRad(Vector3(
             (float)t * 25.0f,
             (float)t * 30.0f,
             (float)t * 35.0f

@@ -96,7 +96,6 @@ void Camera::draw(Scene* scene, bool drawSkybox)
 
         // Second pass: calculate lighting in screen-space, output to color buffer
         glBindFramebuffer(GL_FRAMEBUFFER, m_RenderTargetBuffer->id());
-        glClear(GL_COLOR_BUFFER_BIT);
 
         if (scene)
         {
@@ -116,7 +115,6 @@ void Camera::draw(Scene* scene, bool drawSkybox)
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_RenderTargetBuffer->id());
         glBlitFramebuffer(0, 0, m_GBuffers->width(), m_GBuffers->height(), 0, 0, m_RenderTargetBuffer->width(), m_RenderTargetBuffer->height(), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 
-        // Render skybox
         if (scene && drawSkybox)
             scene->drawSkybox(*this);
     }

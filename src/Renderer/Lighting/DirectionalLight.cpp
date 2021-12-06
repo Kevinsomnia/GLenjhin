@@ -22,7 +22,6 @@ DirectionalLight::~DirectionalLight()
 void DirectionalLight::setUniforms(Material& mat) const
 {
     Vector3 fwd = m_Transform->getTRS().multiplyVector(Vector3::forward);
-    Texture2D* shadowMap = m_DepthCamera ? m_DepthCamera->getDepthTexture() : nullptr;
     mat.setVector3("u_DirLightDir", fwd);
     mat.setColor("u_DirLightColor", Color(1.0f, 0.91f, 0.8f) * 2.0f);
 
@@ -53,7 +52,7 @@ void DirectionalLight::renderShadows(const Scene* scene) const
     BufferTexture* bufferTex = m_DepthCamera->getRenderTargetBuffer();
     glViewport(0, 0, bufferTex->width(), bufferTex->height());
     glBindFramebuffer(GL_FRAMEBUFFER, bufferTex->id());
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT);
     scene->drawShadowPass(*this, *m_ShadowMat);
 }
 

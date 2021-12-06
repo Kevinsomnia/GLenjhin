@@ -18,8 +18,6 @@ static void GLAPIENTRY openGLLogMessage(GLenum source, GLenum type, GLuint id, G
 
 int main()
 {
-    cout << "Initializing engine" << endl;
-
     if (!glfwInit())
         return 1;
 

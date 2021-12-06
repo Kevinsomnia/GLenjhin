@@ -18,10 +18,13 @@ GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height, uint32_t depth
     GLenum colorAttachments[ATTACHMENT_COUNT] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
     glDrawBuffers(ATTACHMENT_COUNT, colorAttachments);
 
-    // Depth texture should always have point filtering. Might change in the future.
-    m_DepthTexture = new Texture2D(width, height, GetDepthTextureFormat(depth));
-    m_DepthTexture->setFilterMode(TextureFilterMode::Point);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthTexture->id(), 0);
+    if (depth != 0)
+    {
+        // Depth texture should always have point filtering. Might change in the future.
+        m_DepthTexture = new Texture2D(width, height, GetDepthTextureFormat(depth));
+        m_DepthTexture->setFilterMode(TextureFilterMode::Point);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthTexture->id(), 0);
+    }
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE)
     {
@@ -67,5 +70,7 @@ void GeometryBuffers::internalDispose()
     delete m_NormalSmoothGBuffer;
     delete m_AlbedoMetalGBuffer;
     delete m_EmissionGBuffer;
-    delete m_DepthTexture;
+
+    if (m_DepthTexture)
+        delete m_DepthTexture;
 }

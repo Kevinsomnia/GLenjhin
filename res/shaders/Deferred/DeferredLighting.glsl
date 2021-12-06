@@ -184,6 +184,7 @@ void main()
         // Attenuate with shadowmap
         vec4 dirLightFragPos = u_DirLightMatrix * vec4(position.xyz, 1.0);
         float shadow = ShadowAttenuation(u_DirShadows, u_DirShadowsTexelSize, dirLightFragPos, u_DirLightDir, normalsSmoothness.xyz);
+
         vec3 brdf = (kDiff * ONE_OVER_PI * albedoMetallic.rgb) + specular;
         L += brdf * u_DirLightColor.rgb * nDotL * shadow;
     }
