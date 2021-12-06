@@ -11,6 +11,7 @@ class Bloom : public ImageEffect
 public:
     Bloom();
     ~Bloom();
+    void lazyInitialize(Camera* camera) override;
     void render(BufferTexture* source, BufferTexture* destination) override;
 private:
     const float BLUR_SIZE = 2.0f;

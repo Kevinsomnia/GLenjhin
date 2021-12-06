@@ -2,23 +2,35 @@
 
 GaussianBlur::GaussianBlur() : ImageEffect("res\\shaders\\PostProcessing\\Common\\Copy.glsl")
 {
-    const int SCR_WIDTH = 1600;
-    const int SCR_HEIGHT = 900;
-
-    const int WIDTH = SCR_WIDTH >> DOWNSAMPLE;
-    const int HEIGHT = SCR_HEIGHT >> DOWNSAMPLE;
-
-    for (size_t i = 0; i < m_Buffers.size(); i++)
-        m_Buffers[i] = new BufferTexture(WIDTH, HEIGHT, /*depth=*/ 0, TextureFormat::RGB24);
-
     m_DownsampleMat = new Material(new Shader("res\\shaders\\PostProcessing\\GaussianBlur\\Downsample.glsl"));
     m_BlurMat = new Material(new Shader("res\\shaders\\PostProcessing\\GaussianBlur\\Blur.glsl"));
 }
 
 GaussianBlur::~GaussianBlur()
 {
+    delete m_DownsampleMat;
+    delete m_BlurMat;
+
+    if (m_Initialized)
+    {
+        for (size_t i = 0; i < m_Buffers.size(); i++)
+            delete m_Buffers[i];
+    }
+}
+
+void GaussianBlur::lazyInitialize(Camera* camera)
+{
+    if (m_Initialized)
+        return;
+
+    ImageEffect::lazyInitialize(camera);
+
+    BufferTexture* bufferTex = camera->getRenderTargetBuffer();
+    int w = bufferTex->width() >> DOWNSAMPLE;
+    int h = bufferTex->height() >> DOWNSAMPLE;
+
     for (size_t i = 0; i < m_Buffers.size(); i++)
-        delete m_Buffers[i];
+        m_Buffers[i] = new BufferTexture(w, h, /*depth=*/ 0, TextureFormat::RGBA32);
 }
 
 void GaussianBlur::render(BufferTexture* source, BufferTexture* destination)

@@ -9,6 +9,7 @@ class GaussianBlur : public ImageEffect
 public:
     GaussianBlur();
     ~GaussianBlur();
+    void lazyInitialize(Camera* camera) override;
     void render(BufferTexture* source, BufferTexture* destination) override;
 private:
     const float BLUR_RADIUS = 8.0f;

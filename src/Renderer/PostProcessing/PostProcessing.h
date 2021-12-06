@@ -20,10 +20,11 @@ class ImageEffect
 public:
     ImageEffect(const std::string& shaderPath);
     ~ImageEffect();
+    virtual void lazyInitialize(Camera* camera);
     virtual void render(BufferTexture* source, BufferTexture* destination);
     void render(BufferTexture* source, BufferTexture* destination, Material* mat);
-    void setCamera(Camera* camera);
 protected:
+    bool m_Initialized;
     Camera* m_Camera;
     Shader* m_Shader;
     Material* m_Material;

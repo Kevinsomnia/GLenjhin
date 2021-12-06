@@ -2,22 +2,6 @@
 
 Bloom::Bloom() : ImageEffect("res\\shaders\\PostProcessing\\Bloom\\Combine.glsl")
 {
-    const int SCR_WIDTH = 1600;
-    const int SCR_HEIGHT = 900;
-
-    int tw = SCR_WIDTH;
-    int th = SCR_HEIGHT;
-
-    for (size_t i = 0; i < MAX_BUFFER_COUNT; i++)
-    {
-        m_Buffers.push_back(new BufferTexture(tw, th, /*depth=*/ 0, TextureFormat::RGBAHalf));
-        tw >>= 1;
-        th >>= 1;
-
-        if (tw <= 1 || th <= 1)
-            break;
-    }
-
     m_PrefilterMat = new Material(new Shader("res\\shaders\\PostProcessing\\Bloom\\Prefilter.glsl"));
     m_DownsampleMat = new Material(new Shader("res\\shaders\\PostProcessing\\Bloom\\Downsample.glsl"));
     m_UpsampleMat = new Material(new Shader("res\\shaders\\PostProcessing\\Bloom\\Upsample.glsl"));
@@ -28,6 +12,37 @@ Bloom::Bloom() : ImageEffect("res\\shaders\\PostProcessing\\Bloom\\Combine.glsl"
 
 Bloom::~Bloom()
 {
+    delete m_PrefilterMat;
+    delete m_DownsampleMat;
+    delete m_UpsampleMat;
+
+    if (m_Initialized)
+    {
+        for (size_t i = 0; i < m_Buffers.size(); i++)
+            delete m_Buffers[i];
+    }
+}
+
+void Bloom::lazyInitialize(Camera* camera)
+{
+    if (m_Initialized)
+        return;
+
+    ImageEffect::lazyInitialize(camera);
+
+    BufferTexture* bufferTex = camera->getRenderTargetBuffer();
+    int tw = bufferTex->width();
+    int th = bufferTex->height();
+
+    for (size_t i = 0; i < MAX_BUFFER_COUNT; i++)
+    {
+        m_Buffers.push_back(new BufferTexture(tw, th, /*depth=*/ 0, TextureFormat::RGBAHalf));
+        tw >>= 1;
+        th >>= 1;
+
+        if (tw <= 1 || th <= 1)
+            break;
+    }
 }
 
 void Bloom::render(BufferTexture* source, BufferTexture* destination)

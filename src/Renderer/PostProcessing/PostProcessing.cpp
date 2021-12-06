@@ -1,6 +1,6 @@
 #include "PostProcessing.h"
 
-ImageEffect::ImageEffect(const std::string& shaderPath)
+ImageEffect::ImageEffect(const std::string& shaderPath) : m_Initialized(false)
 {
     m_Shader = new Shader(shaderPath);
     m_Material = new Material(m_Shader);
@@ -12,6 +12,15 @@ ImageEffect::~ImageEffect()
     delete m_Shader;
     delete m_Material;
     delete m_Triangle;
+}
+
+void ImageEffect::lazyInitialize(Camera* camera)
+{
+    if (m_Initialized)
+        return;
+
+    m_Initialized = true;
+    m_Camera = camera;
 }
 
 void ImageEffect::render(BufferTexture* source, BufferTexture* destination)
@@ -29,10 +38,6 @@ void ImageEffect::render(BufferTexture* source, BufferTexture* destination, Mate
     m_Triangle->draw();
 }
 
-void ImageEffect::setCamera(Camera* camera)
-{
-    m_Camera = camera;
-}
 
 
 ImageEffectChain::ImageEffectChain(Camera* camera) : m_Camera(camera)
@@ -59,6 +64,7 @@ ImageEffectChain::~ImageEffectChain()
 
 void ImageEffectChain::add(ImageEffect* effect)
 {
+    effect->lazyInitialize(m_Camera);
     m_Effects.push_back(effect);
 }
 
@@ -69,7 +75,6 @@ void ImageEffectChain::render(BufferTexture* source)
     for (size_t i = 0; i < m_Effects.size(); i++)
     {
         ImageEffect* effect = m_Effects[i];
-        effect->setCamera(m_Camera);
 
         if (i == 0)
         {
