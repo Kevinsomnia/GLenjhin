@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\GameContainer.cpp" />
-    <ClCompile Include="src\Core\ImageLib.cpp" />
     <ClCompile Include="src\Core\Scene.cpp" />
     <ClCompile Include="src\Core\ShaderCompiler.cpp" />
     <ClCompile Include="src\Core\Time.cpp" />
@@ -29,6 +28,8 @@
     <ClCompile Include="src\GUI\DebugTextureListWindow.cpp" />
     <ClCompile Include="src\GUI\TexturePickerWindow.cpp" />
     <ClCompile Include="src\Interaction\Input.cpp" />
+    <ClCompile Include="src\IO\ImageLib.cpp" />
+    <ClCompile Include="src\IO\MemoryStream.cpp" />
     <ClCompile Include="src\Math\Convert.cpp" />
     <ClCompile Include="src\Math\Matrix4x4.cpp" />
     <ClCompile Include="src\Math\Vector.cpp" />
@@ -54,7 +55,6 @@
     <ClCompile Include="src\Renderer\Texture\Texture.cpp" />
     <ClCompile Include="src\Renderer\Texture\Texture2D.cpp" />
     <ClCompile Include="src\Renderer\Transform.cpp" />
-    <ClCompile Include="src\Serialization\MemoryStream.cpp" />
     <ClCompile Include="vendor\Glad\src\glad.c" />
     <ClCompile Include="vendor\imgui\imgui.cpp" />
     <ClCompile Include="vendor\imgui\imgui_demo.cpp" />
@@ -69,13 +69,15 @@
     <ClInclude Include="src\Core\Application.h" />
     <ClInclude Include="src\Core\Debug.h" />
     <ClInclude Include="src\Core\GameContainer.h" />
-    <ClInclude Include="src\Core\ImageLib.h" />
     <ClInclude Include="src\Core\Scene.h" />
     <ClInclude Include="src\Core\ShaderCompiler.h" />
     <ClInclude Include="src\Core\Time.h" />
     <ClInclude Include="src\GUI\GUIWindows.h" />
     <ClInclude Include="src\Interaction\Input.h" />
     <ClInclude Include="src\Interaction\InputCodes.h" />
+    <ClInclude Include="src\IO\ImageLib.h" />
+    <ClInclude Include="src\IO\MemoryStream.h" />
+    <ClInclude Include="src\IO\MemoryStream.Tests.h" />
     <ClInclude Include="src\Math\Convert.h" />
     <ClInclude Include="src\Math\Math.h" />
     <ClInclude Include="src\Math\Matrix4x4.h" />
@@ -99,8 +101,6 @@
     <ClInclude Include="src\Renderer\Skybox.h" />
     <ClInclude Include="src\Renderer\Texture\Texture.h" />
     <ClInclude Include="src\Renderer\Transform.h" />
-    <ClInclude Include="src\Serialization\MemoryStream.h" />
-    <ClInclude Include="src\Serialization\MemoryStream.Tests.h" />
     <ClInclude Include="vendor\Glad\include\glad\glad.h" />
     <ClInclude Include="vendor\Glad\include\KHR\khrplatform.h" />
     <ClInclude Include="vendor\imgui\imconfig.h" />

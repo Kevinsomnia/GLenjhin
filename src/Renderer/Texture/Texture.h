@@ -5,7 +5,7 @@
 #include <iostream>
 #include <glad/glad.h>
 
-#include "../../Core/ImageLib.h"
+#include "../../IO/ImageLib.h"
 #include "../../Math/Vector.h"
 
 using std::cout;

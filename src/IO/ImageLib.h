@@ -7,8 +7,8 @@
 #include <iostream>
 #include <memory>
 
-#include "Algorithms.h"
-#include "../Serialization/MemoryStream.h"
+#include "../Core/Algorithms.h"
+#include "MemoryStream.h"
 
 using std::cout;
 using std::cerr;
