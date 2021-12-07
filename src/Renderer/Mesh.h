@@ -27,6 +27,7 @@ public:
     void bind() const;
     void unbind() const;
     void draw() const;
+    void setup(Vertex* vertices, size_t vertexCount, uint32_t* indices, size_t indexCount);
 protected:
     Vertex* m_Vertices;
     size_t m_VertexCount;
@@ -34,8 +35,6 @@ protected:
     size_t m_TriangleCount;
     uint32_t m_VaoId;
     uint32_t m_IboId;
-
-    void setup(Vertex* vertices, size_t vertexCount, uint32_t* indices, size_t indexCount);
 };
 
 #endif // MESH_H

@@ -30,6 +30,7 @@
     <ClCompile Include="src\Interaction\Input.cpp" />
     <ClCompile Include="src\IO\ImageLib.cpp" />
     <ClCompile Include="src\IO\MemoryStream.cpp" />
+    <ClCompile Include="src\IO\ModelLib.cpp" />
     <ClCompile Include="src\Math\Convert.cpp" />
     <ClCompile Include="src\Math\Matrix4x4.cpp" />
     <ClCompile Include="src\Math\Vector.cpp" />
@@ -78,6 +79,7 @@
     <ClInclude Include="src\IO\ImageLib.h" />
     <ClInclude Include="src\IO\MemoryStream.h" />
     <ClInclude Include="src\IO\MemoryStream.Tests.h" />
+    <ClInclude Include="src\IO\ModelLib.h" />
     <ClInclude Include="src\Math\Convert.h" />
     <ClInclude Include="src\Math\Math.h" />
     <ClInclude Include="src\Math\Matrix4x4.h" />

@@ -6,6 +6,7 @@
 #include <iostream>
 #include "../GUI/GUIWindows.h"
 #include "../Interaction/Input.h"
+#include "../IO/ModelLib.h"
 #include "../Renderer/MeshPrimitives.h"
 #include "../Renderer/PostProcessing/Bloom.h"
 #include "../Renderer/PostProcessing/GaussianBlur.h"
@@ -20,6 +21,7 @@
 
 using std::cout;
 using std::endl;
+using ModelLib::ModelImporter;
 
 class GameContainer
 {

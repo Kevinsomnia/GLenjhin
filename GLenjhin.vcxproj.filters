@@ -147,6 +147,9 @@
     <ClCompile Include="src\IO\MemoryStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\IO\ModelLib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Application.h">
@@ -288,6 +291,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\IO\MemoryStream.Tests.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IO\ModelLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

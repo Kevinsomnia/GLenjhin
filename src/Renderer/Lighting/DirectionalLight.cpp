@@ -63,3 +63,9 @@ Matrix4x4 DirectionalLight::getLightMatrix() const
 
     return Matrix4x4::identity;
 }
+
+void DirectionalLight::addBuffersToDebugWindow(DebugTextureListWindow& window) const
+{
+    if (m_DepthCamera)
+        window.add(m_DepthCamera->getDepthTexture(), "Directional Shadowmap", /*flip=*/ true);
+}
