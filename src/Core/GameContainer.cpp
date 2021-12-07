@@ -16,6 +16,7 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     Time::Init();
     Input::Init(window);
     MeshPrimitives::Init();
+    Texture2D::CreateStaticTextures();
 
     int screenWidth, screenHeight;
     glfwGetWindowSize(window, &screenWidth, &screenHeight);

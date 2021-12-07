@@ -7,6 +7,7 @@
 
 #include "../../IO/ImageLib.h"
 #include "../../Math/Vector.h"
+#include "../Color.h"
 
 using std::cout;
 using std::cerr;
@@ -137,6 +138,7 @@ protected:
     uint32_t m_Width;
     uint32_t m_Height;
     bool m_Mipmaps;
+    TextureFormat m_TextureFormat;
     TextureFilterMode m_FilterMode;
     TextureWrapMode m_WrapMode;
 };
@@ -144,9 +146,21 @@ protected:
 class Texture2D : public Texture
 {
 public:
-    Texture2D(uint32_t width, uint32_t height, TextureFormat colorFormat);
-    Texture2D(const std::string& filePath, bool generateMipmaps = true, bool readable = false);
+    static Texture2D* whiteTexture;
+
+    Texture2D(uint32_t width, uint32_t height, TextureFormat colorFormat, bool readable);
+    Texture2D(const std::string& filePath, bool generateMipmaps, bool readable);
     ~Texture2D();
+
+    ColorByte getPixel(uint32_t x, uint32_t y) const;
+    ColorByte* getPixels() const;
+    void setPixel(uint32_t x, uint32_t y, const ColorByte& c);
+    void setPixels(ColorByte* colors);
+    void uploadToGPU(bool keepReadable);
+
+    static void CreateStaticTextures();
+private:
+    static Texture2D* CreateSolidColorTexture(const ColorByte& c);
 };
 
 class BufferTexture : public Texture

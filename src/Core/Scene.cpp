@@ -10,7 +10,7 @@ Scene::Scene()
 
     // Load shader and material
     m_CurrMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
-    m_CurrTexture = new Texture2D("res\\textures\\test_grid.png");
+    m_CurrTexture = new Texture2D("res\\textures\\test_grid.png", /*generateMipmaps=*/ true, /*readable=*/ false);
     m_CurrMat->setTexture("u_MainTex", m_CurrTexture);
 
     Material* sphereMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));   // yes this will leak memory. temp solution.
@@ -122,6 +122,6 @@ void Scene::setNewTexture(const std::string& texturePath)
     if (m_CurrTexture)
         delete m_CurrTexture;
 
-    m_CurrTexture = new Texture2D(texturePath);
+    m_CurrTexture = new Texture2D(texturePath, /*generateMipmap=*/ true, /*readable=*/ false);
     m_CurrMat->setTexture("u_MainTex", m_CurrTexture);
 }

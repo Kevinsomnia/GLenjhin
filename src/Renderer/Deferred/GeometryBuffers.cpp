@@ -5,13 +5,13 @@ GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height, uint8_t depth)
     glGenFramebuffers(1, &m_FboID);
     glBindFramebuffer(GL_FRAMEBUFFER, m_FboID);
 
-    m_PositionGBuffer = new Texture2D(width, height, TextureFormat::RGBAFloat);
+    m_PositionGBuffer = new Texture2D(width, height, TextureFormat::RGBAFloat, /*readable=*/ false);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_PositionGBuffer->id(), 0);
-    m_NormalSmoothGBuffer = new Texture2D(width, height, TextureFormat::RGBAFloat);
+    m_NormalSmoothGBuffer = new Texture2D(width, height, TextureFormat::RGBAFloat, /*readable=*/ false);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_NormalSmoothGBuffer->id(), 0);
-    m_AlbedoMetalGBuffer = new Texture2D(width, height, TextureFormat::RGBA32);
+    m_AlbedoMetalGBuffer = new Texture2D(width, height, TextureFormat::RGBA32, /*readable=*/ false);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_AlbedoMetalGBuffer->id(), 0);
-    m_EmissionGBuffer = new Texture2D(width, height, TextureFormat::RGBAHalf);
+    m_EmissionGBuffer = new Texture2D(width, height, TextureFormat::RGBAHalf, /*readable=*/ false);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, m_EmissionGBuffer->id(), 0);
 
     const GLuint ATTACHMENT_COUNT = 4;
@@ -21,7 +21,7 @@ GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height, uint8_t depth)
     if (depth != 0)
     {
         // Depth texture should always have point filtering. Might change in the future.
-        m_DepthTexture = new Texture2D(width, height, GetDepthTextureFormat(depth));
+        m_DepthTexture = new Texture2D(width, height, GetDepthTextureFormat(depth), /*readable=*/ false);
         m_DepthTexture->setFilterMode(TextureFilterMode::Point);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthTexture->id(), 0);
     }
