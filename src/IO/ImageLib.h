@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <array>
+#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -13,6 +14,8 @@
 using std::cout;
 using std::cerr;
 using std::endl;
+using std::chrono::duration;
+using std::chrono::steady_clock;
 
 namespace ImageLib
 {
@@ -193,6 +196,8 @@ namespace ImageLib
         };
 
         static Result Load(const std::string& filePath);
+
+    private:
         static bool ValidateParameters(const Metadata& meta);
         static bool ProcessZLIB(MemoryStream& stream, const Metadata& meta, const std::unique_ptr<uint8_t[]>& outPixels);
         static bool Inflate(MemoryStream& stream, const Metadata& meta, const std::unique_ptr<uint8_t[]>& outPixels);

@@ -29,7 +29,7 @@ in vec3 v_RayDir;
 
 out vec4 fragColor;
 
-const float FOG_DENSITY = 0.01;
+const float FOG_DENSITY = 0.0025;
 const vec3 FOG_COLOR = vec3(0.8, 0.95, 1.0);
 
 // Convert NDC depth to a linear value: 0 = near, 1 = far

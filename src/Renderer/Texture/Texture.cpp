@@ -1,6 +1,7 @@
 #include "Texture.h"
 
-Texture::Texture() : m_TextureID(0), m_Width(0), m_Height(0), m_Mipmaps(false)
+Texture::Texture()
+    : m_TextureID(0), m_Width(0), m_Height(0), m_Mipmaps(false), m_FilterMode(TextureFilterMode::Bilinear), m_WrapMode(TextureWrapMode::Repeat)
 {
 }
 

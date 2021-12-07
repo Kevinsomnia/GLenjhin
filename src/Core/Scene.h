@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include "../Interaction/Input.h"
+#include "../IO/ModelLib.h"
 #include "../Renderer/Camera.h"
 #include "../Renderer/Entity.h"
 #include "../Renderer/MeshPrimitives.h"
@@ -14,6 +15,8 @@
 
 using std::cout;
 using std::endl;
+using ModelLib::Model;
+using ModelLib::ModelImporter;
 
 
 // Forward declaration
@@ -37,6 +40,8 @@ public:
     std::vector<Light*>& lights() { return m_Lights; };
 private:
     Skybox* m_Skybox;
+    Model m_CustomModel;
+    Model m_DragonModel;
     Material* m_CurrMat;
     Texture2D* m_CurrTexture;
     std::vector<Entity*> m_Entities;

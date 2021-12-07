@@ -66,12 +66,12 @@ namespace ImageLib
 
     PNG::Result PNG::Load(const std::string& filePath)
     {
-        clock_t benchStart = clock();
+        auto benchStart = steady_clock::now();
         std::ifstream file(filePath, std::ios::binary | std::ios::in);
 
         if (!file)
         {
-            cerr << "Failed to open " << filePath << endl;
+            cerr << "Failed to open PNG: " << filePath << endl;
             return Result();
         }
 
@@ -221,8 +221,8 @@ namespace ImageLib
             stream.setPosition(crcComputeEnd + 4);
         }
 
-        clock_t benchEnd = clock();
-        cout << (static_cast<int64_t>(benchEnd) - benchStart) / 1000.0 << " seconds (PROCESS BLOCKS)" << endl;
+        auto benchEnd = steady_clock::now();
+        cout << duration<float>(benchEnd - benchStart).count() << " seconds (PROCESS BLOCKS)" << endl;
 
         if (!reachedEnd)
         {
@@ -236,7 +236,7 @@ namespace ImageLib
             return Result();
         }
 
-        benchStart = clock();
+        benchStart = steady_clock::now();
 
         uint32_t pixelCount = meta.width * meta.height * meta.bytesPerPixel();
         std::unique_ptr<uint8_t[]> tempPixels(new uint8_t[pixelCount]);
@@ -250,8 +250,8 @@ namespace ImageLib
             return Result();
         }
 
-        benchEnd = clock();
-        cout << (static_cast<int64_t>(benchEnd) - benchStart) / 1000.0 << " seconds (PROCESS DATA)" << endl;
+        benchEnd = steady_clock::now();
+        cout << duration<float>(benchEnd - benchStart).count() << " seconds (PROCESS DATA)" << endl;
 
         Result result;
         result.info = meta;
