@@ -105,7 +105,7 @@ void Camera::draw(Scene* scene, bool drawSkybox)
                 light->setUniforms(*m_DeferredLightingMat);
         }
 
-        m_DeferredLightingMat->setColor("u_AmbientColor", ColorByte(50, 77, 89));
+        m_DeferredLightingMat->setColor("u_AmbientColor", ColorByte(50, 81, 107));
         m_DeferredLightingMat->setVector3("u_CameraPos", m_Transform->getPosition());
         m_FullscreenTriangle->setMaterial(m_DeferredLightingMat);
         m_FullscreenTriangle->draw();
@@ -136,8 +136,6 @@ void Camera::draw(Scene* scene, bool drawSkybox)
             scene->drawEntities(cam);
         }
     }
-
-    glBindFramebuffer(GL_FRAMEBUFFER, NULL);
 
     // Post processing
     m_ImageEffectChain->render(m_RenderTargetBuffer);

@@ -43,9 +43,6 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     // Load scene.
     m_CurrentScene = new Scene();
 
-    // Lock mouse movement by default to enable free look + movement
-    Input::SetMouseCursorState(MouseCursorState::Locked);
-
     // GUI windows
     m_TexPickerWindow = new TexturePickerWindow(&HandleSelectedNewTexture);
 
