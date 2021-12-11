@@ -1,28 +1,14 @@
 #include "ImageEffectChain.h"
 
-ImageEffectChain::ImageEffectChain(Camera* camera, ImageEffectChainType type) : m_Camera(camera), m_Type(type)
+ImageEffectChain::ImageEffectChain(Camera* camera, ImageEffectChainType type) : m_Camera(camera), m_Type(type), m_NumColorBuffers(0)
 {
     m_CopyMat = new Material(new Shader("res\\shaders\\PostProcessing\\Common\\Copy.glsl"));
     m_Triangle = new FullscreenTriangle(m_CopyMat);
-
-    if (m_Type == ImageEffectChainType::PostProcess)
-    {
-        BufferTexture* cameraTex = camera->getRenderTargetBuffer();
-
-        // Create 2 color buffers for ping-ponging, since we can't read and write to the same buffer when iterating through image effects.
-        // TODO: only initialize 1 buffer if we don't have more than one effect, or any buffers at all if there are no image effects (add logic in ImageEffectChain::add).
-        for (size_t i = 0; i < m_ColorBuffers.size(); i++)
-            m_ColorBuffers[i] = new BufferTexture(cameraTex->width(), cameraTex->height(), /*depth=*/ 0, TextureFormat::RGBAHalf);
-    }
-    else if (m_Type == ImageEffectChainType::Deferred)
-    {
-
-    }
 }
 
 ImageEffectChain::~ImageEffectChain()
 {
-    for (size_t i = 0; i < m_ColorBuffers.size(); i++)
+    for (size_t i = 0; i < m_NumColorBuffers; i++)
         delete m_ColorBuffers[i];
 
     delete m_CopyMat;
@@ -33,6 +19,19 @@ void ImageEffectChain::add(ImageEffect* effect)
 {
     effect->lazyInitialize(m_Camera);
     m_Effects.push_back(effect);
+
+    if (m_Type == ImageEffectChainType::PostProcess)
+    {
+        // Initialize swap buffers if necessary for reading/writing. Amount we need depends on how many effects we add, but can only be at most 2.
+        size_t numBuffersRequired = Min(m_Effects.size(), (size_t)2);
+        BufferTexture* cameraTex = m_Camera->getRenderTargetBuffer();
+
+        while (m_NumColorBuffers < numBuffersRequired)
+            m_ColorBuffers[m_NumColorBuffers++] = new BufferTexture(cameraTex->width(), cameraTex->height(), /*depth=*/ 0, TextureFormat::RGBAHalf);
+    }
+    else if (m_Type == ImageEffectChainType::Deferred)
+    {
+    }
 }
 
 void ImageEffectChain::render()

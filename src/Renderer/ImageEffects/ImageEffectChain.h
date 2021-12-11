@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 
+#include "../../Math/Math.h"
 #include "../Camera.h"
 #include "../FullscreenTriangle.h"
 #include "../Material.h"
@@ -35,6 +36,7 @@ private:
     Material* m_CopyMat;
     FullscreenTriangle* m_Triangle;
     std::array<BufferTexture*, 2> m_ColorBuffers;
+    size_t m_NumColorBuffers;  // Valid values: 0, 1, or 2. Represents how many m_ColorBuffers are in use.
     std::vector<ImageEffect*> m_Effects;
 };
 
