@@ -31,13 +31,13 @@ Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, co
     if (perspective)
     {
         m_FieldOfView = perspective->fieldOfView;
-        m_ProjMatrix = Matrix4x4::Perspective(m_FieldOfView, aspect, m_NearClip, m_FarClip);
+        m_ProjectionMatrix = Matrix4x4::Perspective(m_FieldOfView, aspect, m_NearClip, m_FarClip);
     }
     else
     {
         OrthographicProjection* orthographic = static_cast<OrthographicProjection*>(&projection);
         m_OrthoSize = orthographic->size;
-        m_ProjMatrix = Matrix4x4::Orthographic(m_OrthoSize, aspect, m_NearClip, m_FarClip);
+        m_ProjectionMatrix = Matrix4x4::Orthographic(m_OrthoSize, aspect, m_NearClip, m_FarClip);
     }
 
     if (deferred)
@@ -77,7 +77,8 @@ Camera::~Camera()
 
 void Camera::update()
 {
-    m_ViewProjMatrix = m_ProjMatrix * Matrix4x4::View(m_Transform->getPosition(), m_Transform->getRotation());
+    m_ViewMatrix = Matrix4x4::View(m_Transform->getPosition(), m_Transform->getRotation());
+    m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 }
 
 void Camera::draw(Scene* scene, bool drawSkybox)

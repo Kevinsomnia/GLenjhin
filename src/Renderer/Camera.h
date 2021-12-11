@@ -83,7 +83,9 @@ public:
     Texture2D* getDepthTexture() const { return isDeferred() ? m_GBuffers->depthTexture() : m_RenderTargetBuffer->depthTexture(); }
     GeometryBuffers* getGBuffers() const { return m_GBuffers; }
     Transform* getTransform() const { return m_Transform; }
-    Matrix4x4 getViewProjMatrix() const { return m_ViewProjMatrix; }
+    Matrix4x4 getViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
+    Matrix4x4 getViewMatrix() const { return m_ViewMatrix; }
+    Matrix4x4 getProjectionMatrix() const { return m_ProjectionMatrix; }
     // X = near clip
     // Y = far clip
     // Z = far - near
@@ -98,10 +100,11 @@ private:
     Material* m_DeferredLightingMat;
     Material* m_BlitMat;
     FullscreenTriangle* m_FullscreenTriangle;
-    Matrix4x4 m_ViewProjMatrix;
+    Matrix4x4 m_ViewProjectionMatrix;
 
     Vector4 m_ProjectionParams;
-    Matrix4x4 m_ProjMatrix;
+    Matrix4x4 m_ViewMatrix;
+    Matrix4x4 m_ProjectionMatrix;
     float m_NearClip;
     float m_FarClip;
     float m_FieldOfView;

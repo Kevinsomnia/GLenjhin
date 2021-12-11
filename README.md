@@ -9,7 +9,7 @@ Supports Windows 64-bit only.
 ## Features
 
 - Lighting
-  - Physically-Based Rendering (PBR): GGX (diffuse term) / Cook-Torrance (specular term) / Schlick (fresnel approximation)
+  - Physically-Based Rendering (PBR): Lambertian (diffuse term) / GGX + Cook-Torrance (specular term) / Schlick (fresnel approximation)
   - Real-time shadows with 4x4 PCF (soft filtering)
   - Directional lights
 - HDR and post processing effects pipeline

@@ -105,7 +105,7 @@ void Scene::update()
 
 void Scene::drawGeometryPass(const Camera& camera, Material& geometryMat) const
 {
-    geometryMat.setMatrix("u_VP", camera.getViewProjMatrix());
+    geometryMat.setMatrix("u_VP", camera.getViewProjectionMatrix());
 
     for (size_t i = 0; i < m_Entities.size(); i++)
         m_Entities[i]->drawGeometryPass(geometryMat);
@@ -122,7 +122,7 @@ void Scene::drawShadowPass(const Light& light, Material& shadowMat) const
 void Scene::drawSkybox(const Camera& camera) const
 {
     if (m_Skybox)
-        m_Skybox->draw(camera.getViewProjMatrix());
+        m_Skybox->draw(camera.getViewProjectionMatrix());
 }
 
 void Scene::drawEntities(const Camera& camera) const

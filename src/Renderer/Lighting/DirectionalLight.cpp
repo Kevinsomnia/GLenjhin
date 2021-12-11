@@ -30,7 +30,7 @@ void DirectionalLight::setUniforms(Material& mat) const
         Texture2D* shadowMap = m_DepthCamera->getDepthTexture();
         mat.setTexture("u_DirShadows", shadowMap);
         mat.setVector2("u_DirShadowsTexelSize", shadowMap->texelSize());
-        mat.setMatrix("u_DirLightMatrix", m_DepthCamera->getViewProjMatrix());
+        mat.setMatrix("u_DirLightMatrix", m_DepthCamera->getViewProjectionMatrix());
     }
     else
     {
@@ -59,7 +59,7 @@ void DirectionalLight::renderShadows(const Scene* scene) const
 Matrix4x4 DirectionalLight::getLightMatrix() const
 {
     if (m_DepthCamera)
-        return m_DepthCamera->getViewProjMatrix();
+        return m_DepthCamera->getViewProjectionMatrix();
 
     return Matrix4x4::identity;
 }

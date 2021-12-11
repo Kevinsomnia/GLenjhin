@@ -59,8 +59,8 @@ void Entity::draw(const Camera& cam, const std::vector<Light*>& lights) const
     if (m_Renderer)
     {
         m_Renderer->draw(
-            /*cameraPos=*/ cam.getTransform()->getPosition(),
-            /*vp=*/ cam.getViewProjMatrix(),
+            cam.getTransform()->getPosition(),
+            cam.getViewProjectionMatrix(),
             /*model=*/ m_Transform->getTRS(),
             lights
         );
