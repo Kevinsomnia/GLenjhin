@@ -1,8 +1,8 @@
 #ifndef GAUSSIAN_BLUR_H
 #define GAUSSIAN_BLUR_H
 
-#include "../Material.h"
-#include "PostProcessing.h"
+#include "../../Material.h"
+#include "../ImageEffect.h"
 
 class GaussianBlur : public ImageEffect
 {

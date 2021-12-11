@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "../Material.h"
-#include "PostProcessing.h"
+#include "../../Material.h"
+#include "../ImageEffect.h"
 
 class Bloom : public ImageEffect
 {

@@ -46,6 +46,8 @@ Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, co
         m_DeferredGeometryMat = new Material(new Shader("res\\shaders\\Deferred\\GeometryBuffers.glsl"));
         m_DeferredLightingMat = new Material(new Shader("res\\shaders\\Deferred\\DeferredLighting.glsl"));
         m_GBuffers->setGBufferTextures(*m_DeferredLightingMat);
+
+        m_DeferredChain = new ImageEffectChain(this, ImageEffectChainType::Deferred);
     }
     else
     {
@@ -54,7 +56,7 @@ Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, co
 
     TextureFormat colorFormat = (bufferFlags & CameraBufferFlags::Color) != CameraBufferFlags::None ? TextureFormat::RGBAHalf : TextureFormat::None;
     m_RenderTargetBuffer = new BufferTexture(pixelWidth, pixelHeight, depthBits, colorFormat);
-    m_ImageEffectChain = new ImageEffectChain(this);
+    m_PostProcessChain = new ImageEffectChain(this, ImageEffectChainType::PostProcess);
     m_BlitMat = new Material(new Shader("res\\shaders\\PostProcessing\\Common\\Copy.glsl"));
     m_FullscreenTriangle = new FullscreenTriangle(m_BlitMat);
     update();
@@ -94,6 +96,9 @@ void Camera::draw(Scene* scene, bool drawSkybox)
 
         if (scene)
             scene->drawGeometryPass(*this, *m_DeferredGeometryMat);
+
+        // Deferred image effects manipulate the GBuffers directly
+        m_DeferredChain->render();
 
         // Second pass: calculate lighting in screen-space, output to color buffer
         glBindFramebuffer(GL_FRAMEBUFFER, m_RenderTargetBuffer->id());
@@ -137,8 +142,7 @@ void Camera::draw(Scene* scene, bool drawSkybox)
         }
     }
 
-    // Post processing
-    m_ImageEffectChain->render(m_RenderTargetBuffer);
+    m_PostProcessChain->render();
 }
 
 void Camera::blitToScreen() const
@@ -155,9 +159,15 @@ void Camera::blitToScreen() const
     m_FullscreenTriangle->draw();
 }
 
-void Camera::addImageEffect(ImageEffect* effect)
+void Camera::addDeferredEffect(ImageEffect* effect)
 {
-    m_ImageEffectChain->add(effect);
+    assert(isDeferred());
+    m_DeferredChain->add(effect);
+}
+
+void Camera::addPostProcessEffect(ImageEffect* effect)
+{
+    m_PostProcessChain->add(effect);
 }
 
 void Camera::addBuffersToDebugWindow(DebugTextureListWindow& window) const

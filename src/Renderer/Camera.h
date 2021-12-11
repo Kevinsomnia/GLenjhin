@@ -9,7 +9,7 @@
 #include "../Math/Matrix4x4.h"
 #include "Deferred/GeometryBuffers.h"
 #include "Texture/Texture.h"
-#include "PostProcessing/PostProcessing.h"
+#include "ImageEffects/ImageEffectChain.h"
 #include "Transform.h"
 
 using std::cout;
@@ -75,7 +75,8 @@ public:
     void update();
     void draw(Scene* scene, bool drawSkybox);
     void blitToScreen() const;
-    void addImageEffect(ImageEffect* effect);
+    void addDeferredEffect(ImageEffect* effect);
+    void addPostProcessEffect(ImageEffect* effect);
     void addBuffersToDebugWindow(DebugTextureListWindow& window) const;
     inline bool isDeferred() const { return m_GBuffers; }
     BufferTexture* getRenderTargetBuffer() const { return m_RenderTargetBuffer; }
@@ -95,7 +96,8 @@ private:
     Transform* m_Transform;
     GeometryBuffers* m_GBuffers;
     BufferTexture* m_RenderTargetBuffer;
-    ImageEffectChain* m_ImageEffectChain;
+    ImageEffectChain* m_PostProcessChain;
+    ImageEffectChain* m_DeferredChain;
     Material* m_DeferredGeometryMat;
     Material* m_DeferredLightingMat;
     Material* m_BlitMat;
