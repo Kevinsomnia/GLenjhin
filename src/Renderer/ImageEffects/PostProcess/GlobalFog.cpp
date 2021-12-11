@@ -1,6 +1,6 @@
 #include "GlobalFog.h"
 
-GlobalFog::GlobalFog() : ImageEffect("res\\shaders\\PostProcessing\\GlobalFog.glsl")
+GlobalFog::GlobalFog() : ImageEffect("res\\shaders\\ImageEffects\\GlobalFog.glsl")
 {
 }
 

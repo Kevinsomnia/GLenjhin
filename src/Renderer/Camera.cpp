@@ -57,7 +57,7 @@ Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, co
     TextureFormat colorFormat = (bufferFlags & CameraBufferFlags::Color) != CameraBufferFlags::None ? TextureFormat::RGBAHalf : TextureFormat::None;
     m_RenderTargetBuffer = new BufferTexture(pixelWidth, pixelHeight, depthBits, colorFormat);
     m_PostProcessChain = new ImageEffectChain(this, ImageEffectChainType::PostProcess);
-    m_BlitMat = new Material(new Shader("res\\shaders\\PostProcessing\\Common\\Copy.glsl"));
+    m_BlitMat = new Material(new Shader("res\\shaders\\ImageEffects\\Common\\Copy.glsl"));
     m_FullscreenTriangle = new FullscreenTriangle(m_BlitMat);
     update();
 }

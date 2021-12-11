@@ -18,15 +18,15 @@ void main()
 
 uniform sampler2D u_MainTex;
 
+uniform float u_Exposure;
+
 in vec2 v_UV;
 
 out vec4 fragColor;
 
-const float EXPOSURE = 3.25;
-
 void main()
 {
     vec4 color = texture2D(u_MainTex, v_UV);
-    color = 1.0 - exp2(color * -EXPOSURE);
+    color = 1.0 - exp2(color * -u_Exposure);
     fragColor = vec4(color.rgb, 1.0);
 }

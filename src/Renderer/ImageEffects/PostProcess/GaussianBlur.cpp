@@ -1,9 +1,9 @@
 #include "GaussianBlur.h"
 
-GaussianBlur::GaussianBlur() : ImageEffect("res\\shaders\\PostProcessing\\Common\\Copy.glsl")
+GaussianBlur::GaussianBlur() : ImageEffect("res\\shaders\\ImageEffects\\Common\\Copy.glsl")
 {
-    m_DownsampleMat = new Material(new Shader("res\\shaders\\PostProcessing\\GaussianBlur\\Downsample.glsl"));
-    m_BlurMat = new Material(new Shader("res\\shaders\\PostProcessing\\GaussianBlur\\Blur.glsl"));
+    m_DownsampleMat = new Material(new Shader("res\\shaders\\ImageEffects\\GaussianBlur\\Downsample.glsl"));
+    m_BlurMat = new Material(new Shader("res\\shaders\\ImageEffects\\GaussianBlur\\Blur.glsl"));
 }
 
 GaussianBlur::~GaussianBlur()

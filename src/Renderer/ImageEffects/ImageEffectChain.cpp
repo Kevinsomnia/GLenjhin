@@ -2,7 +2,7 @@
 
 ImageEffectChain::ImageEffectChain(Camera* camera, ImageEffectChainType type) : m_Camera(camera), m_Type(type), m_NumColorBuffers(0)
 {
-    m_CopyMat = new Material(new Shader("res\\shaders\\PostProcessing\\Common\\Copy.glsl"));
+    m_CopyMat = new Material(new Shader("res\\shaders\\ImageEffects\\Common\\Copy.glsl"));
     m_Triangle = new FullscreenTriangle(m_CopyMat);
 }
 
@@ -28,9 +28,6 @@ void ImageEffectChain::add(ImageEffect* effect)
 
         while (m_NumColorBuffers < numBuffersRequired)
             m_ColorBuffers[m_NumColorBuffers++] = new BufferTexture(cameraTex->width(), cameraTex->height(), /*depth=*/ 0, TextureFormat::RGBAHalf);
-    }
-    else if (m_Type == ImageEffectChainType::Deferred)
-    {
     }
 }
 
