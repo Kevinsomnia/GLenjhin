@@ -46,6 +46,7 @@
     <ClCompile Include="src\Renderer\ImageEffects\PostProcess\GlobalFog.cpp" />
     <ClCompile Include="src\Renderer\ImageEffects\PostProcess\PostProcessEffect.cpp" />
     <ClCompile Include="src\Renderer\ImageEffects\PostProcess\PostProcessEffectChain.cpp" />
+    <ClCompile Include="src\Renderer\ImageEffects\PostProcess\SunShafts.cpp" />
     <ClCompile Include="src\Renderer\ImageEffects\PostProcess\Tonemapping.cpp" />
     <ClCompile Include="src\Renderer\Lighting\DirectionalLight.cpp" />
     <ClCompile Include="src\Renderer\Lighting\Light.cpp" />
@@ -102,6 +103,7 @@
     <ClInclude Include="src\Renderer\ImageEffects\PostProcess\GlobalFog.h" />
     <ClInclude Include="src\Renderer\ImageEffects\PostProcess\PostProcessEffect.h" />
     <ClInclude Include="src\Renderer\ImageEffects\PostProcess\PostProcessEffectChain.h" />
+    <ClInclude Include="src\Renderer\ImageEffects\PostProcess\SunShafts.h" />
     <ClInclude Include="src\Renderer\ImageEffects\PostProcess\Tonemapping.h" />
     <ClInclude Include="src\Renderer\Lighting\Lighting.h" />
     <ClInclude Include="src\Renderer\Material.h" />

@@ -32,6 +32,8 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     m_MainCamera->addDeferredEffect(new SSAO());
     m_MainCamera->addPostProcessEffect(new GlobalFog());
     m_MainCamera->addPostProcessEffect(new Bloom());
+    SunShafts* shafts = new SunShafts();
+    m_MainCamera->addPostProcessEffect(shafts);
     m_MainCamera->addPostProcessEffect(new Tonemapping());
     // m_MainCamera->addPostProcessEffect(new GaussianBlur());     // TODO: runtime toggle
 
@@ -43,6 +45,11 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
 
     // Load scene.
     m_CurrentScene = new Scene();
+    std::vector<Light*>& lights = m_CurrentScene->lights();
+
+    if (lights.size() > 0)
+        // We're assuming first light is a directional light / sun.
+        shafts->setSunTransform(lights[0]->getTransform());
 
     // GUI windows
     m_TexPickerWindow = new TexturePickerWindow(&HandleSelectedNewTexture);
@@ -51,7 +58,7 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     m_DebugTexturesWindow->setOpen(false);
     DebugTextureListWindow& textureListWindow = *m_DebugTexturesWindow;
     m_MainCamera->addBuffersToDebugWindow(textureListWindow);
-    for (Light* light : m_CurrentScene->lights())
+    for (Light* light : lights)
         light->addBuffersToDebugWindow(textureListWindow);
 
     m_DebugOverlayWindow = new DebugOverlayWindow(m_DebugTexturesWindow);

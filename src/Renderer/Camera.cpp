@@ -180,3 +180,11 @@ void Camera::addBuffersToDebugWindow(DebugTextureListWindow& window) const
 
     window.add(getDepthTexture(), "Camera Depth (R) [Float]", /*flip=*/ true);
 }
+
+Vector3 Camera::worldToViewportPoint(const Vector3& pos) const
+{
+    Vector3 viewPos = m_ViewProjectionMatrix.multiplyPoint3x4(pos);
+    // Perspective divide XY and normalize to [0, 1], but leave Z untouched so that it's in world units.
+    float halfOverW = 0.5f / (pos.getX() * m_ViewProjectionMatrix[3] + pos.getY() * m_ViewProjectionMatrix[7] + pos.getZ() * m_ViewProjectionMatrix[11] + m_ViewProjectionMatrix[15]);
+    return Vector3(viewPos.getX() * halfOverW + 0.5f, viewPos.getY() * halfOverW + 0.5f, viewPos.getZ() + (m_NearClip * 2.0f));
+}

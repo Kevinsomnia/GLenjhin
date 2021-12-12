@@ -159,6 +159,9 @@
     <ClCompile Include="src\Renderer\ImageEffects\Deferred\SSAO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Renderer\ImageEffects\PostProcess\SunShafts.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Application.h">
@@ -327,6 +330,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Core\ShaderCompiler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\ImageEffects\PostProcess\SunShafts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

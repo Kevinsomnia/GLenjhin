@@ -78,6 +78,7 @@ public:
     void addDeferredEffect(DeferredEffect* effect);
     void addPostProcessEffect(PostProcessEffect* effect);
     void addBuffersToDebugWindow(DebugTextureListWindow& window) const;
+    Vector3 worldToViewportPoint(const Vector3& pos) const;
     inline bool isDeferred() const { return m_GBuffers; }
     BufferTexture* getRenderTargetBuffer() const { return m_RenderTargetBuffer; }
     Texture2D* getColorTexture() const { return m_RenderTargetBuffer->colorTexture(); }

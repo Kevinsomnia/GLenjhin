@@ -99,7 +99,7 @@ void main()
             // Sampling the NDC depth won't give us accurate results, unlike the first depth check.
             if (dot(rayWorldPos, rayWorldPos) > 0.0)
             {
-                // Transform the Z depth of this world ray into view space. TODO: only Z coord is needed
+                // Transform the Z depth of this world ray into view space.
                 vec4 rayViewPos = u_V * vec4(rayWorldPos, 1.0);
 
                 // 1.0 if this viewSamplePos is being occluded behind a surface (rayViewPos), otherwise 0.0.
