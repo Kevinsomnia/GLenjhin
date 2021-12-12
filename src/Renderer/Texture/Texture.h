@@ -131,6 +131,7 @@ public:
     uint32_t id() const { return m_TextureID; }
     uint32_t width() const { return m_Width; }
     uint32_t height() const { return m_Height; }
+    TextureFormat format() const { return m_Format; }
     Vector2 texelSize() const;
 protected:
     uint32_t m_TextureID;
@@ -138,7 +139,7 @@ protected:
     uint32_t m_Width;
     uint32_t m_Height;
     bool m_Mipmaps;
-    TextureFormat m_TextureFormat;
+    TextureFormat m_Format;
     TextureFilterMode m_FilterMode;
     TextureWrapMode m_WrapMode;
 };
