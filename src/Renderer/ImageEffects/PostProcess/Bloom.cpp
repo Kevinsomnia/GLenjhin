@@ -1,6 +1,6 @@
 #include "Bloom.h"
 
-Bloom::Bloom() : ImageEffect("res\\shaders\\ImageEffects\\Bloom\\Combine.glsl")
+Bloom::Bloom() : PostProcessEffect("res\\shaders\\ImageEffects\\Bloom\\Combine.glsl")
 {
     m_PrefilterMat = new Material(new Shader("res\\shaders\\ImageEffects\\Bloom\\Prefilter.glsl"));
     m_DownsampleMat = new Material(new Shader("res\\shaders\\ImageEffects\\Bloom\\Downsample.glsl"));
@@ -28,7 +28,7 @@ void Bloom::lazyInitialize(Camera* camera)
     if (m_Initialized)
         return;
 
-    ImageEffect::lazyInitialize(camera);
+    PostProcessEffect::lazyInitialize(camera);
 
     BufferTexture* bufferTex = camera->getRenderTargetBuffer();
     int tw = bufferTex->width();
@@ -49,7 +49,7 @@ void Bloom::render(BufferTexture* source, BufferTexture* destination)
 {
     // Pre-filter and isolate bright pixels.
     m_PrefilterMat->setVector2("u_TexelSize", source->texelSize());
-    ImageEffect::render(source, m_Buffers[0], m_PrefilterMat);
+    PostProcessEffect::render(source, m_Buffers[0], m_PrefilterMat);
 
     BufferTexture* currBuffer = nullptr;
     BufferTexture* nextBuffer = nullptr;
@@ -63,7 +63,7 @@ void Bloom::render(BufferTexture* source, BufferTexture* destination)
         m_DownsampleMat->setVector2("u_TexelSize", currBuffer->texelSize());
 
         glViewport(0, 0, nextBuffer->width(), nextBuffer->height());
-        ImageEffect::render(currBuffer, nextBuffer, m_DownsampleMat);
+        PostProcessEffect::render(currBuffer, nextBuffer, m_DownsampleMat);
     }
 
     // Upsample w/ 9-tap tent filter.
@@ -76,7 +76,7 @@ void Bloom::render(BufferTexture* source, BufferTexture* destination)
         m_UpsampleMat->setVector2("u_BlurSize", currBuffer->texelSize() * BLUR_SIZE);
 
         glViewport(0, 0, nextBuffer->width(), nextBuffer->height());
-        ImageEffect::render(currBuffer, nextBuffer, m_UpsampleMat);
+        PostProcessEffect::render(currBuffer, nextBuffer, m_UpsampleMat);
     }
 
     // Upsample final bloom texture and accumulate color to screen.
@@ -84,5 +84,5 @@ void Bloom::render(BufferTexture* source, BufferTexture* destination)
     m_Material->setTexture("u_ScreenTex", source->colorTexture());
     m_Material->setVector2("u_BlurSize", currBuffer->texelSize() * BLUR_SIZE);
     glViewport(0, 0, source->width(), source->height());
-    ImageEffect::render(currBuffer, destination);
+    PostProcessEffect::render(currBuffer, destination);
 }

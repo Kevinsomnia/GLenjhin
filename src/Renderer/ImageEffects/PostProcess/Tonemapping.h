@@ -1,9 +1,9 @@
 #ifndef TONEMAPPING_H
 #define TONEMAPPING_H
 
-#include "../ImageEffect.h"
+#include "PostProcessEffect.h"
 
-class Tonemapping : public ImageEffect
+class Tonemapping : public PostProcessEffect
 {
 public:
     Tonemapping();

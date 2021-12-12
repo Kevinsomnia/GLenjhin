@@ -7,7 +7,7 @@ Texture2D::Texture2D(uint32_t width, uint32_t height, TextureFormat colorFormat,
     m_Width = width;
     m_Height = height;
     m_Mipmaps = false;
-    m_TextureFormat = colorFormat;
+    m_Format = colorFormat;
 
     glGenTextures(1, &m_TextureID);
     glBindTexture(GL_TEXTURE_2D, m_TextureID);
@@ -24,7 +24,7 @@ Texture2D::Texture2D(uint32_t width, uint32_t height, TextureFormat colorFormat,
         m_Pixels = nullptr;
     }
 
-    GLTextureParams params = GLTextureParams::FromFormat(m_TextureFormat, /*sRGB=*/false);
+    GLTextureParams params = GLTextureParams::FromFormat(m_Format, /*sRGB=*/false);
     glTexImage2D(GL_TEXTURE_2D, 0, params.internalFormat, m_Width, m_Height, 0, params.texFormat, params.valueType, m_Pixels);
 }
 
@@ -52,8 +52,8 @@ Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool rea
     setFilterMode(TextureFilterMode::Bilinear);
     setWrapMode(TextureWrapMode::Repeat);
 
-    m_TextureFormat = result.info.hasAlpha() ? TextureFormat::RGBA32 : TextureFormat::RGB24;
-    GLTextureParams params = GLTextureParams::FromFormat(m_TextureFormat, /*sRGB=*/true);
+    m_Format = result.info.hasAlpha() ? TextureFormat::RGBA32 : TextureFormat::RGB24;
+    GLTextureParams params = GLTextureParams::FromFormat(m_Format, /*sRGB=*/true);
     glTexImage2D(GL_TEXTURE_2D, 0, params.internalFormat, m_Width, m_Height, 0, params.texFormat, params.valueType, m_Pixels);
 
     if (m_Mipmaps)
@@ -78,7 +78,7 @@ ColorByte Texture2D::getPixel(uint32_t x, uint32_t y) const
     if (!m_Pixels)
         return nullptr;
 
-    bool hasAlpha = m_TextureFormat == TextureFormat::RGBA32;
+    bool hasAlpha = m_Format == TextureFormat::RGBA32;
     uint32_t bpp = hasAlpha ? 4 : 3;
     uint32_t offset = (y * m_Width + x) * bpp;
     return ColorByte(m_Pixels + offset, hasAlpha);
@@ -93,7 +93,7 @@ ColorByte* Texture2D::getPixels() const
 
     // Don't think we can copy the entire uint8_t blob into ColorByte*, but could be worth looking into.
     uint8_t* currPtr = m_Pixels;
-    bool hasAlpha = m_TextureFormat == TextureFormat::RGBA32;
+    bool hasAlpha = m_Format == TextureFormat::RGBA32;
     uint32_t bpp = hasAlpha ? 4 : 3;
 
     for (uint32_t y = 0; y < m_Height; y++)
@@ -115,7 +115,7 @@ void Texture2D::setPixel(uint32_t x, uint32_t y, const ColorByte& c)
     if (!m_Pixels)
         return;
 
-    uint32_t bpp = m_TextureFormat == TextureFormat::RGBA32 ? 4 : 3;
+    uint32_t bpp = m_Format == TextureFormat::RGBA32 ? 4 : 3;
     uint32_t offset = (y * m_Width + x) * bpp;
     memcpy(m_Pixels + offset, static_cast<const uint8_t*>(c), bpp);
 }
@@ -127,7 +127,7 @@ void Texture2D::setPixels(ColorByte* colors)
 
     // Don't think we can copy the entire uint8_t blob into ColorByte*, but could be worth looking into.
     uint8_t* currPtr = m_Pixels;
-    uint32_t bpp = m_TextureFormat == TextureFormat::RGBA32 ? 4 : 3;
+    uint32_t bpp = m_Format == TextureFormat::RGBA32 ? 4 : 3;
 
     for (uint32_t y = 0; y < m_Height; y++)
     {
@@ -147,7 +147,7 @@ void Texture2D::uploadToGPU(bool keepReadable)
         return;
 
     glBindTexture(GL_TEXTURE_2D, m_TextureID);
-    GLTextureParams params = GLTextureParams::FromFormat(m_TextureFormat, /*sRGB=*/true);
+    GLTextureParams params = GLTextureParams::FromFormat(m_Format, /*sRGB=*/true);
     glTexImage2D(GL_TEXTURE_2D, 0, params.internalFormat, m_Width, m_Height, 0, params.texFormat, params.valueType, m_Pixels);
 
     if (m_Mipmaps)

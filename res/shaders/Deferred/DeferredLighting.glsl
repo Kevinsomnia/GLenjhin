@@ -20,7 +20,7 @@ void main()
 uniform sampler2D u_Position;
 uniform sampler2D u_NormalSmooth;
 uniform sampler2D u_AlbedoMetal;
-uniform sampler2D u_Emission;
+uniform sampler2D u_EmissionOccl;
 
 // Shadowmaps
 uniform sampler2D u_DirShadows;
@@ -154,7 +154,7 @@ void main()
     vec4 position = texture2D(u_Position, v_UV);
     vec4 normalsSmoothness = texture2D(u_NormalSmooth, v_UV);
     vec4 albedoMetallic = texture2D(u_AlbedoMetal, v_UV);
-    vec4 emission = texture2D(u_Emission, v_UV);
+    vec4 emissionOcclusion = texture2D(u_EmissionOccl, v_UV);
 
     // Per-view calculations.
     vec3 F0 = mix(vec3(0.04), albedoMetallic.rgb, albedoMetallic.a);    // Di-electric / Metallic: specular color
@@ -163,9 +163,10 @@ void main()
 
     // Per-light calculations.
     vec3 halfDir = normalize(viewDir - u_DirLightDir);
-    float nDotL = dot(normalsSmoothness.xyz, -u_DirLightDir);
+    float nDotL = max(0.0, dot(normalsSmoothness.xyz, -u_DirLightDir));
+    float ambientBlend = nDotL;
 
-    if (nDotL > 0.0)
+    if (nDotL > EPSILON)
     {
         float nDotV = max(0.0, dot(normalsSmoothness.xyz, viewDir));
 
@@ -181,14 +182,14 @@ void main()
         vec3 kDiff = vec3(1.0) - fresnel;
         kDiff *= 1.0 - albedoMetallic.a;
 
-        // Attenuate with shadowmap
+        // Attenuate ambient with shadowmap.
         vec4 dirLightFragPos = u_DirLightMatrix * vec4(position.xyz, 1.0);
-        float shadow = ShadowAttenuation(u_DirShadows, u_DirShadowsTexelSize, dirLightFragPos, u_DirLightDir, normalsSmoothness.xyz);
+        ambientBlend *= ShadowAttenuation(u_DirShadows, u_DirShadowsTexelSize, dirLightFragPos, u_DirLightDir, normalsSmoothness.xyz);
 
         vec3 brdf = (kDiff * ONE_OVER_PI * albedoMetallic.rgb) + specular;
-        L += brdf * u_DirLightColor.rgb * nDotL * shadow;
+        L += brdf * u_DirLightColor.rgb * ambientBlend;
     }
 
-    vec3 ambient = u_AmbientColor.rgb * albedoMetallic.rgb;  // TODO: skybox cubemap (irradiance)
-    fragColor = vec4(ambient + L + emission.rgb, 1.0);
+    vec3 ambient = u_AmbientColor.rgb * albedoMetallic.rgb * mix(emissionOcclusion.a, 1.0, ambientBlend);   // TODO: skybox cubemap (irradiance)
+    fragColor = vec4(ambient + L + emissionOcclusion.rgb, 1.0);
 }

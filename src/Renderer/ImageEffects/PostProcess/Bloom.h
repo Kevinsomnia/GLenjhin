@@ -4,9 +4,9 @@
 #include <vector>
 
 #include "../../Material.h"
-#include "../ImageEffect.h"
+#include "PostProcessEffect.h"
 
-class Bloom : public ImageEffect
+class Bloom : public PostProcessEffect
 {
 public:
     Bloom();

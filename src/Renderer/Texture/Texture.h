@@ -16,9 +16,12 @@ using std::endl;
 enum class TextureFormat
 {
     None,       // Can be used to signify disabled/unused texture
+    R8,         // 8 bits per channel, R
     RGB24,      // 8 bits per channel, RGB
     RGBA32,     // 8 bits per channel, RGBA
+    RHalf,      // 16 bits per channel (floating point), R
     RGBAHalf,   // 16 bits per channel (floating point), RGBA
+    RFloat,     // 32 bits per channel (floating point), R
     RGBAFloat,  // 32 bits per channel (floating point), RGBA
     Depth16,    // 16-bit floating point depth texture
     Depth24,    // 24-bit floating point depth texture
@@ -44,7 +47,8 @@ enum class TextureWrapMode
 {
     Repeat, // GL_REPEAT
     Clamp,  // GL_CLAMP_TO_EDGE
-    Mirror  // GL_MIRRORED_REPEAT
+    Mirror, // GL_MIRRORED_REPEAT
+    Border  // GL_CLAMP_TO_BORDER
 };
 
 static GLint GetGLTextureWrapMode(TextureWrapMode mode)
@@ -57,6 +61,8 @@ static GLint GetGLTextureWrapMode(TextureWrapMode mode)
             return GL_CLAMP_TO_EDGE;
         case TextureWrapMode::Mirror:
             return GL_MIRRORED_REPEAT;
+        case TextureWrapMode::Border:
+            return GL_CLAMP_TO_BORDER;
         default:
             cerr << "Unimplemented TextureWrapMode conversion " << static_cast<uint32_t>(mode) << endl;
             return GL_NONE;
@@ -96,12 +102,18 @@ struct GLTextureParams
     {
         switch (format)
         {
+            case TextureFormat::R8:
+                return GLTextureParams { GL_R8, GL_RED, GL_UNSIGNED_BYTE };
             case TextureFormat::RGB24:
                 return GLTextureParams { sRGB ? GL_SRGB : GL_RGB, GL_RGB, GL_UNSIGNED_BYTE };
             case TextureFormat::RGBA32:
                 return GLTextureParams { sRGB ? GL_SRGB_ALPHA : GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE };
+            case TextureFormat::RHalf:
+                return GLTextureParams { GL_R16F, GL_RED, GL_HALF_FLOAT };
             case TextureFormat::RGBAHalf:
                 return GLTextureParams { GL_RGBA16F, GL_RGBA, GL_HALF_FLOAT };
+            case TextureFormat::RFloat:
+                return GLTextureParams { GL_R32F, GL_RED, GL_FLOAT };
             case TextureFormat::RGBAFloat:
                 return GLTextureParams { GL_RGBA32F, GL_RGBA, GL_FLOAT };
             case TextureFormat::Depth16:
@@ -128,9 +140,11 @@ public:
     virtual void bind(uint32_t slotIndex) const;
     virtual void setFilterMode(TextureFilterMode filterMode);
     virtual void setWrapMode(TextureWrapMode wrapMode);
+    virtual void setBorderColor(const Color& c);
     uint32_t id() const { return m_TextureID; }
     uint32_t width() const { return m_Width; }
     uint32_t height() const { return m_Height; }
+    TextureFormat format() const { return m_Format; }
     Vector2 texelSize() const;
 protected:
     uint32_t m_TextureID;
@@ -138,7 +152,7 @@ protected:
     uint32_t m_Width;
     uint32_t m_Height;
     bool m_Mipmaps;
-    TextureFormat m_TextureFormat;
+    TextureFormat m_Format;
     TextureFilterMode m_FilterMode;
     TextureWrapMode m_WrapMode;
 };
@@ -170,6 +184,7 @@ public:
     ~BufferTexture();
     Texture2D* colorTexture() const;
     Texture2D* depthTexture() const;
+    void bind() const;
     void bind(uint32_t slotIndex) const override;
     void setFilterMode(TextureFilterMode filterMode) override;
     void setWrapMode(TextureWrapMode wrapMode) override;

@@ -8,6 +8,7 @@
 #include "../Interaction/Input.h"
 #include "../IO/ModelLib.h"
 #include "../Renderer/MeshPrimitives.h"
+#include "../Renderer/ImageEffects/Deferred/SSAO.h"
 #include "../Renderer/ImageEffects/PostProcess/Bloom.h"
 #include "../Renderer/ImageEffects/PostProcess/GaussianBlur.h"
 #include "../Renderer/ImageEffects/PostProcess/GlobalFog.h"

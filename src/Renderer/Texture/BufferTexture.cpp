@@ -21,7 +21,7 @@ BufferTexture::BufferTexture(uint32_t width, uint32_t height, uint8_t depth, Tex
         m_DepthTexture = new Texture2D(width, height, GetDepthTextureFormat(depth), /*readable=*/ false);
         m_DepthTexture->setFilterMode(TextureFilterMode::Point);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthTexture->id(), 0);
-        
+
         if (colorFormat == TextureFormat::None)
         {
             // Tell OpenGL we're rendering to depth only.
@@ -60,9 +60,15 @@ Texture2D* BufferTexture::depthTexture() const
     return m_DepthTexture;
 }
 
+void BufferTexture::bind() const
+{
+    glViewport(0, 0, m_Width, m_Height);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_TextureID);
+}
+
 void BufferTexture::bind(uint32_t slotIndex) const
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, m_TextureID);
+    bind();
 }
 
 void BufferTexture::setFilterMode(TextureFilterMode filterMode)

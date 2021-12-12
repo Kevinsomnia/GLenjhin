@@ -1,6 +1,6 @@
 #include "GaussianBlur.h"
 
-GaussianBlur::GaussianBlur() : ImageEffect("res\\shaders\\ImageEffects\\Common\\Copy.glsl")
+GaussianBlur::GaussianBlur() : PostProcessEffect("res\\shaders\\ImageEffects\\Common\\Copy.glsl")
 {
     m_DownsampleMat = new Material(new Shader("res\\shaders\\ImageEffects\\GaussianBlur\\Downsample.glsl"));
     m_BlurMat = new Material(new Shader("res\\shaders\\ImageEffects\\GaussianBlur\\Blur.glsl"));
@@ -23,7 +23,7 @@ void GaussianBlur::lazyInitialize(Camera* camera)
     if (m_Initialized)
         return;
 
-    ImageEffect::lazyInitialize(camera);
+    PostProcessEffect::lazyInitialize(camera);
 
     BufferTexture* bufferTex = camera->getRenderTargetBuffer();
     int w = bufferTex->width() >> DOWNSAMPLE;
@@ -41,7 +41,7 @@ void GaussianBlur::render(BufferTexture* source, BufferTexture* destination)
     // Downsample
     BufferTexture* downsampledBuffer = m_Buffers[0];
     glViewport(0, 0, downsampledBuffer->width(), downsampledBuffer->height());
-    ImageEffect::render(source, downsampledBuffer, m_DownsampleMat);
+    PostProcessEffect::render(source, downsampledBuffer, m_DownsampleMat);
 
     float blurFactor = BLUR_RADIUS * (source->height() / REFERENCE_HEIGHT);
     Vector2 strideHorizontal = Vector2(screenTexelSize.getX() * blurFactor, 0.0f);
@@ -54,7 +54,7 @@ void GaussianBlur::render(BufferTexture* source, BufferTexture* destination)
         glViewport(0, 0, bt1->width(), bt1->height());
 
         m_BlurMat->setVector2("u_Stride", strideHorizontal);
-        ImageEffect::render(bt1, bt2, m_BlurMat);
+        PostProcessEffect::render(bt1, bt2, m_BlurMat);
         m_BlurMat->setVector2("u_Stride", strideVertical);
 
         if (i == BLUR_ITERATIONS - 1)
@@ -64,6 +64,6 @@ void GaussianBlur::render(BufferTexture* source, BufferTexture* destination)
             bt1 = destination;
         }
 
-        ImageEffect::render(bt2, bt1, m_BlurMat);
+        PostProcessEffect::render(bt2, bt1, m_BlurMat);
     }
 }

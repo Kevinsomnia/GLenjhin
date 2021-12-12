@@ -7,10 +7,9 @@ DirectionalLight::DirectionalLight(const Vector3& pos, const Vector3& rot)
     m_DepthCamera = new Camera(/*pixelWidth=*/ 2048, /*pixelHeight=*/ 2048, pos, rot, projection, CameraBufferFlags::Depth, /*deferred=*/ false);
 
     // Setup depth map to clamp to a border color so that samples outside the shadowmap will properly be "unshadowed"
-    uint32_t depthTexID = m_DepthCamera->getDepthTexture()->id();
-    glTextureParameteri(depthTexID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-    glTextureParameteri(depthTexID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-    glTextureParameterfv(depthTexID, GL_TEXTURE_BORDER_COLOR, Color::White());
+    Texture2D* depthTex = m_DepthCamera->getDepthTexture();
+    depthTex->setWrapMode(TextureWrapMode::Border);
+    depthTex->setBorderColor(Color::White());
 }
 
 DirectionalLight::~DirectionalLight()
@@ -49,9 +48,7 @@ void DirectionalLight::renderShadows(const Scene* scene) const
     if (!m_DepthCamera || !scene)
         return;
 
-    BufferTexture* bufferTex = m_DepthCamera->getRenderTargetBuffer();
-    glViewport(0, 0, bufferTex->width(), bufferTex->height());
-    glBindFramebuffer(GL_FRAMEBUFFER, bufferTex->id());
+    m_DepthCamera->getRenderTargetBuffer()->bind();
     glClear(GL_DEPTH_BUFFER_BIT);
     scene->drawShadowPass(*this, *m_ShadowMat);
 }
