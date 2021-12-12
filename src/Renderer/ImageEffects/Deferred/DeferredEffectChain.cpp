@@ -22,10 +22,6 @@ void DeferredEffectChain::add(DeferredEffect* effect)
 
 void DeferredEffectChain::render()
 {
-    GeometryBuffers* gBuffers = m_Camera->getGBuffers();
-
     for (size_t i = 0; i < m_Effects.size(); i++)
-    {
-        DeferredEffect* effect = m_Effects[i];
-    }
+        m_Effects[i]->render();
 }

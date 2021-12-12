@@ -4,6 +4,7 @@ DeferredEffect::DeferredEffect(const std::string& shaderPath) : m_Initialized(fa
 {
     m_Shader = new Shader(shaderPath);
     m_Material = new Material(m_Shader);
+    m_CopyMat = new Material(new Shader("res\\shaders\\ImageEffects\\Common\\Copy.glsl"));
     m_Triangle = new FullscreenTriangle(nullptr);
 }
 
@@ -23,19 +24,21 @@ void DeferredEffect::lazyInitialize(Camera* camera)
     m_Camera = camera;
 }
 
-void DeferredEffect::render(BufferTexture* source, BufferTexture* destination)
+void DeferredEffect::render()
 {
-    render(source, destination, m_Material);
 }
 
-void DeferredEffect::render(BufferTexture* source, BufferTexture* destination, Material* mat)
+void DeferredEffect::render(BufferTexture* destination, Material* mat) const
 {
     // Use `mat` directly to output to `destination` FBO.
     destination->bind();
-
-    if (source)
-        mat->setTexture("u_MainTex", source->colorTexture());
-
     m_Triangle->setMaterial(mat);
     m_Triangle->draw();
+}
+
+void DeferredEffect::render(BufferTexture* source, BufferTexture* destination, Material* mat) const
+{
+    // Copy `source` to `destination` FBO using `mat`.
+    mat->setTexture("u_MainTex", source->colorTexture());
+    render(destination, mat);
 }

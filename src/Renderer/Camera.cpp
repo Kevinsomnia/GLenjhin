@@ -175,7 +175,7 @@ void Camera::addBuffersToDebugWindow(DebugTextureListWindow& window) const
         window.add(m_GBuffers->positionGBuffer(), "GBuffer [RGBAFloat]: World Position (RGB)", /*flip=*/ true);
         window.add(m_GBuffers->normalSmoothGBuffer(), "GBuffer [RGBAFloat]: World Normal (RGB) Smoothness (A)", /*flip=*/ true);
         window.add(m_GBuffers->albedoMetalGBuffer(), "GBuffer [RGBA32]: Albedo (RGB) Metallic (A)", /*flip=*/ true);
-        window.add(m_GBuffers->emissionGBuffer(), "GBuffer [RGBAHalf]: Emission (RGB)", /*flip=*/ true);
+        window.add(m_GBuffers->emissionOcclGBuffer(), "GBuffer [RGBAHalf]: Emission (RGB) Occlusion (A)", /*flip=*/ true);
     }
 
     window.add(getDepthTexture(), "Camera Depth (R) [Float]", /*flip=*/ true);

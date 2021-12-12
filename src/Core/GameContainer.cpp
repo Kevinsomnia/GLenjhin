@@ -29,6 +29,7 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
         /*fieldOfView=*/ 75.0f
     );
     m_MainCamera = new Camera(screenWidth, screenHeight, /*pos=*/ Vector3(0.0f, 1.0f, 0.0f), /*rot=*/ Vector3::zero, projection, CameraBufferFlags::Default, /*deferred=*/ true);
+    m_MainCamera->addDeferredEffect(new SSAO());
     m_MainCamera->addPostProcessEffect(new GlobalFog());
     m_MainCamera->addPostProcessEffect(new Bloom());
     m_MainCamera->addPostProcessEffect(new Tonemapping());

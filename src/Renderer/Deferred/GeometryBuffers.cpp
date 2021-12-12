@@ -11,8 +11,8 @@ GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height, uint8_t depth)
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_NormalSmoothGBuffer->id(), 0);
     m_AlbedoMetalGBuffer = new Texture2D(width, height, TextureFormat::RGBA32, /*readable=*/ false);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_AlbedoMetalGBuffer->id(), 0);
-    m_EmissionGBuffer = new Texture2D(width, height, TextureFormat::RGBAHalf, /*readable=*/ false);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, m_EmissionGBuffer->id(), 0);
+    m_EmissionOcclGBuffer = new Texture2D(width, height, TextureFormat::RGBAHalf, /*readable=*/ false);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, m_EmissionOcclGBuffer->id(), 0);
 
     const GLuint ATTACHMENT_COUNT = 4;
     GLenum colorAttachments[ATTACHMENT_COUNT] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
@@ -32,12 +32,12 @@ GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height, uint8_t depth)
         m_PositionGBuffer->setFilterMode(TextureFilterMode::Point);
         m_NormalSmoothGBuffer->setFilterMode(TextureFilterMode::Point);
         m_AlbedoMetalGBuffer->setFilterMode(TextureFilterMode::Point);
-        m_EmissionGBuffer->setFilterMode(TextureFilterMode::Point);
+        m_EmissionOcclGBuffer->setFilterMode(TextureFilterMode::Point);
 
         m_PositionGBuffer->setWrapMode(TextureWrapMode::Clamp);
         m_NormalSmoothGBuffer->setWrapMode(TextureWrapMode::Clamp);
         m_AlbedoMetalGBuffer->setWrapMode(TextureWrapMode::Clamp);
-        m_EmissionGBuffer->setWrapMode(TextureWrapMode::Clamp);
+        m_EmissionOcclGBuffer->setWrapMode(TextureWrapMode::Clamp);
     }
     else
     {
@@ -64,7 +64,7 @@ void GeometryBuffers::setGBufferTextures(Material& mat) const
     mat.setTexture("u_Position", m_PositionGBuffer);
     mat.setTexture("u_NormalSmooth", m_NormalSmoothGBuffer);
     mat.setTexture("u_AlbedoMetal", m_AlbedoMetalGBuffer);
-    mat.setTexture("u_Emission", m_EmissionGBuffer);
+    mat.setTexture("u_EmissionOccl", m_EmissionOcclGBuffer);
 }
 
 void GeometryBuffers::internalDispose()
@@ -75,7 +75,7 @@ void GeometryBuffers::internalDispose()
     delete m_PositionGBuffer;
     delete m_NormalSmoothGBuffer;
     delete m_AlbedoMetalGBuffer;
-    delete m_EmissionGBuffer;
+    delete m_EmissionOcclGBuffer;
 
     if (m_DepthTexture)
         delete m_DepthTexture;

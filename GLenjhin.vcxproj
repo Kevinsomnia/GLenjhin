@@ -41,6 +41,7 @@
     <ClCompile Include="src\Renderer\FullscreenTriangle.cpp" />
     <ClCompile Include="src\Renderer\ImageEffects\Deferred\DeferredEffect.cpp" />
     <ClCompile Include="src\Renderer\ImageEffects\Deferred\DeferredEffectChain.cpp" />
+    <ClCompile Include="src\Renderer\ImageEffects\Deferred\SSAO.cpp" />
     <ClCompile Include="src\Renderer\ImageEffects\PostProcess\Bloom.cpp" />
     <ClCompile Include="src\Renderer\ImageEffects\PostProcess\GaussianBlur.cpp" />
     <ClCompile Include="src\Renderer\ImageEffects\PostProcess\GlobalFog.cpp" />
@@ -94,6 +95,7 @@
     <ClInclude Include="src\Renderer\FullscreenTriangle.h" />
     <ClInclude Include="src\Renderer\ImageEffects\Deferred\DeferredEffect.h" />
     <ClInclude Include="src\Renderer\ImageEffects\Deferred\DeferredEffectChain.h" />
+    <ClInclude Include="src\Renderer\ImageEffects\Deferred\SSAO.h" />
     <ClInclude Include="src\Renderer\ImageEffects\PostProcess\Bloom.h" />
     <ClInclude Include="src\Renderer\ImageEffects\PostProcess\GaussianBlur.h" />
     <ClInclude Include="src\Renderer\ImageEffects\PostProcess\GlobalFog.h" />

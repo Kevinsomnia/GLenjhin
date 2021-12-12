@@ -159,6 +159,9 @@
     <ClCompile Include="src\Renderer\ImageEffects\Deferred\DeferredEffectChain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Renderer\ImageEffects\Deferred\SSAO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Application.h">
@@ -312,6 +315,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Renderer\ImageEffects\Deferred\DeferredEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\ImageEffects\Deferred\SSAO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

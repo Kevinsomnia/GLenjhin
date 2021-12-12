@@ -16,9 +16,12 @@ using std::endl;
 enum class TextureFormat
 {
     None,       // Can be used to signify disabled/unused texture
+    R8,         // 8 bits per channel, R
     RGB24,      // 8 bits per channel, RGB
     RGBA32,     // 8 bits per channel, RGBA
+    RHalf,      // 16 bits per channel (floating point), R
     RGBAHalf,   // 16 bits per channel (floating point), RGBA
+    RFloat,     // 32 bits per channel (floating point), R
     RGBAFloat,  // 32 bits per channel (floating point), RGBA
     Depth16,    // 16-bit floating point depth texture
     Depth24,    // 24-bit floating point depth texture
@@ -99,12 +102,18 @@ struct GLTextureParams
     {
         switch (format)
         {
+            case TextureFormat::R8:
+                return GLTextureParams { GL_R8, GL_RED, GL_UNSIGNED_BYTE };
             case TextureFormat::RGB24:
                 return GLTextureParams { sRGB ? GL_SRGB : GL_RGB, GL_RGB, GL_UNSIGNED_BYTE };
             case TextureFormat::RGBA32:
                 return GLTextureParams { sRGB ? GL_SRGB_ALPHA : GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE };
+            case TextureFormat::RHalf:
+                return GLTextureParams { GL_R16F, GL_RED, GL_HALF_FLOAT };
             case TextureFormat::RGBAHalf:
                 return GLTextureParams { GL_RGBA16F, GL_RGBA, GL_HALF_FLOAT };
+            case TextureFormat::RFloat:
+                return GLTextureParams { GL_R32F, GL_RED, GL_FLOAT };
             case TextureFormat::RGBAFloat:
                 return GLTextureParams { GL_RGBA32F, GL_RGBA, GL_FLOAT };
             case TextureFormat::Depth16:

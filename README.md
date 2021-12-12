@@ -13,6 +13,7 @@ Supports Windows 64-bit only.
   - Real-time shadows with 4x4 PCF (soft filtering)
   - Directional lights
 - HDR and post processing effects pipeline
+  - Deferred SSAO (Screen Space Ambient Occlusion)
   - Bloom
   - Tonemapping
   - Fullscreen Gaussian blur
