@@ -156,6 +156,9 @@ void main()
     vec4 albedoMetallic = texture2D(u_AlbedoMetal, v_UV);
     vec4 emissionOcclusion = texture2D(u_EmissionOccl, v_UV);
 
+    // Fixup precision issues (especially at extremely high smoothness) by renormalizing.
+    normalsSmoothness.xyz = normalize(normalsSmoothness.xyz);
+
     // Per-view calculations.
     vec3 F0 = mix(vec3(0.04), albedoMetallic.rgb, albedoMetallic.a);    // Di-electric / Metallic: specular color
     vec3 viewDir = normalize(u_CameraPos - position.xyz);

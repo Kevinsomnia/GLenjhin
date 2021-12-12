@@ -16,8 +16,6 @@ void DeferredEffectChain::add(DeferredEffect* effect)
 {
     effect->lazyInitialize(m_Camera);
     m_Effects.push_back(effect);
-
-    // Other initialization stuff
 }
 
 void DeferredEffectChain::render()
