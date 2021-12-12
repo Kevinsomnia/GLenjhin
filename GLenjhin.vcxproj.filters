@@ -147,10 +147,16 @@
     <ClCompile Include="src\Renderer\ImageEffects\PostProcess\Tonemapping.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Renderer\ImageEffects\ImageEffect.cpp">
+    <ClCompile Include="src\Renderer\ImageEffects\PostProcess\PostProcessEffect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Renderer\ImageEffects\ImageEffectChain.cpp">
+    <ClCompile Include="src\Renderer\ImageEffects\PostProcess\PostProcessEffectChain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\ImageEffects\Deferred\DeferredEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\ImageEffects\Deferred\DeferredEffectChain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -296,10 +302,16 @@
     <ClInclude Include="src\Renderer\ImageEffects\PostProcess\Tonemapping.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Renderer\ImageEffects\ImageEffect.h">
+    <ClInclude Include="src\Renderer\ImageEffects\PostProcess\PostProcessEffectChain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Renderer\ImageEffects\ImageEffectChain.h">
+    <ClInclude Include="src\Renderer\ImageEffects\PostProcess\PostProcessEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\ImageEffects\Deferred\DeferredEffectChain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\ImageEffects\Deferred\DeferredEffect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

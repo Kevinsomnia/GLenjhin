@@ -2,9 +2,9 @@
 #define GAUSSIAN_BLUR_H
 
 #include "../../Material.h"
-#include "../ImageEffect.h"
+#include "PostProcessEffect.h"
 
-class GaussianBlur : public ImageEffect
+class GaussianBlur : public PostProcessEffect
 {
 public:
     GaussianBlur();

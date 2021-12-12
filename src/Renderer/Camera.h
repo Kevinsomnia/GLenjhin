@@ -9,7 +9,8 @@
 #include "../Math/Matrix4x4.h"
 #include "Deferred/GeometryBuffers.h"
 #include "Texture/Texture.h"
-#include "ImageEffects/ImageEffectChain.h"
+#include "ImageEffects/Deferred/DeferredEffectChain.h"
+#include "ImageEffects/PostProcess/PostProcessEffectChain.h"
 #include "Transform.h"
 
 using std::cout;
@@ -17,8 +18,10 @@ using std::endl;
 
 
 // Forward declaration
-class ImageEffect;
-class ImageEffectChain;
+class DeferredEffect;
+class DeferredEffectChain;
+class PostProcessEffect;
+class PostProcessEffectChain;
 class Scene;
 
 
@@ -75,8 +78,8 @@ public:
     void update();
     void draw(Scene* scene, bool drawSkybox);
     void blitToScreen() const;
-    void addDeferredEffect(ImageEffect* effect);
-    void addPostProcessEffect(ImageEffect* effect);
+    void addDeferredEffect(DeferredEffect* effect);
+    void addPostProcessEffect(PostProcessEffect* effect);
     void addBuffersToDebugWindow(DebugTextureListWindow& window) const;
     inline bool isDeferred() const { return m_GBuffers; }
     BufferTexture* getRenderTargetBuffer() const { return m_RenderTargetBuffer; }
@@ -96,8 +99,8 @@ private:
     Transform* m_Transform;
     GeometryBuffers* m_GBuffers;
     BufferTexture* m_RenderTargetBuffer;
-    ImageEffectChain* m_PostProcessChain;
-    ImageEffectChain* m_DeferredChain;
+    PostProcessEffectChain* m_PostProcessChain;
+    DeferredEffectChain* m_DeferredChain;
     Material* m_DeferredGeometryMat;
     Material* m_DeferredLightingMat;
     Material* m_BlitMat;

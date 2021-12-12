@@ -1,20 +1,20 @@
-#include "ImageEffect.h"
+#include "DeferredEffect.h"
 
-ImageEffect::ImageEffect(const std::string& shaderPath) : m_Initialized(false)
+DeferredEffect::DeferredEffect(const std::string& shaderPath) : m_Initialized(false)
 {
     m_Shader = new Shader(shaderPath);
     m_Material = new Material(m_Shader);
     m_Triangle = new FullscreenTriangle(nullptr);
 }
 
-ImageEffect::~ImageEffect()
+DeferredEffect::~DeferredEffect()
 {
     delete m_Shader;
     delete m_Material;
     delete m_Triangle;
 }
 
-void ImageEffect::lazyInitialize(Camera* camera)
+void DeferredEffect::lazyInitialize(Camera* camera)
 {
     if (m_Initialized)
         return;
@@ -23,12 +23,12 @@ void ImageEffect::lazyInitialize(Camera* camera)
     m_Camera = camera;
 }
 
-void ImageEffect::render(BufferTexture* source, BufferTexture* destination)
+void DeferredEffect::render(BufferTexture* source, BufferTexture* destination)
 {
     render(source, destination, m_Material);
 }
 
-void ImageEffect::render(BufferTexture* source, BufferTexture* destination, Material* mat)
+void DeferredEffect::render(BufferTexture* source, BufferTexture* destination, Material* mat)
 {
     // Render `source` to quad and output to `destination` FBO.
     glViewport(0, 0, destination->width(), destination->height());

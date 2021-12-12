@@ -1,24 +1,24 @@
-#ifndef IMAGE_EFFECT_H
-#define IMAGE_EFFECT_H
+#ifndef POST_PROCESS_EFFECT_H
+#define POST_PROCESS_EFFECT_H
 
 #include <iostream>
 
-#include "../Camera.h"
-#include "../FullscreenTriangle.h"
-#include "../Material.h"
-#include "../Shader.h"
-#include "../Texture/Texture.h"
+#include "../../Camera.h"
+#include "../../FullscreenTriangle.h"
+#include "../../Material.h"
+#include "../../Shader.h"
+#include "../../Texture/Texture.h"
 
 
 // Forward declaration
 class Camera;
 
 
-class ImageEffect
+class PostProcessEffect
 {
 public:
-    ImageEffect(const std::string& shaderPath);
-    ~ImageEffect();
+    PostProcessEffect(const std::string& shaderPath);
+    ~PostProcessEffect();
     virtual void lazyInitialize(Camera* camera);
     virtual void render(BufferTexture* source, BufferTexture* destination);
     void render(BufferTexture* source, BufferTexture* destination, Material* mat);
@@ -30,4 +30,4 @@ protected:
     FullscreenTriangle* m_Triangle;
 };
 
-#endif // IMAGE_EFFECT_H
+#endif // POST_PROCESS_EFFECT_H

@@ -1,9 +1,9 @@
 #ifndef GLOBAL_FOG_H
 #define GLOBAL_FOG_H
 
-#include "../ImageEffect.h"
+#include "PostProcessEffect.h"
 
-class GlobalFog : public ImageEffect
+class GlobalFog : public PostProcessEffect
 {
 public:
     GlobalFog();

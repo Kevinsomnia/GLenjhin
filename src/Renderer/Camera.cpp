@@ -47,7 +47,7 @@ Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, co
         m_DeferredLightingMat = new Material(new Shader("res\\shaders\\Deferred\\DeferredLighting.glsl"));
         m_GBuffers->setGBufferTextures(*m_DeferredLightingMat);
 
-        m_DeferredChain = new ImageEffectChain(this, ImageEffectChainType::Deferred);
+        m_DeferredChain = new DeferredEffectChain(this);
     }
     else
     {
@@ -56,7 +56,7 @@ Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, co
 
     TextureFormat colorFormat = (bufferFlags & CameraBufferFlags::Color) != CameraBufferFlags::None ? TextureFormat::RGBAHalf : TextureFormat::None;
     m_RenderTargetBuffer = new BufferTexture(pixelWidth, pixelHeight, depthBits, colorFormat);
-    m_PostProcessChain = new ImageEffectChain(this, ImageEffectChainType::PostProcess);
+    m_PostProcessChain = new PostProcessEffectChain(this);
     m_BlitMat = new Material(new Shader("res\\shaders\\ImageEffects\\Common\\Copy.glsl"));
     m_FullscreenTriangle = new FullscreenTriangle(m_BlitMat);
     update();
@@ -159,13 +159,13 @@ void Camera::blitToScreen() const
     m_FullscreenTriangle->draw();
 }
 
-void Camera::addDeferredEffect(ImageEffect* effect)
+void Camera::addDeferredEffect(DeferredEffect* effect)
 {
     assert(isDeferred());
     m_DeferredChain->add(effect);
 }
 
-void Camera::addPostProcessEffect(ImageEffect* effect)
+void Camera::addPostProcessEffect(PostProcessEffect* effect)
 {
     m_PostProcessChain->add(effect);
 }

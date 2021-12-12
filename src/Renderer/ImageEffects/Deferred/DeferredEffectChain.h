@@ -1,0 +1,33 @@
+#ifndef DEFERRED_EFFECT_CHAIN_H
+#define DEFERRED_EFFECT_CHAIN_H
+
+#include <iostream>
+#include <vector>
+
+#include "../../../Math/Math.h"
+#include "../../Camera.h"
+#include "../../FullscreenTriangle.h"
+#include "../../Material.h"
+#include "DeferredEffect.h"
+
+
+// Forward declaration
+class Camera;
+class DeferredEffect;
+
+
+class DeferredEffectChain
+{
+public:
+    DeferredEffectChain(Camera* camera);
+    ~DeferredEffectChain();
+    void add(DeferredEffect* effect);
+    void render();
+private:
+    Camera* m_Camera;
+    Material* m_CopyMat;
+    FullscreenTriangle* m_Triangle;
+    std::vector<DeferredEffect*> m_Effects;
+};
+
+#endif // DEFERRED_EFFECT_CHAIN_H
