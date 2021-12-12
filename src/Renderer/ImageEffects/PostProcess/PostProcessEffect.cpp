@@ -31,8 +31,7 @@ void PostProcessEffect::render(BufferTexture* source, BufferTexture* destination
 void PostProcessEffect::render(BufferTexture* destination, Material* mat) const
 {
     // Use `mat` directly to output to `destination` FBO.
-    glViewport(0, 0, destination->width(), destination->height());
-    glBindFramebuffer(GL_FRAMEBUFFER, destination->id());
+    destination->bind();
     m_Triangle->setMaterial(mat);
     m_Triangle->draw();
 }

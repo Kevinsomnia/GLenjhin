@@ -60,9 +60,15 @@ Texture2D* BufferTexture::depthTexture() const
     return m_DepthTexture;
 }
 
+void BufferTexture::bind() const
+{
+    glViewport(0, 0, m_Width, m_Height);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_TextureID);
+}
+
 void BufferTexture::bind(uint32_t slotIndex) const
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, m_TextureID);
+    bind();
 }
 
 void BufferTexture::setFilterMode(TextureFilterMode filterMode)

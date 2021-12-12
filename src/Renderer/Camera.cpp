@@ -85,13 +85,11 @@ void Camera::update()
 
 void Camera::draw(Scene* scene, bool drawSkybox)
 {
-    glViewport(0, 0, m_RenderTargetBuffer->width(), m_RenderTargetBuffer->height());
-
     if (m_GBuffers)
     {
         // === Deferred ===
         // First pass: render scene to GBuffers + depth texture
-        glBindFramebuffer(GL_FRAMEBUFFER, m_GBuffers->id());
+        m_GBuffers->bind();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         if (scene)
@@ -101,7 +99,7 @@ void Camera::draw(Scene* scene, bool drawSkybox)
         m_DeferredChain->render();
 
         // Second pass: calculate lighting in screen-space, output to color buffer
-        glBindFramebuffer(GL_FRAMEBUFFER, m_RenderTargetBuffer->id());
+        m_RenderTargetBuffer->bind();
 
         if (scene)
         {
@@ -128,7 +126,7 @@ void Camera::draw(Scene* scene, bool drawSkybox)
     {
         // === Forward ===
         // Store scene color in buffer texture
-        glBindFramebuffer(GL_FRAMEBUFFER, m_RenderTargetBuffer->id());
+        m_RenderTargetBuffer->bind();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         if (scene)

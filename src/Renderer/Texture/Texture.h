@@ -175,6 +175,7 @@ public:
     ~BufferTexture();
     Texture2D* colorTexture() const;
     Texture2D* depthTexture() const;
+    void bind() const;
     void bind(uint32_t slotIndex) const override;
     void setFilterMode(TextureFilterMode filterMode) override;
     void setWrapMode(TextureWrapMode wrapMode) override;

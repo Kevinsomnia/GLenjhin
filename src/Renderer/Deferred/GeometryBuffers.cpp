@@ -53,6 +53,12 @@ GeometryBuffers::~GeometryBuffers()
     internalDispose();
 }
 
+void GeometryBuffers::bind() const
+{
+    glViewport(0, 0, m_Width, m_Height);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_FboID);
+}
+
 void GeometryBuffers::setGBufferTextures(Material& mat) const
 {
     mat.setTexture("u_Position", m_PositionGBuffer);

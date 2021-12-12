@@ -30,9 +30,8 @@ void DeferredEffect::render(BufferTexture* source, BufferTexture* destination)
 
 void DeferredEffect::render(BufferTexture* source, BufferTexture* destination, Material* mat)
 {
-    // Render `source` to quad and output to `destination` FBO.
-    glViewport(0, 0, destination->width(), destination->height());
-    glBindFramebuffer(GL_FRAMEBUFFER, destination->id());
+    // Use `mat` directly to output to `destination` FBO.
+    destination->bind();
 
     if (source)
         mat->setTexture("u_MainTex", source->colorTexture());

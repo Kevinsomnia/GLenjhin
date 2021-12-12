@@ -48,9 +48,7 @@ void DirectionalLight::renderShadows(const Scene* scene) const
     if (!m_DepthCamera || !scene)
         return;
 
-    BufferTexture* bufferTex = m_DepthCamera->getRenderTargetBuffer();
-    glViewport(0, 0, bufferTex->width(), bufferTex->height());
-    glBindFramebuffer(GL_FRAMEBUFFER, bufferTex->id());
+    m_DepthCamera->getRenderTargetBuffer()->bind();
     glClear(GL_DEPTH_BUFFER_BIT);
     scene->drawShadowPass(*this, *m_ShadowMat);
 }

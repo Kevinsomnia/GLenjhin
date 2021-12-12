@@ -14,6 +14,7 @@ class GeometryBuffers
 public:
     GeometryBuffers(uint32_t width, uint32_t height, uint8_t depth);
     ~GeometryBuffers();
+    void bind() const;
     void setGBufferTextures(Material& mat) const;
     uint32_t id() const { return m_FboID; }
     uint32_t width() const { return m_Width; }

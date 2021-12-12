@@ -53,8 +53,7 @@ void PostProcessEffectChain::render()
     if (m_Effects.size() > 0)
     {
         // Copy final color buffer back into `source`, as long as we processed at least one effect.
-        glViewport(0, 0, source->width(), source->height());
-        glBindFramebuffer(GL_FRAMEBUFFER, source->id());
+        source->bind();
         m_CopyMat->setTexture("u_MainTex", m_ColorBuffers[pingPongFlag]->colorTexture());
         m_Triangle->draw();
     }
