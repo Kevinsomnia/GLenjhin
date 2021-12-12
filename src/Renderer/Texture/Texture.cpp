@@ -40,6 +40,15 @@ void Texture::setWrapMode(TextureWrapMode wrapMode)
     glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_T, mode);
 }
 
+void Texture::setBorderColor(const Color& c)
+{
+    if (m_TextureID == 0)
+        return;
+
+    // We shouldn't need to store the border color. Don't think there's any reason to get it, but if we do need it later, it's trivial to add.
+    glTextureParameterfv(m_TextureID, GL_TEXTURE_BORDER_COLOR, c);
+}
+
 Vector2 Texture::texelSize() const
 {
     return Vector2(1.0f / m_Width, 1.0f / m_Height);

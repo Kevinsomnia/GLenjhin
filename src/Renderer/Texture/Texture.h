@@ -44,7 +44,8 @@ enum class TextureWrapMode
 {
     Repeat, // GL_REPEAT
     Clamp,  // GL_CLAMP_TO_EDGE
-    Mirror  // GL_MIRRORED_REPEAT
+    Mirror, // GL_MIRRORED_REPEAT
+    Border  // GL_CLAMP_TO_BORDER
 };
 
 static GLint GetGLTextureWrapMode(TextureWrapMode mode)
@@ -57,6 +58,8 @@ static GLint GetGLTextureWrapMode(TextureWrapMode mode)
             return GL_CLAMP_TO_EDGE;
         case TextureWrapMode::Mirror:
             return GL_MIRRORED_REPEAT;
+        case TextureWrapMode::Border:
+            return GL_CLAMP_TO_BORDER;
         default:
             cerr << "Unimplemented TextureWrapMode conversion " << static_cast<uint32_t>(mode) << endl;
             return GL_NONE;
@@ -128,6 +131,7 @@ public:
     virtual void bind(uint32_t slotIndex) const;
     virtual void setFilterMode(TextureFilterMode filterMode);
     virtual void setWrapMode(TextureWrapMode wrapMode);
+    virtual void setBorderColor(const Color& c);
     uint32_t id() const { return m_TextureID; }
     uint32_t width() const { return m_Width; }
     uint32_t height() const { return m_Height; }
