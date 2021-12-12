@@ -21,7 +21,8 @@ public:
     ~PostProcessEffect();
     virtual void lazyInitialize(Camera* camera);
     virtual void render(BufferTexture* source, BufferTexture* destination);
-    void render(BufferTexture* source, BufferTexture* destination, Material* mat);
+    void render(BufferTexture* destination, Material* mat) const;
+    void render(BufferTexture* source, BufferTexture* destination, Material* mat) const;
 protected:
     bool m_Initialized;
     Camera* m_Camera;

@@ -28,15 +28,18 @@ void PostProcessEffect::render(BufferTexture* source, BufferTexture* destination
     render(source, destination, m_Material);
 }
 
-void PostProcessEffect::render(BufferTexture* source, BufferTexture* destination, Material* mat)
+void PostProcessEffect::render(BufferTexture* destination, Material* mat) const
 {
-    // Render `source` to quad and output to `destination` FBO.
+    // Use `mat` directly to output to `destination` FBO.
     glViewport(0, 0, destination->width(), destination->height());
     glBindFramebuffer(GL_FRAMEBUFFER, destination->id());
-
-    if (source)
-        mat->setTexture("u_MainTex", source->colorTexture());
-
     m_Triangle->setMaterial(mat);
     m_Triangle->draw();
+}
+
+void PostProcessEffect::render(BufferTexture* source, BufferTexture* destination, Material* mat) const
+{
+    // Copy `source` to `destination` FBO using `mat`.
+    mat->setTexture("u_MainTex", source->colorTexture());
+    render(destination, mat);
 }
