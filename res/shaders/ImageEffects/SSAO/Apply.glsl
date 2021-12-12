@@ -16,7 +16,7 @@ void main()
 #pragma fragment
 #version 330 core
 
-layout(location = 3) out vec4 gEmission;
+layout(location = 3) out vec4 gEmissionOcclusion;
 
 uniform sampler2D u_EmissionOccl;
 uniform sampler2D u_Occlusion;
@@ -28,5 +28,5 @@ void main()
     vec4 emissionOcclusion = texture2D(u_EmissionOccl, v_UV);
     float occlusion = texture2D(u_Occlusion, v_UV).r;
     emissionOcclusion.a *= occlusion;
-    gEmission = emissionOcclusion;
+    gEmissionOcclusion = emissionOcclusion;
 }

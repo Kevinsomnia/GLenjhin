@@ -55,17 +55,20 @@ void main()
         vec3 worldPos = texture2D(u_Position, v_UV).rgb;
         vec3 worldNormal = texture2D(u_NormalSmooth, v_UV).rgb;
 
+        // Fixup precision issues (especially at extremely high smoothness) by renormalizing.
+        worldNormal = normalize(worldNormal);
+
         // We need calculations to be in view-space since depth is in view-space.
         vec4 viewPos = u_V * vec4(worldPos, 1.0);
         vec3 viewNormal = mat3(u_V) * worldNormal;
 
         // Use random noise in screen-space to dither and eliminate banding artifacts.
         vec2 noiseScale = vec2(1.0) / (u_TexelSize / u_NoiseTexelSize);
-        vec2 noise = texture2D(u_Noise, v_UV * noiseScale).rg; // [-1, 1]
+        vec2 noise = texture2D(u_Noise, v_UV * noiseScale).rg * 2.0 - 1.0; // [-1, 1]
 
         // We will need to get the orthonormal basis vectors oriented along the surface normal, in view space.
         // We use this to transform our tangent-space hemisphere samples.
-        vec3 tangentBase = vec3(normalize(noise.xy), 0.0);
+        vec3 tangentBase = vec3(normalize(noise), 0.0);
         vec3 viewTangent = normalize(tangentBase - (viewNormal * dot(tangentBase, viewNormal)));
         vec3 viewBitangent = cross(viewNormal, viewTangent);
 
@@ -89,22 +92,22 @@ void main()
             clipPos.xy /= clipPos.w;
             clipPos.xy = clipPos.xy * 0.5 + 0.5;
 
-            // The world position of the surface "behind" the viewSamplePos fragment.
-            vec3 sampleWorldPos = texture2D(u_Position, clipPos.xy).rgb;
+            // Essentially fetches the world position along the ray towards the view-space hemisphere sample.
+            vec3 rayWorldPos = texture2D(u_Position, clipPos.xy).rgb;
 
             // Ignore samples that are in front of "nothing", otherwise they would lead to invalid occlusion results. We approximate this by checking for the position GBuffer's clear color (0, 0, 0).
             // Sampling the NDC depth won't give us accurate results, unlike the first depth check.
-            if (dot(sampleWorldPos, sampleWorldPos) > 0.0)
+            if (dot(rayWorldPos, rayWorldPos) > 0.0)
             {
-                // Linear view-space depth for the surface "behind" viewSamplePos. TODO: only Z coord is needed
-                vec4 surfaceViewDepth = u_V * vec4(sampleWorldPos, 1.0);
+                // Transform the Z depth of this world ray into view space. TODO: only Z coord is needed
+                vec4 rayViewPos = u_V * vec4(rayWorldPos, 1.0);
 
-                // 1.0 if this viewSamplePos is being occluded behind a surface, otherwise 0.0.
-                float contrib = (-viewSamplePos.z > -surfaceViewDepth.z + BIAS) ? 1.0 : 0.0;
-                // We would need to test both hemisphere-sampled view depth and the original frag view depth.
+                // 1.0 if this viewSamplePos is being occluded behind a surface (rayViewPos), otherwise 0.0.
+                float contrib = (-viewSamplePos.z > -rayViewPos.z + BIAS) ? 1.0 : 0.0;
+                // We would need to test both ray view depth and the fragment's view depth, to check whether or not it's in range of the hemisphere radius.
                 // This is to handle cases where, for example, the hemisphere normal is pointing orthogonal (camera looking through the side of the hemisphere).
                 // Also applies a nice inverse falloff based on depth difference.
-                float depthCheck = clamp(u_Radius / abs(-surfaceViewDepth.z - -viewPos.z), 0.0, 1.0);
+                float depthCheck = clamp(u_Radius / abs(-rayViewPos.z - -viewPos.z), 0.0, 1.0);
                 occlusion += contrib * depthCheck;
             }
         }

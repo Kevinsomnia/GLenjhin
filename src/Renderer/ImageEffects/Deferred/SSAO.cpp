@@ -54,8 +54,6 @@ void SSAO::lazyInitialize(Camera* camera)
     m_OcclusionMat->setFloat("u_Intensity", 1.0f);
 }
 
-// 1730 FPS -> 1000 FPS =  0.578 ms -> 1 ms = 0.42 ms
-
 void SSAO::render()
 {
     DeferredEffect::render();
