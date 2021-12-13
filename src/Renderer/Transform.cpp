@@ -36,6 +36,16 @@ Matrix4x4 Transform::getTRS()
     return m_TRS;
 }
 
+Vector3 Transform::getForward() const
+{
+    return transformDirection(Vector3::forward);
+}
+
+Vector3 Transform::transformDirection(const Vector3& dir) const
+{
+    return m_TRS.multiplyVector(dir);
+}
+
 void Transform::setPosition(const Vector3& position)
 {
     m_Position = position;

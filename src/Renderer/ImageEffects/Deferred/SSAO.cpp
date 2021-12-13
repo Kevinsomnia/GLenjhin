@@ -23,6 +23,9 @@ SSAO::~SSAO()
 
 void SSAO::lazyInitialize(Camera* camera)
 {
+    if (m_Initialized)
+        return;
+
     DeferredEffect::lazyInitialize(camera);
 
     // Create a GBuffer copy of EmissionOcclusion to read from, since we can't read and write to it simulataneously.

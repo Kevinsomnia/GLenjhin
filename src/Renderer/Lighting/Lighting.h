@@ -22,6 +22,7 @@ public:
     virtual void renderShadows(const Scene* scene) const = 0;
     virtual Matrix4x4 getLightMatrix() const = 0;
     virtual void addBuffersToDebugWindow(DebugTextureListWindow& window) const = 0;
+    Transform* getTransform() const { return m_Transform; }
 protected:
     Light(const Vector3& pos, const Vector3& rot);
     Transform* m_Transform;

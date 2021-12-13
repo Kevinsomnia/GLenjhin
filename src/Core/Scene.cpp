@@ -34,13 +34,13 @@ Scene::Scene()
     wall->setupRenderer(MeshPrimitives::cube, m_CurrMat);
     m_Entities.push_back(wall);
 
-    Entity* dragon = new Entity(Vector3(-4.5f, 1.5f, 1.0f), rotationToRad(Vector3(-90.0f, 30.0f, 0.0f)), Vector3::one * 0.1f);
+    Entity* dragon = new Entity(Vector3(-4.5f, 1.0f, 1.0f), rotationToRad(Vector3(-90.0f, 30.0f, 0.0f)), Vector3::one * 0.1f);
     dragon->setupRenderer(m_DragonModel.meshes[0], whiteMat);
     m_Entities.push_back(dragon);
 
     for (size_t i = 0; i < m_CustomModel.meshes.size(); i++)
     {
-        Entity* model = new Entity(Vector3(-2.0f, 0.5f, -1.0f), Vector3(45.0f, 90.0f, 15.0f), Vector3::one);
+        Entity* model = new Entity(Vector3(-2.0f, 0.5f, -1.0f), rotationToRad(Vector3(45.0f, 90.0f, 15.0f)), Vector3::one);
         model->setupRenderer(m_CustomModel.meshes[i], whiteMat);
         m_Entities.push_back(model);
     }

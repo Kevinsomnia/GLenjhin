@@ -15,6 +15,7 @@ Supports Windows 64-bit only.
 - HDR and post processing effects pipeline
   - Deferred SSAO (Screen Space Ambient Occlusion)
   - Bloom
+  - Sun Shafts (God Rays)
   - Tonemapping
   - Fullscreen Gaussian blur
   - Fog

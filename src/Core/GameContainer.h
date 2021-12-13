@@ -10,6 +10,7 @@
 #include "../Renderer/ImageEffects/PostProcess/Bloom.h"
 #include "../Renderer/ImageEffects/PostProcess/GaussianBlur.h"
 #include "../Renderer/ImageEffects/PostProcess/GlobalFog.h"
+#include "../Renderer/ImageEffects/PostProcess/SunShafts.h"
 #include "../Renderer/ImageEffects/PostProcess/Tonemapping.h"
 
 #include "imgui.h"
