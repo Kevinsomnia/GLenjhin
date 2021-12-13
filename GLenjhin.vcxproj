@@ -22,7 +22,6 @@
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\GameContainer.cpp" />
     <ClCompile Include="src\Core\Scene.cpp" />
-    <ClCompile Include="src\Core\ShaderCompiler.cpp" />
     <ClCompile Include="src\Core\Time.cpp" />
     <ClCompile Include="src\GUI\DebugOverlayWindow.cpp" />
     <ClCompile Include="src\GUI\DebugTextureListWindow.cpp" />
@@ -75,9 +74,11 @@
     <ClInclude Include="src\Core\Debug.h" />
     <ClInclude Include="src\Core\GameContainer.h" />
     <ClInclude Include="src\Core\Scene.h" />
-    <ClInclude Include="src\Core\ShaderCompiler.h" />
+    <ClInclude Include="src\Core\ShaderCompiler.hpp" />
     <ClInclude Include="src\Core\Time.h" />
-    <ClInclude Include="src\GUI\GUIWindows.h" />
+    <ClInclude Include="src\GUI\DebugOverlayWindow.h" />
+    <ClInclude Include="src\GUI\DebugTextureListWindow.h" />
+    <ClInclude Include="src\GUI\TexturePickerWindow.h" />
     <ClInclude Include="src\Interaction\Input.h" />
     <ClInclude Include="src\Interaction\InputCodes.h" />
     <ClInclude Include="src\IO\ImageLib.h" />
@@ -109,7 +110,9 @@
     <ClInclude Include="src\Renderer\MeshRenderer.h" />
     <ClInclude Include="src\Renderer\Shader.h" />
     <ClInclude Include="src\Renderer\Skybox.h" />
+    <ClInclude Include="src\Renderer\Texture\BufferTexture.h" />
     <ClInclude Include="src\Renderer\Texture\Texture.h" />
+    <ClInclude Include="src\Renderer\Texture\Texture2D.h" />
     <ClInclude Include="src\Renderer\Transform.h" />
     <ClInclude Include="vendor\Glad\include\glad\glad.h" />
     <ClInclude Include="vendor\Glad\include\KHR\khrplatform.h" />
@@ -196,6 +199,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)vendor\Glad\include;$(SolutionDir)vendor\imgui;$(SolutionDir)Dependencies\assimp\include;$(SolutionDir)Dependencies\GLFW\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -215,6 +219,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)vendor\Glad\include;$(SolutionDir)vendor\imgui;$(SolutionDir)Dependencies\assimp\include;$(SolutionDir)Dependencies\GLFW\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -234,6 +239,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)vendor\Glad\include;$(SolutionDir)vendor\imgui;$(SolutionDir)Dependencies\assimp\include;$(SolutionDir)Dependencies\GLFW\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -253,6 +259,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)vendor\Glad\include;$(SolutionDir)vendor\imgui;$(SolutionDir)Dependencies\assimp\include;$(SolutionDir)Dependencies\GLFW\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

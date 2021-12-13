@@ -1,7 +1,5 @@
-#ifndef POST_PROCESS_EFFECT_CHAIN_H
-#define POST_PROCESS_EFFECT_CHAIN_H
+#pragma once
 
-#include <iostream>
 #include <vector>
 
 #include "../../../Math/Math.h"
@@ -32,5 +30,3 @@ private:
     size_t m_NumColorBuffers;  // Valid values: 0, 1, or 2. Represents how many m_ColorBuffers are in use.
     std::vector<PostProcessEffect*> m_Effects;
 };
-
-#endif // POST_PROCESS_EFFECT_CHAIN_H

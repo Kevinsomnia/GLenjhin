@@ -1,7 +1,5 @@
-#ifndef MESHRENDERER_H
-#define MESHRENDERER_H
+#pragma once
 
-#include <iostream>
 #include <glad/glad.h>
 #include "Lighting/Lighting.h"
 #include "Material.h"
@@ -29,5 +27,3 @@ private:
     Mesh* m_Mesh;
     Material* m_Material;
 };
-
-#endif // MESHRENDERER_H

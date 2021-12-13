@@ -1,12 +1,10 @@
-#ifndef MODEL_LIB_H
-#define MODEL_LIB_H
+#pragma once
 
 #include <assert.h>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <chrono>
-#include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
@@ -37,5 +35,3 @@ namespace ModelLib
         static Assimp::Importer* importerInstance;
     };
 }
-
-#endif

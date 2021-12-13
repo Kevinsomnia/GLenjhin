@@ -1,8 +1,6 @@
-#ifndef SKYBOX_H
-#define SKYBOX_H
+#pragma once
 
-#include <iostream>
-#include "../Math/Matrix4x4.h"
+#include "Texture/Texture2D.h"
 #include "FullscreenTriangle.h"
 
 using std::cout;
@@ -19,5 +17,3 @@ private:
     Material* m_Material;
     FullscreenTriangle* m_Triangle;
 };
-
-#endif // SKYBOX_H

@@ -1,11 +1,9 @@
-#ifndef IMAGE_LIB_H
-#define IMAGE_LIB_H
+#pragma once
 
 #include <algorithm>
 #include <array>
 #include <chrono>
 #include <fstream>
-#include <iostream>
 #include <memory>
 
 #include "../Core/Algorithms.h"
@@ -19,8 +17,8 @@ using std::chrono::steady_clock;
 
 namespace ImageLib
 {
-    static const uint8_t PNG_FILE_HEADER_SIZE = 16;
-    static const uint8_t PNG_FILE_HEADER_INCL_DATA_SIZE = PNG_FILE_HEADER_SIZE + 13 + 4; // 13 = chunk length, 4 = CRC
+    #define PNG_FILE_HEADER_SIZE 16
+    #define PNG_FILE_HEADER_INCL_DATA_SIZE (PNG_FILE_HEADER_SIZE + 13 + 4)  // 13 = chunk length, 4 = CRC
     static const uint8_t PNG_FILE_HEADER[PNG_FILE_HEADER_SIZE] {
         0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, // magic numbers
         0x00, 0x00, 0x00, 0x0d, // chunk length (13)
@@ -207,5 +205,3 @@ namespace ImageLib
         static uint8_t PaethPredictor(uint8_t left, uint8_t up, uint8_t upLeft);
     };
 };
-
-#endif  // IMAGE_LIB_H

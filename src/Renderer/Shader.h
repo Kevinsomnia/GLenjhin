@@ -1,9 +1,7 @@
-#ifndef SHADER_H
-#define SHADER_H
+#pragma once
 
-#include <iostream>
 #include <glad/glad.h>
-#include "../Core/ShaderCompiler.h"
+#include "../Core/ShaderCompiler.hpp"
 
 using std::cout;
 using std::endl;
@@ -19,5 +17,3 @@ public:
 private:
     uint32_t m_ShaderID;
 };
-
-#endif // SHADER_H

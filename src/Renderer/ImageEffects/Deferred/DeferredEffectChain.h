@@ -1,7 +1,5 @@
-#ifndef DEFERRED_EFFECT_CHAIN_H
-#define DEFERRED_EFFECT_CHAIN_H
+#pragma once
 
-#include <iostream>
 #include <vector>
 
 #include "../../../Math/Math.h"
@@ -29,5 +27,3 @@ private:
     FullscreenTriangle* m_Triangle;
     std::vector<DeferredEffect*> m_Effects;
 };
-
-#endif // DEFERRED_EFFECT_CHAIN_H

@@ -1,4 +1,4 @@
-#include "GUIWindows.h"
+#include "TexturePickerWindow.h"
 
 TexturePickerWindow::TexturePickerWindow(std::function<void(const std::string&)> selectCallback) : m_WindowOpened(true)
 {

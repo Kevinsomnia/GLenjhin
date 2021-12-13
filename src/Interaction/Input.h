@@ -1,7 +1,5 @@
-#ifndef INPUT_H
-#define INPUT_H
+#pragma once
 
-#include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -64,5 +62,3 @@ private:
 
     static KeyPressState GetNewKeyPressState(KeyPressState currentState, bool isKeyDown);
 };
-
-#endif // INPUT_H

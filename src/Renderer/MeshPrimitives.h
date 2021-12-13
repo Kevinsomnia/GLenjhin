@@ -1,5 +1,4 @@
-#ifndef MESHPRIMITIVES_H
-#define MESHPRIMITIVES_H
+#pragma once
 
 #include <array>
 #include <vector>
@@ -50,5 +49,3 @@ public:
     static Mesh* cylinder;
     static void Init();
 };
-
-#endif

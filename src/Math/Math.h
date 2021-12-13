@@ -1,10 +1,10 @@
-#ifndef MATH_H
-#define MATH_H
+#pragma once
 
 #include <math.h>
+#include <type_traits>
 
-static const double PI = 3.14159265358979323846;
-static const float PI_FLOAT = 3.14159265358979323846f;
+#define PI 3.14159265358979323846
+#define PI_FLOAT 3.14159265358979323846f
 
 template <typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
 static T Min(const T& a, const T& b)
@@ -32,5 +32,3 @@ static T Clamp(const T& value, const T& min, const T& max)
 
     return value;
 }
-
-#endif // MATH_H

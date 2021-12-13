@@ -1,7 +1,5 @@
-#ifndef DEBUG_H
-#define DEBUG_H
+#pragma once
 
-#include <iostream>
 #include <fstream>
 #include <string>
 
@@ -13,5 +11,3 @@ namespace Debug
         file.write(reinterpret_cast<char*>(buf), bufSize);
     }
 }
-
-#endif

@@ -1,9 +1,7 @@
-#ifndef BLOOM_H
-#define BLOOM_H
+#pragma once
 
 #include <vector>
 
-#include "../../Material.h"
 #include "PostProcessEffect.h"
 
 class Bloom : public PostProcessEffect
@@ -24,5 +22,3 @@ private:
     Material* m_DownsampleMat;
     Material* m_UpsampleMat;
 };
-
-#endif // BLOOM_H

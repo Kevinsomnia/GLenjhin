@@ -1,13 +1,10 @@
-#ifndef MATERIAL_H
-#define MATERIAL_H
+#pragma once
 
-#include <iostream>
 #include <vector>
 #include <unordered_map>
 #include <glad/glad.h>
 #include "../Math/Matrix4x4.h"
 #include "Texture/Texture.h"
-#include "Color.h"
 #include "Shader.h"
 
 using std::cout;
@@ -44,5 +41,3 @@ private:
     void updateUniforms() const;
     int getShaderUniformLocation(const string& name) const;
 };
-
-#endif // MATERIAL_H

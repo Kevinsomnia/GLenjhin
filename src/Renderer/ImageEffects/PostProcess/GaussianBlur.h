@@ -1,7 +1,5 @@
-#ifndef GAUSSIAN_BLUR_H
-#define GAUSSIAN_BLUR_H
+#pragma once
 
-#include "../../Material.h"
 #include "PostProcessEffect.h"
 
 class GaussianBlur : public PostProcessEffect
@@ -21,5 +19,3 @@ private:
     Material* m_DownsampleMat;
     Material* m_BlurMat;
 };
-
-#endif // GAUSSIAN_BLUR_H

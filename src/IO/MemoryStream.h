@@ -1,5 +1,4 @@
-#ifndef MEMORY_STREAM_H
-#define MEMORY_STREAM_H
+#pragma once
 
 #include <algorithm>
 #include <exception>
@@ -969,5 +968,3 @@ void MemoryStream::expandLengthIfNeeded(size_t bitsToWrite)
         m_Size = newEndByteOffset;
     }
 }
-
-#endif  // MEMORY_STREAM_H

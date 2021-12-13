@@ -1,8 +1,6 @@
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#pragma once
 
 #include <assert.h>
-#include <iostream>
 #include <glad/glad.h>
 
 #include "../../IO/ImageLib.h"
@@ -136,7 +134,7 @@ class Texture
 {
 public:
     Texture();
-    ~Texture();
+    virtual ~Texture();
     virtual void bind(uint32_t slotIndex) const;
     virtual void setFilterMode(TextureFilterMode filterMode);
     virtual void setWrapMode(TextureWrapMode wrapMode);
@@ -156,43 +154,3 @@ protected:
     TextureFilterMode m_FilterMode;
     TextureWrapMode m_WrapMode;
 };
-
-class Texture2D : public Texture
-{
-public:
-    static Texture2D* whiteTexture;
-
-    Texture2D(uint32_t width, uint32_t height, TextureFormat colorFormat, bool readable);
-    Texture2D(const std::string& filePath, bool generateMipmaps, bool readable);
-    ~Texture2D();
-
-    ColorByte getPixel(uint32_t x, uint32_t y) const;
-    ColorByte* getPixels() const;
-    void setPixel(uint32_t x, uint32_t y, const ColorByte& c);
-    void setPixels(ColorByte* colors);
-    void uploadToGPU(bool keepReadable);
-
-    static void CreateStaticTextures();
-private:
-    static Texture2D* CreateSolidColorTexture(const ColorByte& c);
-};
-
-class BufferTexture : public Texture
-{
-public:
-    BufferTexture(uint32_t width, uint32_t height, uint8_t depth, TextureFormat colorFormat);
-    ~BufferTexture();
-    Texture2D* colorTexture() const;
-    Texture2D* depthTexture() const;
-    void bind() const;
-    void bind(uint32_t slotIndex) const override;
-    void setFilterMode(TextureFilterMode filterMode) override;
-    void setWrapMode(TextureWrapMode wrapMode) override;
-protected:
-    Texture2D* m_ColorTexture;
-    Texture2D* m_DepthTexture;
-
-    void internalDispose();
-};
-
-#endif  // TEXTURE_H

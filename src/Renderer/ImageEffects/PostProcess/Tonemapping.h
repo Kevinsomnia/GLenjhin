@@ -1,5 +1,4 @@
-#ifndef TONEMAPPING_H
-#define TONEMAPPING_H
+#pragma once
 
 #include "PostProcessEffect.h"
 
@@ -9,5 +8,3 @@ public:
     Tonemapping();
     ~Tonemapping();
 };
-
-#endif // TONEMAPPING_H

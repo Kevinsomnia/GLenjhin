@@ -1,18 +1,7 @@
-#ifndef POST_PROCESS_EFFECT_H
-#define POST_PROCESS_EFFECT_H
-
-#include <iostream>
+#pragma once
 
 #include "../../Camera.h"
-#include "../../FullscreenTriangle.h"
-#include "../../Material.h"
-#include "../../Shader.h"
-#include "../../Texture/Texture.h"
-
-
-// Forward declaration
-class Camera;
-
+#include "../../Texture/BufferTexture.h"
 
 class PostProcessEffect
 {
@@ -30,5 +19,3 @@ protected:
     Material* m_Material;
     FullscreenTriangle* m_Triangle;
 };
-
-#endif // POST_PROCESS_EFFECT_H

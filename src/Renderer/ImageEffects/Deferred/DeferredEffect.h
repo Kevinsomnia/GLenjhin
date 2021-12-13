@@ -1,13 +1,7 @@
-#ifndef DEFERRED_EFFECT_H
-#define DEFERRED_EFFECT_H
-
-#include <iostream>
+#pragma once
 
 #include "../../Camera.h"
-#include "../../FullscreenTriangle.h"
-#include "../../Material.h"
-#include "../../Shader.h"
-#include "../../Texture/Texture.h"
+#include "../../Texture/BufferTexture.h"
 
 
 // Forward declaration
@@ -31,5 +25,3 @@ protected:
     Material* m_CopyMat;
     FullscreenTriangle* m_Triangle;
 };
-
-#endif // DEFERRED_EFFECT_H

@@ -1,20 +1,16 @@
-#ifndef GAMECONTAINER_H
-#define GAMECONTAINER_H
+#pragma once
 
 #define IMGUI_IMPL_OPENGL_ES3
 
-#include <iostream>
-#include "../GUI/GUIWindows.h"
-#include "../Interaction/Input.h"
+#include "../GUI/DebugOverlayWindow.h"
+#include "../GUI/DebugTextureListWindow.h"
+#include "../GUI/TexturePickerWindow.h"
 #include "../IO/ModelLib.h"
-#include "../Renderer/MeshPrimitives.h"
 #include "../Renderer/ImageEffects/Deferred/SSAO.h"
 #include "../Renderer/ImageEffects/PostProcess/Bloom.h"
 #include "../Renderer/ImageEffects/PostProcess/GaussianBlur.h"
 #include "../Renderer/ImageEffects/PostProcess/GlobalFog.h"
 #include "../Renderer/ImageEffects/PostProcess/Tonemapping.h"
-#include "Scene.h"
-#include "Time.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -57,5 +53,3 @@ private:
 
     inline Vector3 getMoveAxis() const;
 };
-
-#endif // GAMECONTAINER_H

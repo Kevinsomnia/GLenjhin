@@ -1,7 +1,5 @@
-#ifndef ENTITY_H
-#define ENTITY_H
+#pragma once
 
-#include <iostream>
 #include "../Math/Convert.h"
 #include "../Math/Vector.h"
 #include "Lighting/Lighting.h"
@@ -38,5 +36,3 @@ private:
     Transform* m_Transform;
     MeshRenderer* m_Renderer;
 };
-
-#endif // ENTITY_H

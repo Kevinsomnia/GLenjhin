@@ -1,4 +1,4 @@
-#include "Texture.h"
+#include "BufferTexture.h"
 
 BufferTexture::BufferTexture(uint32_t width, uint32_t height, uint8_t depth, TextureFormat colorFormat) : Texture()
 {

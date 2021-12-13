@@ -1,17 +1,13 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#pragma once
 
 #include <assert.h>
-#include <iostream>
 
 #include "../Core/Scene.h"
-#include "../GUI/GUIWindows.h"
+#include "../GUI/DebugTextureListWindow.h"
 #include "../Math/Matrix4x4.h"
 #include "Deferred/GeometryBuffers.h"
-#include "Texture/Texture.h"
 #include "ImageEffects/Deferred/DeferredEffectChain.h"
 #include "ImageEffects/PostProcess/PostProcessEffectChain.h"
-#include "Transform.h"
 
 using std::cout;
 using std::endl;
@@ -23,6 +19,7 @@ class DeferredEffectChain;
 class PostProcessEffect;
 class PostProcessEffectChain;
 class Scene;
+class Transform;
 
 
 // Controls which buffers the camera should render to.
@@ -115,5 +112,3 @@ private:
     float m_FieldOfView;
     float m_OrthoSize;
 };
-
-#endif // CAMERA_H

@@ -1,8 +1,6 @@
-#ifndef GEOMETRY_BUFFERS_H
-#define GEOMETRY_BUFFERS_H
+#pragma once
 
-#include <iostream>
-#include "../Texture/Texture.h"
+#include "../Texture/Texture2D.h"
 #include "../Material.h"
 
 using std::cout;
@@ -36,5 +34,3 @@ protected:
 
     void internalDispose();
 };
-
-#endif  // GEOMETRY_BUFFERS_H

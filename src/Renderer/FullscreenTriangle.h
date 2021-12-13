@@ -1,7 +1,5 @@
-#ifndef FULLSCREEN_TRIANGLE_H
-#define FULLSCREEN_TRIANGLE_H
+#pragma once
 
-#include <iostream>
 #include "Material.h"
 
 using std::cout;
@@ -20,5 +18,3 @@ private:
     Material* m_Material;
     bool m_DepthTest;
 };
-
-#endif // FULLSCREEN_TRIANGLE_H

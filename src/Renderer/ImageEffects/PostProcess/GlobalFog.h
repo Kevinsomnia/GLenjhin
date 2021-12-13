@@ -1,5 +1,4 @@
-#ifndef GLOBAL_FOG_H
-#define GLOBAL_FOG_H
+#pragma once
 
 #include "PostProcessEffect.h"
 
@@ -10,5 +9,3 @@ public:
     ~GlobalFog();
     void render(BufferTexture* source, BufferTexture* destination) override;
 };
-
-#endif // GLOBAL_FOG_H

@@ -1,5 +1,4 @@
-#ifndef VECTOR_H
-#define VECTOR_H
+#pragma once
 
 #include <iostream>
 
@@ -185,5 +184,3 @@ inline void Vector4::normalize()
     float oneOverMagnitude = 1.0f / getMagnitude();
     operator *=(oneOverMagnitude);
 }
-
-#endif // VECTOR_H

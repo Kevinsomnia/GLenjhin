@@ -1,5 +1,4 @@
-#ifndef TIME_H
-#define TIME_H
+#pragma once
 
 class Time
 {
@@ -16,5 +15,3 @@ private:
 
     Time();
 };
-
-#endif // TIME_H

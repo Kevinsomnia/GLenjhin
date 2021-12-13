@@ -1,12 +1,7 @@
-#ifndef LIGHTING_H
-#define LIGHTING_H
-
-#include <iostream>
+#pragma once
 
 #include "../../Core/Scene.h"
-#include "../../GUI/GUIWindows.h"
-#include "../../Math/Math.h"
-#include "../Camera.h"
+#include "../../GUI/DebugTextureListWindow.h"
 #include "../Material.h"
 #include "../Transform.h"
 
@@ -46,5 +41,3 @@ public:
 private:
     Camera* m_DepthCamera;
 };
-
-#endif
