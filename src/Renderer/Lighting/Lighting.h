@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../Core/Scene.h"
-#include "../../GUI/GUIWindows.h"
+#include "../../GUI/DebugTextureListWindow.h"
 #include "../../Math/Math.h"
 #include "../Camera.h"
 #include "../Material.h"

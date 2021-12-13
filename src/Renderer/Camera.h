@@ -3,7 +3,7 @@
 #include <assert.h>
 
 #include "../Core/Scene.h"
-#include "../GUI/GUIWindows.h"
+#include "../GUI/DebugTextureListWindow.h"
 #include "../Math/Matrix4x4.h"
 #include "Deferred/GeometryBuffers.h"
 #include "Texture/Texture.h"

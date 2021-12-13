@@ -1,4 +1,4 @@
-#include "GUIWindows.h"
+#include "DebugTextureListWindow.h"
 
 DebugTextureListWindow::DebugTextureListWindow(const char* windowName) : m_WindowOpened(true), m_WindowName(windowName)
 {

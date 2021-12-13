@@ -2,7 +2,9 @@
 
 #define IMGUI_IMPL_OPENGL_ES3
 
-#include "../GUI/GUIWindows.h"
+#include "../GUI/DebugOverlayWindow.h"
+#include "../GUI/DebugTextureListWindow.h"
+#include "../GUI/TexturePickerWindow.h"
 #include "../Interaction/Input.h"
 #include "../IO/ModelLib.h"
 #include "../Renderer/MeshPrimitives.h"

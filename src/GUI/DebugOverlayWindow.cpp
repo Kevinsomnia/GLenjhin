@@ -1,4 +1,4 @@
-#include "GUIWindows.h"
+#include "DebugOverlayWindow.h"
 
 DebugOverlayWindow::DebugOverlayWindow(DebugTextureListWindow* debugBuffersWindow)
     : m_Visible(true), m_FPS(0.0f), m_VSync(true), m_DebugBuffersWindow(debugBuffersWindow)
