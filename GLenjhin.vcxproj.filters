@@ -162,6 +162,9 @@
     <ClCompile Include="src\Renderer\ImageEffects\PostProcess\SunShafts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Renderer\ImageEffects\PostProcess\FXAA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Application.h">
@@ -333,6 +336,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Renderer\ImageEffects\PostProcess\SunShafts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\ImageEffects\PostProcess\FXAA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

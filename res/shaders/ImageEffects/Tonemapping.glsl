@@ -26,7 +26,7 @@ out vec4 fragColor;
 
 void main()
 {
-    vec4 color = texture2D(u_MainTex, v_UV);
+    vec3 color = texture2D(u_MainTex, v_UV).rgb;
     color = 1.0 - exp2(color * -u_Exposure);
-    fragColor = vec4(color.rgb, 1.0);
+    fragColor = vec4(color, 1.0);
 }

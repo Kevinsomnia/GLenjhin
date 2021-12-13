@@ -6,6 +6,13 @@ Compiled with MSVC, C++17. Using OpenGL 4.6 Core. The rendering pipeline is very
 
 Supports Windows 64-bit only.
 
+## Dependencies
+
+- [GLFW 3.3.5](https://www.glfw.org/)
+- [Glad](https://github.com/Dav1dde/glad) - OpenGL 4.6 Core, no extensions
+- [Dear ImGui](https://github.com/ocornut/imgui)
+- [Assimp 5.1.3](https://github.com/assimp/assimp)
+
 ## Features
 
 - Lighting
@@ -15,6 +22,7 @@ Supports Windows 64-bit only.
 - HDR and post processing effects pipeline
   - Deferred SSAO (Screen Space Ambient Occlusion)
   - Bloom
+  - FXAA (Fast Approximate Anti-Aliasing)
   - Sun Shafts (God Rays)
   - Tonemapping
   - Fullscreen Gaussian blur
@@ -27,10 +35,3 @@ Supports Windows 64-bit only.
     - PNG support (WIP; RGB/RGBA, 8-bit support only)
   - Model import pipeline powered by [Assimp](https://github.com/assimp/assimp)
 - Primitive meshes generated at runtime: cubes, spheres, capsules, cylinders, quads
-
-## Dependencies
-
-- [GLFW 3.3.5](https://www.glfw.org/)
-- [Glad](https://github.com/Dav1dde/glad) - OpenGL 4.6 Core, no extensions
-- [Dear ImGui](https://github.com/ocornut/imgui)
-- [Assimp 5.1.3](https://github.com/assimp/assimp)

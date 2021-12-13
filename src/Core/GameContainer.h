@@ -8,6 +8,7 @@
 #include "../IO/ModelLib.h"
 #include "../Renderer/ImageEffects/Deferred/SSAO.h"
 #include "../Renderer/ImageEffects/PostProcess/Bloom.h"
+#include "../Renderer/ImageEffects/PostProcess/FXAA.h"
 #include "../Renderer/ImageEffects/PostProcess/GaussianBlur.h"
 #include "../Renderer/ImageEffects/PostProcess/GlobalFog.h"
 #include "../Renderer/ImageEffects/PostProcess/SunShafts.h"

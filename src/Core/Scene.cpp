@@ -40,7 +40,7 @@ Scene::Scene()
 
     for (size_t i = 0; i < m_CustomModel.meshes.size(); i++)
     {
-        Entity* model = new Entity(Vector3(-2.0f, 0.5f, -1.0f), rotationToRad(Vector3(45.0f, 90.0f, 15.0f)), Vector3::one);
+        Entity* model = new Entity(Vector3(-2.0f, 0.5f, -1.0f), rotationToRad(Vector3(45.0f, 120.0f, 15.0f)), Vector3::one);
         model->setupRenderer(m_CustomModel.meshes[i], whiteMat);
         m_Entities.push_back(model);
     }
