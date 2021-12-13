@@ -1,5 +1,4 @@
-#ifndef MATRIX4X4_H
-#define MATRIX4X4_H
+#pragma once
 
 #include <algorithm>
 #include "Convert.h"
@@ -120,5 +119,3 @@ inline uint32_t Matrix4x4::getIndex(int row, int column) const
 {
     return column * 4 + row;
 }
-
-#endif // MATRIX4X4_H

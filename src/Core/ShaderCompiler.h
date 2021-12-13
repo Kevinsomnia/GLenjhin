@@ -1,5 +1,4 @@
-#ifndef SHADER_COMPILER_H
-#define SHADER_COMPILER_H
+#pragma once
 
 #include <iostream>
 #include <fstream>
@@ -21,5 +20,3 @@ struct ShaderParseResult
 
 ShaderParseResult parseShader(const string& filePath);
 uint32_t createShader(const ShaderParseResult& info);
-
-#endif // SHADER_COMPILER_H

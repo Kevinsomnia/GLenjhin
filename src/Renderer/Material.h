@@ -1,5 +1,4 @@
-#ifndef MATERIAL_H
-#define MATERIAL_H
+#pragma once
 
 #include <vector>
 #include <unordered_map>
@@ -43,5 +42,3 @@ private:
     void updateUniforms() const;
     int getShaderUniformLocation(const string& name) const;
 };
-
-#endif // MATERIAL_H

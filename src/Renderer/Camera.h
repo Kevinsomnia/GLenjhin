@@ -1,5 +1,4 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#pragma once
 
 #include <assert.h>
 
@@ -114,5 +113,3 @@ private:
     float m_FieldOfView;
     float m_OrthoSize;
 };
-
-#endif // CAMERA_H

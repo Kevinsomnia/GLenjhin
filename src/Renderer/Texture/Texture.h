@@ -1,5 +1,4 @@
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#pragma once
 
 #include <assert.h>
 #include <glad/glad.h>
@@ -193,5 +192,3 @@ protected:
 
     void internalDispose();
 };
-
-#endif  // TEXTURE_H

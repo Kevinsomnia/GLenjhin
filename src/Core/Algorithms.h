@@ -1,5 +1,4 @@
-#ifndef ALGORITHMS_H
-#define ALGORITHMS_H
+#pragma once
 
 namespace Algorithms
 {
@@ -68,5 +67,3 @@ namespace Algorithms
         return crc ^ 0xffffffffUi32;
     }
 }
-
-#endif

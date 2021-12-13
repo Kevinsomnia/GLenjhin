@@ -1,5 +1,4 @@
-#ifndef LIGHTING_H
-#define LIGHTING_H
+#pragma once
 
 #include "../../Core/Scene.h"
 #include "../../GUI/GUIWindows.h"
@@ -44,5 +43,3 @@ public:
 private:
     Camera* m_DepthCamera;
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef SSAO_H
-#define SSAO_H
+#pragma once
 
 #include "../../Texture/Texture.h"
 #include "DeferredEffect.h"
@@ -21,5 +20,3 @@ private:
     Texture2D* m_NoiseTex;
     std::array<BufferTexture*, 2> m_OcclusionBuffers;
 };
-
-#endif // SSAO_H

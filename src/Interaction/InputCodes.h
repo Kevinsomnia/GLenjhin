@@ -1,5 +1,4 @@
-#ifndef INPUTCODES_H
-#define INPUTCODES_H
+#pragma once
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -608,5 +607,3 @@ inline MouseButton FromGLFWMouseButton(int glfwButton)
             return MouseButton::Unknown;
     }
 }
-
-#endif // INPUTCODES_H

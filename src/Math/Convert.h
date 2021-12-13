@@ -1,5 +1,4 @@
-#ifndef CONVERT_H
-#define CONVERT_H
+#pragma once
 
 #include <time.h>
 #include "Math.h"
@@ -27,5 +26,3 @@ inline Vector3 rotationToDeg(const Vector3& rotRad)
 {
     return Vector3(radToDeg(rotRad.getX()), radToDeg(rotRad.getY()), radToDeg(rotRad.getZ()));
 }
-
-#endif // CONVERT_H

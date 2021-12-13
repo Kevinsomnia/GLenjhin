@@ -1,5 +1,4 @@
-#ifndef COLOR_H
-#define COLOR_H
+#pragma once
 
 #include <iostream>
 #include "../Math/Math.h"
@@ -123,5 +122,3 @@ struct ColorByte
         return os;
     }
 };
-
-#endif // COLOR_H

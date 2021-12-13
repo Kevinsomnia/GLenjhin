@@ -1,5 +1,4 @@
-#ifndef MATH_H
-#define MATH_H
+#pragma once
 
 #include <math.h>
 
@@ -32,5 +31,3 @@ static T Clamp(const T& value, const T& min, const T& max)
 
     return value;
 }
-
-#endif // MATH_H

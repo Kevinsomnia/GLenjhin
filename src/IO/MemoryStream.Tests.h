@@ -1,5 +1,4 @@
-#ifndef MEMORY_STREAM_TESTS_H
-#define MEMORY_STREAM_TESTS_H
+#pragma once
 
 #include <algorithm>
 #include <array>
@@ -508,5 +507,3 @@ namespace MemoryStreamTests
             cerr << "read #4 failed!" << endl;
     }
 }
-
-#endif // MEMORY_STREAM_TESTS_H

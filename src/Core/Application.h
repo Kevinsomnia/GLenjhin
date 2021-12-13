@@ -1,5 +1,4 @@
-#ifndef APPLICATION_H
-#define APPLICATION_H
+#pragma once
 
 #include <chrono>
 #include <iomanip>
@@ -14,5 +13,3 @@ using std::endl;
 using std::chrono::high_resolution_clock;
 using std::chrono::steady_clock;
 using std::chrono::duration;
-
-#endif // APPLICATION_H

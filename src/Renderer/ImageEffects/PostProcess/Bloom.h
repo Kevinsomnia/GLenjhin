@@ -1,5 +1,4 @@
-#ifndef BLOOM_H
-#define BLOOM_H
+#pragma once
 
 #include <vector>
 
@@ -24,5 +23,3 @@ private:
     Material* m_DownsampleMat;
     Material* m_UpsampleMat;
 };
-
-#endif // BLOOM_H

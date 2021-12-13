@@ -1,5 +1,4 @@
-#ifndef POST_PROCESS_EFFECT_H
-#define POST_PROCESS_EFFECT_H
+#pragma once
 
 #include "../../Camera.h"
 #include "../../FullscreenTriangle.h"
@@ -28,5 +27,3 @@ protected:
     Material* m_Material;
     FullscreenTriangle* m_Triangle;
 };
-
-#endif // POST_PROCESS_EFFECT_H

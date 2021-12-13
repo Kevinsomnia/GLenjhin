@@ -1,5 +1,4 @@
-#ifndef GUI_WINDOWS_H
-#define GUI_WINDOWS_H
+#pragma once
 
 #include <filesystem>
 #include <functional>
@@ -71,5 +70,3 @@ private:
     const char* m_WindowName;
     std::vector<Element> m_Elements;
 };
-
-#endif GUI_WINDOWS_H

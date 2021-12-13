@@ -1,5 +1,4 @@
-#ifndef SHADER_H
-#define SHADER_H
+#pragma once
 
 #include <glad/glad.h>
 #include "../Core/ShaderCompiler.h"
@@ -18,5 +17,3 @@ public:
 private:
     uint32_t m_ShaderID;
 };
-
-#endif // SHADER_H

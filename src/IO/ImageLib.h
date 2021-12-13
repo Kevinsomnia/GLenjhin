@@ -1,5 +1,4 @@
-#ifndef IMAGE_LIB_H
-#define IMAGE_LIB_H
+#pragma once
 
 #include <algorithm>
 #include <array>
@@ -206,5 +205,3 @@ namespace ImageLib
         static uint8_t PaethPredictor(uint8_t left, uint8_t up, uint8_t upLeft);
     };
 };
-
-#endif  // IMAGE_LIB_H

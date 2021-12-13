@@ -1,5 +1,4 @@
-#ifndef DEFERRED_EFFECT_H
-#define DEFERRED_EFFECT_H
+#pragma once
 
 #include "../../Camera.h"
 #include "../../FullscreenTriangle.h"
@@ -29,5 +28,3 @@ protected:
     Material* m_CopyMat;
     FullscreenTriangle* m_Triangle;
 };
-
-#endif // DEFERRED_EFFECT_H

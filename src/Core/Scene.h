@@ -1,5 +1,4 @@
-#ifndef SCENE_H
-#define SCENE_H
+#pragma once
 
 #include <vector>
 #include "../Interaction/Input.h"
@@ -48,5 +47,3 @@ private:
     const std::vector<Light*> m_EmptyLightsList;  // An empty list for deferred path.
     std::vector<Light*> m_Lights;
 };
-
-#endif // SCENE_H

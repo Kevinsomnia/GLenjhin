@@ -1,5 +1,4 @@
-#ifndef MESH_H
-#define MESH_H
+#pragma once
 
 #include <glad/glad.h>
 #include "../Math/Vector.h"
@@ -35,5 +34,3 @@ protected:
     uint32_t m_VaoId;
     uint32_t m_IboId;
 };
-
-#endif // MESH_H

@@ -1,5 +1,4 @@
-#ifndef GAMECONTAINER_H
-#define GAMECONTAINER_H
+#pragma once
 
 #define IMGUI_IMPL_OPENGL_ES3
 
@@ -56,5 +55,3 @@ private:
 
     inline Vector3 getMoveAxis() const;
 };
-
-#endif // GAMECONTAINER_H

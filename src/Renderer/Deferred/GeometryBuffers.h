@@ -1,5 +1,4 @@
-#ifndef GEOMETRY_BUFFERS_H
-#define GEOMETRY_BUFFERS_H
+#pragma once
 
 #include "../Texture/Texture.h"
 #include "../Material.h"
@@ -35,5 +34,3 @@ protected:
 
     void internalDispose();
 };
-
-#endif  // GEOMETRY_BUFFERS_H

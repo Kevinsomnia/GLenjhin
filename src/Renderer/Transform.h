@@ -1,5 +1,4 @@
-#ifndef TRANSFORM_H
-#define TRANSFORM_H
+#pragma once
 
 #include "../Math/Matrix4x4.h"
 #include "../Math/Vector.h"
@@ -36,5 +35,3 @@ private:
     Matrix4x4 m_TRS;
     bool m_DirtyTRS;
 };
-
-#endif // TRANSFORM_H

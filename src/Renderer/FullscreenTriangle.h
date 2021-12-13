@@ -1,5 +1,4 @@
-#ifndef FULLSCREEN_TRIANGLE_H
-#define FULLSCREEN_TRIANGLE_H
+#pragma once
 
 #include "Material.h"
 
@@ -19,5 +18,3 @@ private:
     Material* m_Material;
     bool m_DepthTest;
 };
-
-#endif // FULLSCREEN_TRIANGLE_H
