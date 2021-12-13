@@ -1,7 +1,6 @@
 #ifndef FULLSCREEN_TRIANGLE_H
 #define FULLSCREEN_TRIANGLE_H
 
-#include <iostream>
 #include "Material.h"
 
 using std::cout;

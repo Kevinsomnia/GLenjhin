@@ -2,7 +2,6 @@
 #define APPLICATION_H
 
 #include <chrono>
-#include <iostream>
 #include <iomanip>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>

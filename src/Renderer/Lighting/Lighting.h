@@ -1,8 +1,6 @@
 #ifndef LIGHTING_H
 #define LIGHTING_H
 
-#include <iostream>
-
 #include "../../Core/Scene.h"
 #include "../../GUI/GUIWindows.h"
 #include "../../Math/Math.h"

@@ -6,7 +6,6 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <chrono>
-#include <iostream>
 #include <memory>
 #include <string>
 #include <vector>

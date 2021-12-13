@@ -2,7 +2,6 @@
 #define CAMERA_H
 
 #include <assert.h>
-#include <iostream>
 
 #include "../Core/Scene.h"
 #include "../GUI/GUIWindows.h"

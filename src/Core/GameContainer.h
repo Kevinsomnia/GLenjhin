@@ -3,7 +3,6 @@
 
 #define IMGUI_IMPL_OPENGL_ES3
 
-#include <iostream>
 #include "../GUI/GUIWindows.h"
 #include "../Interaction/Input.h"
 #include "../IO/ModelLib.h"

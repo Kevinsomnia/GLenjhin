@@ -1,7 +1,6 @@
 #ifndef POST_PROCESS_EFFECT_CHAIN_H
 #define POST_PROCESS_EFFECT_CHAIN_H
 
-#include <iostream>
 #include <vector>
 
 #include "../../../Math/Math.h"

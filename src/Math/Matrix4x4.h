@@ -2,7 +2,6 @@
 #define MATRIX4X4_H
 
 #include <algorithm>
-#include <iostream>
 #include "Convert.h"
 #include "Math.h"
 #include "Vector.h"

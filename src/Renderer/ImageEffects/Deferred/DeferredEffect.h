@@ -1,8 +1,6 @@
 #ifndef DEFERRED_EFFECT_H
 #define DEFERRED_EFFECT_H
 
-#include <iostream>
-
 #include "../../Camera.h"
 #include "../../FullscreenTriangle.h"
 #include "../../Material.h"

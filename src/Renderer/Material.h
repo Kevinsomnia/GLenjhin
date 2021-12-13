@@ -1,7 +1,6 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
-#include <iostream>
 #include <vector>
 #include <unordered_map>
 #include <glad/glad.h>

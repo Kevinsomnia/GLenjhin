@@ -1,7 +1,6 @@
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
 
-#include <iostream>
 #include "../Math/Matrix4x4.h"
 #include "../Math/Vector.h"
 

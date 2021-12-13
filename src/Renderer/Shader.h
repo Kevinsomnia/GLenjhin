@@ -1,7 +1,6 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include <iostream>
 #include <glad/glad.h>
 #include "../Core/ShaderCompiler.h"
 

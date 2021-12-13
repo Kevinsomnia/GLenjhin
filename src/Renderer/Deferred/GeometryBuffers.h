@@ -1,7 +1,6 @@
 #ifndef GEOMETRY_BUFFERS_H
 #define GEOMETRY_BUFFERS_H
 
-#include <iostream>
 #include "../Texture/Texture.h"
 #include "../Material.h"
 

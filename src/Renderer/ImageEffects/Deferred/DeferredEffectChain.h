@@ -1,7 +1,6 @@
 #ifndef DEFERRED_EFFECT_CHAIN_H
 #define DEFERRED_EFFECT_CHAIN_H
 
-#include <iostream>
 #include <vector>
 
 #include "../../../Math/Math.h"

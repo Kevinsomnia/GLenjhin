@@ -1,7 +1,6 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <iostream>
 #include "../Math/Convert.h"
 #include "../Math/Vector.h"
 #include "Lighting/Lighting.h"

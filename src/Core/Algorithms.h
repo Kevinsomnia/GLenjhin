@@ -1,8 +1,6 @@
 #ifndef ALGORITHMS_H
 #define ALGORITHMS_H
 
-#include <iostream>
-
 namespace Algorithms
 {
     // For whatever reason, std::lower_bound() and std::upper_bound() doesn't work for all cases.

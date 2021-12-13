@@ -2,7 +2,6 @@
 #define TEXTURE_H
 
 #include <assert.h>
-#include <iostream>
 #include <glad/glad.h>
 
 #include "../../IO/ImageLib.h"

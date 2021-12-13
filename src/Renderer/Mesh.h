@@ -1,7 +1,6 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include <iostream>
 #include <glad/glad.h>
 #include "../Math/Vector.h"
 

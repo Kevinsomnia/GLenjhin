@@ -1,7 +1,6 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <iostream>
 #include <vector>
 #include "../Interaction/Input.h"
 #include "../IO/ModelLib.h"

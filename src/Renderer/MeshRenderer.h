@@ -1,7 +1,6 @@
 #ifndef MESHRENDERER_H
 #define MESHRENDERER_H
 
-#include <iostream>
 #include <glad/glad.h>
 #include "Lighting/Lighting.h"
 #include "Material.h"

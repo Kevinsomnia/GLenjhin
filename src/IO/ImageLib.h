@@ -5,7 +5,6 @@
 #include <array>
 #include <chrono>
 #include <fstream>
-#include <iostream>
 #include <memory>
 
 #include "../Core/Algorithms.h"
