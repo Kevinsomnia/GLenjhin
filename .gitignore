@@ -424,5 +424,6 @@ FodyWeavers.xsd
 # ImGui
 imgui.ini
 
-# Test textures (usually too large to include, or temporary)
+# Test assets (usually too large to include, or temporary)
+res/models/test/*
 res/textures/test/*

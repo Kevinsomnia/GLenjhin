@@ -1,9 +1,6 @@
 #pragma once
 
 #include "../../Camera.h"
-#include "../../FullscreenTriangle.h"
-#include "../../Material.h"
-#include "../../Shader.h"
 #include "../../Texture/BufferTexture.h"
 
 

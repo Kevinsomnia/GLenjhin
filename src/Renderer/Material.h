@@ -5,7 +5,6 @@
 #include <glad/glad.h>
 #include "../Math/Matrix4x4.h"
 #include "Texture/Texture.h"
-#include "Color.h"
 #include "Shader.h"
 
 using std::cout;

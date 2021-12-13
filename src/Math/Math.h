@@ -1,9 +1,10 @@
 #pragma once
 
 #include <math.h>
+#include <type_traits>
 
-static const double PI = 3.14159265358979323846;
-static const float PI_FLOAT = 3.14159265358979323846f;
+#define PI 3.14159265358979323846
+#define PI_FLOAT 3.14159265358979323846f
 
 template <typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
 static T Min(const T& a, const T& b)

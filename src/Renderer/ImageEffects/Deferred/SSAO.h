@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../../Texture/Texture.h"
 #include "DeferredEffect.h"
 
 class SSAO : public DeferredEffect

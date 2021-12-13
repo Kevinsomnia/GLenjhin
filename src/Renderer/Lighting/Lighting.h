@@ -2,8 +2,6 @@
 
 #include "../../Core/Scene.h"
 #include "../../GUI/DebugTextureListWindow.h"
-#include "../../Math/Math.h"
-#include "../Camera.h"
 #include "../Material.h"
 #include "../Transform.h"
 

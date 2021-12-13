@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../../Material.h"
 #include "PostProcessEffect.h"
 
 class GaussianBlur : public PostProcessEffect

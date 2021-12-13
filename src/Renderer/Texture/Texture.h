@@ -134,7 +134,7 @@ class Texture
 {
 public:
     Texture();
-    ~Texture();
+    virtual ~Texture();
     virtual void bind(uint32_t slotIndex) const;
     virtual void setFilterMode(TextureFilterMode filterMode);
     virtual void setWrapMode(TextureWrapMode wrapMode);

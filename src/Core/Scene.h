@@ -3,12 +3,10 @@
 #include <vector>
 #include "../Interaction/Input.h"
 #include "../IO/ModelLib.h"
-#include "../Renderer/Camera.h"
 #include "../Renderer/Entity.h"
 #include "../Renderer/MeshPrimitives.h"
 #include "../Renderer/Skybox.h"
 #include "../Renderer/Lighting/Lighting.h"
-#include "../Renderer/Texture/Texture.h"
 #include "Time.h"
 
 using std::cout;

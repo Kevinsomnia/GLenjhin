@@ -2,7 +2,6 @@
 
 #include <vector>
 
-#include "../../Material.h"
 #include "PostProcessEffect.h"
 
 class Bloom : public PostProcessEffect
