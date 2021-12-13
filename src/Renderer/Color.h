@@ -38,8 +38,8 @@ struct Color
     Color& operator *=(const Color& other);
     Color operator /(const Color& other) const;
     Color& operator /=(const Color& other);
-    operator const float* () const;
-    operator ColorByte () const;
+    operator const float*() const;
+    operator ColorByte() const;
     float& operator [](int index);
 
     static Color Clear() { return Color(0.0f, 0.0f, 0.0f, 0.0f); }
@@ -94,8 +94,8 @@ struct ColorByte
     ColorByte& operator *=(const ColorByte& other);
     ColorByte operator /(const ColorByte& other) const;
     ColorByte& operator /=(const ColorByte& other);
-    operator const uint8_t* () const;
-    operator Color () const;
+    operator const uint8_t*() const;
+    operator Color() const;
     uint8_t& operator [](int index);
 
     static ColorByte Clear() { return ColorByte(0, 0, 0, 0); }

@@ -2,6 +2,13 @@
 
 #include <iostream>
 
+
+// Forward declarations
+struct Vector2;
+struct Vector3;
+struct Vector4;
+
+
 // ===========================================================================
 // Vector2
 // ===========================================================================
@@ -37,6 +44,8 @@ struct Vector2
     Vector2& operator /=(const Vector2& other);
     Vector2 operator -() const;
     operator const float* () const;
+    operator Vector3() const;
+    operator Vector4() const;
     float& operator [](int index);
 
     static Vector2 zero;
@@ -99,6 +108,8 @@ struct Vector3
     Vector3& operator /=(const Vector3& other);
     Vector3 operator -() const;
     operator const float* () const;
+    operator Vector2() const;
+    operator Vector4() const;
     float& operator [](int index);
 
     static Vector3 zero;
@@ -165,6 +176,8 @@ struct Vector4
     Vector4& operator /=(const Vector4& other);
     Vector4 operator -() const;
     operator const float* () const;
+    operator Vector2() const;
+    operator Vector3() const;
     float& operator [](int index);
 
     static Vector4 zero;

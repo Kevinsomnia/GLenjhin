@@ -94,6 +94,16 @@ Vector2::operator const float*() const
     return values;
 }
 
+Vector2::operator Vector3() const
+{
+    return Vector3(values[0], values[1], 0.0f);
+}
+
+Vector2::operator Vector4() const
+{
+    return Vector4(values[0], values[1], 0.0f, 0.0f);
+}
+
 float& Vector2::operator [](int index)
 {
     return values[index];
@@ -210,6 +220,16 @@ Vector3 Vector3::operator -() const
 Vector3::operator const float*() const
 {
     return values;
+}
+
+Vector3::operator Vector2() const
+{
+    return Vector2(values);
+}
+
+Vector3::operator Vector4() const
+{
+    return Vector4(values[0], values[1], values[2], 0.0f);
 }
 
 float& Vector3::operator [](int index)
@@ -334,6 +354,16 @@ Vector4 Vector4::operator -() const
 Vector4::operator const float*() const
 {
     return values;
+}
+
+Vector4::operator Vector2() const
+{
+    return Vector2(values);
+}
+
+Vector4::operator Vector3() const
+{
+    return Vector3(values);
 }
 
 float& Vector4::operator [](int index)
