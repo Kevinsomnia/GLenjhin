@@ -109,7 +109,9 @@
     <ClInclude Include="src\Renderer\MeshRenderer.h" />
     <ClInclude Include="src\Renderer\Shader.h" />
     <ClInclude Include="src\Renderer\Skybox.h" />
+    <ClInclude Include="src\Renderer\Texture\BufferTexture.h" />
     <ClInclude Include="src\Renderer\Texture\Texture.h" />
+    <ClInclude Include="src\Renderer\Texture\Texture2D.h" />
     <ClInclude Include="src\Renderer\Transform.h" />
     <ClInclude Include="vendor\Glad\include\glad\glad.h" />
     <ClInclude Include="vendor\Glad\include\KHR\khrplatform.h" />

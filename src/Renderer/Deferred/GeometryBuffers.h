@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Texture/Texture.h"
+#include "../Texture/Texture2D.h"
 #include "../Material.h"
 
 using std::cout;

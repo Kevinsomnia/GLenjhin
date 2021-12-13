@@ -4,7 +4,7 @@
 #include "../../FullscreenTriangle.h"
 #include "../../Material.h"
 #include "../../Shader.h"
-#include "../../Texture/Texture.h"
+#include "../../Texture/BufferTexture.h"
 
 
 // Forward declaration
