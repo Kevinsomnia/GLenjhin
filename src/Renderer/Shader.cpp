@@ -2,8 +2,8 @@
 
 Shader::Shader(const string& shaderPath)
 {
-    ShaderParseResult parsedResults = parseShader(shaderPath);
-    m_ShaderID = createShader(parsedResults);
+    ShaderCompiler::ParsedPrograms programs = ShaderCompiler::ParseShader(shaderPath);
+    m_ShaderID = ShaderCompiler::CreateShader(programs);
 }
 
 Shader::~Shader()
