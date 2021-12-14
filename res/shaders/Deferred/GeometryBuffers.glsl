@@ -46,7 +46,7 @@ void main()
     vec2 uv = v_UV * u_TileSize;
 
     gPosition = vec4(v_Position, 1.0);
-    gNormalSmoothness = vec4(normalize(v_Normal), 0.825);
+    gNormalSmoothness = vec4(normalize(v_Normal), 0.575);
     gAlbedoMetallic = vec4(texture2D(u_AlbedoTex, uv).rgb, 0.1);
     gEmissionOcclusion = vec4(u_EmissionColor.rgb, 1.0);
 }

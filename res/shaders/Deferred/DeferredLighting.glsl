@@ -114,11 +114,11 @@ const float ONE_OVER_PI = 1.0 / PI;
 float DistributionGGX(vec3 normal, vec3 halfDir, float smoothness)
 {
     float roughness = 1.0 - smoothness;
-    float a2 = roughness;
-    a2 *= a2;
+    float a = roughness * roughness;
+    float a2 = a * a;
 
-    float nDotH2 = dot(normal, halfDir);
-    nDotH2 *= nDotH2;
+    float nDotH = dot(normal, halfDir);
+    float nDotH2 = nDotH * nDotH;
 
     float b2 = 1.0 + nDotH2 * (a2 - 1.0);
     b2 *= b2;
