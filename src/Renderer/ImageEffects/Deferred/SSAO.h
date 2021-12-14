@@ -10,7 +10,7 @@ public:
     void lazyInitialize(Camera* camera) override;
     void render() override;
 private:
-    const size_t DOWNSAMPLE = 0;
+    const size_t DOWNSAMPLE = 1;
     const int BLUR_ITERATIONS = 3;
 
     Material* m_OcclusionMat;

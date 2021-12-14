@@ -35,7 +35,7 @@ void SSAO::lazyInitialize(Camera* camera)
     m_CopyMat->setTexture("u_MainTex", emissionOccl);
 
     // Occlusion buffers setup
-    m_NoiseTex = new Texture2D("res\\textures\\noise.png", /*generateMipmaps=*/ false, /*readable=*/ false);
+    m_NoiseTex = new Texture2D("res\\textures\\dither_noise.png", /*generateMipmaps=*/ false, /*readable=*/ false);
 
     BufferTexture* cameraTargetTex = camera->getRenderTargetBuffer();
     uint32_t w = cameraTargetTex->width() >> DOWNSAMPLE;
@@ -69,7 +69,7 @@ void SSAO::render()
     m_OcclusionMat->setMatrix("u_P", m_Camera->getProjectionMatrix());
     DeferredEffect::render(firstBuf, m_OcclusionMat);
 
-    Vector2 occlusionBufferTexelSize = firstBuf->texelSize() * 2.0f;
+    Vector2 occlusionBufferTexelSize = firstBuf->texelSize();
     Vector2 strideHorizontal = Vector2(occlusionBufferTexelSize.getX(), 0.0f);
     Vector2 strideVertical = Vector2(0.0f, occlusionBufferTexelSize.getY());
 
