@@ -33,10 +33,10 @@ void SunShafts::lazyInitialize(Camera* camera)
         m_Buffers[i] = new BufferTexture(w, h, /*depth=*/ 0, TextureFormat::RGBAHalf);
 
     m_Material->setTexture("u_ShaftsTex", m_Buffers[0]->colorTexture());
-    m_Material->setColor("u_Color", Color(1.0f, 0.91f, 0.8f) * 0.5f);
+    m_Material->setColor("u_Color", Color(1.0f, 0.91f, 0.8f) * 1.5f);
 
     m_DepthFilterMat->setTexture("u_Depth", camera->getDepthTexture());
-    m_DepthFilterMat->setFloat("u_Threshold", 0.575f);
+    m_DepthFilterMat->setFloat("u_Threshold", 0.9f);
 }
 
 void SunShafts::render(BufferTexture* source, BufferTexture* destination)

@@ -12,7 +12,7 @@ public:
     void render(BufferTexture* source, BufferTexture* destination) override;
     void setSunTransform(Transform* sun) { m_SunTransform = sun; }
 private:
-    const float BLUR_RADIUS = 12.0f;
+    const float BLUR_RADIUS = 16.0f;
     static const size_t DOWNSAMPLE = 1;
     static const size_t BLUR_ITERATIONS = 2;
 
