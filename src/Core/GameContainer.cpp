@@ -32,9 +32,9 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     m_MainCamera->addDeferredEffect(new SSAO());
     m_MainCamera->addPostProcessEffect(new GlobalFog());
     m_MainCamera->addPostProcessEffect(new FXAA());
-    m_MainCamera->addPostProcessEffect(new Bloom());
     SunShafts* shafts = new SunShafts();
     m_MainCamera->addPostProcessEffect(shafts);
+    m_MainCamera->addPostProcessEffect(new Bloom());
     m_MainCamera->addPostProcessEffect(new Tonemapping());
     // m_MainCamera->addPostProcessEffect(new GaussianBlur());     // TODO: runtime toggle
 
