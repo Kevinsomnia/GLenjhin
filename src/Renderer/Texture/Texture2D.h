@@ -5,7 +5,9 @@
 class Texture2D : public Texture
 {
 public:
+    static Texture2D* blackTexture;
     static Texture2D* whiteTexture;
+    static Texture2D* msaDefaultTexture;
 
     Texture2D(uint32_t width, uint32_t height, TextureFormat colorFormat, bool readable);
     Texture2D(const std::string& filePath, bool generateMipmaps, bool readable);

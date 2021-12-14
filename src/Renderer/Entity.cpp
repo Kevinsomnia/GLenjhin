@@ -35,12 +35,23 @@ void Entity::drawGeometryPass(Material& geometryMat) const
         Material* entityMat = m_Renderer->material();
 
         geometryMat.setMatrix4x4("u_Model", m_Transform->getTRS());
-        geometryMat.setTexture("u_AlbedoTex", entityMat->getTexture("u_MainTex"));
         geometryMat.setColor("u_EmissionColor", entityMat->getColor("u_EmissionColor"));
+
+        Texture* albedo = entityMat->getTexture("u_AlbedoTex");
+        if (!albedo)
+            albedo = Texture2D::whiteTexture;
+
+        // MSA = Metallic/Smoothness/AO
+        Texture* msa = entityMat->getTexture("u_MSATex");
+        if (!msa)
+            msa = Texture2D::msaDefaultTexture;
 
         Vector2 tileSize = entityMat->getVector2("u_TileSize");
         if (tileSize.getSqrMagnitude() == 0.0f)
             tileSize = Vector2::one;
+
+        geometryMat.setTexture("u_AlbedoTex", albedo);
+        geometryMat.setTexture("u_MSATex", msa);
         geometryMat.setVector2("u_TileSize", tileSize);
 
         geometryMat.bind();

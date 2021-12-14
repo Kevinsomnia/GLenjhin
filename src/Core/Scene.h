@@ -38,8 +38,8 @@ private:
     Skybox* m_Skybox;
     Model m_CustomModel;
     Model m_DragonModel;
-    Material* m_FloorMat;
-    Texture2D* m_SurfaceAlbedo;
+    Material* m_GroundMat;
+    Texture2D* m_GroundAlbedo;
     std::vector<Entity*> m_Entities;
     std::vector<Entity*> m_DynamicEntities;
     const std::vector<Light*> m_EmptyLightsList;  // An empty list for deferred path.

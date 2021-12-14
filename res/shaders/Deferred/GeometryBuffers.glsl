@@ -38,6 +38,7 @@ in vec3 v_Normal;
 in vec2 v_UV;
 
 uniform sampler2D u_AlbedoTex;
+uniform sampler2D u_MSATex;
 uniform vec2 u_TileSize;
 uniform vec4 u_EmissionColor;
 
@@ -45,8 +46,11 @@ void main()
 {
     vec2 uv = v_UV * u_TileSize;
 
+    vec3 albedo = texture2D(u_AlbedoTex, uv).rgb;
+    vec3 msa = texture2D(u_MSATex, uv).rgb;
+
     gPosition = vec4(v_Position, 1.0);
-    gNormalSmoothness = vec4(normalize(v_Normal), 0.575);
-    gAlbedoMetallic = vec4(texture2D(u_AlbedoTex, uv).rgb, 0.1);
-    gEmissionOcclusion = vec4(u_EmissionColor.rgb, 1.0);
+    gNormalSmoothness = vec4(normalize(v_Normal), msa.g);
+    gAlbedoMetallic = vec4(albedo, msa.r);
+    gEmissionOcclusion = vec4(u_EmissionColor.rgb, msa.b);
 }

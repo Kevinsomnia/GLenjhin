@@ -13,30 +13,41 @@ Scene::Scene()
     m_CustomModel = ModelImporter::LoadFBX("res\\models\\m4\\M4.fbx");
 
     // Load textures
-    m_SurfaceAlbedo = new Texture2D("res\\textures\\test_grid.png", /*generateMipmaps=*/ true, /*readable=*/ false);
-    Texture2D* baseTex = new Texture2D("res\\textures\\grid_checker.png", /*generateMipmaps=*/ true, /*readable=*/ false);
+    m_GroundAlbedo = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_albedo.png", /*generateMipmaps=*/ true, /*readable=*/ false);
+    Texture2D* groundMSA = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_MSA.png", /*generateMipmaps=*/ true, /*readable=*/ false);
+
+    Texture2D* metalAlbedo = new Texture2D("res\\textures\\streaky-metal\\streaky-metal_albedo.png", /*generateMipmaps=*/ true, /*readable=*/ false);
+    Texture2D* metalMSA = new Texture2D("res\\textures\\streaky-metal\\streaky-metal_MSA.png", /*generateMipmaps=*/ true, /*readable=*/ false);
+
+    Texture2D* testGridAlbedo = new Texture2D("res\\textures\\test_grid.png", /*generateMipmaps=*/ true, /*readable=*/ false);
 
     // Load shader and material
-    m_FloorMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
-    m_FloorMat->setTexture("u_MainTex", m_SurfaceAlbedo);
-    m_FloorMat->setVector2("u_TileSize", Vector2(10.0f, 10.0f));
+    m_GroundMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
+    m_GroundMat->setTexture("u_AlbedoTex", m_GroundAlbedo);
+    m_GroundMat->setTexture("u_MSATex", groundMSA);
+    m_GroundMat->setVector2("u_TileSize", Vector2(5.0f, 5.0f));
 
     Material* wallMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
-    wallMat->setTexture("u_MainTex", baseTex);
+    wallMat->setTexture("u_AlbedoTex", metalAlbedo);
+    wallMat->setTexture("u_MSATex", metalMSA);
     wallMat->setVector2("u_TileSize", Vector2(7.5f, 1.5f));
 
     Material* basicMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
-    basicMat->setTexture("u_MainTex", baseTex);
+    basicMat->setTexture("u_AlbedoTex", testGridAlbedo);
+    basicMat->setTexture("u_MSATex", groundMSA);
 
     Material* emissiveMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl")); // yes this will leak memory. temp solution.
+    emissiveMat->setTexture("u_AlbedoTex", Texture2D::blackTexture);
+    emissiveMat->setTexture("u_MSATex", Texture2D::blackTexture);
     emissiveMat->setColor("u_EmissionColor", Color(0.5f, 1.5f, 0.25f));
 
     Material* whiteMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));    // yes this will leak memory. temp solution.
-    whiteMat->setTexture("u_MainTex", Texture2D::whiteTexture);
+    whiteMat->setTexture("u_AlbedoTex", Texture2D::whiteTexture);
+    whiteMat->setTexture("u_AlbedoTex", Texture2D::whiteTexture);
 
     // Create entities
     Entity* plane = new Entity(Vector3::zero, rotationToRad(Vector3(-90.0f, 180.0f, 0.0f)), Vector3::one * 20.0f);
-    plane->setupRenderer(MeshPrimitives::quad, m_FloorMat);
+    plane->setupRenderer(MeshPrimitives::quad, m_GroundMat);
     m_Entities.push_back(plane);
 
     Entity* wall = new Entity(Vector3(0.5f, 1.5f, 0.0f), Vector3::zero, Vector3(0.25f, 3.0f, 15.0f));
@@ -68,8 +79,8 @@ Scene::Scene()
 
 Scene::~Scene()
 {
-    delete m_FloorMat;
-    delete m_SurfaceAlbedo;
+    delete m_GroundMat;
+    delete m_GroundAlbedo;
     if (m_Skybox)
         delete m_Skybox;
 
@@ -151,9 +162,9 @@ void Scene::renderLightShadows() const
 
 void Scene::setNewTexture(const std::string& texturePath)
 {
-    if (m_SurfaceAlbedo)
-        delete m_SurfaceAlbedo;
+    if (m_GroundAlbedo)
+        delete m_GroundAlbedo;
 
-    m_SurfaceAlbedo = new Texture2D(texturePath, /*generateMipmap=*/ true, /*readable=*/ false);
-    m_FloorMat->setTexture("u_MainTex", m_SurfaceAlbedo);
+    m_GroundAlbedo = new Texture2D(texturePath, /*generateMipmap=*/ true, /*readable=*/ false);
+    m_GroundMat->setTexture("u_AlbedoTex", m_GroundAlbedo);
 }
