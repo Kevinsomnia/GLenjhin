@@ -17,6 +17,6 @@ Skybox::~Skybox()
 
 void Skybox::draw(const Matrix4x4& vp)
 {
-    m_Material->setMatrix("u_VP", vp);
+    m_Material->setMatrix4x4("u_VP", vp);
     m_Triangle->draw();
 }

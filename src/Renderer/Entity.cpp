@@ -34,9 +34,15 @@ void Entity::drawGeometryPass(Material& geometryMat) const
     {
         Material* entityMat = m_Renderer->material();
 
-        geometryMat.setMatrix("u_Model", m_Transform->getTRS());
+        geometryMat.setMatrix4x4("u_Model", m_Transform->getTRS());
         geometryMat.setTexture("u_AlbedoTex", entityMat->getTexture("u_MainTex"));
         geometryMat.setColor("u_EmissionColor", entityMat->getColor("u_EmissionColor"));
+
+        Vector2 tileSize = entityMat->getVector2("u_TileSize");
+        if (tileSize.getSqrMagnitude() == 0.0f)
+            tileSize = Vector2::one;
+        geometryMat.setVector2("u_TileSize", tileSize);
+
         geometryMat.bind();
 
         m_Renderer->drawMeshDirect();
@@ -47,7 +53,7 @@ void Entity::drawShadowPass(Material& shadowMat) const
 {
     if (m_Renderer)
     {
-        shadowMat.setMatrix("u_Model", m_Transform->getTRS());
+        shadowMat.setMatrix4x4("u_Model", m_Transform->getTRS());
         shadowMat.bind();
 
         m_Renderer->drawMeshDirect();

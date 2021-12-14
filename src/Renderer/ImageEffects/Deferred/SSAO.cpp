@@ -65,8 +65,8 @@ void SSAO::render()
     BufferTexture* firstBuf = m_OcclusionBuffers[0];
     BufferTexture* secondBuf = m_OcclusionBuffers[1];
 
-    m_OcclusionMat->setMatrix("u_V", m_Camera->getViewMatrix());
-    m_OcclusionMat->setMatrix("u_P", m_Camera->getProjectionMatrix());
+    m_OcclusionMat->setMatrix4x4("u_V", m_Camera->getViewMatrix());
+    m_OcclusionMat->setMatrix4x4("u_P", m_Camera->getProjectionMatrix());
     DeferredEffect::render(firstBuf, m_OcclusionMat);
 
     Vector2 occlusionBufferTexelSize = firstBuf->texelSize();

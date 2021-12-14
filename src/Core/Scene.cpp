@@ -18,6 +18,7 @@ Scene::Scene()
     // Load shader and material
     m_CurrMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
     m_CurrMat->setTexture("u_MainTex", m_CurrTexture);
+    m_CurrMat->setVector2("u_TileSize", Vector2(10.0f, 10.0f));
 
     Material* emissiveMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl")); // yes this will leak memory. temp solution.
     emissiveMat->setColor("u_EmissionColor", Color(0.5f, 1.5f, 0.25f));
@@ -105,7 +106,7 @@ void Scene::update()
 
 void Scene::drawGeometryPass(const Camera& camera, Material& geometryMat) const
 {
-    geometryMat.setMatrix("u_VP", camera.getViewProjectionMatrix());
+    geometryMat.setMatrix4x4("u_VP", camera.getViewProjectionMatrix());
 
     for (size_t i = 0; i < m_Entities.size(); i++)
         m_Entities[i]->drawGeometryPass(geometryMat);
@@ -113,7 +114,7 @@ void Scene::drawGeometryPass(const Camera& camera, Material& geometryMat) const
 
 void Scene::drawShadowPass(const Light& light, Material& shadowMat) const
 {
-    shadowMat.setMatrix("u_L", light.getLightMatrix());
+    shadowMat.setMatrix4x4("u_L", light.getLightMatrix());
 
     for (size_t i = 0; i < m_Entities.size(); i++)
         m_Entities[i]->drawShadowPass(shadowMat);

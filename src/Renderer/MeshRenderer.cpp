@@ -19,8 +19,8 @@ void MeshRenderer::draw(const Vector3& cameraPos, const Matrix4x4& vp, const Mat
     if (m_Material)
     {
         Material& mat = *m_Material;
-        mat.setMatrix("u_VP", vp);
-        mat.setMatrix("u_Model", model);
+        mat.setMatrix4x4("u_VP", vp);
+        mat.setMatrix4x4("u_Model", model);
         mat.setVector3("u_CameraPos", cameraPos);
         
         // NOTE: multiple lights of same type are not supported!

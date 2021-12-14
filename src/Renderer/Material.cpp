@@ -22,6 +22,36 @@ void Material::unbind() const
     glUseProgram(NULL);
 }
 
+float Material::getFloat(const string& uniformName) const
+{
+    auto iter = m_UniformFloats.find(uniformName);
+
+    if (iter != m_UniformFloats.end())
+        return (*iter).second;
+
+    return 0.0f;
+}
+
+Vector2 Material::getVector2(const string& uniformName) const
+{
+    auto iter = m_UniformVec2.find(uniformName);
+
+    if (iter != m_UniformVec2.end())
+        return (*iter).second;
+
+    return Vector2::zero;
+}
+
+Vector3 Material::getVector3(const string& uniformName) const
+{
+    auto iter = m_UniformVec3.find(uniformName);
+
+    if (iter != m_UniformVec3.end())
+        return (*iter).second;
+
+    return Vector3::zero;
+}
+
 Vector4 Material::getVector4(const string& uniformName) const
 {
     auto iter = m_UniformVec4.find(uniformName);
@@ -35,6 +65,16 @@ Vector4 Material::getVector4(const string& uniformName) const
 Color Material::getColor(const string& uniformName) const
 {
     return Color(getVector4(uniformName));
+}
+
+Matrix4x4 Material::getMatrix4x4(const string& uniformName) const
+{
+    auto iter = m_UniformMat4.find(uniformName);
+
+    if (iter != m_UniformMat4.end())
+        return (*iter).second;
+
+    return Matrix4x4::identity;
 }
 
 Texture* Material::getTexture(const string& uniformName) const
@@ -72,7 +112,7 @@ void Material::setColor(const string& uniformName, const Color& c)
     m_UniformVec4[uniformName] = Vector4(c);
 }
 
-void Material::setMatrix(const string& uniformName, const Matrix4x4& mat)
+void Material::setMatrix4x4(const string& uniformName, const Matrix4x4& mat)
 {
     m_UniformMat4[uniformName] = mat;
 }
