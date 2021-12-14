@@ -13,12 +13,20 @@ Scene::Scene()
     m_CustomModel = ModelImporter::LoadFBX("res\\models\\m4\\M4.fbx");
 
     // Load textures
-    m_CurrTexture = new Texture2D("res\\textures\\test_grid.png", /*generateMipmaps=*/ true, /*readable=*/ false);
+    m_SurfaceAlbedo = new Texture2D("res\\textures\\test_grid.png", /*generateMipmaps=*/ true, /*readable=*/ false);
+    Texture2D* baseTex = new Texture2D("res\\textures\\grid_checker.png", /*generateMipmaps=*/ true, /*readable=*/ false);
 
     // Load shader and material
-    m_CurrMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
-    m_CurrMat->setTexture("u_MainTex", m_CurrTexture);
-    m_CurrMat->setVector2("u_TileSize", Vector2(10.0f, 10.0f));
+    m_FloorMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
+    m_FloorMat->setTexture("u_MainTex", m_SurfaceAlbedo);
+    m_FloorMat->setVector2("u_TileSize", Vector2(10.0f, 10.0f));
+
+    Material* wallMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
+    wallMat->setTexture("u_MainTex", baseTex);
+    wallMat->setVector2("u_TileSize", Vector2(7.5f, 1.5f));
+
+    Material* basicMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
+    basicMat->setTexture("u_MainTex", baseTex);
 
     Material* emissiveMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl")); // yes this will leak memory. temp solution.
     emissiveMat->setColor("u_EmissionColor", Color(0.5f, 1.5f, 0.25f));
@@ -28,11 +36,11 @@ Scene::Scene()
 
     // Create entities
     Entity* plane = new Entity(Vector3::zero, rotationToRad(Vector3(-90.0f, 180.0f, 0.0f)), Vector3::one * 20.0f);
-    plane->setupRenderer(MeshPrimitives::quad, m_CurrMat);
+    plane->setupRenderer(MeshPrimitives::quad, m_FloorMat);
     m_Entities.push_back(plane);
 
     Entity* wall = new Entity(Vector3(0.5f, 1.5f, 0.0f), Vector3::zero, Vector3(0.25f, 3.0f, 15.0f));
-    wall->setupRenderer(MeshPrimitives::cube, m_CurrMat);
+    wall->setupRenderer(MeshPrimitives::cube, wallMat);
     m_Entities.push_back(wall);
 
     Entity* dragon = new Entity(Vector3(-4.5f, 1.0f, 1.0f), rotationToRad(Vector3(-90.0f, 30.0f, 0.0f)), Vector3::one * 0.1f);
@@ -52,7 +60,7 @@ Scene::Scene()
     {
         Entity* entity = new Entity(Vector3::zero, Vector3::zero, Vector3::one * 0.4f);
         Mesh* primitive = primitives[i % primitives.size()];
-        entity->setupRenderer(primitive, primitive == MeshPrimitives::sphere ? emissiveMat : m_CurrMat);
+        entity->setupRenderer(primitive, primitive == MeshPrimitives::sphere ? emissiveMat : basicMat);
         m_Entities.push_back(entity);
         m_DynamicEntities.push_back(entity);
     }
@@ -60,8 +68,8 @@ Scene::Scene()
 
 Scene::~Scene()
 {
-    delete m_CurrMat;
-    delete m_CurrTexture;
+    delete m_FloorMat;
+    delete m_SurfaceAlbedo;
     if (m_Skybox)
         delete m_Skybox;
 
@@ -143,9 +151,9 @@ void Scene::renderLightShadows() const
 
 void Scene::setNewTexture(const std::string& texturePath)
 {
-    if (m_CurrTexture)
-        delete m_CurrTexture;
+    if (m_SurfaceAlbedo)
+        delete m_SurfaceAlbedo;
 
-    m_CurrTexture = new Texture2D(texturePath, /*generateMipmap=*/ true, /*readable=*/ false);
-    m_CurrMat->setTexture("u_MainTex", m_CurrTexture);
+    m_SurfaceAlbedo = new Texture2D(texturePath, /*generateMipmap=*/ true, /*readable=*/ false);
+    m_FloorMat->setTexture("u_MainTex", m_SurfaceAlbedo);
 }
