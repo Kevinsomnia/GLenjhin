@@ -159,8 +159,8 @@ void Camera::blitToScreen() const
 
 void Camera::addDeferredEffect(DeferredEffect* effect)
 {
-    assert(isDeferred());
-    m_DeferredChain->add(effect);
+    if (m_DeferredChain)
+        m_DeferredChain->add(effect);
 }
 
 void Camera::addPostProcessEffect(PostProcessEffect* effect)

@@ -35,6 +35,7 @@ Scene::Scene()
     Material* basicMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
     basicMat->setTexture("u_AlbedoTex", testGridAlbedo);
     basicMat->setTexture("u_MSATex", groundMSA);
+    basicMat->setVector2("u_TileSize", Vector2::one);
 
     Material* emissiveMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl")); // yes this will leak memory. temp solution.
     emissiveMat->setTexture("u_AlbedoTex", Texture2D::blackTexture);
@@ -43,7 +44,7 @@ Scene::Scene()
 
     Material* whiteMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));    // yes this will leak memory. temp solution.
     whiteMat->setTexture("u_AlbedoTex", Texture2D::whiteTexture);
-    whiteMat->setTexture("u_AlbedoTex", Texture2D::whiteTexture);
+    whiteMat->setTexture("u_MSATex", Texture2D::msaDefaultTexture);
 
     // Create entities
     Entity* plane = new Entity(Vector3::zero, rotationToRad(Vector3(-90.0f, 180.0f, 0.0f)), Vector3::one * 20.0f);

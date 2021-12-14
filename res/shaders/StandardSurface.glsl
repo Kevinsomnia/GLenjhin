@@ -33,7 +33,9 @@ uniform mat4 u_DirLightMatrix;
 uniform vec3 u_DirLightDir;
 uniform vec4 u_DirLightColor;
 
-uniform sampler2D u_MainTex;
+uniform sampler2D u_AlbedoTex;
+uniform sampler2D u_MSATex;
+uniform vec2 u_TileSize;
 uniform vec4 u_EmissionColor;
 
 // Shadowmaps
@@ -127,11 +129,11 @@ const float ONE_OVER_PI = 1.0 / PI;
 float DistributionGGX(vec3 normal, vec3 halfDir, float smoothness)
 {
     float roughness = 1.0 - smoothness;
-    float a2 = roughness;
-    a2 *= a2;
+    float a = roughness * roughness;
+    float a2 = a * a;
 
-    float nDotH2 = dot(normal, halfDir);
-    nDotH2 *= nDotH2;
+    float nDotH = dot(normal, halfDir);
+    float nDotH2 = nDotH * nDotH;
 
     float b2 = 1.0 + nDotH2 * (a2 - 1.0);
     b2 *= b2;
@@ -165,42 +167,45 @@ float GeometrySmith(float nDotL, float nDotV, float smoothness)
 // Forward rendering
 void main()
 {
-    vec4 albedo = texture(u_MainTex, v_UV);
+    vec2 uv = v_UV * u_TileSize;
+    vec3 albedo = texture2D(u_AlbedoTex, uv).rgb;
+    vec3 msa = texture2D(u_MSATex, uv).rgb;
     vec3 nrm = normalize(v_Normal);
 
     // Per-view calculations.
-    // TODO: metallic and smoothness maps
-    const float METALLIC = 0.1;
-    const float SMOOTHNESS = 0.75;
-    vec3 F0 = mix(vec3(0.04), albedo.rgb, METALLIC);     // Di-electric / Metallic: specular color
+    vec3 F0 = mix(vec3(0.04), albedo.rgb, msa.r);   // Di-electric / Metallic: specular color
     vec3 viewDir = normalize(u_CameraPos - v_Pos);
     vec3 L = vec3(0.0);
 
     // Per-light calculations.
     vec3 halfDir = normalize(viewDir - u_DirLightDir);
-    float nDotL = dot(-u_DirLightDir, nrm);
+    float nDotL = max(0.0, dot(nrm, -u_DirLightDir));
+    float ambientBlend = nDotL;
 
-    if (nDotL > 0.0)
+    if (nDotL > EPSILON)
     {
         float nDotV = max(0.0, dot(nrm, viewDir));
 
-        float distribution = DistributionGGX(nrm, halfDir, SMOOTHNESS);
+        float distribution = DistributionGGX(nrm, halfDir, msa.g);
         vec3 fresnel = FresnelSchlick(F0, dot(viewDir, halfDir));
-        float geometry = GeometrySmith(nDotL, nDotV, SMOOTHNESS);
+        float geometry = GeometrySmith(nDotL, nDotV, msa.g);
 
         // Compute Cook-Torrance BRDF for specular term: DFG / [4dot(wo, N)dot(wi, N)]
         // Where wo = view direction (solid angle), wi = light direction
         vec3 specular = (distribution * fresnel * geometry) / (4.0 * nDotV * nDotL + EPSILON);
 
+        // Energy conservation
         vec3 kDiff = vec3(1.0) - fresnel;
-        kDiff *= 1.0 - METALLIC;
+        kDiff *= 1.0 - msa.r;
 
+        // Attenuate ambient with shadowmap.
         vec4 dirLightFragPos = u_DirLightMatrix * vec4(v_Pos, 1.0);
-        float shadow = ShadowAttenuation(u_DirShadows, u_DirShadowsTexelSize, dirLightFragPos, u_DirLightDir, nrm);
+        ambientBlend *= ShadowAttenuation(u_DirShadows, u_DirShadowsTexelSize, dirLightFragPos, u_DirLightDir, nrm);
+
         vec3 brdf = (kDiff * ONE_OVER_PI * albedo.rgb) + specular;
-        L += brdf * u_DirLightColor.rgb * nDotL * shadow;
+        L += brdf * u_DirLightColor.rgb * ambientBlend;
     }
 
-    vec3 ambient = vec3(0.196, 0.302, 0.349) * albedo.rgb;  // needs uniform
+    vec3 ambient = vec3(0.196, 0.3176, 0.4196) * albedo.rgb * mix(msa.b, 1.0, ambientBlend);  // needs uniform
     fragColor = vec4(ambient + L + u_EmissionColor.rgb, 1.0);
 }
