@@ -23,9 +23,13 @@ Mesh::Mesh()
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (const void*)offset);
     glEnableVertexAttribArray(1);
     offset += sizeof(Vector3);
-    // UVs
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void*)offset);
+    // Vertex tangent
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, (const void*)offset);
     glEnableVertexAttribArray(2);
+    offset += sizeof(Vector3);
+    // UVs
+    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, stride, (const void*)offset);
+    glEnableVertexAttribArray(3);
     offset += sizeof(Vector2);
 }
 
@@ -64,6 +68,44 @@ void Mesh::setGeometry(Vertex* vertices, size_t vertexCount, uint32_t* indices, 
     m_VertexCount = vertexCount;
     m_Indices = indices;
     m_IndexCount = indexCount;
+}
+
+void Mesh::calculateTangents()
+{
+    if (!m_Vertices)
+        return;
+
+    // Clear all tangent data.
+    for (size_t i = 0; i < m_VertexCount; i++)
+        m_Vertices[i].tangent = Vector3::zero;
+
+    // Process each triangle by stepping through every 3 indices.
+    for (size_t i = 0; i < m_IndexCount; i += 3)
+    {
+        uint32_t index0 = m_Indices[i];
+        uint32_t index1 = m_Indices[i + 1];
+        uint32_t index2 = m_Indices[i + 2];
+
+        Vertex& vert0 = m_Vertices[index0];
+        Vertex& vert1 = m_Vertices[index1];
+        Vertex& vert2 = m_Vertices[index2];
+
+        // Calculate 2 edges of this triangle (2 vectors originating from same point) in 3D and UV space.
+        Vector3 xyzEdge0 = vert1.position - vert0.position;
+        Vector3 xyzEdge1 = vert2.position - vert0.position;
+        Vector2 uvEdge0 = vert1.uv - vert0.uv;
+        Vector2 uvEdge1 = vert2.uv - vert0.uv;
+
+        // Accumulate tangents since multiple triangles can share the same vertex.
+        Vector3 tangent = (xyzEdge0 * uvEdge1.getY() - xyzEdge1 * uvEdge0.getY()) / (uvEdge0.getX() * uvEdge1.getY() - uvEdge1.getX() * uvEdge0.getY());
+        vert0.tangent += tangent;
+        vert1.tangent += tangent;
+        vert2.tangent += tangent;
+    }
+
+    // Normalize.
+    for (size_t i = 0; i < m_VertexCount; i++)
+        m_Vertices[i].tangent.normalize();
 }
 
 void Mesh::updateBuffers()

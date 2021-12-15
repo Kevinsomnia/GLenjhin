@@ -3,21 +3,25 @@
 
 layout(location = 0) in vec4 aPosition;
 layout(location = 1) in vec3 aNormal;
-layout(location = 2) in vec2 aUV;
+layout(location = 2) in vec3 aTangent;
+layout(location = 3) in vec2 aUV;
 
 uniform mat4 u_VP;
 uniform mat4 u_Model;
 
 out vec3 v_Position;
 out vec3 v_Normal;
+out vec3 v_Tangent;
 out vec2 v_UV;
 
 void main()
 {
     vec4 worldPos = u_Model * aPosition;
+    mat3 normalMatrix = transpose(inverse(mat3(u_Model)));
 
     v_Position = worldPos.xyz;
-    v_Normal = transpose(inverse(mat3(u_Model))) * aNormal;
+    v_Normal = normalMatrix * aNormal;
+    v_Tangent = normalMatrix * aTangent;
     v_UV = vec2(aUV.x, 1.0 - aUV.y);
 
     gl_Position = u_VP * worldPos;
@@ -35,6 +39,7 @@ layout(location = 3) out vec4 gEmissionOcclusion;
 
 in vec3 v_Position;
 in vec3 v_Normal;
+in vec3 v_Tangent;
 in vec2 v_UV;
 
 uniform sampler2D u_AlbedoTex;

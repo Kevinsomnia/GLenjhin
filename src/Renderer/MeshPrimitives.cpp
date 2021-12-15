@@ -60,6 +60,7 @@ MeshPrimitives::Cube::Cube() : Mesh()
         20, 23, 22
     };
     setGeometry(vertices.data(), vertices.size(), indices.data(), indices.size());
+    calculateTangents();
     updateBuffers();
 }
 
@@ -77,6 +78,7 @@ MeshPrimitives::Quad::Quad() : Mesh()
         0, 3, 2
     };
     setGeometry(vertices.data(), vertices.size(), indices.data(), indices.size());
+    calculateTangents();
     updateBuffers();
 }
 
@@ -175,6 +177,7 @@ MeshPrimitives::Sphere::Sphere(uint16_t resolution) : Mesh()
     }
 
     setGeometry(vertices.data(), vertices.size(), indices, indexCount);
+    calculateTangents();
     updateBuffers();
 }
 
@@ -291,6 +294,7 @@ MeshPrimitives::Capsule::Capsule(uint16_t resolution) : Mesh()
     }
 
     setGeometry(vertices.data(), vertices.size(), indices, indexCount);
+    calculateTangents();
     updateBuffers();
 }
 
@@ -371,6 +375,7 @@ MeshPrimitives::Cylinder::Cylinder(uint16_t resolution) : Mesh()
     }
 
     setGeometry(vertices.data(), vertices.size(), indices, indexCount);
+    calculateTangents();
     updateBuffers();
 }
 
