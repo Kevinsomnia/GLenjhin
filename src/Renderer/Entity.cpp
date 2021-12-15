@@ -50,6 +50,10 @@ void Entity::drawGeometryPass(Material& geometryMat) const
         if (!msa)
             msa = Texture2D::msaDefaultTexture;
 
+        Texture* height = entityMat->getTexture("u_HeightTex");
+        if (!height)
+            height = Texture2D::whiteTexture;
+
         Vector2 tileSize = entityMat->getVector2("u_TileSize");
         if (tileSize.getSqrMagnitude() == 0.0f)
             tileSize = Vector2::one;
@@ -57,6 +61,9 @@ void Entity::drawGeometryPass(Material& geometryMat) const
         geometryMat.setTexture("u_AlbedoTex", albedo);
         geometryMat.setTexture("u_NormalTex", nrm);
         geometryMat.setTexture("u_MSATex", msa);
+        geometryMat.setTexture("u_HeightTex", height);
+        geometryMat.setVector2("u_HeightTexelSize", height->texelSize());
+        geometryMat.setFloat("u_HeightScale", entityMat->getFloat("u_HeightScale"));
         geometryMat.setVector2("u_TileSize", tileSize);
 
         geometryMat.bind();

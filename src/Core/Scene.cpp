@@ -17,6 +17,7 @@ Scene::Scene()
     Texture2D* groundNormalMap = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_normal.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ false);
     groundNormalMap->setFilterMode(TextureFilterMode::Trilinear);
     Texture2D* groundMSA = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_MSA.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
+    Texture2D* groundHeight = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_height.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ false);
 
     Texture2D* metalAlbedo = new Texture2D("res\\textures\\streaky-metal\\streaky-metal_albedo.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
     Texture2D* metalNormalMap = new Texture2D("res\\textures\\streaky-metal\\streaky-metal_normal.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ false);
@@ -30,6 +31,8 @@ Scene::Scene()
     m_GroundMat->setTexture("u_AlbedoTex", m_GroundAlbedo);
     m_GroundMat->setTexture("u_NormalTex", groundNormalMap);
     m_GroundMat->setTexture("u_MSATex", groundMSA);
+    m_GroundMat->setTexture("u_HeightTex", groundHeight);
+    m_GroundMat->setFloat("u_HeightScale", 0.007f);
     m_GroundMat->setVector2("u_TileSize", Vector2(5.0f, 5.0f));
 
     Material* wallMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
@@ -135,6 +138,7 @@ void Scene::update()
 void Scene::drawGeometryPass(const Camera& camera, Material& geometryMat) const
 {
     geometryMat.setMatrix4x4("u_VP", camera.getViewProjectionMatrix());
+    geometryMat.setVector3("u_CameraPos", camera.getTransform()->getPosition());
 
     for (size_t i = 0; i < m_Entities.size(); i++)
         m_Entities[i]->drawGeometryPass(geometryMat);

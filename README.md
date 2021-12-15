@@ -17,6 +17,7 @@ Supports Windows 64-bit only.
 
 - Lighting
   - Physically-Based Rendering (PBR): Lambertian (diffuse term) / GGX + Cook-Torrance (specular term) / Schlick (fresnel approximation)
+    - Albedo, Normalmaps, MSA (Metallic/Smoothness/AO), Parallax Occlusion Mapping
   - Real-time shadows with 4x4 PCF (soft filtering)
   - Directional lights
 - HDR and post processing effects pipeline
