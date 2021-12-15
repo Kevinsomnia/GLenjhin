@@ -6,23 +6,23 @@ Scene::Scene()
     Light* sun = new DirectionalLight(Vector3::zero, rotationToRad(Vector3(28.5f, 36.0f, 0.0f)));
     m_Lights.push_back(sun);
 
-    m_Skybox = new Skybox("res\\textures\\DaySkybox.png");
+    m_Skybox = new Skybox("res\\textures\\test_grid.png");
 
     // Load models
     m_DragonModel = ModelImporter::LoadFBX("res\\models\\dragon\\dragon.fbx");
     m_CustomModel = ModelImporter::LoadFBX("res\\models\\m4\\M4.fbx");
 
     // Load textures
-    m_GroundAlbedo = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_albedo.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
-    Texture2D* groundNormalMap = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_normal.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ false);
-    groundNormalMap->setFilterMode(TextureFilterMode::Trilinear);
-    Texture2D* groundMSA = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_MSA.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
-    Texture2D* groundHeight = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_height.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ false);
+    m_GroundAlbedo = new Texture2D("res\\textures\\test_grid.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
+    Texture2D* groundNormalMap = Texture2D::normalMapDefaultTexture;// new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_normal.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ false);
+    // groundNormalMap->setFilterMode(TextureFilterMode::Trilinear);
+    Texture2D* groundMSA = Texture2D::msaDefaultTexture;// new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_MSA.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
+    Texture2D* groundHeight = Texture2D::whiteTexture;//new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_height.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ false);
 
-    Texture2D* metalAlbedo = new Texture2D("res\\textures\\streaky-metal\\streaky-metal_albedo.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
-    Texture2D* metalNormalMap = new Texture2D("res\\textures\\streaky-metal\\streaky-metal_normal.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ false);
-    metalNormalMap->setFilterMode(TextureFilterMode::Trilinear);
-    Texture2D* metalMSA = new Texture2D("res\\textures\\streaky-metal\\streaky-metal_MSA.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
+    Texture2D* metalAlbedo = new Texture2D("res\\textures\\test_grid.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
+    Texture2D* metalNormalMap = Texture2D::normalMapDefaultTexture;//new Texture2D("res\\textures\\streaky-metal\\streaky-metal_normal.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ false);
+    // metalNormalMap->setFilterMode(TextureFilterMode::Trilinear);
+    Texture2D* metalMSA = Texture2D::msaDefaultTexture;//new Texture2D("res\\textures\\streaky-metal\\streaky-metal_MSA.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
 
     Texture2D* testGridAlbedo = new Texture2D("res\\textures\\test_grid.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
 
