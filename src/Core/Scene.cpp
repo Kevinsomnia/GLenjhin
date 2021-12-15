@@ -39,7 +39,7 @@ Scene::Scene()
     wallMat->setTexture("u_AlbedoTex", metalAlbedo);
     wallMat->setTexture("u_NormalTex", metalNormalMap);
     wallMat->setTexture("u_MSATex", metalMSA);
-    wallMat->setVector2("u_TileSize", Vector2(7.5f, 1.5f));
+    wallMat->setVector2("u_TileSize", Vector2(3.75f, 0.75f));
 
     Material* basicMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
     basicMat->setTexture("u_AlbedoTex", testGridAlbedo);
