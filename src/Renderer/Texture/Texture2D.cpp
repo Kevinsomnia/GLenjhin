@@ -164,12 +164,14 @@ void Texture2D::uploadToGPU(bool keepReadable)
 
 Texture2D* Texture2D::blackTexture = nullptr;
 Texture2D* Texture2D::whiteTexture = nullptr;
+Texture2D* Texture2D::normalMapDefaultTexture = nullptr;
 Texture2D* Texture2D::msaDefaultTexture = nullptr;
 
 void Texture2D::CreateStaticTextures()
 {
     blackTexture = CreateSolidColorTexture(Color::Black(), /*sRGB=*/ true);
     whiteTexture = CreateSolidColorTexture(Color::White(), /*sRGB=*/ true);
+    normalMapDefaultTexture = CreateSolidColorTexture(ColorByte(128, 128, 255), /*sRGB=*/ false);
     msaDefaultTexture = CreateSolidColorTexture(Color(0.0f, 0.8f, 1.0f), /*sRGB=*/ true);
 }
 

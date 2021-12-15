@@ -14,9 +14,13 @@ Scene::Scene()
 
     // Load textures
     m_GroundAlbedo = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_albedo.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
+    Texture2D* groundNormalMap = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_normal.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ false);
+    groundNormalMap->setFilterMode(TextureFilterMode::Trilinear);
     Texture2D* groundMSA = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_MSA.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
 
     Texture2D* metalAlbedo = new Texture2D("res\\textures\\streaky-metal\\streaky-metal_albedo.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
+    Texture2D* metalNormalMap = new Texture2D("res\\textures\\streaky-metal\\streaky-metal_normal.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ false);
+    metalNormalMap->setFilterMode(TextureFilterMode::Trilinear);
     Texture2D* metalMSA = new Texture2D("res\\textures\\streaky-metal\\streaky-metal_MSA.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
 
     Texture2D* testGridAlbedo = new Texture2D("res\\textures\\test_grid.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
@@ -24,16 +28,19 @@ Scene::Scene()
     // Load shader and material
     m_GroundMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
     m_GroundMat->setTexture("u_AlbedoTex", m_GroundAlbedo);
+    m_GroundMat->setTexture("u_NormalTex", groundNormalMap);
     m_GroundMat->setTexture("u_MSATex", groundMSA);
     m_GroundMat->setVector2("u_TileSize", Vector2(5.0f, 5.0f));
 
     Material* wallMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
     wallMat->setTexture("u_AlbedoTex", metalAlbedo);
+    wallMat->setTexture("u_NormalTex", metalNormalMap);
     wallMat->setTexture("u_MSATex", metalMSA);
     wallMat->setVector2("u_TileSize", Vector2(7.5f, 1.5f));
 
     Material* basicMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
     basicMat->setTexture("u_AlbedoTex", testGridAlbedo);
+    basicMat->setTexture("u_NormalTex", metalNormalMap);
     basicMat->setTexture("u_MSATex", groundMSA);
     basicMat->setVector2("u_TileSize", Vector2::one);
 
@@ -44,6 +51,7 @@ Scene::Scene()
 
     Material* whiteMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));    // yes this will leak memory. temp solution.
     whiteMat->setTexture("u_AlbedoTex", Texture2D::whiteTexture);
+    whiteMat->setTexture("u_NormalTex", metalNormalMap);
     whiteMat->setTexture("u_MSATex", Texture2D::msaDefaultTexture);
 
     // Create entities
@@ -108,18 +116,18 @@ void Scene::update()
 
     for (size_t i = 0; i < m_DynamicEntities.size(); i++)
     {
-        t += 2.48529;
+        double ti = t + (2.5 * i);
         Transform* trans = m_DynamicEntities[i]->getTransform();
 
         trans->setPosition(Vector3(
-            (float)cos(t * 0.7),
-            (float)sin(t * 0.8) * 0.5f + 2.0f,
-            (float)sin(t * 0.175) * 7.0f
+            (float)cos(ti * 0.7),
+            (float)sin(ti * 0.8) * 0.5f + 2.0f,
+            (float)sin(ti * 0.175) * 7.0f
         ));
         trans->setRotation(rotationToRad(Vector3(
-            (float)t * 25.0f,
-            (float)t * 30.0f,
-            (float)t * 35.0f
+            (float)ti * 25.0f,
+            (float)ti * 30.0f,
+            (float)ti * 35.0f
         )));
     }
 }
