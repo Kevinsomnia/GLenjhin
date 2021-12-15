@@ -2,12 +2,13 @@
 
 using ImageLib::PNG;
 
-Texture2D::Texture2D(uint32_t width, uint32_t height, TextureFormat colorFormat, bool readable) : Texture()
+Texture2D::Texture2D(uint32_t width, uint32_t height, TextureFormat colorFormat, bool readable, bool sRGB) : Texture()
 {
     m_Width = width;
     m_Height = height;
     m_Mipmaps = false;
     m_Format = colorFormat;
+    m_sRGB = sRGB;
 
     glGenTextures(1, &m_TextureID);
     glBindTexture(GL_TEXTURE_2D, m_TextureID);
@@ -24,12 +25,12 @@ Texture2D::Texture2D(uint32_t width, uint32_t height, TextureFormat colorFormat,
         m_Pixels = nullptr;
     }
 
-    GLTextureParams params = GLTextureParams::FromFormat(m_Format, /*sRGB=*/false);
+    GLTextureParams params = GLTextureParams::FromFormat(m_Format, m_sRGB);
     glTexImage2D(GL_TEXTURE_2D, 0, params.internalFormat, m_Width, m_Height, 0, params.texFormat, params.valueType, m_Pixels);
 }
 
 // Import texture from PNG file.
-Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool readable) : Texture()
+Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool readable, bool sRGB) : Texture()
 {
     PNG::Result result = PNG::Load(filePath);
 
@@ -53,7 +54,8 @@ Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool rea
     setWrapMode(TextureWrapMode::Repeat);
 
     m_Format = result.info.hasAlpha() ? TextureFormat::RGBA32 : TextureFormat::RGB24;
-    GLTextureParams params = GLTextureParams::FromFormat(m_Format, /*sRGB=*/true);
+    m_sRGB = sRGB;
+    GLTextureParams params = GLTextureParams::FromFormat(m_Format, m_sRGB);
     glTexImage2D(GL_TEXTURE_2D, 0, params.internalFormat, m_Width, m_Height, 0, params.texFormat, params.valueType, m_Pixels);
 
     if (m_Mipmaps)
@@ -147,7 +149,7 @@ void Texture2D::uploadToGPU(bool keepReadable)
         return;
 
     glBindTexture(GL_TEXTURE_2D, m_TextureID);
-    GLTextureParams params = GLTextureParams::FromFormat(m_Format, /*sRGB=*/true);
+    GLTextureParams params = GLTextureParams::FromFormat(m_Format, m_sRGB);
     glTexImage2D(GL_TEXTURE_2D, 0, params.internalFormat, m_Width, m_Height, 0, params.texFormat, params.valueType, m_Pixels);
 
     if (m_Mipmaps)
@@ -166,14 +168,14 @@ Texture2D* Texture2D::msaDefaultTexture = nullptr;
 
 void Texture2D::CreateStaticTextures()
 {
-    blackTexture = CreateSolidColorTexture(Color::Black());
-    whiteTexture = CreateSolidColorTexture(Color::White());
-    msaDefaultTexture = CreateSolidColorTexture(Color(0.0f, 0.8f, 1.0f));
+    blackTexture = CreateSolidColorTexture(Color::Black(), /*sRGB=*/ true);
+    whiteTexture = CreateSolidColorTexture(Color::White(), /*sRGB=*/ true);
+    msaDefaultTexture = CreateSolidColorTexture(Color(0.0f, 0.8f, 1.0f), /*sRGB=*/ true);
 }
 
-Texture2D* Texture2D::CreateSolidColorTexture(const ColorByte& c)
+Texture2D* Texture2D::CreateSolidColorTexture(const ColorByte& c, bool sRGB)
 {
-    Texture2D* result = new Texture2D(/*width=*/ 1, /*height=*/ 1, TextureFormat::RGB24, /*readable=*/ true);
+    Texture2D* result = new Texture2D(/*width=*/ 1, /*height=*/ 1, TextureFormat::RGB24, /*readable=*/ true, sRGB);
     result->setPixel(0, 0, c);
     result->setFilterMode(TextureFilterMode::Point);
     result->setWrapMode(TextureWrapMode::Clamp);

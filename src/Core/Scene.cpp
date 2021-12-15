@@ -13,13 +13,13 @@ Scene::Scene()
     m_CustomModel = ModelImporter::LoadFBX("res\\models\\m4\\M4.fbx");
 
     // Load textures
-    m_GroundAlbedo = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_albedo.png", /*generateMipmaps=*/ true, /*readable=*/ false);
-    Texture2D* groundMSA = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_MSA.png", /*generateMipmaps=*/ true, /*readable=*/ false);
+    m_GroundAlbedo = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_albedo.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
+    Texture2D* groundMSA = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_MSA.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
 
-    Texture2D* metalAlbedo = new Texture2D("res\\textures\\streaky-metal\\streaky-metal_albedo.png", /*generateMipmaps=*/ true, /*readable=*/ false);
-    Texture2D* metalMSA = new Texture2D("res\\textures\\streaky-metal\\streaky-metal_MSA.png", /*generateMipmaps=*/ true, /*readable=*/ false);
+    Texture2D* metalAlbedo = new Texture2D("res\\textures\\streaky-metal\\streaky-metal_albedo.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
+    Texture2D* metalMSA = new Texture2D("res\\textures\\streaky-metal\\streaky-metal_MSA.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
 
-    Texture2D* testGridAlbedo = new Texture2D("res\\textures\\test_grid.png", /*generateMipmaps=*/ true, /*readable=*/ false);
+    Texture2D* testGridAlbedo = new Texture2D("res\\textures\\test_grid.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
 
     // Load shader and material
     m_GroundMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
@@ -166,6 +166,6 @@ void Scene::setNewTexture(const std::string& texturePath)
     if (m_GroundAlbedo)
         delete m_GroundAlbedo;
 
-    m_GroundAlbedo = new Texture2D(texturePath, /*generateMipmap=*/ true, /*readable=*/ false);
+    m_GroundAlbedo = new Texture2D(texturePath, /*generateMipmap=*/ true, /*readable=*/ false, /*sRGB=*/ true);
     m_GroundMat->setTexture("u_AlbedoTex", m_GroundAlbedo);
 }

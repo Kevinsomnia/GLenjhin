@@ -11,14 +11,14 @@ BufferTexture::BufferTexture(uint32_t width, uint32_t height, uint8_t depth, Tex
 
     if (colorFormat != TextureFormat::None)
     {
-        m_ColorTexture = new Texture2D(width, height, colorFormat, /*readable=*/ false);
+        m_ColorTexture = new Texture2D(width, height, colorFormat, /*readable=*/ false, /*sRGB=*/ false);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColorTexture->id(), 0);
     }
 
     if (depth != 0)
     {
         // Depth texture should always have point filtering. Might change in the future.
-        m_DepthTexture = new Texture2D(width, height, GetDepthTextureFormat(depth), /*readable=*/ false);
+        m_DepthTexture = new Texture2D(width, height, GetDepthTextureFormat(depth), /*readable=*/ false, /*sRGB=*/ false);
         m_DepthTexture->setFilterMode(TextureFilterMode::Point);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthTexture->id(), 0);
 
