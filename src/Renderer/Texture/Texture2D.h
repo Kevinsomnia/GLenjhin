@@ -7,10 +7,11 @@ class Texture2D : public Texture
 public:
     static Texture2D* blackTexture;
     static Texture2D* whiteTexture;
+    static Texture2D* normalMapDefaultTexture;
     static Texture2D* msaDefaultTexture;
 
-    Texture2D(uint32_t width, uint32_t height, TextureFormat colorFormat, bool readable);
-    Texture2D(const std::string& filePath, bool generateMipmaps, bool readable);
+    Texture2D(uint32_t width, uint32_t height, TextureFormat colorFormat, bool readable, bool sRGB);
+    Texture2D(const std::string& filePath, bool generateMipmaps, bool readable, bool sRGB);
     ~Texture2D();
 
     ColorByte getPixel(uint32_t x, uint32_t y) const;
@@ -21,5 +22,5 @@ public:
 
     static void CreateStaticTextures();
 private:
-    static Texture2D* CreateSolidColorTexture(const ColorByte& c);
+    static Texture2D* CreateSolidColorTexture(const ColorByte& c, bool sRGB);
 };

@@ -35,7 +35,7 @@ void SSAO::lazyInitialize(Camera* camera)
     m_CopyMat->setTexture("u_MainTex", emissionOccl);
 
     // Occlusion buffers setup
-    m_NoiseTex = new Texture2D("res\\textures\\dither_noise.png", /*generateMipmaps=*/ false, /*readable=*/ false);
+    m_NoiseTex = new Texture2D("res\\textures\\dither_noise.png", /*generateMipmaps=*/ false, /*readable=*/ false, /*sRGB=*/ false);
 
     BufferTexture* cameraTargetTex = camera->getRenderTargetBuffer();
     uint32_t w = cameraTargetTex->width() >> DOWNSAMPLE;

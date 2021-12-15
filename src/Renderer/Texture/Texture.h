@@ -150,6 +150,7 @@ protected:
     uint32_t m_Width;
     uint32_t m_Height;
     bool m_Mipmaps;
+    bool m_sRGB;
     TextureFormat m_Format;
     TextureFilterMode m_FilterMode;
     TextureWrapMode m_WrapMode;

@@ -24,7 +24,7 @@ namespace ModelLib
         assert(importerInstance);
 
         auto benchStart = steady_clock::now();
-        const aiScene* scene = importerInstance->ReadFile(filePath, aiProcess_Triangulate | aiProcess_FlipWindingOrder);
+        const aiScene* scene = importerInstance->ReadFile(filePath, aiProcess_Triangulate | aiProcess_FlipWindingOrder | aiProcess_CalcTangentSpace);
 
         if (!scene)
         {
@@ -59,7 +59,11 @@ namespace ModelLib
                 for (uint32_t i = 0; i < importMesh->mNumVertices; i++)
                 {
                     const aiVector3D& importPos = importMesh->mVertices[i];
+                    const aiVector3D& importTangent = importMesh->mTangents[i];
+
                     Vector3 position = Vector3(importPos.x, importPos.y, importPos.z) * fileScale;
+                    Vector3 tangent = Vector3(importTangent.x, importTangent.y, importTangent.z);
+
                     Vector3 normal;
                     Vector2 uv0;
 
@@ -83,7 +87,7 @@ namespace ModelLib
                         uv0 = Vector2::zero;
                     }
 
-                    vertices.push_back(Vertex(position, normal, uv0));
+                    vertices.push_back(Vertex(position, normal, tangent, uv0));
                 }
 
                 for (uint32_t i = 0; i < importMesh->mNumFaces; i++)
@@ -94,7 +98,8 @@ namespace ModelLib
                         indices.push_back(face.mIndices[j]);
                 }
 
-                mesh->setup(vertices.data(), vertices.size(), indices.data(), indices.size());
+                mesh->setGeometry(vertices.data(), vertices.size(), indices.data(), indices.size());
+                mesh->updateBuffers();
                 result.meshes.push_back(mesh);
             }
         }
