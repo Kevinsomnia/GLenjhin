@@ -94,7 +94,8 @@ namespace ModelLib
                         indices.push_back(face.mIndices[j]);
                 }
 
-                mesh->setup(vertices.data(), vertices.size(), indices.data(), indices.size());
+                mesh->setGeometry(vertices.data(), vertices.size(), indices.data(), indices.size());
+                mesh->updateBuffers();
                 result.meshes.push_back(mesh);
             }
         }
