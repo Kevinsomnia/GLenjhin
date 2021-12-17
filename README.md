@@ -2,7 +2,7 @@
 
 Some C++/OpenGL rendering practice. It's pronounced "glen jin".
 
-Compiled with MSVC, C++17. Using OpenGL 4.6 Core. The rendering pipeline is very object-oriented, which should make the rendering pipeline flexible at the cost of some performance.
+Compiled with MSVC v143, C++17. Using OpenGL 4.6 Core. The rendering pipeline is very object-oriented, which should make the rendering pipeline flexible at the cost of some performance.
 
 Supports Windows 64-bit only.
 
