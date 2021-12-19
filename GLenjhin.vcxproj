@@ -84,6 +84,7 @@
     <ClInclude Include="src\GUI\TexturePickerWindow.h" />
     <ClInclude Include="src\Interaction\Input.h" />
     <ClInclude Include="src\Interaction\InputCodes.h" />
+    <ClInclude Include="src\IO\AssetPipeline\TextureCache.hpp" />
     <ClInclude Include="src\IO\FileLib.hpp" />
     <ClInclude Include="src\IO\ImageLib.h" />
     <ClInclude Include="src\IO\MemoryStream.h" />

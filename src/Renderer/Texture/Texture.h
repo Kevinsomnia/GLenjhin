@@ -145,6 +145,8 @@ public:
     TextureFormat format() const { return m_Format; }
     Vector2 texelSize() const;
 protected:
+    static const size_t CACHE_SIZE_THRESHOLD = 32768;   // Size is measured in bytes
+
     uint32_t m_TextureID;
     uint8_t* m_Pixels;
     uint32_t m_Width;

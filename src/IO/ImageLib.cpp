@@ -62,7 +62,7 @@ namespace ImageLib
     }
 
     // Invalid/empty result
-    PNG::Result::Result() : info(Metadata()), pixels(nullptr) { }
+    PNG::Result::Result() : info(Metadata()), pixels(nullptr), pixelCount(0) { }
 
     PNG::Result PNG::Load(const std::string& filePath)
     {
@@ -236,7 +236,7 @@ namespace ImageLib
 
         benchStart = steady_clock::now();
 
-        uint32_t pixelCount = meta.width * meta.height * meta.bytesPerPixel();
+        size_t pixelCount = meta.width * meta.height * meta.bytesPerPixel();
         std::unique_ptr<uint8_t[]> tempPixels(new uint8_t[pixelCount]);
 
         stream.setPosition(0);
@@ -254,6 +254,7 @@ namespace ImageLib
         Result result;
         result.info = meta;
         result.pixels = tempPixels.release();
+        result.pixelCount = pixelCount;
         return result;
     }
 

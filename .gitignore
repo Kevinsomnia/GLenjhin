@@ -427,3 +427,6 @@ imgui.ini
 # Test assets (usually too large to include, or temporary)
 res/models/test/*
 res/textures/test/*
+
+# Temp/cache files generated from app
+app_cache/*

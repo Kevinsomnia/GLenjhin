@@ -188,10 +188,11 @@ namespace ImageLib
         {
             Metadata info;
             uint8_t* pixels;
+            size_t pixelCount;
 
             Result();
 
-            inline bool isValid() { return pixels; }
+            inline bool isValid() { return pixels && pixelCount != 0; }
         };
 
         static Result Load(const std::string& filePath);

@@ -350,5 +350,8 @@
     <ClInclude Include="vendor\xxHash\xxhash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\IO\AssetPipeline\TextureCache.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

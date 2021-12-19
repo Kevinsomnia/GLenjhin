@@ -37,5 +37,7 @@ Supports Windows 64-bit only.
   - Custom memory/binary stream implementation with bit-level serialization/deserialization support
   - Custom image library
     - PNG support (WIP; RGB/RGBA, 8-bit support only)
+    - Custom DEFLATE/zlib implementation
+  - Custom asset cache implementation powered by [xxHash](https://github.com/Cyan4973/xxHash). Subsequent app startups will be faster if cache is present.
   - Model import pipeline powered by [Assimp](https://github.com/assimp/assimp)
-- Primitive meshes generated at runtime: cubes, spheres, capsules, cylinders, quads
+- Primitive meshes generated at runtime (mostly trigonometry): cubes, spheres, capsules, cylinders, quads
