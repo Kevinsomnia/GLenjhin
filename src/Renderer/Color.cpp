@@ -161,7 +161,7 @@ ColorByte& ColorByte::operator -=(const ColorByte& other)
 
 ColorByte ColorByte::operator *(float scalar) const
 {
-    float clampedScalar = Clamp(scalar, 0.0f, 1.0f);
+    float clampedScalar = Math::Clamp01(scalar);
     return ColorByte(
         static_cast<uint8_t>(r * clampedScalar),
         static_cast<uint8_t>(g * clampedScalar),
@@ -178,7 +178,7 @@ ColorByte& ColorByte::operator *=(float scalar)
 
 ColorByte ColorByte::operator /(float divisor) const
 {
-    float clampedScalar = Clamp(1.0f / divisor, 0.0f, 1.0f);
+    float clampedScalar = Math::Clamp01(1.0f / divisor);
     return ColorByte(
         static_cast<uint8_t>(r * clampedScalar),
         static_cast<uint8_t>(g * clampedScalar),
@@ -218,10 +218,10 @@ ColorByte ColorByte::operator /(const ColorByte& other) const
     float a0 = other.a > 0 ? a / static_cast<float>(other.a) : 0.0f;
 
     return ColorByte(
-        static_cast<uint8_t>(Clamp(r0, 0.0f, 1.0f) * 255.0f),
-        static_cast<uint8_t>(Clamp(g0, 0.0f, 1.0f) * 255.0f),
-        static_cast<uint8_t>(Clamp(b0, 0.0f, 1.0f) * 255.0f),
-        static_cast<uint8_t>(Clamp(a0, 0.0f, 1.0f) * 255.0f)
+        static_cast<uint8_t>(Math::Clamp01(r0) * 255.0f),
+        static_cast<uint8_t>(Math::Clamp01(g0) * 255.0f),
+        static_cast<uint8_t>(Math::Clamp01(b0) * 255.0f),
+        static_cast<uint8_t>(Math::Clamp01(a0) * 255.0f)
     );
 }
 

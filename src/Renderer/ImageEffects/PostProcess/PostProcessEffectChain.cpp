@@ -21,7 +21,7 @@ void PostProcessEffectChain::add(PostProcessEffect* effect)
     m_Effects.push_back(effect);
 
     // Initialize swap buffers if necessary for reading/writing. Amount we need depends on how many effects we add, but can only be at most 2.
-    size_t numBuffersRequired = Min(m_Effects.size(), (size_t)2);
+    size_t numBuffersRequired = Math::Min(m_Effects.size(), (size_t)2);
     BufferTexture* cameraTex = m_Camera->getRenderTargetBuffer();
 
     while (m_NumColorBuffers < numBuffersRequired)
