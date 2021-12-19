@@ -130,6 +130,12 @@ float Vector2::Cross(const Vector2& a, const Vector2& b)
     return a.x * b.y - a.y * b.x;
 }
 
+Vector2 Vector2::Lerp(const Vector2& a, const Vector2& b, float t)
+{
+    return Vector2(Math::Lerp(a.x, b.x, t), Math::Lerp(a.y, b.y, t));
+}
+
+
 // ===========================================================================
 // Vector3
 // ===========================================================================
@@ -269,6 +275,11 @@ Vector3 Vector3::Cross(const Vector3& a, const Vector3& b)
     );
 }
 
+Vector3 Vector3::Lerp(const Vector3& a, const Vector3& b, float t)
+{
+    return Vector3(Math::Lerp(a.x, b.x, t), Math::Lerp(a.y, b.y, t), Math::Lerp(a.z, b.z, t));
+}
+
 // ===========================================================================
 // Vector4
 // ===========================================================================
@@ -394,4 +405,9 @@ Vector4 Vector4::one = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 float Vector4::Dot(const Vector4& a, const Vector4& b)
 {
     return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+}
+
+Vector4 Vector4::Lerp(const Vector4& a, const Vector4& b, float t)
+{
+    return Vector4(Math::Lerp(a.x, b.x, t), Math::Lerp(a.y, b.y, t), Math::Lerp(a.z, b.z, t), Math::Lerp(a.w, b.w, t));
 }

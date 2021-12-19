@@ -23,8 +23,8 @@ public:
     Vector3 getRotation() const;	// Rotation is in radians
     Vector3 getScale() const;
     Matrix4x4 getTRS();
-    Vector3 getForward() const;
-    Vector3 transformDirection(const Vector3& dir) const;
+    Vector3 getForward();
+    Vector3 transformDirection(const Vector3& dir);
     void setPosition(const Vector3& position);
     void setRotation(const Vector3& rotation);
     void setScale(const Vector3& scale);

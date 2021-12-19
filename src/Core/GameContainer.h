@@ -44,6 +44,7 @@ private:
     Scene* m_CurrentScene;
     Camera* m_MainCamera;
     ImGuiIO* m_ImGuiIO;
+    Vector3 m_SmoothedCamMoveDir;
     uint32_t m_FrameCountInLastSecond;
     double m_LastFPSRecordTime;
 

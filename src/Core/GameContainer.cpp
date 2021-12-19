@@ -38,6 +38,8 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     m_MainCamera->addPostProcessEffect(new Tonemapping());
     // m_MainCamera->addPostProcessEffect(new GaussianBlur());     // TODO: runtime toggle
 
+    m_SmoothedCamMoveDir = Vector3::zero;
+
     // ImGui
     ImGui::CreateContext();
     ImGui_ImplOpenGL3_Init();
@@ -123,43 +125,53 @@ void GameContainer::handleCameraMovement(double deltaTime)
     if (!m_MainCamera)
         return;
 
+    Transform* cameraTrans = m_MainCamera->getTransform();
+
+    float dt = (float)deltaTime;
     bool allowInput = Input::GetMouseCursorState() == MouseCursorState::Locked;
+    Vector3 targetMoveDir;
 
     if (allowInput)
     {
-        Transform* cameraTrans = m_MainCamera->getTransform();
-
         // Mouse look
         Vector2 mouseDelta = Input::GetMouseMoveDelta() * 0.075f;
         Vector3 rotateDelta = rotationToRad(Vector3(mouseDelta.y, mouseDelta.x, 0.0f));
         cameraTrans->rotate(rotateDelta);
 
         // Free fly
-        float moveSpeed = 6.0f;
-
-        if (Input::GetKey(KeyCode::LeftShift))
-        {
-            moveSpeed *= 3.0f;
-        }
-
-        Vector3 moveDelta = getMoveAxis() * moveSpeed * (float)deltaTime;
-        cameraTrans->translate(moveDelta, Space::Local);
-
+        targetMoveDir = cameraTrans->transformDirection(getMoveAxis());
         bool space = Input::GetKey(KeyCode::Space);
         bool ctrl = Input::GetKey(KeyCode::LeftCtrl) || Input::GetKey(KeyCode::RightCtrl);
-        float y = 0.0f;
 
         if (space && !ctrl)
         {
-            y = 1.0f;
+            targetMoveDir.y += 1.0f;
         }
         else if (ctrl && !space)
         {
-            y = -1.0f;
+            targetMoveDir.y -= 1.0f;
         }
 
-        cameraTrans->translate(Vector3(0.0f, y, 0.0f) * moveSpeed * (float)deltaTime, Space::World);
+        if (targetMoveDir.getSqrMagnitude() > 1.0f)
+            targetMoveDir.normalize();
+
+        const float MOVE_SPEED = 6.0f;
+        targetMoveDir *= MOVE_SPEED * dt;
+
+        if (Input::GetKey(KeyCode::LeftShift))
+            targetMoveDir *= 3.0f;
     }
+    else
+    {
+        targetMoveDir = Vector3::zero;
+    }
+
+    // Approximate smoothing.
+    const float MOVEMENT_SMOOTH_SPEED = 12.0f;
+    m_SmoothedCamMoveDir = Vector3::Lerp(m_SmoothedCamMoveDir, targetMoveDir, dt * MOVEMENT_SMOOTH_SPEED);
+
+    if (m_SmoothedCamMoveDir.getSqrMagnitude() > 0.000001f)
+        cameraTrans->translate(m_SmoothedCamMoveDir);
 
     // Update and upload view projection.
     m_MainCamera->update();

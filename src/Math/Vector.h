@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include "Math.h"
 
 
 // Forward declarations
@@ -54,6 +55,7 @@ struct Vector2
 
     static float Dot(const Vector2& a, const Vector2& b);
     static float Cross(const Vector2& a, const Vector2& b);
+    static Vector2 Lerp(const Vector2& a, const Vector2& b, float t);
 
     friend std::ostream& operator<<(std::ostream& os, const Vector2& v)
     {
@@ -116,6 +118,7 @@ struct Vector3
 
     static float Dot(const Vector3& a, const Vector3& b);
     static Vector3 Cross(const Vector3& a, const Vector3& b);
+    static Vector3 Lerp(const Vector3& a, const Vector3& b, float t);
 
     friend std::ostream& operator<<(std::ostream& os, const Vector3& v)
     {
@@ -172,6 +175,7 @@ struct Vector4
     static Vector4 one;
 
     static float Dot(const Vector4& a, const Vector4& b);
+    static Vector4 Lerp(const Vector4& a, const Vector4& b, float t);
 
     friend std::ostream& operator<<(std::ostream& os, const Vector4& v)
     {
