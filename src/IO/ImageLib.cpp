@@ -221,9 +221,6 @@ namespace ImageLib
             stream.setPosition(crcComputeEnd + 4);
         }
 
-        auto benchEnd = steady_clock::now();
-        cout << duration<float>(benchEnd - benchStart).count() << " seconds (PROCESS BLOCKS)" << endl;
-
         if (!reachedEnd)
         {
             cerr << "PNG file is corrupted: file unexpectedly ended before reading IEND chunk" << endl;
@@ -250,8 +247,8 @@ namespace ImageLib
             return Result();
         }
 
-        benchEnd = steady_clock::now();
-        cout << duration<float>(benchEnd - benchStart).count() << " seconds (PROCESS DATA)" << endl;
+        auto benchEnd = steady_clock::now();
+        cout << "Decoding took " << duration<float>(benchEnd - benchStart).count() << " seconds" << endl;
 
         Result result;
         result.info = meta;

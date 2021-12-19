@@ -66,7 +66,7 @@ namespace ShaderCompiler
             }
         }
 
-        return {
+        return ParsedPrograms {
             vert.str(),
             frag.str()
         };

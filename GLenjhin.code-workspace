@@ -8,6 +8,11 @@
 		"files.exclude": {
 			"Dependencies": true,
 			"vendor": true
+		},
+		"files.associations": {
+			"chrono": "cpp",
+			"ostream": "cpp",
+			"xstring": "cpp"
 		}
 	}
 }
