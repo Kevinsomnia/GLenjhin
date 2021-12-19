@@ -212,16 +212,16 @@ ColorByte& ColorByte::operator *=(const ColorByte& other)
 
 ColorByte ColorByte::operator /(const ColorByte& other) const
 {
-    float r = other.r > 0 ? r / static_cast<float>(other.r) : 0.0f;
-    float g = other.g > 0 ? g / static_cast<float>(other.g) : 0.0f;
-    float b = other.b > 0 ? b / static_cast<float>(other.b) : 0.0f;
-    float a = other.a > 0 ? a / static_cast<float>(other.a) : 0.0f;
+    float r0 = other.r > 0 ? r / static_cast<float>(other.r) : 0.0f;
+    float g0 = other.g > 0 ? g / static_cast<float>(other.g) : 0.0f;
+    float b0 = other.b > 0 ? b / static_cast<float>(other.b) : 0.0f;
+    float a0 = other.a > 0 ? a / static_cast<float>(other.a) : 0.0f;
 
     return ColorByte(
-        static_cast<uint8_t>(Clamp(r, 0.0f, 1.0f) * 255.0f),
-        static_cast<uint8_t>(Clamp(g, 0.0f, 1.0f) * 255.0f),
-        static_cast<uint8_t>(Clamp(b, 0.0f, 1.0f) * 255.0f),
-        static_cast<uint8_t>(Clamp(a, 0.0f, 1.0f) * 255.0f)
+        static_cast<uint8_t>(Clamp(r0, 0.0f, 1.0f) * 255.0f),
+        static_cast<uint8_t>(Clamp(g0, 0.0f, 1.0f) * 255.0f),
+        static_cast<uint8_t>(Clamp(b0, 0.0f, 1.0f) * 255.0f),
+        static_cast<uint8_t>(Clamp(a0, 0.0f, 1.0f) * 255.0f)
     );
 }
 
