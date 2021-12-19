@@ -44,8 +44,8 @@ void GaussianBlur::render(BufferTexture* source, BufferTexture* destination)
     PostProcessEffect::render(source, downsampledBuffer, m_DownsampleMat);
 
     float blurFactor = BLUR_RADIUS * (source->height() / REFERENCE_HEIGHT);
-    Vector2 strideHorizontal = Vector2(screenTexelSize.getX() * blurFactor, 0.0f);
-    Vector2 strideVertical = Vector2(0.0f, screenTexelSize.getY() * blurFactor);
+    Vector2 strideHorizontal = Vector2(screenTexelSize.x * blurFactor, 0.0f);
+    Vector2 strideVertical = Vector2(0.0f, screenTexelSize.y * blurFactor);
 
     for (int i = 0; i < BLUR_ITERATIONS; i++)
     {

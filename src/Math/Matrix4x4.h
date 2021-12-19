@@ -74,7 +74,7 @@ inline void Matrix4x4::set(int row, int column, float value)
 inline void Matrix4x4::setRow(int row, const Vector4& val)
 {
     for (int i = 0; i < 4; i++)
-        values[row + (i * 4)] = val.values[i];
+        values[row + (i * 4)] = val[i];
 }
 
 inline void Matrix4x4::setColumn(int column, const Vector4& val)
@@ -82,36 +82,36 @@ inline void Matrix4x4::setColumn(int column, const Vector4& val)
     int start = column * 4;
 
     for (int i = 0; i < 4; i++)
-        values[start + i] = val.values[i];
+        values[start + i] = val[i];
 }
 
 inline Vector3 Matrix4x4::multiplyPoint3x4(const Vector3& p) const
 {
     return Vector3(
-        p.getX() * values[0] + p.getY() * values[4] + p.getZ() * values[8] + values[12],
-        p.getX() * values[1] + p.getY() * values[5] + p.getZ() * values[9] + values[13],
-        p.getX() * values[2] + p.getY() * values[6] + p.getZ() * values[10] + values[14]
+        p.x * values[0] + p.y * values[4] + p.z * values[8] + values[12],
+        p.x * values[1] + p.y * values[5] + p.z * values[9] + values[13],
+        p.x * values[2] + p.y * values[6] + p.z * values[10] + values[14]
     );
 }
 
 inline Vector3 Matrix4x4::multiplyPoint(const Vector3& p) const
 {
     // Divide (x,y,z) by perspective component (w)
-    float oneOverW = 1.0f / (p.getX() * values[3] + p.getY() * values[7] + p.getZ() * values[11] + values[15]);
+    float oneOverW = 1.0f / (p.x * values[3] + p.y * values[7] + p.z * values[11] + values[15]);
 
     return Vector3(
-        (p.getX() * values[0] + p.getY() * values[4] + p.getZ() * values[8] + values[12]) * oneOverW,
-        (p.getX() * values[1] + p.getY() * values[5] + p.getZ() * values[9] + values[13]) * oneOverW,
-        (p.getX() * values[2] + p.getY() * values[6] + p.getZ() * values[10] + values[14]) * oneOverW
+        (p.x * values[0] + p.y * values[4] + p.z * values[8] + values[12]) * oneOverW,
+        (p.x * values[1] + p.y * values[5] + p.z * values[9] + values[13]) * oneOverW,
+        (p.x * values[2] + p.y * values[6] + p.z * values[10] + values[14]) * oneOverW
     );
 }
 
 inline Vector3 Matrix4x4::multiplyVector(const Vector3& v) const
 {
     return Vector3(
-        v.getX() * values[0] + v.getY() * values[4] + v.getZ() * values[8],
-        v.getX() * values[1] + v.getY() * values[5] + v.getZ() * values[9],
-        v.getX() * values[2] + v.getY() * values[6] + v.getZ() * values[10]
+        v.x * values[0] + v.y * values[4] + v.z * values[8],
+        v.x * values[1] + v.y * values[5] + v.z * values[9],
+        v.x * values[2] + v.y * values[6] + v.z * values[10]
     );
 }
 

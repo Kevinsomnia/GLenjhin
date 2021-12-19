@@ -97,7 +97,7 @@ void Mesh::calculateTangents()
         Vector2 uvEdge1 = vert2.uv - vert0.uv;
 
         // Accumulate tangents since multiple triangles can share the same vertex.
-        Vector3 tangent = (xyzEdge0 * uvEdge1.getY() - xyzEdge1 * uvEdge0.getY()) / (uvEdge0.getX() * uvEdge1.getY() - uvEdge1.getX() * uvEdge0.getY());
+        Vector3 tangent = (xyzEdge0 * uvEdge1.y - xyzEdge1 * uvEdge0.y) / (uvEdge0.x * uvEdge1.y - uvEdge1.x * uvEdge0.y);
         vert0.tangent += tangent;
         vert1.tangent += tangent;
         vert2.tangent += tangent;

@@ -19,14 +19,11 @@ struct Vector2
     Vector2(float x, float y);
     Vector2(const float* arr);
 
-    float values[2];
+    float x;
+    float y;
 
-    inline float getX() const { return values[0]; }
-    inline float getY() const { return values[1]; }
-    inline void setX(float x) { values[0] = x; }
-    inline void setY(float y) { values[1] = y; }
     inline float getMagnitude() const { return sqrt(getSqrMagnitude()); }
-    inline float getSqrMagnitude() const { return values[0] * values[0] + values[1] * values[1]; }
+    inline float getSqrMagnitude() const { return x * x + y * y; }
     inline Vector2 getNormalized() const { return *this / getMagnitude(); }
     inline void normalize();
 
@@ -60,7 +57,7 @@ struct Vector2
 
     friend std::ostream& operator<<(std::ostream& os, const Vector2& v)
     {
-        os << '(' << v[0] << ", " << v[1] << ')';
+        os << '(' << v.x << ", " << v.y << ')';
         return os;
     }
 };
@@ -81,16 +78,12 @@ struct Vector3
     Vector3(float x, float y, float z);
     Vector3(const float* arr);
 
-    float values[3];
+    float x;
+    float y;
+    float z;
 
-    inline float getX() const { return values[0]; }
-    inline float getY() const { return values[1]; }
-    inline float getZ() const { return values[2]; }
-    inline void setX(float x) { values[0] = x; }
-    inline void setY(float y) { values[1] = y; }
-    inline void setZ(float z) { values[2] = z; }
     inline float getMagnitude() const { return sqrt(getSqrMagnitude()); }
-    inline float getSqrMagnitude() const { return values[0] * values[0] + values[1] * values[1] + values[2] * values[2]; }
+    inline float getSqrMagnitude() const { return x * x + y * y + z * z; }
     inline Vector3 getNormalized() const { return *this / getMagnitude(); }
     inline void normalize();
 
@@ -126,7 +119,7 @@ struct Vector3
 
     friend std::ostream& operator<<(std::ostream& os, const Vector3& v)
     {
-        os << '(' << v[0] << ", " << v[1] << ", " << v[2] << ')';
+        os << '(' << v.x << ", " << v.y << ", " << v.z << ')';
         return os;
     }
 };
@@ -147,18 +140,13 @@ struct Vector4
     Vector4(float x, float y, float z, float w);
     Vector4(const float* arr);
 
-    float values[4];
+    float x;
+    float y;
+    float z;
+    float w;
 
-    inline float getX() const { return values[0]; }
-    inline float getY() const { return values[1]; }
-    inline float getZ() const { return values[2]; }
-    inline float getW() const { return values[3]; }
-    inline void setX(float x) { values[0] = x; }
-    inline void setY(float y) { values[1] = y; }
-    inline void setZ(float z) { values[2] = z; }
-    inline void setW(float w) { values[3] = w; }
     inline float getMagnitude() const { return sqrt(getSqrMagnitude()); }
-    inline float getSqrMagnitude() const { return values[0] * values[0] + values[1] * values[1] + values[2] * values[2] + values[3] * values[3]; }
+    inline float getSqrMagnitude() const { return x * x + y * y + z * z + w * w; }
     inline Vector4 getNormalized() const { return *this / getMagnitude(); }
     inline void normalize();
 
@@ -187,7 +175,7 @@ struct Vector4
 
     friend std::ostream& operator<<(std::ostream& os, const Vector4& v)
     {
-        os << '(' << v[0] << ", " << v[1] << ", " << v[2] << ", " << v[3] << ')';
+        os << '(' << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ')';
         return os;
     }
 };

@@ -15,16 +15,10 @@ struct Color
     Color(float r, float g, float b, float a);
     Color(const float* arr, bool alpha = true);
 
-    float values[4];
-
-    inline float getR() const { return values[0]; }
-    inline float getG() const { return values[1]; }
-    inline float getB() const { return values[2]; }
-    inline float getA() const { return values[3]; }
-    inline void setR(float r) { values[0] = r; }
-    inline void setG(float g) { values[1] = g; }
-    inline void setB(float b) { values[2] = b; }
-    inline void setA(float a) { values[3] = a; }
+    float r;
+    float g;
+    float b;
+    float a;
 
     Color operator +(const Color& other) const;
     Color& operator +=(const Color& other);
@@ -57,9 +51,9 @@ struct Color
     static Color Orange() { return Color(1.0f, 0.5f, 0.0f); }
     static Color Purple() { return Color(0.5f, 0.0f, 1.0f); }
 
-    friend std::ostream& operator<<(std::ostream& os, const Color& v)
+    friend std::ostream& operator<<(std::ostream& os, const Color& c)
     {
-        os << '(' << v[0] << ", " << v[1] << ", " << v[2] << ", " << v[3] << ')';
+        os << '(' << c.r << ", " << c.g << ", " << c.b << ", " << c.a << ')';
         return os;
     }
 };
@@ -71,16 +65,10 @@ struct ColorByte
     ColorByte(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
     ColorByte(const uint8_t* arr, bool alpha = true);
 
-    uint8_t values[4];
-
-    inline uint8_t getR() const { return values[0]; }
-    inline uint8_t getG() const { return values[1]; }
-    inline uint8_t getB() const { return values[2]; }
-    inline uint8_t getA() const { return values[3]; }
-    inline void setR(uint8_t r) { values[0] = r; }
-    inline void setG(uint8_t g) { values[1] = g; }
-    inline void setB(uint8_t b) { values[2] = b; }
-    inline void setA(uint8_t a) { values[3] = a; }
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+    uint8_t a;
 
     ColorByte operator +(const ColorByte& other) const;
     ColorByte& operator +=(const ColorByte& other);
@@ -113,12 +101,12 @@ struct ColorByte
     static ColorByte Orange() { return ColorByte(255, 128, 0); }
     static ColorByte Purple() { return ColorByte(128, 0, 255); }
 
-    friend std::ostream& operator<<(std::ostream& os, const ColorByte& v)
+    friend std::ostream& operator<<(std::ostream& os, const ColorByte& c)
     {
-        os << '(' << static_cast<uint16_t>(v[0]) << ", ";
-        os << static_cast<uint16_t>(v[1]) << ", ";
-        os << static_cast<uint16_t>(v[2]) << ", ";
-        os << static_cast<uint16_t>(v[3]) << ')';
+        os << '(' << static_cast<uint16_t>(c.r) << ", ";
+        os << static_cast<uint16_t>(c.g) << ", ";
+        os << static_cast<uint16_t>(c.b) << ", ";
+        os << static_cast<uint16_t>(c.a) << ')';
         return os;
     }
 };

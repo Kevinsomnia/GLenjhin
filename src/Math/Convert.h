@@ -19,10 +19,10 @@ inline float radToDeg(float radians)
 
 inline Vector3 rotationToRad(const Vector3& rotDeg)
 {
-    return Vector3(degToRad(rotDeg.getX()), degToRad(rotDeg.getY()), degToRad(rotDeg.getZ()));
+    return Vector3(degToRad(rotDeg.x), degToRad(rotDeg.y), degToRad(rotDeg.z));
 }
 
 inline Vector3 rotationToDeg(const Vector3& rotRad)
 {
-    return Vector3(radToDeg(rotRad.getX()), radToDeg(rotRad.getY()), radToDeg(rotRad.getZ()));
+    return Vector3(radToDeg(rotRad.x), radToDeg(rotRad.y), radToDeg(rotRad.z));
 }

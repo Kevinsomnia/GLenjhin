@@ -5,21 +5,16 @@
 // ===========================================================================
 
 Vector2::Vector2() : Vector2(0.0f, 0.0f) { }
-Vector2::Vector2(float x, float y)
-{
-    values[0] = x;
-    values[1] = y;
-}
-
+Vector2::Vector2(float x, float y) : x(x), y(y) { }
 Vector2::Vector2(const float* arr)
 {
-    for (int i = 0; i < 2; i++)
-        values[i] = arr[i];
+    x = arr[0];
+    y = arr[1];
 }
 
 Vector2 Vector2::operator +(const Vector2& other) const
 {
-    return Vector2(values[0] + other.values[0], values[1] + other.values[1]);
+    return Vector2(x + other.x, y + other.y);
 }
 
 Vector2& Vector2::operator +=(const Vector2& other)
@@ -30,7 +25,7 @@ Vector2& Vector2::operator +=(const Vector2& other)
 
 Vector2 Vector2::operator -(const Vector2& other) const
 {
-    return Vector2(values[0] - other.values[0], values[1] - other.values[1]);
+    return Vector2(x - other.x, y - other.y);
 }
 
 Vector2& Vector2::operator -=(const Vector2& other)
@@ -41,7 +36,7 @@ Vector2& Vector2::operator -=(const Vector2& other)
 
 Vector2 Vector2::operator *(float scalar) const
 {
-    return Vector2(values[0] * scalar, values[1] * scalar);
+    return Vector2(x * scalar, y * scalar);
 }
 
 Vector2& Vector2::operator *=(float scalar)
@@ -53,7 +48,7 @@ Vector2& Vector2::operator *=(float scalar)
 Vector2 Vector2::operator /(float divisor) const
 {
     float scalar = 1.0f / divisor;
-    return Vector2(values[0] * scalar, values[1] * scalar);
+    return Vector2(x * scalar, y * scalar);
 }
 
 Vector2& Vector2::operator /=(float divisor)
@@ -64,7 +59,7 @@ Vector2& Vector2::operator /=(float divisor)
 
 Vector2 Vector2::operator *(const Vector2& other) const
 {
-    return Vector2(values[0] * other.values[0], values[1] * other.values[1]);
+    return Vector2(x * other.x, y * other.y);
 }
 
 Vector2& Vector2::operator *=(const Vector2& other)
@@ -75,7 +70,7 @@ Vector2& Vector2::operator *=(const Vector2& other)
 
 Vector2 Vector2::operator /(const Vector2& other) const
 {
-    return Vector2(values[0] / other.values[0], values[1] / other.values[1]);
+    return Vector2(x / other.x, y / other.y);
 }
 
 Vector2& Vector2::operator /=(const Vector2& other)
@@ -86,27 +81,35 @@ Vector2& Vector2::operator /=(const Vector2& other)
 
 Vector2 Vector2::operator -() const
 {
-    return Vector2(-values[0], -values[1]);
+    return Vector2(-x, -y);
 }
 
 Vector2::operator const float*() const
 {
-    return values;
+    return &x;
 }
 
 Vector2::operator Vector3() const
 {
-    return Vector3(values[0], values[1], 0.0f);
+    return Vector3(x, y, 0.0f);
 }
 
 Vector2::operator Vector4() const
 {
-    return Vector4(values[0], values[1], 0.0f, 0.0f);
+    return Vector4(x, y, 0.0f, 0.0f);
 }
 
 float& Vector2::operator [](int index)
 {
-    return values[index];
+    switch (index)
+    {
+        case 0:
+            return x;
+        case 1:
+            return y;
+        default:
+            throw "Index out of range";
+    }
 }
 
 Vector2 Vector2::zero = Vector2();
@@ -118,13 +121,13 @@ Vector2 Vector2::up = Vector2(0.0f, 1.0f);
 
 float Vector2::Dot(const Vector2& a, const Vector2& b)
 {
-    return a.values[0] * b.values[0] + a.values[1] * b.values[1];
+    return a.x * b.x + a.x * b.x;
 }
 
 float Vector2::Cross(const Vector2& a, const Vector2& b)
 {
     // Returns the area of the parallelogram formed by a and b.
-    return a.values[0] * b.values[1] - a.values[1] * b.values[0];
+    return a.x * b.y - a.y * b.x;
 }
 
 // ===========================================================================
@@ -132,22 +135,18 @@ float Vector2::Cross(const Vector2& a, const Vector2& b)
 // ===========================================================================
 
 Vector3::Vector3() : Vector3(0.0f, 0.0f, 0.0f) { }
-Vector3::Vector3(float x, float y, float z)
-{
-    values[0] = x;
-    values[1] = y;
-    values[2] = z;
-}
+Vector3::Vector3(float x, float y, float z) : x(x), y(y), z(z) { }
 
 Vector3::Vector3(const float* arr)
 {
-    for (int i = 0; i < 3; i++)
-        values[i] = arr[i];
+    x = arr[0];
+    y = arr[1];
+    z = arr[2];
 }
 
 Vector3 Vector3::operator +(const Vector3& other) const
 {
-    return Vector3(values[0] + other.values[0], values[1] + other.values[1], values[2] + other.values[2]);
+    return Vector3(x + other.x, y + other.y, z + other.z);
 }
 
 Vector3& Vector3::operator +=(const Vector3& other)
@@ -158,7 +157,7 @@ Vector3& Vector3::operator +=(const Vector3& other)
 
 Vector3 Vector3::operator -(const Vector3& other) const
 {
-    return Vector3(values[0] - other.values[0], values[1] - other.values[1], values[2] - other.values[2]);
+    return Vector3(x - other.x, y - other.y, z - other.z);
 }
 
 Vector3& Vector3::operator -=(const Vector3& other)
@@ -169,7 +168,7 @@ Vector3& Vector3::operator -=(const Vector3& other)
 
 Vector3 Vector3::operator *(float scalar) const
 {
-    return Vector3(values[0] * scalar, values[1] * scalar, values[2] * scalar);
+    return Vector3(x * scalar, y * scalar, z * scalar);
 }
 
 Vector3& Vector3::operator *=(float scalar)
@@ -181,7 +180,7 @@ Vector3& Vector3::operator *=(float scalar)
 Vector3 Vector3::operator /(float divisor) const
 {
     float scalar = 1.0f / divisor;
-    return Vector3(values[0] * scalar, values[1] * scalar, values[2] * scalar);
+    return Vector3(x * scalar, y * scalar, z * scalar);
 }
 
 Vector3& Vector3::operator /=(float divisor)
@@ -192,7 +191,7 @@ Vector3& Vector3::operator /=(float divisor)
 
 Vector3 Vector3::operator *(const Vector3& other) const
 {
-    return Vector3(values[0] * other.values[0], values[1] * other.values[1], values[2] * other.values[2]);
+    return Vector3(x * other.x, y * other.y, z * other.z);
 }
 
 Vector3& Vector3::operator *=(const Vector3& other)
@@ -203,7 +202,7 @@ Vector3& Vector3::operator *=(const Vector3& other)
 
 Vector3 Vector3::operator /(const Vector3& other) const
 {
-    return Vector3(values[0] / other.values[0], values[1] / other.values[1], values[2] / other.values[2]);
+    return Vector3(x / other.x, y / other.y, z / other.z);
 }
 
 Vector3& Vector3::operator /=(const Vector3& other)
@@ -214,27 +213,37 @@ Vector3& Vector3::operator /=(const Vector3& other)
 
 Vector3 Vector3::operator -() const
 {
-    return Vector3(-values[0], -values[1], -values[2]);
+    return Vector3(-x, -y, -z);
 }
 
 Vector3::operator const float*() const
 {
-    return values;
+    return &x;
 }
 
 Vector3::operator Vector2() const
 {
-    return Vector2(values);
+    return Vector2(x, y);
 }
 
 Vector3::operator Vector4() const
 {
-    return Vector4(values[0], values[1], values[2], 0.0f);
+    return Vector4(x, y, z, 0.0f);
 }
 
 float& Vector3::operator [](int index)
 {
-    return values[index];
+    switch (index)
+    {
+        case 0:
+            return x;
+        case 1:
+            return y;
+        case 2:
+            return z;
+        default:
+            throw "Index out of range";
+    }
 }
 
 Vector3 Vector3::zero = Vector3();
@@ -248,15 +257,15 @@ Vector3 Vector3::up = Vector3(0.0f, 1.0f, 0.0f);
 
 float Vector3::Dot(const Vector3& a, const Vector3& b)
 {
-    return a.values[0] * b.values[0] + a.values[1] * b.values[1] + a.values[2] * b.values[2];
+    return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
 Vector3 Vector3::Cross(const Vector3& a, const Vector3& b)
 {
     return Vector3(
-        a.values[1] * b.values[2] - a.values[2] * b.values[1],
-        a.values[2] * b.values[0] - a.values[0] * b.values[2],
-        a.values[0] * b.values[1] - a.values[1] * b.values[0]
+        a.y * b.z - a.z * b.y,
+        a.z * b.x - a.x * b.z,
+        a.x * b.y - a.y * b.x
     );
 }
 
@@ -265,23 +274,19 @@ Vector3 Vector3::Cross(const Vector3& a, const Vector3& b)
 // ===========================================================================
 
 Vector4::Vector4() : Vector4(0.0f, 0.0f, 0.0f, 0.0f) { }
-Vector4::Vector4(float x, float y, float z, float w)
-{
-    values[0] = x;
-    values[1] = y;
-    values[2] = z;
-    values[3] = w;
-}
+Vector4::Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) { }
 
 Vector4::Vector4(const float* arr)
 {
-    for (int i = 0; i < 4; i++)
-        values[i] = arr[i];
+    x = arr[0];
+    y = arr[1];
+    z = arr[2];
+    w = arr[3];
 }
 
 Vector4 Vector4::operator +(const Vector4& other) const
 {
-    return Vector4(values[0] + other.values[0], values[1] + other.values[1], values[2] + other.values[2], values[3] + other.values[3]);
+    return Vector4(x + other.x, y + other.y, z + other.z, w + other.w);
 }
 
 Vector4& Vector4::operator +=(const Vector4& other)
@@ -292,7 +297,7 @@ Vector4& Vector4::operator +=(const Vector4& other)
 
 Vector4 Vector4::operator -(const Vector4& other) const
 {
-    return Vector4(values[0] - other.values[0], values[1] - other.values[1], values[2] + other.values[2], values[3] + other.values[3]);
+    return Vector4(x - other.x, y - other.y, z + other.z, w + other.w);
 }
 
 Vector4& Vector4::operator -=(const Vector4& other)
@@ -303,7 +308,7 @@ Vector4& Vector4::operator -=(const Vector4& other)
 
 Vector4 Vector4::operator *(float scalar) const
 {
-    return Vector4(values[0] * scalar, values[1] * scalar, values[2] * scalar, values[3] * scalar);
+    return Vector4(x * scalar, y * scalar, z * scalar, w * scalar);
 }
 
 Vector4& Vector4::operator *=(float scalar)
@@ -315,7 +320,7 @@ Vector4& Vector4::operator *=(float scalar)
 Vector4 Vector4::operator /(float divisor) const
 {
     float scalar = 1.0f / divisor;
-    return Vector4(values[0] * scalar, values[1] * scalar, values[2] * scalar, values[3] * scalar);
+    return Vector4(x * scalar, y * scalar, z * scalar, w * scalar);
 }
 
 Vector4& Vector4::operator /=(float divisor)
@@ -326,7 +331,7 @@ Vector4& Vector4::operator /=(float divisor)
 
 Vector4 Vector4::operator *(const Vector4& other) const
 {
-    return Vector4(values[0] * other.values[0], values[1] * other.values[1], values[2] * other.values[2], values[3] * other.values[3]);
+    return Vector4(x * other.x, y * other.y, z * other.z, w * other.w);
 }
 
 Vector4& Vector4::operator *=(const Vector4& other)
@@ -337,7 +342,7 @@ Vector4& Vector4::operator *=(const Vector4& other)
 
 Vector4 Vector4::operator /(const Vector4& other) const
 {
-    return Vector4(values[0] / other.values[0], values[1] / other.values[1], values[2] / other.values[2], values[3] / other.values[3]);
+    return Vector4(x / other.x, y / other.y, z / other.z, w / other.w);
 }
 
 Vector4& Vector4::operator /=(const Vector4& other)
@@ -348,27 +353,39 @@ Vector4& Vector4::operator /=(const Vector4& other)
 
 Vector4 Vector4::operator -() const
 {
-    return Vector4(-values[0], -values[1], -values[2], -values[3]);
+    return Vector4(-x, -y, -z, -w);
 }
 
 Vector4::operator const float*() const
 {
-    return values;
+    return &x;
 }
 
 Vector4::operator Vector2() const
 {
-    return Vector2(values);
+    return Vector2(x, y);
 }
 
 Vector4::operator Vector3() const
 {
-    return Vector3(values);
+    return Vector3(x, y, z);
 }
 
 float& Vector4::operator [](int index)
 {
-    return values[index];
+    switch (index)
+    {
+        case 0:
+            return x;
+        case 1:
+            return y;
+        case 2:
+            return z;
+        case 3:
+            return w;
+        default:
+            throw "Index out of range";
+    }
 }
 
 Vector4 Vector4::zero = Vector4();
@@ -376,5 +393,5 @@ Vector4 Vector4::one = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 
 float Vector4::Dot(const Vector4& a, const Vector4& b)
 {
-    return a.values[0] * b.values[0] + a.values[1] * b.values[1] + a.values[2] * b.values[2] + a.values[3] * b.values[3];
+    return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
 }

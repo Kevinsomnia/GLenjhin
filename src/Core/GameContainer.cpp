@@ -131,7 +131,7 @@ void GameContainer::handleCameraMovement(double deltaTime)
 
         // Mouse look
         Vector2 mouseDelta = Input::GetMouseMoveDelta() * 0.075f;
-        Vector3 rotateDelta = rotationToRad(Vector3(mouseDelta.getY(), mouseDelta.getX(), 0.0f));
+        Vector3 rotateDelta = rotationToRad(Vector3(mouseDelta.y, mouseDelta.x, 0.0f));
         cameraTrans->rotate(rotateDelta);
 
         // Free fly

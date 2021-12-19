@@ -67,21 +67,21 @@ Matrix4x4 Matrix4x4::identity = Matrix4x4(
 Matrix4x4 Matrix4x4::Translate(const Vector3& pos)
 {
     return Matrix4x4(
-        Vector4(1.0f, 0.0f, 0.0f, pos.getX()),
-        Vector4(0.0f, 1.0f, 0.0f, pos.getY()),
-        Vector4(0.0f, 0.0f, 1.0f, pos.getZ()),
+        Vector4(1.0f, 0.0f, 0.0f, pos.x),
+        Vector4(0.0f, 1.0f, 0.0f, pos.y),
+        Vector4(0.0f, 0.0f, 1.0f, pos.z),
         Vector4(0.0f, 0.0f, 0.0f, 1.0f)
     );
 }
 
 Matrix4x4 Matrix4x4::Rotate(const Vector3& rot)
 {
-    float cosX = cos(rot.getX());
-    float cosY = cos(rot.getY());
-    float cosZ = cos(rot.getZ());
-    float sinX = sin(rot.getX());
-    float sinY = sin(rot.getY());
-    float sinZ = sin(rot.getZ());
+    float cosX = cos(rot.x);
+    float cosY = cos(rot.y);
+    float cosZ = cos(rot.z);
+    float sinX = sin(rot.x);
+    float sinY = sin(rot.y);
+    float sinZ = sin(rot.z);
 
     // Be sure to update TRS() too if this ordering changes: ZYX
     return Matrix4x4(
@@ -110,40 +110,40 @@ Matrix4x4 Matrix4x4::Rotate(const Vector3& rot)
 Matrix4x4 Matrix4x4::Scale(const Vector3& scale)
 {
     return Matrix4x4(
-        Vector4(scale.getX(), 0.0f, 0.0f, 0.0f),
-        Vector4(0.0f, scale.getY(), 0.0f, 0.0f),
-        Vector4(0.0f, 0.0f, scale.getZ(), 0.0f),
+        Vector4(scale.x, 0.0f, 0.0f, 0.0f),
+        Vector4(0.0f, scale.y, 0.0f, 0.0f),
+        Vector4(0.0f, 0.0f, scale.z, 0.0f),
         Vector4(0.0f, 0.0f, 0.0f, 1.0f)
     );
 }
 
 Matrix4x4 Matrix4x4::TRS(const Vector3& pos, const Vector3& rot, const Vector3& scale)
 {
-    float cosX = cos(rot.getX());
-    float cosY = cos(rot.getY());
-    float cosZ = cos(rot.getZ());
-    float sinX = sin(rot.getX());
-    float sinY = sin(rot.getY());
-    float sinZ = sin(rot.getZ());
+    float cosX = cos(rot.x);
+    float cosY = cos(rot.y);
+    float cosZ = cos(rot.z);
+    float sinX = sin(rot.x);
+    float sinY = sin(rot.y);
+    float sinZ = sin(rot.z);
 
     return Matrix4x4(
         Vector4(
-            (cosZ * cosY) * scale.getX(),
-            (-sinZ * cosX + cosZ * sinY * sinX) * scale.getY(),
-            (sinZ * sinX + cosZ * sinY * cosX) * scale.getZ(),
-            pos.getX()
+            (cosZ * cosY) * scale.x,
+            (-sinZ * cosX + cosZ * sinY * sinX) * scale.y,
+            (sinZ * sinX + cosZ * sinY * cosX) * scale.z,
+            pos.x
         ),
         Vector4(
-            (sinZ * cosY) * scale.getX(),
-            (cosZ * cosX + sinZ * sinY * sinX) * scale.getY(),
-            (cosZ * -sinX + sinZ * sinY * cosX) * scale.getZ(),
-            pos.getY()
+            (sinZ * cosY) * scale.x,
+            (cosZ * cosX + sinZ * sinY * sinX) * scale.y,
+            (cosZ * -sinX + sinZ * sinY * cosX) * scale.z,
+            pos.y
         ),
         Vector4(
-            (-sinY) * scale.getX(),
-            (cosY * sinX) * scale.getY(),
-            (cosY * cosX) * scale.getZ(),
-            pos.getZ()
+            (-sinY) * scale.x,
+            (cosY * sinX) * scale.y,
+            (cosY * cosX) * scale.z,
+            pos.z
         ),
         Vector4(0.0f, 0.0f, 0.0f, 1.0f)
     );
@@ -159,9 +159,9 @@ Matrix4x4 Matrix4x4::View(const Vector3& pos, const Vector3& rot)
     Vector3 right = Vector3::Cross(up, fwd);
 
     return Matrix4x4(
-        Vector4(right.getX(), right.getY(), right.getZ(), -Vector3::Dot(right, pos)),
-        Vector4(up.getX(), up.getY(), up.getZ(), -Vector3::Dot(up, pos)),
-        Vector4(-fwd.getX(), -fwd.getY(), -fwd.getZ(), Vector3::Dot(fwd, pos)),
+        Vector4(right.x, right.y, right.z, -Vector3::Dot(right, pos)),
+        Vector4(up.x, up.y, up.z, -Vector3::Dot(up, pos)),
+        Vector4(-fwd.x, -fwd.y, -fwd.z, Vector3::Dot(fwd, pos)),
         Vector4(0.0f, 0.0f, 0.0f, 1.0f)
     );
 }

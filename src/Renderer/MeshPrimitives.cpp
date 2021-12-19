@@ -117,14 +117,14 @@ MeshPrimitives::Sphere::Sphere(uint16_t resolution) : Mesh()
             // Position is already normalized, but length is 0.5 so we just double the vector to correct it.
             Vector3 normal = pos * 2.0f;
 
-            float uvX = i * uvSpacing.getX();
-            float uvY = j * uvSpacing.getY();
+            float uvX = i * uvSpacing.x;
+            float uvY = j * uvSpacing.y;
 
             // For the poles, those vertices will be the midpoint between two columns in the UV.
             // See this image for reference: https://upload.wikimedia.org/wikipedia/commons/0/04/UVMapping.png
             // Specifically look at the top and bottom row on the UV map.
             if (j == 0 || j == resolution - 1)
-                uvX += uvSpacing.getX() * 0.5f;
+                uvX += uvSpacing.x * 0.5f;
 
             // We're starting at the top of the sphere, which means we are starting at the top of the texture, so flip Y.
             // Also, flip X since the triangles are facing outwards.
@@ -217,8 +217,8 @@ MeshPrimitives::Capsule::Capsule(uint16_t resolution) : Mesh()
             Vector3 pos = Vector3(rx, y, rz);
             Vector3 normal = Vector3(rx, y - CONNECTOR_QUAD_HEIGHT, rz) * 2.0f;
 
-            float uvX = i * uvSpacing.getX();
-            float uvY = j * uvSpacing.getY();
+            float uvX = i * uvSpacing.x;
+            float uvY = j * uvSpacing.y;
 
             // We're starting at the top of the sphere, which means we are starting at the top of the texture, so flip Y.
             Vector2 flippedUV = Vector2(uvX, 1.0f - uvY);
@@ -241,8 +241,8 @@ MeshPrimitives::Capsule::Capsule(uint16_t resolution) : Mesh()
             Vector3 pos = Vector3(rx, y, rz);
             Vector3 normal = Vector3(rx, y + CONNECTOR_QUAD_HEIGHT, rz) * 2.0f;
 
-            float uvX = i * uvSpacing.getX();
-            float uvY = j * uvSpacing.getY();
+            float uvX = i * uvSpacing.x;
+            float uvY = j * uvSpacing.y;
 
             // We're starting at the top of the sphere, which means we are starting at the top of the texture, so flip Y.
             Vector2 flippedUV = Vector2(uvX, 1.0f - uvY);

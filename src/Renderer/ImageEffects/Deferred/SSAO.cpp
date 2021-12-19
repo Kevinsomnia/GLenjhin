@@ -70,8 +70,8 @@ void SSAO::render()
     DeferredEffect::render(firstBuf, m_OcclusionMat);
 
     Vector2 occlusionBufferTexelSize = firstBuf->texelSize();
-    Vector2 strideHorizontal = Vector2(occlusionBufferTexelSize.getX(), 0.0f);
-    Vector2 strideVertical = Vector2(0.0f, occlusionBufferTexelSize.getY());
+    Vector2 strideHorizontal = Vector2(occlusionBufferTexelSize.x, 0.0f);
+    Vector2 strideVertical = Vector2(0.0f, occlusionBufferTexelSize.y);
 
     for (int i = 0; i < BLUR_ITERATIONS; i++)
     {
