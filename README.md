@@ -6,6 +6,8 @@ Compiled with MSVC v143, C++17. Using OpenGL 4.6 Core. The rendering pipeline is
 
 Supports Windows 64-bit only.
 
+![render](https://user-images.githubusercontent.com/32236920/146665178-380484a5-ffc8-4386-9079-fbb721208ac4.jpg)
+
 ## Dependencies
 
 - [GLFW 3.3.5](https://www.glfw.org/)
