@@ -161,11 +161,10 @@ ColorByte& ColorByte::operator -=(const ColorByte& other)
 
 ColorByte ColorByte::operator *(float scalar) const
 {
-    float clampedScalar = Math::Clamp01(scalar);
     return ColorByte(
-        static_cast<uint8_t>(r * clampedScalar),
-        static_cast<uint8_t>(g * clampedScalar),
-        static_cast<uint8_t>(b * clampedScalar),
+        static_cast<uint8_t>(Math::Clamp(r * scalar, 0.0f, 255.0f)),
+        static_cast<uint8_t>(Math::Clamp(g * scalar, 0.0f, 255.0f)),
+        static_cast<uint8_t>(Math::Clamp(b * scalar, 0.0f, 255.0f)),
         a
     );
 }
@@ -178,11 +177,11 @@ ColorByte& ColorByte::operator *=(float scalar)
 
 ColorByte ColorByte::operator /(float divisor) const
 {
-    float clampedScalar = Math::Clamp01(1.0f / divisor);
+    float scalar = 1.0f / divisor;
     return ColorByte(
-        static_cast<uint8_t>(r * clampedScalar),
-        static_cast<uint8_t>(g * clampedScalar),
-        static_cast<uint8_t>(b * clampedScalar),
+        static_cast<uint8_t>(Math::Clamp(r * scalar, 0.0f, 255.0f)),
+        static_cast<uint8_t>(Math::Clamp(g * scalar, 0.0f, 255.0f)),
+        static_cast<uint8_t>(Math::Clamp(b * scalar, 0.0f, 255.0f)),
         a
     );
 }
@@ -212,16 +211,16 @@ ColorByte& ColorByte::operator *=(const ColorByte& other)
 
 ColorByte ColorByte::operator /(const ColorByte& other) const
 {
-    float r0 = other.r > 0 ? r / static_cast<float>(other.r) : 0.0f;
-    float g0 = other.g > 0 ? g / static_cast<float>(other.g) : 0.0f;
-    float b0 = other.b > 0 ? b / static_cast<float>(other.b) : 0.0f;
-    float a0 = other.a > 0 ? a / static_cast<float>(other.a) : 0.0f;
+    float r0 = other.r != 0 ? Math::Clamp01(r / static_cast<float>(other.r)) : 1.0f;
+    float g0 = other.g != 0 ? Math::Clamp01(g / static_cast<float>(other.g)) : 1.0f;
+    float b0 = other.b != 0 ? Math::Clamp01(b / static_cast<float>(other.b)) : 1.0f;
+    float a0 = other.a != 0 ? Math::Clamp01(a / static_cast<float>(other.a)) : 1.0f;
 
     return ColorByte(
-        static_cast<uint8_t>(Math::Clamp01(r0) * 255.0f),
-        static_cast<uint8_t>(Math::Clamp01(g0) * 255.0f),
-        static_cast<uint8_t>(Math::Clamp01(b0) * 255.0f),
-        static_cast<uint8_t>(Math::Clamp01(a0) * 255.0f)
+        static_cast<uint8_t>(r0 * 255.0f),
+        static_cast<uint8_t>(g0 * 255.0f),
+        static_cast<uint8_t>(b0 * 255.0f),
+        static_cast<uint8_t>(a0 * 255.0f)
     );
 }
 
