@@ -69,6 +69,7 @@
     <ClCompile Include="vendor\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="vendor\imgui\imgui_tables.cpp" />
     <ClCompile Include="vendor\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="vendor\xxHash\xxhash.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Algorithms.h" />
@@ -130,6 +131,7 @@
     <ClInclude Include="vendor\imgui\imstb_rectpack.h" />
     <ClInclude Include="vendor\imgui\imstb_textedit.h" />
     <ClInclude Include="vendor\imgui\imstb_truetype.h" />
+    <ClInclude Include="vendor\xxHash\xxhash.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -242,7 +244,7 @@
       <PreprocessorDefinitions>
       </PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)vendor\Glad\include;$(SolutionDir)vendor\imgui;$(SolutionDir)Dependencies\assimp\include;$(SolutionDir)Dependencies\GLFW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)vendor\Glad\include;$(SolutionDir)vendor\imgui;$(SolutionDir)vendor\xxHash;$(SolutionDir)Dependencies\assimp\include;$(SolutionDir)Dependencies\GLFW\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -263,7 +265,7 @@
       <PreprocessorDefinitions>
       </PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)vendor\Glad\include;$(SolutionDir)vendor\imgui;$(SolutionDir)Dependencies\assimp\include;$(SolutionDir)Dependencies\GLFW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)vendor\Glad\include;$(SolutionDir)vendor\imgui;$(SolutionDir)vendor\xxHash;$(SolutionDir)Dependencies\assimp\include;$(SolutionDir)Dependencies\GLFW\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>

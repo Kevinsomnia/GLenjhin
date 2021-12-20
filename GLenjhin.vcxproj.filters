@@ -165,6 +165,9 @@
     <ClCompile Include="src\Renderer\ImageEffects\PostProcess\FXAA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="vendor\xxHash\xxhash.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Application.h">
@@ -342,6 +345,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\IO\FileLib.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\xxHash\xxhash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

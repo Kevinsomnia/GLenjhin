@@ -12,8 +12,9 @@ Supports Windows 64-bit only.
 
 - [GLFW 3.3.5](https://www.glfw.org/)
 - [Glad](https://github.com/Dav1dde/glad) - OpenGL 4.6 Core, no extensions
-- [Dear ImGui](https://github.com/ocornut/imgui)
+- [Dear ImGui 1.85](https://github.com/ocornut/imgui)
 - [Assimp 5.1.3](https://github.com/assimp/assimp)
+- [xxHash 0.8.1](https://github.com/Cyan4973/xxHash)
 
 ## Features
 
