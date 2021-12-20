@@ -341,5 +341,8 @@
     <ClInclude Include="src\Renderer\ImageEffects\PostProcess\FXAA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\IO\FileLib.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -32,7 +32,22 @@ Texture2D::Texture2D(uint32_t width, uint32_t height, TextureFormat colorFormat,
 // Import texture from PNG file.
 Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool readable, bool sRGB) : Texture()
 {
-    PNG::Result result = PNG::Load(filePath);
+    cout << "=== Loading Texture2D from " << filePath << endl;
+    m_Pixels = nullptr;
+
+    uint8_t* fileData = nullptr;
+    size_t fileDataLen = 0;
+
+    if (!FileLib::ReadAllBytes(filePath, fileData, fileDataLen))
+    {
+        cerr << "Failed to read in Texture2D from file " << filePath << endl;
+        return;
+    }
+
+    PNG::Result result = PNG::Load(fileData, fileDataLen);
+
+    if (fileData)
+        delete[] fileData;
 
     if (result.isValid())
     {
@@ -43,7 +58,6 @@ Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool rea
     }
     else
     {
-        m_Pixels = nullptr;
         return;
     }
 

@@ -66,22 +66,24 @@ namespace ImageLib
 
     PNG::Result PNG::Load(const std::string& filePath)
     {
-        auto benchStart = steady_clock::now();
-        std::ifstream file(filePath, std::ios::binary | std::ios::in);
+        cout << "=== Loading PNG at path: " << filePath << endl;
+        uint8_t* fileData = nullptr;
+        size_t fileDataLen = 0;
+        Result result = Result();
 
-        if (!file)
+        if (FileLib::ReadAllBytes(filePath, fileData, fileDataLen))
         {
-            cerr << "Failed to open PNG: " << filePath << endl;
-            return Result();
+            result = Load(fileData, fileDataLen);
+            delete[] fileData;
         }
 
-        file.seekg(0, file.end);
-        size_t fileSize = static_cast<size_t>(file.tellg());
-        file.seekg(0, file.beg);
-        std::unique_ptr<char[]> fileData(new char[fileSize]);
-        file.read(fileData.get(), fileSize);
+        return result;
+    }
 
-        MemoryStream stream((uint8_t*)fileData.get(), fileSize);
+    PNG::Result PNG::Load(uint8_t* mutableData, size_t dataLen)
+    {
+        auto benchStart = steady_clock::now();
+        MemoryStream stream(mutableData, dataLen);
 
         // Also verifies IHDR block is the very first block to be parsed.
         if (stream.size() < PNG_FILE_HEADER_INCL_DATA_SIZE || memcmp(stream, PNG_FILE_HEADER, PNG_FILE_HEADER_SIZE) != 0)
@@ -113,7 +115,6 @@ namespace ImageLib
             return Result();
         }
 
-        cout << filePath << endl;
         cout << "WxHxD = " << meta.width << "x" << meta.height << "x" << +meta.bitDepth;
         cout << "  Color type: " << static_cast<uint16_t>(meta.colorType);
         cout << "  Interlaced: " << meta.interlaced << endl;

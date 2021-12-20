@@ -7,6 +7,7 @@
 #include <memory>
 
 #include "../Core/Algorithms.h"
+#include "FileLib.hpp"
 #include "MemoryStream.h"
 
 using std::cout;
@@ -194,6 +195,7 @@ namespace ImageLib
         };
 
         static Result Load(const std::string& filePath);
+        static Result Load(uint8_t* mutableData, size_t dataLen);
 
     private:
         static bool ValidateParameters(const Metadata& meta);

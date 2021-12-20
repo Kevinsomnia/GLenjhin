@@ -1,18 +1,21 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {
-		"files.exclude": {
-			"Dependencies": true,
-			"vendor": true
-		},
-		"files.associations": {
-			"chrono": "cpp",
-			"ostream": "cpp",
-			"xstring": "cpp"
-		}
-	}
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "Dependencies": true,
+      "vendor": true
+    },
+    "files.associations": {
+      "chrono": "cpp",
+      "ostream": "cpp",
+      "xstring": "cpp",
+      "array": "cpp",
+      "vector": "cpp",
+      "xutility": "cpp"
+    }
+  }
 }
