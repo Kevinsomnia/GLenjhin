@@ -23,7 +23,7 @@ public:
 
     MemoryStream();
     MemoryStream(size_t capacity);
-    MemoryStream(uint8_t* buffer, size_t bufferSize);
+    MemoryStream(uint8_t* buffer, size_t bufferSize, bool deleteBufferOnDestroy = false);
     ~MemoryStream();
 
     inline size_t byteOffset() const;
@@ -44,6 +44,7 @@ public:
     inline bool hasData() const;
     inline void allocateSpace(uint32_t numBytes, uint32_t numBits = 0);
     inline uint8_t* getBufferCopy() const;
+    void dumpToOstream(std::ostream& stream) const;
 
     operator uint8_t*() const { return m_DataPtr; }
 
@@ -73,7 +74,7 @@ public:
     inline void writeFloat(float value);
     inline void writeDouble(double value);
 
-    inline void write(uint8_t* data, uint32_t size);
+    inline void write(uint8_t* data, size_t size);
 
     // === READING ===
     inline bool readBool();
@@ -101,7 +102,7 @@ public:
     inline float readFloat();
     inline double readDouble();
 
-    inline void read(uint8_t* buffer, uint32_t size);
+    inline void read(uint8_t* buffer, size_t size);
 private:
     bool m_CreatedData;
     uint8_t* m_DataStart;
@@ -534,7 +535,7 @@ void MemoryStream::writeDouble(double value)
     writeUInt64(*reinterpret_cast<uint64_t*>(&value));
 }
 
-void MemoryStream::write(uint8_t* data, uint32_t size)
+void MemoryStream::write(uint8_t* data, size_t size)
 {
     if (size == 0)
         return;
@@ -548,7 +549,7 @@ void MemoryStream::write(uint8_t* data, uint32_t size)
     else
     {
         // Very slow... recommended to align to byte.
-        for (uint32_t i = 0; i < size; i++)
+        for (size_t i = 0; i < size; i++)
             writeUInt8(data[i]);
     }
 }
@@ -890,7 +891,7 @@ double MemoryStream::readDouble()
     }
 }
 
-void MemoryStream::read(uint8_t* buffer, uint32_t size)
+void MemoryStream::read(uint8_t* buffer, size_t size)
 {
     if (m_BitOffset == 0)
     {
@@ -901,7 +902,7 @@ void MemoryStream::read(uint8_t* buffer, uint32_t size)
     else
     {
         // Very slow... recommended to align to byte.
-        for (uint32_t i = 0; i < size; i++)
+        for (size_t i = 0; i < size; i++)
             buffer[i] = readUInt8();
     }
 }
