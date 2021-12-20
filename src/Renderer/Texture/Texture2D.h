@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Texture.h"
+#include "../../IO/AssetPipeline/TextureCache.hpp"
 
 class Texture2D : public Texture
 {

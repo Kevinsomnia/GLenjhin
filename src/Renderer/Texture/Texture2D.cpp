@@ -32,37 +32,102 @@ Texture2D::Texture2D(uint32_t width, uint32_t height, TextureFormat colorFormat,
 // Import texture from PNG file.
 Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool readable, bool sRGB) : Texture()
 {
-    PNG::Result result = PNG::Load(filePath);
+    cout << "=== Loading Texture2D from " << filePath << endl;
+    m_Pixels = nullptr;
+    m_Mipmaps = generateMipmaps;
+    m_sRGB = sRGB;
 
-    if (result.isValid())
+    // Read file data.
+    uint8_t* fileData = nullptr;
+    size_t fileDataLen = 0;
+
+    if (!FileLib::ReadAllBytes(filePath, fileData, fileDataLen))
     {
-        m_Width = result.info.width;
-        m_Height = result.info.height;
-        m_Pixels = result.pixels;
-        m_Mipmaps = generateMipmaps;
-    }
-    else
-    {
-        m_Pixels = nullptr;
+        cerr << "Failed to read in Texture2D from file " << filePath << endl;
         return;
     }
 
-    glGenTextures(1, &m_TextureID);
-    glBindTexture(GL_TEXTURE_2D, m_TextureID);
+    // Compute the hash/key from file data only if the data size is larger than the threshold (tiny textures are likely faster to read directly).
+    // If it is found in cache, that means no properties of the texture has changed since last time.
+    // If not, then load the file and cache the data for next time.
+    bool useCache = fileDataLen >= CACHE_SIZE_THRESHOLD;
+    MemoryStream* cacheStream = nullptr;
+    // cacheStream will be cleaned up immediately after it's done reading, so this flag may be used afterwards.
+    bool cacheHit = false;
+    XXH128_hash_t hashKey;
 
-    setFilterMode(TextureFilterMode::Bilinear);
-    setWrapMode(TextureWrapMode::Repeat);
+    if (useCache)
+    {
+        auto props = TextureCache::ItemProperties { fileData, fileDataLen };
+        hashKey = TextureCache::GetHash(props);
+        cacheStream = TextureCache::ReadFromCache(hashKey);
+        cacheHit = cacheStream;
+    }
 
-    m_Format = result.info.hasAlpha() ? TextureFormat::RGBA32 : TextureFormat::RGB24;
-    m_sRGB = sRGB;
-    GLTextureParams params = GLTextureParams::FromFormat(m_Format, m_sRGB);
-    glTexImage2D(GL_TEXTURE_2D, 0, params.internalFormat, m_Width, m_Height, 0, params.texFormat, params.valueType, m_Pixels);
+    size_t pixelCount = 0;
 
-    if (m_Mipmaps)
-        glGenerateMipmap(GL_TEXTURE_2D);
+    if (useCache && cacheHit)
+    {
+        m_Width = cacheStream->readUInt32();
+        m_Height = cacheStream->readUInt32();
+        m_Format = static_cast<TextureFormat>(cacheStream->readUInt16());
 
-    // Cleanup after uploading to GPU if we don't need to read it on CPU side.
-    if (!readable)
+        // Remainder of stream is the pixel data.
+        assert(cacheStream->byteOffset() < cacheStream->size());
+        pixelCount = cacheStream->size() - cacheStream->byteOffset();
+        m_Pixels = new uint8_t[pixelCount];
+        cacheStream->read(m_Pixels, pixelCount);
+        delete cacheStream;
+
+        cout << "Successfully loaded texture data from cache" << endl;
+    }
+    else
+    {
+        PNG::Result result = PNG::Load(fileData, fileDataLen);
+
+        if (result.isValid())
+        {
+            m_Width = result.info.width;
+            m_Height = result.info.height;
+            m_Pixels = result.pixels;
+            m_Format = result.info.hasAlpha() ? TextureFormat::RGBA32 : TextureFormat::RGB24;
+
+            pixelCount = result.pixelCount;
+        }
+    }
+
+    // Done reading files at this point.
+    if (fileData)
+        delete[] fileData;
+
+    if (pixelCount != 0)
+    {
+        glGenTextures(1, &m_TextureID);
+        glBindTexture(GL_TEXTURE_2D, m_TextureID);
+
+        setFilterMode(TextureFilterMode::Bilinear);
+        setWrapMode(TextureWrapMode::Repeat);
+
+        GLTextureParams params = GLTextureParams::FromFormat(m_Format, m_sRGB);
+        glTexImage2D(GL_TEXTURE_2D, 0, params.internalFormat, m_Width, m_Height, 0, params.texFormat, params.valueType, m_Pixels);
+
+        if (m_Mipmaps)
+            glGenerateMipmap(GL_TEXTURE_2D);
+
+        if (useCache && !cacheHit)
+        {
+            // Write properties and pixel data to cache.
+            MemoryStream stream;
+            stream.writeUInt32(m_Width);
+            stream.writeUInt32(m_Height);
+            stream.writeUInt16(static_cast<uint16_t>(m_Format));
+            stream.write(m_Pixels, pixelCount);
+            TextureCache::WriteToCache(hashKey, stream);
+        }
+    }
+
+    // Cleanup after uploading to GPU if we don't need to read it on CPU side. Or if this catastrophically fails.
+    if (m_Pixels && (!readable || pixelCount == 0))
     {
         delete[] m_Pixels;
         m_Pixels = nullptr;

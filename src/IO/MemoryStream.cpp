@@ -11,10 +11,9 @@ MemoryStream::MemoryStream(size_t capacity) : m_BitOffset(0), m_Size(0)
     m_Capacity = capacity;
 }
 
-MemoryStream::MemoryStream(uint8_t* buffer, size_t bufferSize) : m_BitOffset(0)
+MemoryStream::MemoryStream(uint8_t* buffer, size_t bufferSize, bool deleteBufferOnDestroy) : m_CreatedData(deleteBufferOnDestroy), m_BitOffset(0)
 {
     m_DataStart = buffer;
-    m_CreatedData = false;
     m_DataEnd = m_DataStart + bufferSize;
     m_DataPtr = m_DataStart;
     m_Capacity = bufferSize;
@@ -28,4 +27,27 @@ MemoryStream::~MemoryStream()
 
     m_Size = 0;
     m_Capacity = 0;
+}
+
+void MemoryStream::dumpToOstream(std::ostream& stream) const
+{
+    if (m_Size == 0)
+        return;
+
+    // Output full bytes first
+    const char* data = reinterpret_cast<const char*>(m_DataStart);
+    size_t fullBytesCount = m_Size;
+
+    if (m_BitOffset != 0)
+        fullBytesCount--;
+
+    if (fullBytesCount > 0)
+        stream.write(data, fullBytesCount);
+
+    // Mask out remaining bits of the last byte.
+    if (m_BitOffset != 0)
+    {
+        char lastByte = static_cast<char>(m_DataStart[fullBytesCount] & MASK_BITS(m_BitOffset));
+        stream.put(lastByte);
+    }
 }
