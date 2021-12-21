@@ -96,6 +96,7 @@ public:
     // Z = far - near
     // W = 2.0 * near * far
     Vector4 getProjectionParams() const { return m_ProjectionParams; }
+    CameraBufferFlags getBufferFlags() const { return m_BufferFlags; }
 private:
     Transform* m_Transform;
     GeometryBuffers* m_GBuffers;

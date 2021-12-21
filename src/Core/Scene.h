@@ -42,6 +42,7 @@ private:
     Texture2D* m_GroundAlbedo;
     std::vector<Entity*> m_Entities;
     std::vector<Entity*> m_DynamicEntities;
+    std::vector<Entity*> m_FastEntities;
     const std::vector<Light*> m_EmptyLightsList;  // An empty list for deferred path.
     std::vector<Light*> m_Lights;
 

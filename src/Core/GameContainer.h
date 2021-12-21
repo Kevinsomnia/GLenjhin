@@ -11,6 +11,7 @@
 #include "../Renderer/ImageEffects/PostProcess/FXAA.h"
 #include "../Renderer/ImageEffects/PostProcess/GaussianBlur.h"
 #include "../Renderer/ImageEffects/PostProcess/GlobalFog.h"
+#include "../Renderer/ImageEffects/PostProcess/MotionBlur.h"
 #include "../Renderer/ImageEffects/PostProcess/SunShafts.h"
 #include "../Renderer/ImageEffects/PostProcess/Tonemapping.h"
 

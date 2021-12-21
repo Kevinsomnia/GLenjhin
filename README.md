@@ -24,9 +24,10 @@ Supports Windows 64-bit only.
   - Real-time shadows with 4x4 PCF (soft filtering)
   - Directional lights
 - HDR and post processing effects pipeline
+  - FXAA (Fast Approximate Anti-Aliasing)
+  - Motion Blur (via motion vectors)
   - Deferred SSAO (Screen Space Ambient Occlusion)
   - Bloom
-  - FXAA (Fast Approximate Anti-Aliasing)
   - Sun Shafts (God Rays)
   - Tonemapping
   - Fullscreen Gaussian blur

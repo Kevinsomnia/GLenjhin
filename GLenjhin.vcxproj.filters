@@ -168,6 +168,9 @@
     <ClCompile Include="vendor\xxHash\xxhash.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Renderer\ImageEffects\PostProcess\MotionBlur.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Application.h">
@@ -351,6 +354,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\IO\AssetPipeline\TextureCache.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\ImageEffects\PostProcess\MotionBlur.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
