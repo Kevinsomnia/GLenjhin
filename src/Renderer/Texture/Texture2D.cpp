@@ -90,7 +90,7 @@ Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool rea
             m_Width = result.info.width;
             m_Height = result.info.height;
             m_Pixels = result.pixels;
-            m_Format = result.info.hasAlpha() ? TextureFormat::RGBA32 : TextureFormat::RGB24;
+            m_Format = result.info.hasAlpha() ? TextureFormat::RGBA8 : TextureFormat::RGB8;
 
             pixelCount = result.pixelCount;
         }
@@ -145,7 +145,7 @@ ColorByte Texture2D::getPixel(uint32_t x, uint32_t y) const
     if (!m_Pixels)
         return nullptr;
 
-    bool hasAlpha = m_Format == TextureFormat::RGBA32;
+    bool hasAlpha = m_Format == TextureFormat::RGBA8;
     uint32_t bpp = hasAlpha ? 4 : 3;
     uint32_t offset = (y * m_Width + x) * bpp;
     return ColorByte(m_Pixels + offset, hasAlpha);
@@ -160,7 +160,7 @@ ColorByte* Texture2D::getPixels() const
 
     // Don't think we can copy the entire uint8_t blob into ColorByte*, but could be worth looking into.
     uint8_t* currPtr = m_Pixels;
-    bool hasAlpha = m_Format == TextureFormat::RGBA32;
+    bool hasAlpha = m_Format == TextureFormat::RGBA8;
     uint32_t bpp = hasAlpha ? 4 : 3;
 
     for (uint32_t y = 0; y < m_Height; y++)
@@ -182,7 +182,7 @@ void Texture2D::setPixel(uint32_t x, uint32_t y, const ColorByte& c)
     if (!m_Pixels)
         return;
 
-    uint32_t bpp = m_Format == TextureFormat::RGBA32 ? 4 : 3;
+    uint32_t bpp = m_Format == TextureFormat::RGBA8 ? 4 : 3;
     uint32_t offset = (y * m_Width + x) * bpp;
     memcpy(m_Pixels + offset, static_cast<const uint8_t*>(c), bpp);
 }
@@ -194,7 +194,7 @@ void Texture2D::setPixels(ColorByte* colors)
 
     // Don't think we can copy the entire uint8_t blob into ColorByte*, but could be worth looking into.
     uint8_t* currPtr = m_Pixels;
-    uint32_t bpp = m_Format == TextureFormat::RGBA32 ? 4 : 3;
+    uint32_t bpp = m_Format == TextureFormat::RGBA8 ? 4 : 3;
 
     for (uint32_t y = 0; y < m_Height; y++)
     {
@@ -242,7 +242,7 @@ void Texture2D::CreateStaticTextures()
 
 Texture2D* Texture2D::CreateSolidColorTexture(const ColorByte& c, bool sRGB)
 {
-    Texture2D* result = new Texture2D(/*width=*/ 1, /*height=*/ 1, TextureFormat::RGB24, /*readable=*/ true, sRGB);
+    Texture2D* result = new Texture2D(/*width=*/ 1, /*height=*/ 1, TextureFormat::RGB8, /*readable=*/ true, sRGB);
     result->setPixel(0, 0, c);
     result->setFilterMode(TextureFilterMode::Point);
     result->setWrapMode(TextureWrapMode::Clamp);

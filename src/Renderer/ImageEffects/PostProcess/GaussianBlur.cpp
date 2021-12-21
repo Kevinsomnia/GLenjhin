@@ -30,7 +30,7 @@ void GaussianBlur::lazyInitialize(Camera* camera)
     int h = bufferTex->height() >> DOWNSAMPLE;
 
     for (size_t i = 0; i < m_Buffers.size(); i++)
-        m_Buffers[i] = new BufferTexture(w, h, /*depth=*/ 0, TextureFormat::RGBA32);
+        m_Buffers[i] = new BufferTexture(w, h, /*depth=*/ 0, TextureFormat::RGBAHalf);
 }
 
 void GaussianBlur::render(BufferTexture* source, BufferTexture* destination)
