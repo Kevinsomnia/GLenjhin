@@ -10,21 +10,6 @@ Transform::Transform(const Vector3& position, const Vector3& rotation, const Vec
 {
 }
 
-Vector3 Transform::getPosition() const
-{
-    return m_Position;
-}
-
-Vector3 Transform::getRotation() const
-{
-    return m_Rotation;
-}
-
-Vector3 Transform::getScale() const
-{
-    return m_Scale;
-}
-
 Matrix4x4 Transform::getTRS()
 {
     if (m_DirtyTRS)
