@@ -143,7 +143,8 @@ public:
     uint32_t width() const { return m_Width; }
     uint32_t height() const { return m_Height; }
     TextureFormat format() const { return m_Format; }
-    Vector2 texelSize() const;
+    Vector2 size() const { return Vector2(static_cast<float>(m_Width), static_cast<float>(m_Height)); }
+    Vector2 texelSize() const { return Vector2(1.0f / m_Width, 1.0f / m_Height); }
 protected:
     static const size_t CACHE_SIZE_THRESHOLD = 32768;   // Size is measured in bytes
 
