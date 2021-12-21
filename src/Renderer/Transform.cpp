@@ -1,13 +1,10 @@
 #include "Transform.h"
 
-Transform::Transform()
-    : m_Position(Vector3::zero), m_Rotation(Vector3::zero), m_Scale(Vector3::one), m_DirtyTRS(true)
-{
-}
-
+Transform::Transform() : Transform(Vector3::zero, Vector3::zero, Vector3::zero) { }
 Transform::Transform(const Vector3& position, const Vector3& rotation, const Vector3& scale)
     : m_Position(position), m_Rotation(rotation), m_Scale(scale), m_DirtyTRS(true)
 {
+    m_PrevTRS = getTRS();
 }
 
 Matrix4x4 Transform::getTRS()
@@ -15,7 +12,7 @@ Matrix4x4 Transform::getTRS()
     if (m_DirtyTRS)
     {
         m_DirtyTRS = false;
-        m_TRS = Matrix4x4::TRS(getPosition(), getRotation(), getScale());
+        m_TRS = Matrix4x4::TRS(m_Position, m_Rotation, m_Scale);
     }
 
     return m_TRS;
@@ -29,6 +26,11 @@ Vector3 Transform::getForward()
 Vector3 Transform::transformDirection(const Vector3& dir)
 {
     return getTRS().multiplyVector(dir);
+}
+
+void Transform::earlyUpdate()
+{
+    m_PrevTRS = getTRS();
 }
 
 void Transform::setPosition(const Vector3& position)

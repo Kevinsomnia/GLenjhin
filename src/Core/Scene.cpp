@@ -112,27 +112,14 @@ Scene::~Scene()
 
 void Scene::update()
 {
-    double t = Time::GetTime();
+    // Run entity logic as early in the frame as possible.
+    for (Entity* entity : m_Entities)
+        entity->earlyUpdate();
 
     for (Light* light : m_Lights)
         light->update();
 
-    for (size_t i = 0; i < m_DynamicEntities.size(); i++)
-    {
-        double ti = t + (2.5 * i);
-        Transform* trans = m_DynamicEntities[i]->getTransform();
-
-        trans->setPosition(Vector3(
-            (float)cos(ti * 0.7),
-            (float)sin(ti * 0.8) * 0.5f + 2.0f,
-            (float)sin(ti * 0.175) * 7.0f
-        ));
-        trans->setRotation(rotationToRad(Vector3(
-            (float)ti * 25.0f,
-            (float)ti * 30.0f,
-            (float)ti * 35.0f
-        )));
-    }
+    userUpdate();
 }
 
 void Scene::drawGeometryPass(const Camera& camera, Material& geometryMat) const
@@ -180,4 +167,26 @@ void Scene::setNewTexture(const std::string& texturePath)
 
     m_GroundAlbedo = new Texture2D(texturePath, /*generateMipmap=*/ true, /*readable=*/ false, /*sRGB=*/ true);
     m_GroundMat->setTexture("u_AlbedoTex", m_GroundAlbedo);
+}
+
+void Scene::userUpdate()
+{
+    double t = Time::GetTime();
+
+    for (size_t i = 0; i < m_DynamicEntities.size(); i++)
+    {
+        double ti = t + (2.5 * i);
+        Transform* trans = m_DynamicEntities[i]->getTransform();
+
+        trans->setPosition(Vector3(
+            (float)cos(ti * 0.7),
+            (float)sin(ti * 0.8) * 0.5f + 2.0f,
+            (float)sin(ti * 0.175) * 7.0f
+        ));
+        trans->setRotation(rotationToRad(Vector3(
+            (float)ti * 25.0f,
+            (float)ti * 30.0f,
+            (float)ti * 35.0f
+        )));
+    }
 }

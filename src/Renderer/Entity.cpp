@@ -28,6 +28,11 @@ void Entity::setupRenderer(Mesh* mesh, Material* material)
     m_Renderer = new MeshRenderer(mesh, material);
 }
 
+void Entity::earlyUpdate()
+{
+    m_Transform->earlyUpdate();
+}
+
 void Entity::drawGeometryPass(Material& geometryMat) const
 {
     if (m_Renderer)

@@ -44,4 +44,6 @@ private:
     std::vector<Entity*> m_DynamicEntities;
     const std::vector<Light*> m_EmptyLightsList;  // An empty list for deferred path.
     std::vector<Light*> m_Lights;
+
+    void userUpdate();  // User code (e.g. update entity transforms)
 };

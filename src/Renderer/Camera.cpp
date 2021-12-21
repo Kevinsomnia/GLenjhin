@@ -59,7 +59,9 @@ Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, co
     m_PostProcessChain = new PostProcessEffectChain(this);
     m_BlitMat = new Material(new Shader("res\\shaders\\ImageEffects\\Common\\Copy.glsl"));
     m_FullscreenTriangle = new FullscreenTriangle(m_BlitMat);
+
     update();
+    m_PrevViewProjectionMatrix = m_ViewProjectionMatrix;
 }
 
 Camera::~Camera()
@@ -80,6 +82,7 @@ Camera::~Camera()
 void Camera::update()
 {
     m_ViewMatrix = Matrix4x4::View(m_Transform->getPosition(), m_Transform->getRotation());
+    m_PrevViewProjectionMatrix = m_ViewProjectionMatrix;
     m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 }
 
