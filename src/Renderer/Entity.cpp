@@ -39,7 +39,8 @@ void Entity::drawGeometryPass(Material& geometryMat) const
     {
         Material* entityMat = m_Renderer->material();
 
-        geometryMat.setMatrix4x4("u_Model", m_Transform->getTRS());
+        geometryMat.setMatrix4x4("u_PrevModel", m_Transform->getPrevTRS());
+        geometryMat.setMatrix4x4("u_CurrModel", m_Transform->getTRS());
         geometryMat.setColor("u_EmissionColor", entityMat->getColor("u_EmissionColor"));
 
         Texture* albedo = entityMat->getTexture("u_AlbedoTex");

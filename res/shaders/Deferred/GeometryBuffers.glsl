@@ -6,25 +6,39 @@ layout(location = 1) in vec3 aNormal;
 layout(location = 2) in vec3 aTangent;
 layout(location = 3) in vec2 aUV;
 
-uniform mat4 u_VP;
-uniform mat4 u_Model;
+uniform mat4 u_PrevVP;
+uniform mat4 u_CurrVP;
+uniform mat4 u_PrevModel;
+uniform mat4 u_CurrModel;
 
 out vec3 v_Position;
 out vec3 v_Normal;
 out vec3 v_Tangent;
 out vec2 v_UV;
+out vec4 v_PrevPosNDC;
+out vec4 v_CurrPosNDC;
 
 void main()
 {
-    vec4 worldPos = u_Model * aPosition;
-    mat3 normalMatrix = transpose(inverse(mat3(u_Model)));
+    vec4 prevWorldPos = u_PrevModel * aPosition;
+    vec4 currWorldPos = u_CurrModel * aPosition;
+    mat3 normalMatrix = transpose(inverse(mat3(u_CurrModel)));
 
-    v_Position = worldPos.xyz;
+    v_Position = currWorldPos.xyz;
     v_Normal = normalMatrix * aNormal;
     v_Tangent = normalMatrix * aTangent;
     v_UV = vec2(aUV.x, 1.0 - aUV.y);
 
-    gl_Position = u_VP * worldPos;
+    vec4 currPos = u_CurrVP * currWorldPos;
+
+    v_PrevPosNDC = u_PrevVP * prevWorldPos;
+    v_CurrPosNDC = currPos;
+
+    // NDC is scaled from [-1, 1], so we need to halve the values to normalize the delta to viewport scale [0, 1].
+    v_PrevPosNDC.xy *= 0.5;
+    v_CurrPosNDC.xy *= 0.5;
+
+    gl_Position = currPos;
 }
 
 
@@ -36,11 +50,14 @@ layout(location = 0) out vec4 gPosition;
 layout(location = 1) out vec4 gNormalSmoothness;
 layout(location = 2) out vec4 gAlbedoMetallic;
 layout(location = 3) out vec4 gEmissionOcclusion;
+layout(location = 4) out vec2 gMotionVectors;
 
 in vec3 v_Position;
 in vec3 v_Normal;
 in vec3 v_Tangent;
 in vec2 v_UV;
+in vec4 v_PrevPosNDC;
+in vec4 v_CurrPosNDC;
 
 uniform sampler2D u_AlbedoTex;
 uniform sampler2D u_NormalTex;
@@ -146,4 +163,9 @@ void main()
     gNormalSmoothness = vec4(finalWorldNormal, msa.g);
     gAlbedoMetallic = vec4(albedo, msa.r);
     gEmissionOcclusion = vec4(u_EmissionColor.rgb, msa.b);
+
+    // Compute motion vectors in viewport space [0, 1].
+    vec2 prevViewportPos = v_PrevPosNDC.xy / v_PrevPosNDC.w;
+    vec2 currViewportPos = v_CurrPosNDC.xy / v_CurrPosNDC.w;
+    gMotionVectors = currViewportPos - prevViewportPos;
 }

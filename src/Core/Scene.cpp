@@ -124,7 +124,8 @@ void Scene::update()
 
 void Scene::drawGeometryPass(const Camera& camera, Material& geometryMat) const
 {
-    geometryMat.setMatrix4x4("u_VP", camera.getViewProjectionMatrix());
+    geometryMat.setMatrix4x4("u_PrevVP", camera.getPrevViewProjectionMatrix());
+    geometryMat.setMatrix4x4("u_CurrVP", camera.getViewProjectionMatrix());
     geometryMat.setVector3("u_CameraPos", camera.getTransform()->getPosition());
 
     for (size_t i = 0; i < m_Entities.size(); i++)
