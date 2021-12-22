@@ -48,3 +48,12 @@ void Texture::setBorderColor(const Color& c)
     // We shouldn't need to store the border color. Don't think there's any reason to get it, but if we do need it later, it's trivial to add.
     glTextureParameterfv(m_TextureID, GL_TEXTURE_BORDER_COLOR, c);
 }
+
+void Texture::setAnisotropicFilterLevel(int level)
+{
+    if (m_TextureID == 0)
+        return;
+
+    float filterLevel = Math::Clamp(static_cast<float>(level), 1.0f, 16.0f);
+    glTextureParameterf(m_TextureID, GL_TEXTURE_MAX_ANISOTROPY, filterLevel);
+}

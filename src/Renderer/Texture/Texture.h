@@ -148,6 +148,7 @@ public:
     virtual void setFilterMode(TextureFilterMode filterMode);
     virtual void setWrapMode(TextureWrapMode wrapMode);
     virtual void setBorderColor(const Color& c);
+    virtual void setAnisotropicFilterLevel(int level);
     uint32_t id() const { return m_TextureID; }
     uint32_t width() const { return m_Width; }
     uint32_t height() const { return m_Height; }

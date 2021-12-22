@@ -105,6 +105,7 @@ Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool rea
         glGenTextures(1, &m_TextureID);
         glBindTexture(GL_TEXTURE_2D, m_TextureID);
 
+        // Set default parameters.
         setFilterMode(TextureFilterMode::Bilinear);
         setWrapMode(TextureWrapMode::Repeat);
 

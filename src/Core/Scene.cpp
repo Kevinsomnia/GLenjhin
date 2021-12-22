@@ -14,17 +14,25 @@ Scene::Scene()
 
     // Load textures
     m_GroundAlbedo = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_albedo.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
+    m_GroundAlbedo->setAnisotropicFilterLevel(4);
     Texture2D* groundNormalMap = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_normal.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ false);
     groundNormalMap->setFilterMode(TextureFilterMode::Trilinear);
+    groundNormalMap->setAnisotropicFilterLevel(4);
     Texture2D* groundMSA = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_MSA.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
+    groundMSA->setAnisotropicFilterLevel(4);
     Texture2D* groundHeight = new Texture2D("res\\textures\\cavern-deposits\\cavern-deposits_height.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ false);
+    groundHeight->setAnisotropicFilterLevel(4);
 
     Texture2D* metalAlbedo = new Texture2D("res\\textures\\streaky-metal\\streaky-metal_albedo.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
+    metalAlbedo->setAnisotropicFilterLevel(4);
     Texture2D* metalNormalMap = new Texture2D("res\\textures\\streaky-metal\\streaky-metal_normal.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ false);
     metalNormalMap->setFilterMode(TextureFilterMode::Trilinear);
+    metalNormalMap->setAnisotropicFilterLevel(4);
     Texture2D* metalMSA = new Texture2D("res\\textures\\streaky-metal\\streaky-metal_MSA.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
+    metalMSA->setAnisotropicFilterLevel(4);
 
     Texture2D* testGridAlbedo = new Texture2D("res\\textures\\test_grid.png", /*generateMipmaps=*/ true, /*readable=*/ false, /*sRGB=*/ true);
+    testGridAlbedo->setAnisotropicFilterLevel(4);
 
     // Load shader and material
     m_GroundMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
