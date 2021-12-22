@@ -36,8 +36,15 @@ void MotionBlur::lazyInitialize(Camera* camera)
     if (m_Initialized)
         return;
 
-    PostProcessEffect::lazyInitialize(camera);
     Texture2D* motionVectorsTex = camera->getMotionVectorsTexture();
+
+    if (!motionVectorsTex)
+    {
+        cerr << "No motion vectors found. Motion vectors are only supported in deferred rendering. Ignoring MotionBlur initialization." << endl;
+        return;
+    }
+
+    PostProcessEffect::lazyInitialize(camera);
     BufferTexture* renderTarget = camera->getRenderTargetBuffer();
     uint32_t maxBlurRadius = static_cast<uint32_t>(renderTarget->height() * MAX_BLUR_RADIUS);   // in pixels
 
@@ -95,6 +102,12 @@ void MotionBlur::lazyInitialize(Camera* camera)
 
 void MotionBlur::render(BufferTexture* source, BufferTexture* destination)
 {
+    if (!m_Initialized)
+    {
+        PostProcessEffect::render(source, destination);
+        return;
+    }
+
     // Attempt to get consistent blurring results across various frame-rates.
     float deltaTimeAdjustment = 0.01f / static_cast<float>(Math::Max(0.001, Time::GetDeltaTime()));
     m_PackVelocityDepthMat->setFloat("u_VelocityScale", BLUR_STRENGTH * deltaTimeAdjustment);
