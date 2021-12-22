@@ -203,18 +203,18 @@ void Scene::userUpdate()
 
     for (size_t i = 0; i < m_FastEntities.size(); i++)
     {
-        double ti = (t * 20.0) + (6.0 * i);
+        double ti = (t * 9.0) + (6.0 * i);
         Transform* trans = m_FastEntities[i]->getTransform();
 
         trans->setPosition(Vector3(
             10.0f,
-            (float)sin(ti * 0.8) * 0.5f + 2.0f,
-            (float)sin(ti * 0.175) * 7.0f
+            (float)sin(ti) + 2.0f,
+            (float)sin(ti * 0.25) * 10.0f
         ));
         trans->setRotation(rotationToRad(Vector3(
-            (float)ti * 55.0f,
-            (float)ti * 75.0f,
-            (float)ti * 105.0f
+            (float)ti * 155.0f,
+            (float)ti * 175.0f,
+            (float)ti * 205.0f
         )));
     }
 }
