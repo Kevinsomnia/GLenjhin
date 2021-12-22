@@ -87,6 +87,15 @@ Scene::Scene()
         m_Entities.push_back(entity);
         m_DynamicEntities.push_back(entity);
     }
+
+    for (int i = 0; i < 3; i++)
+    {
+        Entity* entity = new Entity(Vector3::zero, Vector3::zero, Vector3::one * 0.5f);
+        Mesh* primitive = primitives[i % primitives.size()];
+        entity->setupRenderer(primitive, basicMat);
+        m_Entities.push_back(entity);
+        m_FastEntities.push_back(entity);
+    }
 }
 
 Scene::~Scene()
@@ -107,37 +116,26 @@ Scene::~Scene()
 
     m_Entities.clear();
     m_DynamicEntities.clear();
+    m_FastEntities.clear();
     m_Lights.clear();
 }
 
 void Scene::update()
 {
-    double t = Time::GetTime();
+    // Run entity logic as early in the frame as possible.
+    for (Entity* entity : m_Entities)
+        entity->earlyUpdate();
 
     for (Light* light : m_Lights)
         light->update();
 
-    for (size_t i = 0; i < m_DynamicEntities.size(); i++)
-    {
-        double ti = t + (2.5 * i);
-        Transform* trans = m_DynamicEntities[i]->getTransform();
-
-        trans->setPosition(Vector3(
-            (float)cos(ti * 0.7),
-            (float)sin(ti * 0.8) * 0.5f + 2.0f,
-            (float)sin(ti * 0.175) * 7.0f
-        ));
-        trans->setRotation(rotationToRad(Vector3(
-            (float)ti * 25.0f,
-            (float)ti * 30.0f,
-            (float)ti * 35.0f
-        )));
-    }
+    userUpdate();
 }
 
 void Scene::drawGeometryPass(const Camera& camera, Material& geometryMat) const
 {
-    geometryMat.setMatrix4x4("u_VP", camera.getViewProjectionMatrix());
+    geometryMat.setMatrix4x4("u_PrevVP", camera.getPrevViewProjectionMatrix());
+    geometryMat.setMatrix4x4("u_CurrVP", camera.getViewProjectionMatrix());
     geometryMat.setVector3("u_CameraPos", camera.getTransform()->getPosition());
 
     for (size_t i = 0; i < m_Entities.size(); i++)
@@ -180,4 +178,43 @@ void Scene::setNewTexture(const std::string& texturePath)
 
     m_GroundAlbedo = new Texture2D(texturePath, /*generateMipmap=*/ true, /*readable=*/ false, /*sRGB=*/ true);
     m_GroundMat->setTexture("u_AlbedoTex", m_GroundAlbedo);
+}
+
+void Scene::userUpdate()
+{
+    double t = Time::GetTime();
+
+    for (size_t i = 0; i < m_DynamicEntities.size(); i++)
+    {
+        double ti = t + (2.5 * i);
+        Transform* trans = m_DynamicEntities[i]->getTransform();
+
+        trans->setPosition(Vector3(
+            (float)cos(ti * 0.7),
+            (float)sin(ti * 0.8) * 0.5f + 2.0f,
+            (float)sin(ti * 0.175) * 7.0f
+        ));
+        trans->setRotation(rotationToRad(Vector3(
+            (float)ti * 25.0f,
+            (float)ti * 30.0f,
+            (float)ti * 35.0f
+        )));
+    }
+
+    for (size_t i = 0; i < m_FastEntities.size(); i++)
+    {
+        double ti = (t * 20.0) + (6.0 * i);
+        Transform* trans = m_FastEntities[i]->getTransform();
+
+        trans->setPosition(Vector3(
+            10.0f,
+            (float)sin(ti * 0.8) * 0.5f + 2.0f,
+            (float)sin(ti * 0.175) * 7.0f
+        ));
+        trans->setRotation(rotationToRad(Vector3(
+            (float)ti * 55.0f,
+            (float)ti * 75.0f,
+            (float)ti * 105.0f
+        )));
+    }
 }

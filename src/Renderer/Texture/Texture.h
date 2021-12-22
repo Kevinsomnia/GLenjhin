@@ -15,11 +15,14 @@ enum class TextureFormat
 {
     None,       // Can be used to signify disabled/unused texture
     R8,         // 8 bits per channel, R
-    RGB24,      // 8 bits per channel, RGB
-    RGBA32,     // 8 bits per channel, RGBA
+    RGB8,       // 8 bits per channel, RGB
+    RGBA8,      // 8 bits per channel, RGBA
+    RGB10A2,    // Packed: 10 bits for R/G/B, 2 bits for A (32 bits in total)
     RHalf,      // 16 bits per channel (floating point), R
+    RGHalf,     // 16 bits per channel (floating point), RG
     RGBAHalf,   // 16 bits per channel (floating point), RGBA
     RFloat,     // 32 bits per channel (floating point), R
+    RGFloat,    // 32 bits per channel (floating point), RG
     RGBAFloat,  // 32 bits per channel (floating point), RGBA
     Depth16,    // 16-bit floating point depth texture
     Depth24,    // 24-bit floating point depth texture
@@ -102,16 +105,22 @@ struct GLTextureParams
         {
             case TextureFormat::R8:
                 return GLTextureParams { GL_R8, GL_RED, GL_UNSIGNED_BYTE };
-            case TextureFormat::RGB24:
+            case TextureFormat::RGB8:
                 return GLTextureParams { sRGB ? GL_SRGB : GL_RGB, GL_RGB, GL_UNSIGNED_BYTE };
-            case TextureFormat::RGBA32:
+            case TextureFormat::RGBA8:
                 return GLTextureParams { sRGB ? GL_SRGB_ALPHA : GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE };
+            case TextureFormat::RGB10A2:
+                return GLTextureParams { GL_RGB10_A2, GL_RGBA, GL_UNSIGNED_INT_2_10_10_10_REV };
             case TextureFormat::RHalf:
                 return GLTextureParams { GL_R16F, GL_RED, GL_HALF_FLOAT };
+            case TextureFormat::RGHalf:
+                return GLTextureParams { GL_RG16F, GL_RG, GL_HALF_FLOAT };
             case TextureFormat::RGBAHalf:
                 return GLTextureParams { GL_RGBA16F, GL_RGBA, GL_HALF_FLOAT };
             case TextureFormat::RFloat:
                 return GLTextureParams { GL_R32F, GL_RED, GL_FLOAT };
+            case TextureFormat::RGFloat:
+                return GLTextureParams { GL_RG32F, GL_RG, GL_FLOAT };
             case TextureFormat::RGBAFloat:
                 return GLTextureParams { GL_RGBA32F, GL_RGBA, GL_FLOAT };
             case TextureFormat::Depth16:

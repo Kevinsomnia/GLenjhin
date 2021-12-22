@@ -76,6 +76,9 @@ void DebugTextureListWindow::setOpen(bool open)
 
 void DebugTextureListWindow::add(Texture* tex, const char* label, bool flipY, ElementSizeMode sizeMode)
 {
+    if (!tex)
+        return;
+
     Element e = Element();
     e.texture = tex;
     e.label = label;

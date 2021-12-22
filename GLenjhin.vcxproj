@@ -45,6 +45,7 @@
     <ClCompile Include="src\Renderer\ImageEffects\PostProcess\FXAA.cpp" />
     <ClCompile Include="src\Renderer\ImageEffects\PostProcess\GaussianBlur.cpp" />
     <ClCompile Include="src\Renderer\ImageEffects\PostProcess\GlobalFog.cpp" />
+    <ClCompile Include="src\Renderer\ImageEffects\PostProcess\MotionBlur.cpp" />
     <ClCompile Include="src\Renderer\ImageEffects\PostProcess\PostProcessEffect.cpp" />
     <ClCompile Include="src\Renderer\ImageEffects\PostProcess\PostProcessEffectChain.cpp" />
     <ClCompile Include="src\Renderer\ImageEffects\PostProcess\SunShafts.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="src\Renderer\ImageEffects\PostProcess\FXAA.h" />
     <ClInclude Include="src\Renderer\ImageEffects\PostProcess\GaussianBlur.h" />
     <ClInclude Include="src\Renderer\ImageEffects\PostProcess\GlobalFog.h" />
+    <ClInclude Include="src\Renderer\ImageEffects\PostProcess\MotionBlur.h" />
     <ClInclude Include="src\Renderer\ImageEffects\PostProcess\PostProcessEffect.h" />
     <ClInclude Include="src\Renderer\ImageEffects\PostProcess\PostProcessEffectChain.h" />
     <ClInclude Include="src\Renderer\ImageEffects\PostProcess\SunShafts.h" />

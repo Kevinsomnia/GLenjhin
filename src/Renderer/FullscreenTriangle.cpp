@@ -31,6 +31,11 @@ void FullscreenTriangle::setMaterial(Material* mat)
     m_Material = mat;
 }
 
+void FullscreenTriangle::setDepthTest(bool depthTest)
+{
+    m_DepthTest = depthTest;
+}
+
 void FullscreenTriangle::draw() const
 {
     bool prevDepthTest = glIsEnabled(GL_DEPTH_TEST);

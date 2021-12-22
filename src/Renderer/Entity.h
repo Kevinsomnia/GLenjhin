@@ -26,6 +26,7 @@ public:
     Entity(const Vector3& position, const Vector3& rotation, const Vector3& scale);
     ~Entity();
     void setupRenderer(Mesh* mesh, Material* material);
+    void earlyUpdate();
     void drawGeometryPass(Material& geometryMat) const;
     void drawShadowPass(Material& shadowMat) const;
     void draw(const Camera& camera, const std::vector<Light*>& lights) const;

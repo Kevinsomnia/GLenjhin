@@ -10,7 +10,7 @@ using std::endl;
 class GeometryBuffers
 {
 public:
-    GeometryBuffers(uint32_t width, uint32_t height, uint8_t depth);
+    GeometryBuffers(uint32_t width, uint32_t height, uint8_t depth, bool motionVectors);
     ~GeometryBuffers();
     void bind() const;
     void setGBufferTextures(Material& mat) const;
@@ -22,6 +22,7 @@ public:
     Texture2D* albedoMetalGBuffer() const { return m_AlbedoMetalGBuffer; }
     Texture2D* emissionOcclGBuffer() const { return m_EmissionOcclGBuffer; }
     Texture2D* depthTexture() const { return m_DepthTexture; }
+    Texture2D* motionVectorsTexture() const { return m_MotionVectorsTexture; }
 protected:
     uint32_t m_FboID;
     uint32_t m_Width;
@@ -31,6 +32,7 @@ protected:
     Texture2D* m_AlbedoMetalGBuffer;
     Texture2D* m_EmissionOcclGBuffer;
     Texture2D* m_DepthTexture;
+    Texture2D* m_MotionVectorsTexture;
 
     void internalDispose();
 };

@@ -1,22 +1,29 @@
 #include "GeometryBuffers.h"
 
-GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height, uint8_t depth) : m_Width(width), m_Height(height)
+GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height, uint8_t depth, bool motionVectors) : m_Width(width), m_Height(height)
 {
     glGenFramebuffers(1, &m_FboID);
     glBindFramebuffer(GL_FRAMEBUFFER, m_FboID);
+
+    std::vector<GLenum> colorAttachments = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
 
     m_PositionGBuffer = new Texture2D(width, height, TextureFormat::RGBAFloat, /*readable=*/ false, /*sRGB=*/ false);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_PositionGBuffer->id(), 0);
     m_NormalSmoothGBuffer = new Texture2D(width, height, TextureFormat::RGBAHalf, /*readable=*/ false, /*sRGB=*/ false);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_NormalSmoothGBuffer->id(), 0);
-    m_AlbedoMetalGBuffer = new Texture2D(width, height, TextureFormat::RGBA32, /*readable=*/ false, /*sRGB=*/ false);
+    m_AlbedoMetalGBuffer = new Texture2D(width, height, TextureFormat::RGBA8, /*readable=*/ false, /*sRGB=*/ false);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_AlbedoMetalGBuffer->id(), 0);
     m_EmissionOcclGBuffer = new Texture2D(width, height, TextureFormat::RGBAHalf, /*readable=*/ false, /*sRGB=*/ false);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, m_EmissionOcclGBuffer->id(), 0);
 
-    const GLuint ATTACHMENT_COUNT = 4;
-    GLenum colorAttachments[ATTACHMENT_COUNT] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
-    glDrawBuffers(ATTACHMENT_COUNT, colorAttachments);
+    if (motionVectors)
+    {
+        m_MotionVectorsTexture = new Texture2D(width, height, TextureFormat::RGHalf, /*readable=*/ false, /*sRGB=*/ false);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, m_MotionVectorsTexture->id(), 0);
+        colorAttachments.push_back(GL_COLOR_ATTACHMENT4);
+    }
+
+    glDrawBuffers(static_cast<uint32_t>(colorAttachments.size()), colorAttachments.data());
 
     if (depth != 0)
     {
@@ -38,6 +45,12 @@ GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height, uint8_t depth)
         m_NormalSmoothGBuffer->setWrapMode(TextureWrapMode::Clamp);
         m_AlbedoMetalGBuffer->setWrapMode(TextureWrapMode::Clamp);
         m_EmissionOcclGBuffer->setWrapMode(TextureWrapMode::Clamp);
+
+        if (m_MotionVectorsTexture)
+        {
+            m_MotionVectorsTexture->setFilterMode(TextureFilterMode::Point);
+            m_MotionVectorsTexture->setWrapMode(TextureWrapMode::Clamp);
+        }
     }
     else
     {
@@ -79,4 +92,6 @@ void GeometryBuffers::internalDispose()
 
     if (m_DepthTexture)
         delete m_DepthTexture;
+    if (m_MotionVectorsTexture)
+        delete m_MotionVectorsTexture;
 }

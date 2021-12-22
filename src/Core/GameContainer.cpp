@@ -28,13 +28,22 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
         /*farClip=*/ 5000.0f,
         /*fieldOfView=*/ 75.0f
     );
-    m_MainCamera = new Camera(screenWidth, screenHeight, /*pos=*/ Vector3(0.0f, 1.0f, 0.0f), /*rot=*/ Vector3::zero, projection, CameraBufferFlags::Default, /*deferred=*/ true);
+    m_MainCamera = new Camera(
+        screenWidth,
+        screenHeight,
+        /*pos=*/ Vector3(0.0f, 1.0f, 0.0f),
+        /*rot=*/ Vector3::zero,
+        projection,
+        CameraBufferFlags::Default | CameraBufferFlags::MotionVectors,
+        /*deferred=*/ true
+    );
     m_MainCamera->addDeferredEffect(new SSAO());
     m_MainCamera->addPostProcessEffect(new GlobalFog());
     m_MainCamera->addPostProcessEffect(new FXAA());
     SunShafts* shafts = new SunShafts();
     m_MainCamera->addPostProcessEffect(shafts);
     m_MainCamera->addPostProcessEffect(new Bloom());
+    m_MainCamera->addPostProcessEffect(new MotionBlur());
     m_MainCamera->addPostProcessEffect(new Tonemapping());
     // m_MainCamera->addPostProcessEffect(new GaussianBlur());     // TODO: runtime toggle
 

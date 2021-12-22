@@ -28,6 +28,7 @@ enum class CameraBufferFlags : uint32_t
     None = 0,
     Color = 1 << 0,
     Depth = 1 << 1,
+    MotionVectors = 1 << 2,
     Default = Color | Depth
 };
 constexpr CameraBufferFlags operator |(const CameraBufferFlags lhs, const CameraBufferFlags rhs) { return CameraBufferFlags(uint32_t(lhs) | uint32_t(rhs)); }
@@ -82,9 +83,11 @@ public:
     inline bool isDeferred() const { return m_GBuffers; }
     BufferTexture* getRenderTargetBuffer() const { return m_RenderTargetBuffer; }
     Texture2D* getColorTexture() const { return m_RenderTargetBuffer->colorTexture(); }
-    Texture2D* getDepthTexture() const { return isDeferred() ? m_GBuffers->depthTexture() : m_RenderTargetBuffer->depthTexture(); }
+    Texture2D* getDepthTexture() const { return m_GBuffers ? m_GBuffers->depthTexture() : m_RenderTargetBuffer->depthTexture(); }
+    Texture2D* getMotionVectorsTexture() const { return m_GBuffers ? m_GBuffers->motionVectorsTexture() : nullptr; }
     GeometryBuffers* getGBuffers() const { return m_GBuffers; }
     Transform* getTransform() const { return m_Transform; }
+    Matrix4x4 getPrevViewProjectionMatrix() const { return m_PrevViewProjectionMatrix; }
     Matrix4x4 getViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
     Matrix4x4 getViewMatrix() const { return m_ViewMatrix; }
     Matrix4x4 getProjectionMatrix() const { return m_ProjectionMatrix; }
@@ -93,6 +96,7 @@ public:
     // Z = far - near
     // W = 2.0 * near * far
     Vector4 getProjectionParams() const { return m_ProjectionParams; }
+    CameraBufferFlags getBufferFlags() const { return m_BufferFlags; }
 private:
     Transform* m_Transform;
     GeometryBuffers* m_GBuffers;
@@ -101,8 +105,10 @@ private:
     DeferredEffectChain* m_DeferredChain;
     Material* m_DeferredGeometryMat;
     Material* m_DeferredLightingMat;
+    Material* m_BgMotionVectorsMat;
     Material* m_BlitMat;
     FullscreenTriangle* m_FullscreenTriangle;
+    Matrix4x4 m_PrevViewProjectionMatrix;
     Matrix4x4 m_ViewProjectionMatrix;
 
     Vector4 m_ProjectionParams;
@@ -112,4 +118,7 @@ private:
     float m_FarClip;
     float m_FieldOfView;
     float m_OrthoSize;
+    CameraBufferFlags m_BufferFlags;
+
+    void renderBackgroundMotionVectors();
 };

@@ -1,5 +1,6 @@
 #include "Camera.h"
 
+// Projection constructors.
 Camera::Projection::Projection(float nearClip, float farClip)
     : nearClip(nearClip), farClip(farClip) { }
 Camera::Projection::~Projection() { /* no-op. just here to make dynamic_cast work. */ }
@@ -8,8 +9,9 @@ Camera::PerspectiveProjection::PerspectiveProjection(float nearClip, float farCl
 Camera::OrthographicProjection::OrthographicProjection(float nearClip, float farClip, float size)
     : Projection(nearClip, farClip), size(size) { }
 
+
 Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, const Vector3& rot, Projection& projection, CameraBufferFlags bufferFlags, bool deferred)
-    : m_NearClip(projection.nearClip), m_FarClip(projection.farClip), m_FieldOfView(60.0f), m_OrthoSize(1.0f)
+    : m_NearClip(projection.nearClip), m_FarClip(projection.farClip), m_FieldOfView(60.0f), m_OrthoSize(1.0f), m_BufferFlags(bufferFlags)
 {
     assert(bufferFlags != CameraBufferFlags::None);
 
@@ -42,10 +44,14 @@ Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, co
 
     if (deferred)
     {
-        m_GBuffers = new GeometryBuffers(pixelWidth, pixelHeight, depthBits);
+        bool renderToMotionVectors = (bufferFlags & CameraBufferFlags::MotionVectors) != CameraBufferFlags::None;
+        m_GBuffers = new GeometryBuffers(pixelWidth, pixelHeight, depthBits, renderToMotionVectors);
         m_DeferredGeometryMat = new Material(new Shader("res\\shaders\\Deferred\\GeometryBuffers.glsl"));
         m_DeferredLightingMat = new Material(new Shader("res\\shaders\\Deferred\\DeferredLighting.glsl"));
         m_GBuffers->setGBufferTextures(*m_DeferredLightingMat);
+
+        if (renderToMotionVectors)
+            m_BgMotionVectorsMat = new Material(new Shader("res\\shaders\\BackgroundMotionVectors.glsl"));
 
         m_DeferredChain = new DeferredEffectChain(this);
     }
@@ -59,7 +65,9 @@ Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, co
     m_PostProcessChain = new PostProcessEffectChain(this);
     m_BlitMat = new Material(new Shader("res\\shaders\\ImageEffects\\Common\\Copy.glsl"));
     m_FullscreenTriangle = new FullscreenTriangle(m_BlitMat);
+
     update();
+    m_PrevViewProjectionMatrix = m_ViewProjectionMatrix;
 }
 
 Camera::~Camera()
@@ -68,6 +76,9 @@ Camera::~Camera()
     delete m_RenderTargetBuffer;
     delete m_BlitMat;
     delete m_FullscreenTriangle;
+
+    if (m_BgMotionVectorsMat)
+        delete m_BgMotionVectorsMat;
 
     if (m_GBuffers)
     {
@@ -80,6 +91,7 @@ Camera::~Camera()
 void Camera::update()
 {
     m_ViewMatrix = Matrix4x4::View(m_Transform->getPosition(), m_Transform->getRotation());
+    m_PrevViewProjectionMatrix = m_ViewProjectionMatrix;
     m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 }
 
@@ -94,6 +106,10 @@ void Camera::draw(Scene* scene, bool drawSkybox)
 
         if (scene)
             scene->drawGeometryPass(*this, *m_DeferredGeometryMat);
+
+        // Render motion vectors for background pixels (geometry pass is the foreground).
+        // Any motion beyond the far clip plane are considered infinitely far away, so we only camera rotation will apply motion.
+        renderBackgroundMotionVectors();
 
         // Deferred image effects manipulate the GBuffers directly
         m_DeferredChain->render();
@@ -110,6 +126,7 @@ void Camera::draw(Scene* scene, bool drawSkybox)
 
         m_DeferredLightingMat->setColor("u_AmbientColor", ColorByte(50, 81, 107));
         m_DeferredLightingMat->setVector3("u_CameraPos", m_Transform->getPosition());
+        m_FullscreenTriangle->setDepthTest(false);
         m_FullscreenTriangle->setMaterial(m_DeferredLightingMat);
         m_FullscreenTriangle->draw();
 
@@ -153,6 +170,7 @@ void Camera::blitToScreen() const
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glBindFramebuffer(GL_FRAMEBUFFER, NULL);
     m_BlitMat->setTexture("u_MainTex", m_RenderTargetBuffer->colorTexture());
+    m_FullscreenTriangle->setDepthTest(false);
     m_FullscreenTriangle->setMaterial(m_BlitMat);
     m_FullscreenTriangle->draw();
 }
@@ -174,8 +192,9 @@ void Camera::addBuffersToDebugWindow(DebugTextureListWindow& window) const
     {
         window.add(m_GBuffers->positionGBuffer(), "GBuffer [RGBAFloat]: World Position (RGB)", /*flip=*/ true, DebugTextureListWindow::ElementSizeMode::ConstrainToWindowWidth);
         window.add(m_GBuffers->normalSmoothGBuffer(), "GBuffer [RGBAHalf]: World Normal (RGB) Smoothness (A)", /*flip=*/ true, DebugTextureListWindow::ElementSizeMode::ConstrainToWindowWidth);
-        window.add(m_GBuffers->albedoMetalGBuffer(), "GBuffer [RGBA32]: Albedo (RGB) Metallic (A)", /*flip=*/ true, DebugTextureListWindow::ElementSizeMode::ConstrainToWindowWidth);
+        window.add(m_GBuffers->albedoMetalGBuffer(), "GBuffer [RGBA8]: Albedo (RGB) Metallic (A)", /*flip=*/ true, DebugTextureListWindow::ElementSizeMode::ConstrainToWindowWidth);
         window.add(m_GBuffers->emissionOcclGBuffer(), "GBuffer [RGBAHalf]: Emission (RGB) Occlusion (A)", /*flip=*/ true, DebugTextureListWindow::ElementSizeMode::ConstrainToWindowWidth);
+        window.add(m_GBuffers->motionVectorsTexture(), "Motion Vectors [RGHalf]: Screen-space Motion (RG)", /*flip=*/ true, DebugTextureListWindow::ElementSizeMode::ConstrainToWindowWidth);
     }
 
     window.add(getDepthTexture(), "Camera Depth (R) [Float]", /*flip=*/ true, DebugTextureListWindow::ElementSizeMode::ConstrainToWindowWidth);
@@ -187,4 +206,16 @@ Vector3 Camera::worldToViewportPoint(const Vector3& pos) const
     // Perspective divide XY and normalize to [0, 1], but leave Z untouched so that it's in world units.
     float halfOverW = 0.5f / ((pos.x * m_ViewProjectionMatrix[3]) + (pos.y * m_ViewProjectionMatrix[7]) + (pos.z * m_ViewProjectionMatrix[11]) + m_ViewProjectionMatrix[15]);
     return Vector3((viewPos.x * halfOverW) + 0.5f, (viewPos.y * halfOverW) + 0.5f, viewPos.z + (m_NearClip * 2.0f));
+}
+
+void Camera::renderBackgroundMotionVectors()
+{
+    if (!getMotionVectorsTexture())
+        return;
+
+    m_BgMotionVectorsMat->setMatrix4x4("u_PrevVP", getPrevViewProjectionMatrix());
+    m_BgMotionVectorsMat->setMatrix4x4("u_CurrVP", getViewProjectionMatrix());
+    m_FullscreenTriangle->setDepthTest(true);
+    m_FullscreenTriangle->setMaterial(m_BgMotionVectorsMat);
+    m_FullscreenTriangle->draw();
 }

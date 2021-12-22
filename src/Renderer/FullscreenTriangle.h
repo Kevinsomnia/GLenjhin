@@ -11,6 +11,7 @@ public:
     FullscreenTriangle(Material* mat, bool depthTest = false);
     ~FullscreenTriangle();
     void setMaterial(Material* mat);
+    void setDepthTest(bool depthTest);
     void draw() const;
 private:
     static uint32_t VAO_ID;
