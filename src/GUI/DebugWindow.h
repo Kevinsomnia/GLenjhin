@@ -32,6 +32,11 @@ public:
     void clearTextures();
 
 private:
+    enum class Tab;
+    static const size_t TAB_COUNT = 2;
+    static const char* TAB_NAMES[TAB_COUNT];
+    static const ImVec4 TAB_SELECTED_COLOR;
+
     struct Element
     {
         Texture* texture;
@@ -41,6 +46,10 @@ private:
     };
 
     bool m_WindowOpened;
+    Tab m_Tab;
     const char* m_WindowName;
     std::vector<Element> m_Elements;
+
+    void drawTextureList();
+    void drawRenderingStats();
 };
