@@ -8,14 +8,11 @@ using std::endl;
 class FullscreenTriangle
 {
 public:
-    FullscreenTriangle(Material* mat, bool depthTest = false);
-    ~FullscreenTriangle();
-    void setMaterial(Material* mat);
-    void setDepthTest(bool depthTest);
-    void draw() const;
+    FullscreenTriangle();
+    static void Init();
+    static void Draw(Material* mat, bool depthTest);
+
 private:
     static uint32_t VAO_ID;
-
-    Material* m_Material;
-    bool m_DepthTest;
+    static FullscreenTriangle* instance;
 };

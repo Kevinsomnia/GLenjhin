@@ -107,7 +107,6 @@ private:
     Material* m_DeferredLightingMat;
     Material* m_BgMotionVectorsMat;
     Material* m_BlitMat;
-    FullscreenTriangle* m_FullscreenTriangle;
     Matrix4x4 m_PrevViewProjectionMatrix;
     Matrix4x4 m_ViewProjectionMatrix;
 

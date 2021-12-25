@@ -15,5 +15,4 @@ public:
 private:
     Texture2D* m_Texture;
     Material* m_Material;
-    FullscreenTriangle* m_Triangle;
 };

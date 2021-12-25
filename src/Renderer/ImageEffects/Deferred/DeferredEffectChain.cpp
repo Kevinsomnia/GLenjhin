@@ -3,13 +3,11 @@
 DeferredEffectChain::DeferredEffectChain(Camera* camera) : m_Camera(camera)
 {
     m_CopyMat = new Material(new Shader("res\\shaders\\ImageEffects\\Common\\Copy.glsl"));
-    m_Triangle = new FullscreenTriangle(m_CopyMat);
 }
 
 DeferredEffectChain::~DeferredEffectChain()
 {
     delete m_CopyMat;
-    delete m_Triangle;
 }
 
 void DeferredEffectChain::add(DeferredEffect* effect)

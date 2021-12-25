@@ -23,5 +23,4 @@ protected:
     Shader* m_Shader;
     Material* m_Material;
     Material* m_CopyMat;
-    FullscreenTriangle* m_Triangle;
 };

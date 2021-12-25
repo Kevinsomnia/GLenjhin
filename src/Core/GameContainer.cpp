@@ -16,6 +16,7 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     Time::Init();
     Input::Init(window);
     ModelImporter::Init();
+    FullscreenTriangle::Init();
     MeshPrimitives::Init();
     Texture2D::CreateStaticTextures();
 

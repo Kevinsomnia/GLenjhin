@@ -83,11 +83,9 @@ void SSAO::render()
 
     // Read emission GBuffer to buffer copy.
     m_EmissionOcclGBufferCopy->bind();
-    m_Triangle->setMaterial(m_CopyMat);
-    m_Triangle->draw();
+    FullscreenTriangle::Draw(m_CopyMat, /*depthTest=*/ false);
 
     // Write occlusion buffer to emission GBuffer alpha channel.
     m_Camera->getGBuffers()->bind();
-    m_Triangle->setMaterial(m_Material);
-    m_Triangle->draw();
+    FullscreenTriangle::Draw(m_Material, /*depthTest=*/ false);
 }

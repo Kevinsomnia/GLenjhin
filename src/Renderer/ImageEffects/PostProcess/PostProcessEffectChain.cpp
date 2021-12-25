@@ -3,7 +3,6 @@
 PostProcessEffectChain::PostProcessEffectChain(Camera* camera) : m_Camera(camera), m_NumColorBuffers(0)
 {
     m_CopyMat = new Material(new Shader("res\\shaders\\ImageEffects\\Common\\Copy.glsl"));
-    m_Triangle = new FullscreenTriangle(m_CopyMat);
 }
 
 PostProcessEffectChain::~PostProcessEffectChain()
@@ -12,7 +11,6 @@ PostProcessEffectChain::~PostProcessEffectChain()
         delete m_ColorBuffers[i];
 
     delete m_CopyMat;
-    delete m_Triangle;
 }
 
 void PostProcessEffectChain::add(PostProcessEffect* effect)
@@ -55,6 +53,6 @@ void PostProcessEffectChain::render()
         // Copy final color buffer back into `source`, as long as we processed at least one effect.
         source->bind();
         m_CopyMat->setTexture("u_MainTex", m_ColorBuffers[pingPongFlag]->colorTexture());
-        m_Triangle->draw();
+        FullscreenTriangle::Draw(m_CopyMat, /*depthTest=*/ false);
     }
 }

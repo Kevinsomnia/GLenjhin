@@ -64,7 +64,6 @@ Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, co
     m_RenderTargetBuffer = new BufferTexture(pixelWidth, pixelHeight, depthBits, colorFormat);
     m_PostProcessChain = new PostProcessEffectChain(this);
     m_BlitMat = new Material(new Shader("res\\shaders\\ImageEffects\\Common\\Copy.glsl"));
-    m_FullscreenTriangle = new FullscreenTriangle(m_BlitMat);
 
     update();
     m_PrevViewProjectionMatrix = m_ViewProjectionMatrix;
@@ -75,7 +74,6 @@ Camera::~Camera()
     delete m_Transform;
     delete m_RenderTargetBuffer;
     delete m_BlitMat;
-    delete m_FullscreenTriangle;
 
     if (m_BgMotionVectorsMat)
         delete m_BgMotionVectorsMat;
@@ -126,9 +124,7 @@ void Camera::draw(Scene* scene, bool drawSkybox)
 
         m_DeferredLightingMat->setColor("u_AmbientColor", ColorByte(50, 81, 107));
         m_DeferredLightingMat->setVector3("u_CameraPos", m_Transform->getPosition());
-        m_FullscreenTriangle->setDepthTest(false);
-        m_FullscreenTriangle->setMaterial(m_DeferredLightingMat);
-        m_FullscreenTriangle->draw();
+        FullscreenTriangle::Draw(m_DeferredLightingMat, /*depthTest=*/ false);
 
         // Blit GBuffer depth to buffer texture depth so that forward-rendered objects (e.g. skybox, transparent objects) display properly.
         // It is important for both depth buffers to be in the same format.
@@ -170,9 +166,7 @@ void Camera::blitToScreen() const
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glBindFramebuffer(GL_FRAMEBUFFER, NULL);
     m_BlitMat->setTexture("u_MainTex", m_RenderTargetBuffer->colorTexture());
-    m_FullscreenTriangle->setDepthTest(false);
-    m_FullscreenTriangle->setMaterial(m_BlitMat);
-    m_FullscreenTriangle->draw();
+    FullscreenTriangle::Draw(m_BlitMat, /*depthTest=*/ false);
 }
 
 void Camera::addDeferredEffect(DeferredEffect* effect)
@@ -215,7 +209,5 @@ void Camera::renderBackgroundMotionVectors()
 
     m_BgMotionVectorsMat->setMatrix4x4("u_PrevVP", getPrevViewProjectionMatrix());
     m_BgMotionVectorsMat->setMatrix4x4("u_CurrVP", getViewProjectionMatrix());
-    m_FullscreenTriangle->setDepthTest(true);
-    m_FullscreenTriangle->setMaterial(m_BgMotionVectorsMat);
-    m_FullscreenTriangle->draw();
+    FullscreenTriangle::Draw(m_BgMotionVectorsMat, /*depthTest=*/ true);
 }

@@ -17,5 +17,4 @@ protected:
     Camera* m_Camera;
     Shader* m_Shader;
     Material* m_Material;
-    FullscreenTriangle* m_Triangle;
 };
