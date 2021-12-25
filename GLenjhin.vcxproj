@@ -23,8 +23,8 @@
     <ClCompile Include="src\Core\GameContainer.cpp" />
     <ClCompile Include="src\Core\Scene.cpp" />
     <ClCompile Include="src\Core\Time.cpp" />
-    <ClCompile Include="src\GUI\DebugOverlayWindow.cpp" />
-    <ClCompile Include="src\GUI\DebugTextureListWindow.cpp" />
+    <ClCompile Include="src\GUI\DebugOverlayPanel.cpp" />
+    <ClCompile Include="src\GUI\DebugWindow.cpp" />
     <ClCompile Include="src\GUI\TexturePickerWindow.cpp" />
     <ClCompile Include="src\Interaction\Input.cpp" />
     <ClCompile Include="src\IO\ImageLib.cpp" />
@@ -80,8 +80,8 @@
     <ClInclude Include="src\Core\Scene.h" />
     <ClInclude Include="src\Core\ShaderCompiler.hpp" />
     <ClInclude Include="src\Core\Time.h" />
-    <ClInclude Include="src\GUI\DebugOverlayWindow.h" />
-    <ClInclude Include="src\GUI\DebugTextureListWindow.h" />
+    <ClInclude Include="src\GUI\DebugOverlayPanel.h" />
+    <ClInclude Include="src\GUI\DebugWindow.h" />
     <ClInclude Include="src\GUI\TexturePickerWindow.h" />
     <ClInclude Include="src\Interaction\Input.h" />
     <ClInclude Include="src\Interaction\InputCodes.h" />

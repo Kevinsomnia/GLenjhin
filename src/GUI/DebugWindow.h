@@ -12,7 +12,7 @@
 
 namespace fs = std::filesystem;
 
-class DebugTextureListWindow
+class DebugWindow
 {
 public:
     enum class ElementSizeMode
@@ -22,14 +22,14 @@ public:
         FitToWindowWidth,           // Size is forced to the window width (constrained if too large, expanded if too small), maintaining aspect ratio.
     };
 
-    DebugTextureListWindow(const char* windowName);
-    ~DebugTextureListWindow();
+    DebugWindow(const char* windowName);
+    ~DebugWindow();
     bool isOpen() const;
     void draw();
     void setOpen(bool open);
-    void add(Texture* tex, const char* label, bool flipY = false, ElementSizeMode sizeMode = ElementSizeMode::Original);
-    void remove(Texture* tex);
-    void clear();
+    void addTexture(Texture* tex, const char* label, bool flipY = false, ElementSizeMode sizeMode = ElementSizeMode::Original);
+    void removeTexture(Texture* tex);
+    void clearTextures();
 
 private:
     struct Element

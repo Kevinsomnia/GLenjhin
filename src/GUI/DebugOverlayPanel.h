@@ -6,17 +6,17 @@
 #include <GLFW/glfw3.h>
 
 #include "imgui.h"
-#include "DebugTextureListWindow.h"
+#include "DebugWindow.h"
 
 namespace fs = std::filesystem;
 using std::cout;
 using std::endl;
 
-class DebugOverlayWindow
+class DebugOverlayPanel
 {
 public:
-    DebugOverlayWindow() = delete;
-    DebugOverlayWindow(DebugTextureListWindow* debugBuffersWindow);
+    DebugOverlayPanel() = delete;
+    DebugOverlayPanel(DebugWindow* debugWindow);
     void draw();
     bool getVisible();
     void toggleVisible();
@@ -25,7 +25,7 @@ private:
     bool m_Visible;
     float m_FPS;
     bool m_VSync;
-    DebugTextureListWindow* m_DebugBuffersWindow;
+    DebugWindow* m_DebugWindow;
 
     void updateVSync();
 };

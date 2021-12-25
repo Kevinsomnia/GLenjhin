@@ -1,12 +1,12 @@
-#include "DebugOverlayWindow.h"
+#include "DebugOverlayPanel.h"
 
-DebugOverlayWindow::DebugOverlayWindow(DebugTextureListWindow* debugBuffersWindow)
-    : m_Visible(true), m_FPS(0.0f), m_VSync(true), m_DebugBuffersWindow(debugBuffersWindow)
+DebugOverlayPanel::DebugOverlayPanel(DebugWindow* debugWindow)
+    : m_Visible(true), m_FPS(0.0f), m_VSync(true), m_DebugWindow(debugWindow)
 {
     updateVSync();
 }
 
-void DebugOverlayWindow::draw()
+void DebugOverlayPanel::draw()
 {
     if (m_Visible)
     {
@@ -27,9 +27,9 @@ void DebugOverlayWindow::draw()
             if (ImGui::Checkbox("V-Sync", &m_VSync))
                 updateVSync();
 
-            if (m_DebugBuffersWindow && !m_DebugBuffersWindow->isOpen() && ImGui::Button("Debug Buffers"))
+            if (m_DebugWindow && !m_DebugWindow->isOpen() && ImGui::Button("Debug/Stats"))
             {
-                m_DebugBuffersWindow->setOpen(true);
+                m_DebugWindow->setOpen(true);
             }
         }
         ImGui::End();
@@ -37,23 +37,23 @@ void DebugOverlayWindow::draw()
     }
 }
 
-bool DebugOverlayWindow::getVisible()
+bool DebugOverlayPanel::getVisible()
 {
     return m_Visible;
 }
 
-void DebugOverlayWindow::toggleVisible()
+void DebugOverlayPanel::toggleVisible()
 {
     m_Visible = !m_Visible;
     m_FPS = 0.0f;
 }
 
-void DebugOverlayWindow::setFPS(float fps)
+void DebugOverlayPanel::setFPS(float fps)
 {
     m_FPS = fps;
 }
 
-void DebugOverlayWindow::updateVSync()
+void DebugOverlayPanel::updateVSync()
 {
     glfwSwapInterval(m_VSync);
 }

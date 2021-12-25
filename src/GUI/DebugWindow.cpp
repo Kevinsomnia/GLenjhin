@@ -1,20 +1,20 @@
-#include "DebugTextureListWindow.h"
+#include "DebugWindow.h"
 
-DebugTextureListWindow::DebugTextureListWindow(const char* windowName) : m_WindowOpened(true), m_WindowName(windowName)
+DebugWindow::DebugWindow(const char* windowName) : m_WindowOpened(true), m_WindowName(windowName)
 {
 }
 
-DebugTextureListWindow::~DebugTextureListWindow()
+DebugWindow::~DebugWindow()
 {
-    clear();
+    clearTextures();
 }
 
-bool DebugTextureListWindow::isOpen() const
+bool DebugWindow::isOpen() const
 {
     return m_WindowOpened;
 }
 
-void DebugTextureListWindow::draw()
+void DebugWindow::draw()
 {
     if (!m_WindowOpened)
         return;
@@ -69,12 +69,12 @@ void DebugTextureListWindow::draw()
     ImGui::PopStyleColor(/*count=*/ 1);
 }
 
-void DebugTextureListWindow::setOpen(bool open)
+void DebugWindow::setOpen(bool open)
 {
     m_WindowOpened = open;
 }
 
-void DebugTextureListWindow::add(Texture* tex, const char* label, bool flipY, ElementSizeMode sizeMode)
+void DebugWindow::addTexture(Texture* tex, const char* label, bool flipY, ElementSizeMode sizeMode)
 {
     if (!tex)
         return;
@@ -87,7 +87,7 @@ void DebugTextureListWindow::add(Texture* tex, const char* label, bool flipY, El
     m_Elements.push_back(e);
 }
 
-void DebugTextureListWindow::remove(Texture* tex)
+void DebugWindow::removeTexture(Texture* tex)
 {
     auto iter = std::find_if(
         m_Elements.begin(),
@@ -99,7 +99,7 @@ void DebugTextureListWindow::remove(Texture* tex)
         m_Elements.erase(iter);
 }
 
-void DebugTextureListWindow::clear()
+void DebugWindow::clearTextures()
 {
     m_Elements.clear();
 }
