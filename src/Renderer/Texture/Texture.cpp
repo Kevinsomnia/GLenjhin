@@ -12,6 +12,8 @@ Texture::~Texture()
         glDeleteTextures(1, &m_TextureID);
         m_TextureID = NULL;
     }
+
+    GlobalStats::RemoveActiveTexture(this);
 }
 
 void Texture::bind(uint32_t slotIndex) const
@@ -56,4 +58,43 @@ void Texture::setAnisotropicFilterLevel(int level)
 
     float filterLevel = Math::Clamp(static_cast<float>(level), 1.0f, 16.0f);
     glTextureParameterf(m_TextureID, GL_TEXTURE_MAX_ANISOTROPY, filterLevel);
+}
+
+size_t Texture::memorySizeBytes() const
+{
+    size_t bpp;
+
+    switch (m_Format)
+    {
+        case TextureFormat::R8:
+            bpp = 1;
+            break;
+        case TextureFormat::RHalf:
+        case TextureFormat::Depth16:
+            bpp = 2;
+            break;
+        case TextureFormat::RGB8:
+        case TextureFormat::Depth24:
+            bpp = 3;
+            break;
+        case TextureFormat::RGBA8:
+        case TextureFormat::RGB10A2:
+        case TextureFormat::RGHalf:
+        case TextureFormat::RFloat:
+        case TextureFormat::Depth32:
+            bpp = 4;
+            break;
+        case TextureFormat::RGBAHalf:
+        case TextureFormat::RGFloat:
+            bpp = 8;
+            break;
+        case TextureFormat::RGBAFloat:
+            bpp = 16;
+            break;
+        default:
+            bpp = 0;
+            break;
+    }
+
+    return m_Width * m_Height * bpp;
 }

@@ -18,8 +18,8 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     ModelImporter::Init();
     FullscreenTriangle::Init();
     MeshPrimitives::Init();
+    GlobalStats::Init();
     Texture2D::CreateStaticTextures();
-    GlobalStats::Reset();
 
     int screenWidth, screenHeight;
     glfwGetWindowSize(window, &screenWidth, &screenHeight);

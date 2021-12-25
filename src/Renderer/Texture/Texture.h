@@ -6,6 +6,7 @@
 #include "../../IO/ImageLib.h"
 #include "../../Math/Vector.h"
 #include "../Color.h"
+#include "../GlobalStats.h"
 
 using std::cout;
 using std::cerr;
@@ -157,6 +158,7 @@ public:
     TextureFormat format() const { return m_Format; }
     Vector2 size() const { return Vector2(static_cast<float>(m_Width), static_cast<float>(m_Height)); }
     Vector2 texelSize() const { return Vector2(1.0f / m_Width, 1.0f / m_Height); }
+    size_t memorySizeBytes() const;
 protected:
     static const size_t CACHE_SIZE_THRESHOLD = 32768;   // Size is measured in bytes
 

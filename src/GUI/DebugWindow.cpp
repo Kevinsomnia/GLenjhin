@@ -164,4 +164,54 @@ void DebugWindow::drawRenderingStats()
     ImGui::Text("Triangle Count: %d", GlobalStats::GetIndexCount() / 3);
     ImGui::Text("Shader Calls: %d", GlobalStats::GetShaderCalls());
     ImGui::Text("Framebuffer Bind Calls: %d", GlobalStats::GetFramebufferBindCalls());
+    ImGui::Dummy(ImVec2(0, 10));
+
+    ImGui::Text("============ MEMORY/OBJECTS ============");
+    ImGui::Text("%d Mesh Renderer(s)", GlobalStats::GetMeshRendererCount());
+
+    // ============= SHADERS =============
+    std::vector<Shader*>& shaders = GlobalStats::GetActiveShaders();
+    ImGui::Text("%d Compiled Shader Program(s):", shaders.size());
+    for (Shader* shader : shaders)
+    {
+        if (shader)
+        {
+            ImGui::BulletText("[%d] %s",
+                shader->id(),
+                shader->name().c_str()
+            );
+        }
+    }
+
+    // ============= TEXTURES =============
+    const float BYTES_TO_MEGABYTES = 1.0f / 1024.0f / 1024.0f;
+    std::vector<Texture*>& textures = GlobalStats::GetActiveTextures();
+    size_t totalTexSize = 0;
+
+    for (Texture* tex : textures)
+    {
+        if (tex)
+            totalTexSize += tex->memorySizeBytes();
+    }
+
+    ImGui::Text("%d Texture(s) (%.2f MB total):", textures.size(), totalTexSize * BYTES_TO_MEGABYTES);
+
+    for (Texture* tex : textures)
+    {
+        if (tex)
+        {
+            std::string texName = tex->name();
+            if (texName.empty())
+                texName = "(unnamed)";
+
+            ImGui::BulletText("[%d] %s, %dx%d, TextureFormat %d, %.2f MB",
+                tex->id(),
+                texName.c_str(),
+                tex->width(),
+                tex->height(),
+                tex->format(),
+                tex->memorySizeBytes() * BYTES_TO_MEGABYTES
+            );
+        }
+    }
 }
