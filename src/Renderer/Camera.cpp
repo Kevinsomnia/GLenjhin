@@ -48,6 +48,7 @@ Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, co
         m_GBuffers = new GeometryBuffers(pixelWidth, pixelHeight, depthFormat, renderToMotionVectors);
         m_DeferredGeometryMat = new Material(Shader::Load("res\\shaders\\Deferred\\GeometryBuffers.glsl"));
         m_DeferredLightingMat = new Material(Shader::Load("res\\shaders\\Deferred\\DeferredLighting.glsl"));
+        m_DeferredLightingMat->setColor("u_AmbientColor", ColorByte(50, 81, 107));
         m_GBuffers->setGBufferTextures(*m_DeferredLightingMat);
 
         if (renderToMotionVectors)
@@ -114,17 +115,12 @@ void Camera::draw(Scene* scene, bool drawSkybox)
 
         // Second pass: calculate lighting in screen-space, output to color buffer
         m_RenderTargetBuffer->bind();
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        m_DeferredLightingMat->setVector3("u_CameraPos", m_Transform->getPosition());
 
         if (scene)
-        {
-            // NOTE: multiple lights of same type are not supported yet!
-            for (Light* light : scene->lights())
-                light->setUniforms(*m_DeferredLightingMat);
-        }
-
-        m_DeferredLightingMat->setColor("u_AmbientColor", ColorByte(50, 81, 107));
-        m_DeferredLightingMat->setVector3("u_CameraPos", m_Transform->getPosition());
-        FullscreenTriangle::Draw(*m_DeferredLightingMat, /*depthTest=*/ false);
+            scene->renderLighting(*m_DeferredLightingMat);
 
         // Blit GBuffer depth to buffer texture depth so that forward-rendered objects (e.g. skybox, transparent objects) display properly.
         // It is important for both depth buffers to be in the same format.

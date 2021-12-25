@@ -173,6 +173,28 @@ void Scene::drawEntities(const Camera& camera) const
         m_Entities[i]->draw(camera, lights);
 }
 
+void Scene::renderLighting(Material& lightingMat) const
+{
+    // Enable additive blending if wasn't enabled already. Restore at the end.
+    bool prevBlend = glIsEnabled(GL_BLEND);
+
+    if (!prevBlend)
+        glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE, GL_ONE);
+
+    // Complex per-light pass: normal mapping, parallax, diffuse, specular, etc.
+    for (Light* light : m_Lights)
+    {
+        light->setUniforms(lightingMat);
+        FullscreenTriangle::Draw(lightingMat, /*depthTest=*/ false);
+    }
+
+    // Simple lighting pass: ambient light/occlusion, reflections, etc.
+
+    if (!prevBlend)
+        glDisable(GL_BLEND);
+}
+
 void Scene::renderLightShadows() const
 {
     for (Light* light : m_Lights)
