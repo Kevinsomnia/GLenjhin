@@ -2,6 +2,7 @@
 
 #include <glad/glad.h>
 #include "../Math/Vector.h"
+#include "GlobalStats.h"
 
 using std::cout;
 using std::endl;

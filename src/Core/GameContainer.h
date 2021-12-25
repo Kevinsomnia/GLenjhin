@@ -6,6 +6,7 @@
 #include "../GUI/DebugWindow.h"
 #include "../GUI/TexturePickerWindow.h"
 #include "../IO/ModelLib.h"
+#include "../Renderer/GlobalStats.h"
 #include "../Renderer/ImageEffects/Deferred/SSAO.h"
 #include "../Renderer/ImageEffects/PostProcess/Bloom.h"
 #include "../Renderer/ImageEffects/PostProcess/FXAA.h"

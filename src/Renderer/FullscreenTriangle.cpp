@@ -52,6 +52,9 @@ void FullscreenTriangle::Draw(const Material& mat, bool depthTest)
 
     glBindVertexArray(VAO_ID);
     glDrawArrays(GL_TRIANGLES, 0, 3);
+    GlobalStats::AddDrawCall();
+    GlobalStats::AddVertexCount(3);
+    GlobalStats::AddIndexCount(3);
 
     // Restore depth test flag
     if (depthTest != prevDepthTest)

@@ -64,6 +64,7 @@ void BufferTexture::bind() const
 {
     glViewport(0, 0, m_Width, m_Height);
     glBindFramebuffer(GL_FRAMEBUFFER, m_TextureID);
+    GlobalStats::AddFramebufferBindCall();
 }
 
 void BufferTexture::bind(uint32_t slotIndex) const

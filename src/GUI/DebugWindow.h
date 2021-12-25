@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "imgui.h"
+#include "../Renderer/GlobalStats.h"
 #include "../Renderer/Texture/Texture.h"
 
 namespace fs = std::filesystem;

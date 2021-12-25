@@ -70,6 +70,7 @@ void GeometryBuffers::bind() const
 {
     glViewport(0, 0, m_Width, m_Height);
     glBindFramebuffer(GL_FRAMEBUFFER, m_FboID);
+    GlobalStats::AddFramebufferBindCall();
 }
 
 void GeometryBuffers::setGBufferTextures(Material& mat) const

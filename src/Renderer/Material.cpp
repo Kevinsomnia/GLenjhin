@@ -204,6 +204,7 @@ int Material::getShaderUniformLocation(const string& name) const
 
     // Restore to previous shader program since we're done retrieving the uniform location.
     glUseProgram(prevShaderID);
+    GlobalStats::AddShaderCall();
 
     if (uniformId == GL_INVALID_OPERATION || uniformId == GL_INVALID_VALUE)
         return -1;

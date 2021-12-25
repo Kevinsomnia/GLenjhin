@@ -158,5 +158,10 @@ void DebugWindow::drawTextureList()
 
 void DebugWindow::drawRenderingStats()
 {
-    ImGui::Text("Draw Calls: %d", 0);
+    ImGui::Text("============ BASIC ============");
+    ImGui::Text("Draw Calls: %d", GlobalStats::GetDrawCalls());
+    ImGui::Text("Vertex Count: %d", GlobalStats::GetVertexCount());
+    ImGui::Text("Triangle Count: %d", GlobalStats::GetIndexCount() / 3);
+    ImGui::Text("Shader Calls: %d", GlobalStats::GetShaderCalls());
+    ImGui::Text("Framebuffer Bind Calls: %d", GlobalStats::GetFramebufferBindCalls());
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GlobalStats.h"
 #include "Material.h"
 
 using std::cout;

@@ -19,6 +19,7 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     FullscreenTriangle::Init();
     MeshPrimitives::Init();
     Texture2D::CreateStaticTextures();
+    GlobalStats::Reset();
 
     int screenWidth, screenHeight;
     glfwGetWindowSize(window, &screenWidth, &screenHeight);
@@ -115,6 +116,8 @@ void GameContainer::render()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
+
+    GlobalStats::Reset();
 
     if (m_CurrentScene)
         m_CurrentScene->renderLightShadows();

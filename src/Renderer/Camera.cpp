@@ -130,6 +130,7 @@ void Camera::draw(Scene* scene, bool drawSkybox)
         // It is important for both depth buffers to be in the same format.
         glBindFramebuffer(GL_READ_FRAMEBUFFER, m_GBuffers->id());
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_RenderTargetBuffer->id());
+        GlobalStats::AddFramebufferBindCall();
         glBlitFramebuffer(0, 0, m_GBuffers->width(), m_GBuffers->height(), 0, 0, m_RenderTargetBuffer->width(), m_RenderTargetBuffer->height(), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 
         if (scene && drawSkybox)
@@ -165,6 +166,7 @@ void Camera::blitToScreen() const
     // This is not done automatically since sometimes we don't want the buffer to display on the screen.
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glBindFramebuffer(GL_FRAMEBUFFER, NULL);
+    GlobalStats::AddFramebufferBindCall();
     m_BlitMat->setTexture("u_MainTex", m_RenderTargetBuffer->colorTexture());
     FullscreenTriangle::Draw(*m_BlitMat, /*depthTest=*/ false);
 }
