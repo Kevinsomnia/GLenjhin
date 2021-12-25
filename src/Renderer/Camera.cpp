@@ -124,7 +124,7 @@ void Camera::draw(Scene* scene, bool drawSkybox)
 
         m_DeferredLightingMat->setColor("u_AmbientColor", ColorByte(50, 81, 107));
         m_DeferredLightingMat->setVector3("u_CameraPos", m_Transform->getPosition());
-        FullscreenTriangle::Draw(m_DeferredLightingMat, /*depthTest=*/ false);
+        FullscreenTriangle::Draw(*m_DeferredLightingMat, /*depthTest=*/ false);
 
         // Blit GBuffer depth to buffer texture depth so that forward-rendered objects (e.g. skybox, transparent objects) display properly.
         // It is important for both depth buffers to be in the same format.
@@ -166,7 +166,7 @@ void Camera::blitToScreen() const
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glBindFramebuffer(GL_FRAMEBUFFER, NULL);
     m_BlitMat->setTexture("u_MainTex", m_RenderTargetBuffer->colorTexture());
-    FullscreenTriangle::Draw(m_BlitMat, /*depthTest=*/ false);
+    FullscreenTriangle::Draw(*m_BlitMat, /*depthTest=*/ false);
 }
 
 void Camera::addDeferredEffect(DeferredEffect* effect)
@@ -209,5 +209,5 @@ void Camera::renderBackgroundMotionVectors()
 
     m_BgMotionVectorsMat->setMatrix4x4("u_PrevVP", getPrevViewProjectionMatrix());
     m_BgMotionVectorsMat->setMatrix4x4("u_CurrVP", getViewProjectionMatrix());
-    FullscreenTriangle::Draw(m_BgMotionVectorsMat, /*depthTest=*/ true);
+    FullscreenTriangle::Draw(*m_BgMotionVectorsMat, /*depthTest=*/ true);
 }

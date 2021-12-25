@@ -10,7 +10,7 @@ class FullscreenTriangle
 public:
     FullscreenTriangle();
     static void Init();
-    static void Draw(Material* mat, bool depthTest);
+    static void Draw(const Material& mat, bool depthTest);
 
 private:
     static uint32_t VAO_ID;

@@ -16,5 +16,5 @@ Skybox::~Skybox()
 void Skybox::draw(const Matrix4x4& vp)
 {
     m_Material->setMatrix4x4("u_VP", vp);
-    FullscreenTriangle::Draw(m_Material, /*depthTest=*/ true);
+    FullscreenTriangle::Draw(*m_Material, /*depthTest=*/ true);
 }

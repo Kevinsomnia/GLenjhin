@@ -31,7 +31,7 @@ void FullscreenTriangle::Init()
     instance = new FullscreenTriangle();
 }
 
-void FullscreenTriangle::Draw(Material* mat, bool depthTest)
+void FullscreenTriangle::Draw(const Material& mat, bool depthTest)
 {
     bool prevDepthTest = glIsEnabled(GL_DEPTH_TEST);
 
@@ -48,8 +48,7 @@ void FullscreenTriangle::Draw(Material* mat, bool depthTest)
         }
     }
 
-    if (mat)
-        mat->bind();
+    mat.bind();
 
     glBindVertexArray(VAO_ID);
     glDrawArrays(GL_TRIANGLES, 0, 3);

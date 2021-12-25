@@ -30,7 +30,7 @@ void PostProcessEffect::render(BufferTexture* destination, Material* mat) const
 {
     // Use `mat` directly to output to `destination` FBO.
     destination->bind();
-    FullscreenTriangle::Draw(mat, /*depthTest=*/ false);
+    FullscreenTriangle::Draw(*mat, /*depthTest=*/ false);
 }
 
 void PostProcessEffect::render(BufferTexture* source, BufferTexture* destination, Material* mat) const

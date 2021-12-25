@@ -53,6 +53,6 @@ void PostProcessEffectChain::render()
         // Copy final color buffer back into `source`, as long as we processed at least one effect.
         source->bind();
         m_CopyMat->setTexture("u_MainTex", m_ColorBuffers[pingPongFlag]->colorTexture());
-        FullscreenTriangle::Draw(m_CopyMat, /*depthTest=*/ false);
+        FullscreenTriangle::Draw(*m_CopyMat, /*depthTest=*/ false);
     }
 }
