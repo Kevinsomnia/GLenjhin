@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../Core/Scene.h"
-#include "../../GUI/DebugTextureListWindow.h"
+#include "../../GUI/DebugWindow.h"
 #include "../Material.h"
 #include "../Transform.h"
 
@@ -21,7 +21,7 @@ public:
     virtual void update() = 0;
     virtual void renderShadows(const Scene* scene) const = 0;
     virtual Matrix4x4 getLightMatrix() const = 0;
-    virtual void addBuffersToDebugWindow(DebugTextureListWindow& window) const = 0;
+    virtual void addBuffersToDebugWindow(DebugWindow& window) const = 0;
     Transform* getTransform() const { return m_Transform; }
 protected:
     Light(const Vector3& pos, const Vector3& rot);
@@ -35,7 +35,7 @@ class DirectionalLight : public Light
     void update() override;
     void renderShadows(const Scene* scene) const override;
     Matrix4x4 getLightMatrix() const override;
-    void addBuffersToDebugWindow(DebugTextureListWindow& window) const override;
+    void addBuffersToDebugWindow(DebugWindow& window) const override;
 public:
     DirectionalLight(const Vector3& pos, const Vector3& rot);
     ~DirectionalLight();

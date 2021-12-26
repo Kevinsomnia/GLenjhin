@@ -10,6 +10,8 @@ Texture2D::Texture2D(uint32_t width, uint32_t height, TextureFormat colorFormat,
     m_Format = colorFormat;
     m_sRGB = sRGB;
 
+    GlobalStats::AddActiveTexture(this);
+
     glGenTextures(1, &m_TextureID);
     glBindTexture(GL_TEXTURE_2D, m_TextureID);
 
@@ -36,6 +38,10 @@ Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool rea
     m_Pixels = nullptr;
     m_Mipmaps = generateMipmaps;
     m_sRGB = sRGB;
+    std::string fileName = std::filesystem::path(filePath).filename().string();
+    setName(fileName);
+
+    GlobalStats::AddActiveTexture(this);
 
     // Read file data.
     uint8_t* fileData = nullptr;

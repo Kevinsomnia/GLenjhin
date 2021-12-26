@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Texture2D.h"
+#include "../GlobalStats.h"
 
 class BufferTexture : public Texture
 {

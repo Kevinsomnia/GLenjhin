@@ -21,13 +21,14 @@ namespace ShaderCompiler
         Fragment = 1
     };
 
-    struct ParsedPrograms
+    struct InputData
     {
+        const string filePath;
         const string vertex;
         const string fragment;
     };
 
-    static ParsedPrograms ParseShader(const string& filePath)
+    static InputData ParseShader(const string& filePath)
     {
         ifstream fs(filePath);
         string line;
@@ -66,7 +67,8 @@ namespace ShaderCompiler
             }
         }
 
-        return ParsedPrograms {
+        return InputData {
+            filePath,
             vert.str(),
             frag.str()
         };
@@ -97,21 +99,21 @@ namespace ShaderCompiler
         return id;
     }
 
-    static uint32_t CreateShader(const ParsedPrograms& programs)
+    static uint32_t CreateShader(const InputData& input)
     {
         uint32_t program = glCreateProgram();
         uint32_t vert = 0;
         uint32_t frag = 0;
 
-        if (programs.vertex.length() > 0)
+        if (input.vertex.length() > 0)
         {
-            vert = CompileShader(GL_VERTEX_SHADER, programs.vertex);
+            vert = CompileShader(GL_VERTEX_SHADER, input.vertex);
             glAttachShader(program, vert);
         }
 
-        if (programs.fragment.length() > 0)
+        if (input.fragment.length() > 0)
         {
-            frag = CompileShader(GL_FRAGMENT_SHADER, programs.fragment);
+            frag = CompileShader(GL_FRAGMENT_SHADER, input.fragment);
             glAttachShader(program, frag);
         }
 

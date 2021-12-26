@@ -2,10 +2,11 @@
 
 #define IMGUI_IMPL_OPENGL_ES3
 
-#include "../GUI/DebugOverlayWindow.h"
-#include "../GUI/DebugTextureListWindow.h"
+#include "../GUI/DebugOverlayPanel.h"
+#include "../GUI/DebugWindow.h"
 #include "../GUI/TexturePickerWindow.h"
 #include "../IO/ModelLib.h"
+#include "../Renderer/GlobalStats.h"
 #include "../Renderer/ImageEffects/Deferred/SSAO.h"
 #include "../Renderer/ImageEffects/PostProcess/Bloom.h"
 #include "../Renderer/ImageEffects/PostProcess/FXAA.h"
@@ -50,8 +51,8 @@ private:
     double m_LastFPSRecordTime;
 
     TexturePickerWindow* m_TexPickerWindow;
-    DebugTextureListWindow* m_DebugTexturesWindow;
-    DebugOverlayWindow* m_DebugOverlayWindow;
+    DebugWindow* m_DebugWindow;
+    DebugOverlayPanel* m_DebugOverlayPanel;
 
     static void HandleSelectedNewTexture(const std::string& path);
 

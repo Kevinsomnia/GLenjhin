@@ -130,6 +130,7 @@ void Camera::draw(Scene* scene, bool drawSkybox)
         // It is important for both depth buffers to be in the same format.
         glBindFramebuffer(GL_READ_FRAMEBUFFER, m_GBuffers->id());
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_RenderTargetBuffer->id());
+        GlobalStats::AddFramebufferBindCall();
         glBlitFramebuffer(0, 0, m_GBuffers->width(), m_GBuffers->height(), 0, 0, m_RenderTargetBuffer->width(), m_RenderTargetBuffer->height(), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 
         if (scene && drawSkybox)
@@ -165,6 +166,7 @@ void Camera::blitToScreen() const
     // This is not done automatically since sometimes we don't want the buffer to display on the screen.
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glBindFramebuffer(GL_FRAMEBUFFER, NULL);
+    GlobalStats::AddFramebufferBindCall();
     m_BlitMat->setTexture("u_MainTex", m_RenderTargetBuffer->colorTexture());
     FullscreenTriangle::Draw(*m_BlitMat, /*depthTest=*/ false);
 }
@@ -180,18 +182,18 @@ void Camera::addPostProcessEffect(PostProcessEffect* effect)
     m_PostProcessChain->add(effect);
 }
 
-void Camera::addBuffersToDebugWindow(DebugTextureListWindow& window) const
+void Camera::addBuffersToDebugWindow(DebugWindow& window) const
 {
     if (m_GBuffers)
     {
-        window.add(m_GBuffers->positionGBuffer(), "GBuffer [RGBAFloat]: World Position (RGB)", /*flip=*/ true, DebugTextureListWindow::ElementSizeMode::ConstrainToWindowWidth);
-        window.add(m_GBuffers->normalSmoothGBuffer(), "GBuffer [RGBAHalf]: World Normal (RGB) Smoothness (A)", /*flip=*/ true, DebugTextureListWindow::ElementSizeMode::ConstrainToWindowWidth);
-        window.add(m_GBuffers->albedoMetalGBuffer(), "GBuffer [RGBA8]: Albedo (RGB) Metallic (A)", /*flip=*/ true, DebugTextureListWindow::ElementSizeMode::ConstrainToWindowWidth);
-        window.add(m_GBuffers->emissionOcclGBuffer(), "GBuffer [RGBAHalf]: Emission (RGB) Occlusion (A)", /*flip=*/ true, DebugTextureListWindow::ElementSizeMode::ConstrainToWindowWidth);
-        window.add(m_GBuffers->motionVectorsTexture(), "Motion Vectors [RGHalf]: Screen-space Motion (RG)", /*flip=*/ true, DebugTextureListWindow::ElementSizeMode::ConstrainToWindowWidth);
+        window.addTexture(m_GBuffers->positionGBuffer(), "GBuffer [RGBAFloat]: World Position (RGB)", /*flip=*/ true, DebugWindow::ElementSizeMode::ConstrainToWindowWidth);
+        window.addTexture(m_GBuffers->normalSmoothGBuffer(), "GBuffer [RGBAHalf]: World Normal (RGB) Smoothness (A)", /*flip=*/ true, DebugWindow::ElementSizeMode::ConstrainToWindowWidth);
+        window.addTexture(m_GBuffers->albedoMetalGBuffer(), "GBuffer [RGBA8]: Albedo (RGB) Metallic (A)", /*flip=*/ true, DebugWindow::ElementSizeMode::ConstrainToWindowWidth);
+        window.addTexture(m_GBuffers->emissionOcclGBuffer(), "GBuffer [RGBAHalf]: Emission (RGB) Occlusion (A)", /*flip=*/ true, DebugWindow::ElementSizeMode::ConstrainToWindowWidth);
+        window.addTexture(m_GBuffers->motionVectorsTexture(), "Motion Vectors [RGHalf]: Screen-space Motion (RG)", /*flip=*/ true, DebugWindow::ElementSizeMode::ConstrainToWindowWidth);
     }
 
-    window.add(getDepthTexture(), "Camera Depth (R) [Float]", /*flip=*/ true, DebugTextureListWindow::ElementSizeMode::ConstrainToWindowWidth);
+    window.addTexture(getDepthTexture(), "Camera Depth (R) [Float]", /*flip=*/ true, DebugWindow::ElementSizeMode::ConstrainToWindowWidth);
 }
 
 Vector3 Camera::worldToViewportPoint(const Vector3& pos) const

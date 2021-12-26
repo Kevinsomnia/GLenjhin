@@ -18,6 +18,7 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     ModelImporter::Init();
     FullscreenTriangle::Init();
     MeshPrimitives::Init();
+    GlobalStats::Init();
     Texture2D::CreateStaticTextures();
 
     int screenWidth, screenHeight;
@@ -67,14 +68,14 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
     // GUI windows
     m_TexPickerWindow = new TexturePickerWindow(&HandleSelectedNewTexture);
 
-    m_DebugTexturesWindow = new DebugTextureListWindow("Debug Buffers");
-    m_DebugTexturesWindow->setOpen(false);
-    DebugTextureListWindow& textureListWindow = *m_DebugTexturesWindow;
-    m_MainCamera->addBuffersToDebugWindow(textureListWindow);
+    m_DebugWindow = new DebugWindow("Debugging");
+    m_DebugWindow->setOpen(false);
+    DebugWindow& debugWindow = *m_DebugWindow;
+    m_MainCamera->addBuffersToDebugWindow(debugWindow);
     for (Light* light : lights)
-        light->addBuffersToDebugWindow(textureListWindow);
+        light->addBuffersToDebugWindow(debugWindow);
 
-    m_DebugOverlayWindow = new DebugOverlayWindow(m_DebugTexturesWindow);
+    m_DebugOverlayPanel = new DebugOverlayPanel(m_DebugWindow);
 }
 
 GameContainer::~GameContainer()
@@ -84,7 +85,7 @@ GameContainer::~GameContainer()
 
     delete m_MainCamera;
     delete m_CurrentScene;
-    delete m_DebugOverlayWindow;
+    delete m_DebugOverlayPanel;
     delete m_TexPickerWindow;
 }
 
@@ -104,7 +105,7 @@ void GameContainer::update(double deltaTime)
     // Toggle debug overlay with F1 key
     if (Input::GetKeyDown(KeyCode::F1))
     {
-        m_DebugOverlayWindow->toggleVisible();
+        m_DebugOverlayPanel->toggleVisible();
         m_LastFPSRecordTime = Time::GetTime();
         m_FrameCountInLastSecond = 0;
     }
@@ -115,6 +116,8 @@ void GameContainer::render()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
+
+    GlobalStats::Reset();
 
     if (m_CurrentScene)
         m_CurrentScene->renderLightShadows();
@@ -203,7 +206,7 @@ void GameContainer::handleMouseCursorState()
 
 void GameContainer::handleFPSCounter()
 {
-    if (!m_DebugOverlayWindow->getVisible())
+    if (!m_DebugOverlayPanel->getVisible())
         return;
 
     m_FrameCountInLastSecond++;
@@ -212,7 +215,7 @@ void GameContainer::handleFPSCounter()
 
     if (elapsedTime >= FPS_UPDATE_INTERVAL)
     {
-        m_DebugOverlayWindow->setFPS(m_FrameCountInLastSecond / static_cast<float>(elapsedTime));
+        m_DebugOverlayPanel->setFPS(m_FrameCountInLastSecond / static_cast<float>(elapsedTime));
         m_FrameCountInLastSecond = 0;
         m_LastFPSRecordTime = t;
     }
@@ -220,9 +223,9 @@ void GameContainer::handleFPSCounter()
 
 void GameContainer::onGUI()
 {
-    m_DebugOverlayWindow->draw();
+    m_DebugOverlayPanel->draw();
+    m_DebugWindow->draw();
     m_TexPickerWindow->draw();
-    m_DebugTexturesWindow->draw();
 }
 
 void GameContainer::HandleSelectedNewTexture(const std::string& path)

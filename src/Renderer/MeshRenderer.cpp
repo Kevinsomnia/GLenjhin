@@ -2,10 +2,12 @@
 
 MeshRenderer::MeshRenderer(Mesh* mesh, Material* material) : m_Mesh(mesh), m_Material(material)
 {
+    GlobalStats::AddMeshRendererCount();
 }
 
 MeshRenderer::~MeshRenderer()
 {
+    GlobalStats::RemoveMeshRendererCount();
 }
 
 void MeshRenderer::drawMeshDirect() const

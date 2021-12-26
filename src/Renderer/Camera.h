@@ -3,7 +3,7 @@
 #include <assert.h>
 
 #include "../Core/Scene.h"
-#include "../GUI/DebugTextureListWindow.h"
+#include "../GUI/DebugWindow.h"
 #include "../Math/Matrix4x4.h"
 #include "Deferred/GeometryBuffers.h"
 #include "ImageEffects/Deferred/DeferredEffectChain.h"
@@ -78,7 +78,7 @@ public:
     void blitToScreen() const;
     void addDeferredEffect(DeferredEffect* effect);
     void addPostProcessEffect(PostProcessEffect* effect);
-    void addBuffersToDebugWindow(DebugTextureListWindow& window) const;
+    void addBuffersToDebugWindow(DebugWindow& window) const;
     Vector3 worldToViewportPoint(const Vector3& pos) const;
     inline bool isDeferred() const { return m_GBuffers; }
     BufferTexture* getRenderTargetBuffer() const { return m_RenderTargetBuffer; }

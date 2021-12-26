@@ -60,6 +60,9 @@ void Mesh::unbind() const
 void Mesh::draw() const
 {
     glDrawElements(GL_TRIANGLES, static_cast<uint32_t>(m_IndexCount), GL_UNSIGNED_INT, nullptr);
+    GlobalStats::AddDrawCall();
+    GlobalStats::AddVertexCount(m_VertexCount);
+    GlobalStats::AddIndexCount(m_IndexCount);
 }
 
 void Mesh::setGeometry(Vertex* vertices, size_t vertexCount, uint32_t* indices, size_t indexCount)

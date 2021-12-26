@@ -23,8 +23,8 @@
     <ClCompile Include="src\Core\GameContainer.cpp" />
     <ClCompile Include="src\Core\Scene.cpp" />
     <ClCompile Include="src\Core\Time.cpp" />
-    <ClCompile Include="src\GUI\DebugOverlayWindow.cpp" />
-    <ClCompile Include="src\GUI\DebugTextureListWindow.cpp" />
+    <ClCompile Include="src\GUI\DebugOverlayPanel.cpp" />
+    <ClCompile Include="src\GUI\DebugWindow.cpp" />
     <ClCompile Include="src\GUI\TexturePickerWindow.cpp" />
     <ClCompile Include="src\Interaction\Input.cpp" />
     <ClCompile Include="src\IO\ImageLib.cpp" />
@@ -38,6 +38,7 @@
     <ClCompile Include="src\Renderer\Deferred\GeometryBuffers.cpp" />
     <ClCompile Include="src\Renderer\Entity.cpp" />
     <ClCompile Include="src\Renderer\FullscreenTriangle.cpp" />
+    <ClCompile Include="src\Renderer\GlobalStats.cpp" />
     <ClCompile Include="src\Renderer\ImageEffects\Deferred\DeferredEffect.cpp" />
     <ClCompile Include="src\Renderer\ImageEffects\Deferred\DeferredEffectChain.cpp" />
     <ClCompile Include="src\Renderer\ImageEffects\Deferred\SSAO.cpp" />
@@ -75,13 +76,13 @@
   <ItemGroup>
     <ClInclude Include="src\Core\Algorithms.h" />
     <ClInclude Include="src\Core\Application.h" />
-    <ClInclude Include="src\Core\Debug.h" />
+    <ClInclude Include="src\Core\Debug.hpp" />
     <ClInclude Include="src\Core\GameContainer.h" />
     <ClInclude Include="src\Core\Scene.h" />
     <ClInclude Include="src\Core\ShaderCompiler.hpp" />
     <ClInclude Include="src\Core\Time.h" />
-    <ClInclude Include="src\GUI\DebugOverlayWindow.h" />
-    <ClInclude Include="src\GUI\DebugTextureListWindow.h" />
+    <ClInclude Include="src\GUI\DebugOverlayPanel.h" />
+    <ClInclude Include="src\GUI\DebugWindow.h" />
     <ClInclude Include="src\GUI\TexturePickerWindow.h" />
     <ClInclude Include="src\Interaction\Input.h" />
     <ClInclude Include="src\Interaction\InputCodes.h" />
@@ -100,6 +101,7 @@
     <ClInclude Include="src\Renderer\Deferred\GeometryBuffers.h" />
     <ClInclude Include="src\Renderer\Entity.h" />
     <ClInclude Include="src\Renderer\FullscreenTriangle.h" />
+    <ClInclude Include="src\Renderer\GlobalStats.h" />
     <ClInclude Include="src\Renderer\ImageEffects\Deferred\DeferredEffect.h" />
     <ClInclude Include="src\Renderer\ImageEffects\Deferred\DeferredEffectChain.h" />
     <ClInclude Include="src\Renderer\ImageEffects\Deferred\SSAO.h" />
