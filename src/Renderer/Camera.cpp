@@ -46,12 +46,12 @@ Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, co
     {
         bool renderToMotionVectors = (bufferFlags & CameraBufferFlags::MotionVectors) != CameraBufferFlags::None;
         m_GBuffers = new GeometryBuffers(pixelWidth, pixelHeight, depthBits, renderToMotionVectors);
-        m_DeferredGeometryMat = new Material(new Shader("res\\shaders\\Deferred\\GeometryBuffers.glsl"));
-        m_DeferredLightingMat = new Material(new Shader("res\\shaders\\Deferred\\DeferredLighting.glsl"));
+        m_DeferredGeometryMat = new Material(Shader::Load("res\\shaders\\Deferred\\GeometryBuffers.glsl"));
+        m_DeferredLightingMat = new Material(Shader::Load("res\\shaders\\Deferred\\DeferredLighting.glsl"));
         m_GBuffers->setGBufferTextures(*m_DeferredLightingMat);
 
         if (renderToMotionVectors)
-            m_BgMotionVectorsMat = new Material(new Shader("res\\shaders\\BackgroundMotionVectors.glsl"));
+            m_BgMotionVectorsMat = new Material(Shader::Load("res\\shaders\\BackgroundMotionVectors.glsl"));
 
         m_DeferredChain = new DeferredEffectChain(this);
     }
@@ -63,7 +63,7 @@ Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, co
     TextureFormat colorFormat = (bufferFlags & CameraBufferFlags::Color) != CameraBufferFlags::None ? TextureFormat::RGBAHalf : TextureFormat::None;
     m_RenderTargetBuffer = new BufferTexture(pixelWidth, pixelHeight, depthBits, colorFormat);
     m_PostProcessChain = new PostProcessEffectChain(this);
-    m_BlitMat = new Material(new Shader("res\\shaders\\ImageEffects\\Common\\Copy.glsl"));
+    m_BlitMat = new Material(Shader::Load("res\\shaders\\ImageEffects\\Common\\Copy.glsl"));
 
     update();
     m_PrevViewProjectionMatrix = m_ViewProjectionMatrix;

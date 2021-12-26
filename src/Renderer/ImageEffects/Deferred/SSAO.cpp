@@ -2,8 +2,8 @@
 
 SSAO::SSAO() : DeferredEffect("res\\shaders\\ImageEffects\\SSAO\\Apply.glsl")
 {
-    m_OcclusionMat = new Material(new Shader("res\\shaders\\ImageEffects\\SSAO\\Occlusion.glsl"));
-    m_BlurMat = new Material(new Shader("res\\shaders\\ImageEffects\\GaussianBlur\\Blur.glsl"));
+    m_OcclusionMat = new Material(Shader::Load("res\\shaders\\ImageEffects\\SSAO\\Occlusion.glsl"));
+    m_BlurMat = new Material(Shader::Load("res\\shaders\\ImageEffects\\GaussianBlur\\Blur.glsl"));
 }
 
 SSAO::~SSAO()

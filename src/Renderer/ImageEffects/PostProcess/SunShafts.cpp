@@ -2,8 +2,8 @@
 
 SunShafts::SunShafts() : PostProcessEffect("res\\shaders\\ImageEffects\\SunShafts\\Combine.glsl")
 {
-    m_DepthFilterMat = new Material(new Shader("res\\shaders\\ImageEffects\\SunShafts\\DepthFilter.glsl"));
-    m_RadialBlurMat = new Material(new Shader("res\\shaders\\ImageEffects\\SunShafts\\RadialBlur.glsl"));
+    m_DepthFilterMat = new Material(Shader::Load("res\\shaders\\ImageEffects\\SunShafts\\DepthFilter.glsl"));
+    m_RadialBlurMat = new Material(Shader::Load("res\\shaders\\ImageEffects\\SunShafts\\RadialBlur.glsl"));
 }
 
 SunShafts::~SunShafts()

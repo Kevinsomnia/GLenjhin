@@ -71,7 +71,7 @@ uint32_t ShaderCompiler::CompileShader(uint32_t type, const string& source)
     return id;
 }
 
-uint32_t ShaderCompiler::CreateShader(const InputData& input)
+void ShaderCompiler::CompileProgram(const InputData& input, Shader*& output)
 {
     uint32_t program = glCreateProgram();
     uint32_t vert = 0;
@@ -96,5 +96,6 @@ uint32_t ShaderCompiler::CreateShader(const InputData& input)
     glDeleteShader(vert);
     glDeleteShader(frag);
 
-    return program;
+    output = new Shader(program);
+    output->setName(input.filePath);
 }

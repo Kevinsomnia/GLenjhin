@@ -2,12 +2,12 @@
 
 MotionBlur::MotionBlur() : PostProcessEffect("res\\shaders\\ImageEffects\\Common\\Copy.glsl")
 {
-    m_PackVelocityDepthMat = new Material(new Shader("res\\shaders\\ImageEffects\\MotionBlur\\PackVelocityDepth.glsl"));
-    m_MaxVelocityDenormalizeMat = new Material(new Shader("res\\shaders\\ImageEffects\\MotionBlur\\MaxVelocityDenormalize.glsl"));
-    m_MaxVelocityMat = new Material(new Shader("res\\shaders\\ImageEffects\\MotionBlur\\MaxVelocity.glsl"));
-    m_MaxTileVelocityMat = new Material(new Shader("res\\shaders\\ImageEffects\\MotionBlur\\MaxTileVelocity.glsl"));
-    m_MaxNeighborVelocityMat = new Material(new Shader("res\\shaders\\ImageEffects\\MotionBlur\\MaxNeighborVelocity.glsl"));
-    m_ReconstructionMat = new Material(new Shader("res\\shaders\\ImageEffects\\MotionBlur\\Reconstruction.glsl"));
+    m_PackVelocityDepthMat = new Material(Shader::Load("res\\shaders\\ImageEffects\\MotionBlur\\PackVelocityDepth.glsl"));
+    m_MaxVelocityDenormalizeMat = new Material(Shader::Load("res\\shaders\\ImageEffects\\MotionBlur\\MaxVelocityDenormalize.glsl"));
+    m_MaxVelocityMat = new Material(Shader::Load("res\\shaders\\ImageEffects\\MotionBlur\\MaxVelocity.glsl"));
+    m_MaxTileVelocityMat = new Material(Shader::Load("res\\shaders\\ImageEffects\\MotionBlur\\MaxTileVelocity.glsl"));
+    m_MaxNeighborVelocityMat = new Material(Shader::Load("res\\shaders\\ImageEffects\\MotionBlur\\MaxNeighborVelocity.glsl"));
+    m_ReconstructionMat = new Material(Shader::Load("res\\shaders\\ImageEffects\\MotionBlur\\Reconstruction.glsl"));
 }
 
 MotionBlur::~MotionBlur()

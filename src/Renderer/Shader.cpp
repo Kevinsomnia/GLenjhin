@@ -3,12 +3,8 @@
 uint32_t Shader::s_ActiveShaderID = 0;
 
 
-Shader::Shader(const string& shaderPath)
+Shader::Shader(uint32_t id) : m_ShaderID(id)
 {
-    ShaderCompiler::InputData inputData = ShaderCompiler::ParseShader(shaderPath);
-    m_ShaderID = ShaderCompiler::CreateShader(inputData);
-    setName(inputData.filePath);
-
     GlobalStats::AddActiveShader(this);
 }
 
@@ -21,6 +17,15 @@ Shader::~Shader()
 void Shader::use() const
 {
     SetActiveID(m_ShaderID);
+}
+
+Shader* Shader::Load(const string& shaderPath)
+{
+    ShaderCompiler::InputData inputData = ShaderCompiler::ParseShader(shaderPath);
+
+    Shader* result;
+    ShaderCompiler::CompileProgram(inputData, result);
+    return result;
 }
 
 uint32_t Shader::GetActiveID()

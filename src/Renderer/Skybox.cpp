@@ -3,7 +3,7 @@
 Skybox::Skybox(const std::string& texturePath)
 {
     m_Texture = new Texture2D(texturePath, /*generateMipmaps=*/ false, /*readable=*/ false, /*sRGB=*/ true);
-    m_Material = new Material(new Shader("res\\shaders\\Skybox.glsl"));
+    m_Material = new Material(Shader::Load("res\\shaders\\Skybox.glsl"));
     m_Material->setTexture("u_MainTex", m_Texture);
 }
 

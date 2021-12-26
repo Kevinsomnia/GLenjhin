@@ -2,7 +2,7 @@
 
 DeferredEffectChain::DeferredEffectChain(Camera* camera) : m_Camera(camera)
 {
-    m_CopyMat = new Material(new Shader("res\\shaders\\ImageEffects\\Common\\Copy.glsl"));
+    m_CopyMat = new Material(Shader::Load("res\\shaders\\ImageEffects\\Common\\Copy.glsl"));
 }
 
 DeferredEffectChain::~DeferredEffectChain()
