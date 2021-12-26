@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glad/glad.h>
-#include "../Core/ShaderCompiler.hpp"
+#include "../Core/ShaderCompiler.h"
 #include "GlobalStats.h"
 
 using std::cout;

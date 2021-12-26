@@ -22,6 +22,7 @@
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\GameContainer.cpp" />
     <ClCompile Include="src\Core\Scene.cpp" />
+    <ClCompile Include="src\Core\ShaderCompiler.cpp" />
     <ClCompile Include="src\Core\Time.cpp" />
     <ClCompile Include="src\GUI\DebugOverlayPanel.cpp" />
     <ClCompile Include="src\GUI\DebugWindow.cpp" />
@@ -79,7 +80,7 @@
     <ClInclude Include="src\Core\Debug.hpp" />
     <ClInclude Include="src\Core\GameContainer.h" />
     <ClInclude Include="src\Core\Scene.h" />
-    <ClInclude Include="src\Core\ShaderCompiler.hpp" />
+    <ClInclude Include="src\Core\ShaderCompiler.h" />
     <ClInclude Include="src\Core\Time.h" />
     <ClInclude Include="src\GUI\DebugOverlayPanel.h" />
     <ClInclude Include="src\GUI\DebugWindow.h" />
