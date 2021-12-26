@@ -149,6 +149,8 @@ public:
     virtual void setWrapMode(TextureWrapMode wrapMode);
     virtual void setBorderColor(const Color& c);
     virtual void setAnisotropicFilterLevel(int level);
+    inline void setName(const std::string& name) { m_Name = name; }
+    std::string name() const { return m_Name; }
     uint32_t id() const { return m_TextureID; }
     uint32_t width() const { return m_Width; }
     uint32_t height() const { return m_Height; }
@@ -158,6 +160,7 @@ public:
 protected:
     static const size_t CACHE_SIZE_THRESHOLD = 32768;   // Size is measured in bytes
 
+    std::string m_Name;
     uint32_t m_TextureID;
     uint8_t* m_Pixels;
     uint32_t m_Width;

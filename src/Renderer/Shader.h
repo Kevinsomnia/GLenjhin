@@ -18,7 +18,10 @@ public:
         glUseProgram(m_ShaderID);
         GlobalStats::AddShaderCall();
     }
+    inline string name() const { return m_Name; }
     inline uint32_t id() const { return m_ShaderID; }
+    inline void setName(const string& name) { m_Name = name; }
 private:
+    string m_Name;
     uint32_t m_ShaderID;
 };

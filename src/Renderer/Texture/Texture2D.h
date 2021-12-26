@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #include "Texture.h"
 #include "../../IO/AssetPipeline/TextureCache.hpp"
 

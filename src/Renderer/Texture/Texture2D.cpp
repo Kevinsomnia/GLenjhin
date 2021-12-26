@@ -133,6 +133,10 @@ Texture2D::Texture2D(const std::string& filePath, bool generateMipmaps, bool rea
         delete[] m_Pixels;
         m_Pixels = nullptr;
     }
+
+    // Unimportant stuff
+    std::string fileName = std::filesystem::path(filePath).filename().string();
+    setName(fileName);
 }
 
 Texture2D::~Texture2D()
