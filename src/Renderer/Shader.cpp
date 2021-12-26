@@ -1,5 +1,8 @@
 #include "Shader.h"
 
+uint32_t Shader::s_ActiveShaderID = 0;
+
+
 Shader::Shader(const string& shaderPath)
 {
     ShaderCompiler::InputData inputData = ShaderCompiler::ParseShader(shaderPath);
@@ -17,6 +20,20 @@ Shader::~Shader()
 
 void Shader::use() const
 {
-    glUseProgram(m_ShaderID);
-    GlobalStats::AddShaderCall();
+    SetActiveID(m_ShaderID);
+}
+
+uint32_t Shader::GetActiveID()
+{
+    return s_ActiveShaderID;
+}
+
+void Shader::SetActiveID(uint32_t id)
+{
+    if (s_ActiveShaderID != id)
+    {
+        s_ActiveShaderID = id;
+        glUseProgram(id);
+        GlobalStats::AddShaderCall();
+    }
 }

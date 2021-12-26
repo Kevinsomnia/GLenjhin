@@ -19,7 +19,7 @@ void Material::bind() const
 
 void Material::unbind() const
 {
-    glUseProgram(NULL);
+    Shader::SetActiveID(NULL);
 }
 
 float Material::getFloat(const string& uniformName) const
@@ -126,9 +126,7 @@ void Material::updateUniforms() const
 {
     // We will need to bind the shader temporarily to retrieve the location, since another shader
     // might be already bound when we're attempting to update these uniforms.
-    GLint prevShaderID;
-    glGetIntegerv(GL_CURRENT_PROGRAM, &prevShaderID);
-
+    GLint prevShaderID = Shader::GetActiveID();
     m_Shader->use();
 
     // Vector1 (float) to Vector4
@@ -193,8 +191,7 @@ void Material::updateUniforms() const
     }
 
     // Restore to previous shader program since we're done retrieving the uniform location.
-    glUseProgram(prevShaderID);
-    GlobalStats::AddShaderCall();
+    Shader::SetActiveID(prevShaderID);
 }
 
 int Material::getShaderUniformLocation(const string& name) const
