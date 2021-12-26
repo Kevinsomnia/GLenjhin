@@ -1,5 +1,61 @@
 #include "ShaderCompiler.h"
 
+unordered_map<string, Shader*> ShaderCompiler::s_ShaderCache;
+
+
+void ShaderCompiler::CompileProgram(const string& filePath, Shader*& output)
+{
+    auto iter = s_ShaderCache.find(filePath);
+
+    if (iter != s_ShaderCache.end())
+    {
+        // Use pre-compiled shader.
+        output = iter->second;
+    }
+    else
+    {
+        InputData inputData = ParseShader(filePath);
+
+        uint32_t program = glCreateProgram();
+        uint32_t vert = 0;
+        uint32_t frag = 0;
+
+        if (!inputData.vertex.empty())
+        {
+            vert = CompileShader(GL_VERTEX_SHADER, inputData.vertex);
+            glAttachShader(program, vert);
+        }
+
+        if (!inputData.fragment.empty())
+        {
+            frag = CompileShader(GL_FRAGMENT_SHADER, inputData.fragment);
+            glAttachShader(program, frag);
+        }
+
+        glLinkProgram(program);
+        glValidateProgram(program);
+
+        // Cleanup after compiling program
+        glDeleteShader(vert);
+        glDeleteShader(frag);
+
+        output = new Shader(program);
+        output->setName(filePath);
+        s_ShaderCache.insert({filePath, output});
+    }
+}
+
+void ShaderCompiler::CleanCache()
+{
+    for (auto& pair : s_ShaderCache)
+    {
+        if (pair.second)
+            delete pair.second;
+    }
+
+    s_ShaderCache.clear();
+}
+
 ShaderCompiler::InputData ShaderCompiler::ParseShader(const string& filePath)
 {
     ifstream fs(filePath);
@@ -40,7 +96,6 @@ ShaderCompiler::InputData ShaderCompiler::ParseShader(const string& filePath)
     }
 
     return InputData {
-        filePath,
         vert.str(),
         frag.str()
     };
@@ -69,33 +124,4 @@ uint32_t ShaderCompiler::CompileShader(uint32_t type, const string& source)
     }
 
     return id;
-}
-
-void ShaderCompiler::CompileProgram(const InputData& input, Shader*& output)
-{
-    uint32_t program = glCreateProgram();
-    uint32_t vert = 0;
-    uint32_t frag = 0;
-
-    if (input.vertex.length() > 0)
-    {
-        vert = CompileShader(GL_VERTEX_SHADER, input.vertex);
-        glAttachShader(program, vert);
-    }
-
-    if (input.fragment.length() > 0)
-    {
-        frag = CompileShader(GL_FRAGMENT_SHADER, input.fragment);
-        glAttachShader(program, frag);
-    }
-
-    glLinkProgram(program);
-    glValidateProgram(program);
-
-    // Cleanup after compiling program
-    glDeleteShader(vert);
-    glDeleteShader(frag);
-
-    output = new Shader(program);
-    output->setName(input.filePath);
 }

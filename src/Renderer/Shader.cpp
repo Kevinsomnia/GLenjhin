@@ -21,10 +21,8 @@ void Shader::use() const
 
 Shader* Shader::Load(const string& shaderPath)
 {
-    ShaderCompiler::InputData inputData = ShaderCompiler::ParseShader(shaderPath);
-
     Shader* result;
-    ShaderCompiler::CompileProgram(inputData, result);
+    ShaderCompiler::CompileProgram(shaderPath, result);
     return result;
 }
 
