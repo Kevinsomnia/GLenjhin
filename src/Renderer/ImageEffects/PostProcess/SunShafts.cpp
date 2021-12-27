@@ -10,41 +10,22 @@ SunShafts::~SunShafts()
 {
     delete m_DepthFilterMat;
     delete m_RadialBlurMat;
-
-    if (m_Initialized)
-    {
-        for (size_t i = 0; i < m_Buffers.size(); i++)
-            delete m_Buffers[i];
-    }
-}
-
-void SunShafts::lazyInitialize(Camera* camera)
-{
-    if (m_Initialized)
-        return;
-
-    PostProcessEffect::lazyInitialize(camera);
-
-    BufferTexture* renderTarget = camera->getRenderTargetBuffer();
-    uint32_t w = renderTarget->width() >> DOWNSAMPLE;
-    uint32_t h = renderTarget->height() >> DOWNSAMPLE;
-
-    for (size_t i = 0; i < m_Buffers.size(); i++)
-        m_Buffers[i] = new BufferTexture(w, h, /*colorFormat=*/ TextureFormat::RGBAHalf, /*depthFormat=*/ TextureFormat::None);
-
-    m_Material->setTexture("u_ShaftsTex", m_Buffers[0]->colorTexture());
-    m_Material->setColor("u_Color", Color(1.0f, 0.91f, 0.8f) * 1.5f);
-
-    m_DepthFilterMat->setTexture("u_Depth", camera->getDepthTexture());
-    m_DepthFilterMat->setFloat("u_Threshold", 0.9f);
 }
 
 void SunShafts::render(BufferTexture* source, BufferTexture* destination)
 {
+    uint32_t w = source->width() >> DOWNSAMPLE;
+    uint32_t h = source->height() >> DOWNSAMPLE;
+    BufferTexture* bt0 = BufferTexturePool::Get(w, h, /*colorFormat=*/ TextureFormat::RGBAHalf, /*depthFormat=*/ TextureFormat::None);
+    BufferTexture* bt1 = BufferTexturePool::Get(w, h, /*colorFormat=*/ TextureFormat::RGBAHalf, /*depthFormat=*/ TextureFormat::None);
+    m_Material->setTexture("u_ShaftsTex", bt0->colorTexture());
+
     Vector3 sunDir = m_Camera->getTransform()->getPosition() - ((m_SunTransform) ? m_SunTransform->getForward() : Vector3::forward);
     Vector3 sunViewportPos = m_Camera->worldToViewportPoint(sunDir);
+    m_DepthFilterMat->setTexture("u_Depth", m_Camera->getDepthTexture());
     m_DepthFilterMat->setVector3("u_SunPos", sunViewportPos);
-    PostProcessEffect::render(source, m_Buffers[0], m_DepthFilterMat);
+    m_DepthFilterMat->setFloat("u_Threshold", 0.9f);
+    PostProcessEffect::render(source, bt0, m_DepthFilterMat);
 
     m_RadialBlurMat->setVector3("u_SunPos", sunViewportPos);
     const float UNIT_SIZE = 1.0f / 512.0f;
@@ -52,10 +33,14 @@ void SunShafts::render(BufferTexture* source, BufferTexture* destination)
     for (size_t i = 0; i < BLUR_ITERATIONS; i++)
     {
         m_RadialBlurMat->setFloat("u_BlurDist", (i * 2.0f + 1.0f) * UNIT_SIZE * BLUR_RADIUS);
-        PostProcessEffect::render(m_Buffers[0], m_Buffers[1], m_RadialBlurMat);
+        PostProcessEffect::render(bt0, bt1, m_RadialBlurMat);
         m_RadialBlurMat->setFloat("u_BlurDist", (i * 2.0f + 2.0f) * UNIT_SIZE * BLUR_RADIUS);
-        PostProcessEffect::render(m_Buffers[1], m_Buffers[0], m_RadialBlurMat);
+        PostProcessEffect::render(bt1, bt0, m_RadialBlurMat);
     }
 
+    m_Material->setColor("u_Color", Color(1.0f, 0.91f, 0.8f) * 1.5f);
     PostProcessEffect::render(source, destination);
+
+    BufferTexturePool::Return(bt0);
+    BufferTexturePool::Return(bt1);
 }

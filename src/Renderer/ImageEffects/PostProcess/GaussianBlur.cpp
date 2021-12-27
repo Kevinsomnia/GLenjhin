@@ -10,27 +10,6 @@ GaussianBlur::~GaussianBlur()
 {
     delete m_DownsampleMat;
     delete m_BlurMat;
-
-    if (m_Initialized)
-    {
-        for (size_t i = 0; i < m_Buffers.size(); i++)
-            delete m_Buffers[i];
-    }
-}
-
-void GaussianBlur::lazyInitialize(Camera* camera)
-{
-    if (m_Initialized)
-        return;
-
-    PostProcessEffect::lazyInitialize(camera);
-
-    BufferTexture* bufferTex = camera->getRenderTargetBuffer();
-    int w = bufferTex->width() >> DOWNSAMPLE;
-    int h = bufferTex->height() >> DOWNSAMPLE;
-
-    for (size_t i = 0; i < m_Buffers.size(); i++)
-        m_Buffers[i] = new BufferTexture(w, h, /*colorFormat=*/ TextureFormat::RGBAHalf, /*depthFormat=*/ TextureFormat::None);
 }
 
 void GaussianBlur::render(BufferTexture* source, BufferTexture* destination)
@@ -38,10 +17,13 @@ void GaussianBlur::render(BufferTexture* source, BufferTexture* destination)
     Vector2 screenTexelSize = source->texelSize();
     m_DownsampleMat->setVector2("u_TexelSize", screenTexelSize);
 
-    // Downsample
-    BufferTexture* downsampledBuffer = m_Buffers[0];
-    glViewport(0, 0, downsampledBuffer->width(), downsampledBuffer->height());
-    PostProcessEffect::render(source, downsampledBuffer, m_DownsampleMat);
+    uint32_t w = source->width() >> DOWNSAMPLE;
+    uint32_t h = source->height() >> DOWNSAMPLE;
+    BufferTexture* bt0 = BufferTexturePool::Get(w, h, /*colorFormat=*/ TextureFormat::RGBAHalf, /*depthFormat=*/ TextureFormat::None);
+    BufferTexture* bt1 = BufferTexturePool::Get(w, h, /*colorFormat=*/ TextureFormat::RGBAHalf, /*depthFormat=*/ TextureFormat::None);
+
+    // Downsample and filter
+    PostProcessEffect::render(source, bt0, m_DownsampleMat);
 
     float blurFactor = BLUR_RADIUS * (source->height() / REFERENCE_HEIGHT);
     Vector2 strideHorizontal = Vector2(screenTexelSize.x * blurFactor, 0.0f);
@@ -49,21 +31,21 @@ void GaussianBlur::render(BufferTexture* source, BufferTexture* destination)
 
     for (int i = 0; i < BLUR_ITERATIONS; i++)
     {
-        BufferTexture* bt1 = m_Buffers[0];
-        BufferTexture* bt2 = m_Buffers[1];
-        glViewport(0, 0, bt1->width(), bt1->height());
-
         m_BlurMat->setVector2("u_Stride", strideHorizontal);
-        PostProcessEffect::render(bt1, bt2, m_BlurMat);
+        PostProcessEffect::render(bt0, bt1, m_BlurMat);
         m_BlurMat->setVector2("u_Stride", strideVertical);
 
         if (i == BLUR_ITERATIONS - 1)
         {
             // Target the destination buffer / screen for the last blit.
-            glViewport(0, 0, source->width(), source->height());
-            bt1 = destination;
+            BufferTexturePool::Return(bt0);
+            bt0 = destination;
         }
 
-        PostProcessEffect::render(bt2, bt1, m_BlurMat);
+        PostProcessEffect::render(bt1, bt0, m_BlurMat);
     }
+
+    if (bt0 != destination)
+        BufferTexturePool::Return(bt0);
+    BufferTexturePool::Return(bt1);
 }

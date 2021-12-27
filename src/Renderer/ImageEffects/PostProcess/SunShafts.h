@@ -8,7 +8,6 @@ class SunShafts : public PostProcessEffect
 public:
     SunShafts();
     ~SunShafts();
-    void lazyInitialize(Camera* camera) override;
     void render(BufferTexture* source, BufferTexture* destination) override;
     void setSunTransform(Transform* sun) { m_SunTransform = sun; }
 private:
@@ -19,7 +18,6 @@ private:
     Transform* m_SunTransform;
     Material* m_DepthFilterMat;
     Material* m_RadialBlurMat;
-    std::array<BufferTexture*, 2> m_Buffers;
 };
 
 #endif // SUN_SHAFTS_H

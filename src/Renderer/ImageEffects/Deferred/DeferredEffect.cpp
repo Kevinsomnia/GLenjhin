@@ -33,7 +33,13 @@ void DeferredEffect::render(BufferTexture* destination, Material* mat) const
 
 void DeferredEffect::render(BufferTexture* source, BufferTexture* destination, Material* mat) const
 {
-    // Copy `source` to `destination` FBO using `mat`.
-    mat->setTexture("u_MainTex", source->colorTexture());
+    // Copy `source` FBO to `destination` FBO using `mat`.
+    render(source->colorTexture(), destination, mat);
+}
+
+void DeferredEffect::render(Texture2D* source, BufferTexture* destination, Material* mat) const
+{
+    // Copy `source` Texture2D to `destination` FBO using `mat`.
+    mat->setTexture("u_MainTex", source);
     render(destination, mat);
 }

@@ -12,13 +12,7 @@ SSAO::~SSAO()
     delete m_BlurMat;
 
     if (m_Initialized)
-    {
-        delete m_EmissionOcclGBufferCopy;
         delete m_NoiseTex;
-
-        for (size_t i = 0; i < m_OcclusionBuffers.size(); i++)
-            delete m_OcclusionBuffers[i];
-    }
 }
 
 void SSAO::lazyInitialize(Camera* camera)
@@ -28,31 +22,14 @@ void SSAO::lazyInitialize(Camera* camera)
 
     DeferredEffect::lazyInitialize(camera);
 
-    // Create a GBuffer copy of EmissionOcclusion to read from, since we can't read and write to it simulataneously.
-    GeometryBuffers* gBufs = camera->getGBuffers();
-    Texture2D* emissionOccl = gBufs->emissionOcclGBuffer();
-    m_EmissionOcclGBufferCopy = new BufferTexture(emissionOccl->width(), emissionOccl->height(), /*colorFormat=*/ emissionOccl->format(), /*depthFormat=*/ TextureFormat::None);
-    m_CopyMat->setTexture("u_MainTex", emissionOccl);
-
-    // Occlusion buffers setup
     m_NoiseTex = new Texture2D("res\\textures\\dither_noise.png", /*generateMipmaps=*/ false, /*readable=*/ false, /*sRGB=*/ false);
 
-    BufferTexture* cameraTargetTex = camera->getRenderTargetBuffer();
-    uint32_t w = cameraTargetTex->width() >> DOWNSAMPLE;
-    uint32_t h = cameraTargetTex->height() >> DOWNSAMPLE;
-
-    for (size_t i = 0; i < m_OcclusionBuffers.size(); i++)
-        m_OcclusionBuffers[i] = new BufferTexture(w, h, /*colorFormat=*/ TextureFormat::R8, /*depthFormat=*/ TextureFormat::None);
-
-    m_Material->setTexture("u_EmissionOccl", m_EmissionOcclGBufferCopy->colorTexture());
-    m_Material->setTexture("u_Occlusion", m_OcclusionBuffers[0]->colorTexture());
-
+    GeometryBuffers* gBufs = camera->getGBuffers();
     m_OcclusionMat->setTexture("u_Position", gBufs->positionGBuffer());
     m_OcclusionMat->setTexture("u_NormalSmooth", gBufs->normalSmoothGBuffer());
     m_OcclusionMat->setTexture("u_Depth", gBufs->depthTexture());
     m_OcclusionMat->setTexture("u_Noise", m_NoiseTex);
     m_OcclusionMat->setVector2("u_NoiseTexelSize", m_NoiseTex->texelSize());
-    m_OcclusionMat->setVector2("u_TexelSize", m_OcclusionBuffers[0]->texelSize());
     m_OcclusionMat->setFloat("u_Radius", 0.375f);
     m_OcclusionMat->setFloat("u_Intensity", 1.0f);
 }
@@ -61,31 +38,47 @@ void SSAO::render()
 {
     DeferredEffect::render();
 
-    // Render to occlusion buffers.
-    BufferTexture* firstBuf = m_OcclusionBuffers[0];
-    BufferTexture* secondBuf = m_OcclusionBuffers[1];
+    Texture2D* emissionOccl = m_Camera->getGBuffers()->emissionOcclGBuffer();
 
+    // Assume screen dimensions are equal to the GBuffer dimensions.
+    uint32_t w = emissionOccl->width() >> DOWNSAMPLE;
+    uint32_t h = emissionOccl->height() >> DOWNSAMPLE;
+
+    // Create two occlusion buffers for blur pass.
+    BufferTexture* bt0 = BufferTexturePool::Get(w, h, /*colorFormat=*/ TextureFormat::R8, /*depthFormat=*/ TextureFormat::None);
+    BufferTexture* bt1 = (BLUR_ITERATIONS > 0) ? BufferTexturePool::Get(w, h, /*colorFormat=*/ TextureFormat::R8, /*depthFormat=*/ TextureFormat::None) : nullptr;
+
+    // Render to occlusion buffers.
+    Vector2 occlusionBufferTexelSize = bt0->texelSize();
     m_OcclusionMat->setMatrix4x4("u_V", m_Camera->getViewMatrix());
     m_OcclusionMat->setMatrix4x4("u_P", m_Camera->getProjectionMatrix());
-    DeferredEffect::render(firstBuf, m_OcclusionMat);
+    m_OcclusionMat->setVector2("u_TexelSize", occlusionBufferTexelSize);
+    DeferredEffect::render(bt0, m_OcclusionMat);
 
-    Vector2 occlusionBufferTexelSize = firstBuf->texelSize();
     Vector2 strideHorizontal = Vector2(occlusionBufferTexelSize.x, 0.0f);
     Vector2 strideVertical = Vector2(0.0f, occlusionBufferTexelSize.y);
 
     for (int i = 0; i < BLUR_ITERATIONS; i++)
     {
         m_BlurMat->setVector2("u_Stride", strideHorizontal);
-        DeferredEffect::render(firstBuf, secondBuf, m_BlurMat);
+        DeferredEffect::render(bt0, bt1, m_BlurMat);
         m_BlurMat->setVector2("u_Stride", strideVertical);
-        DeferredEffect::render(secondBuf, firstBuf, m_BlurMat);
+        DeferredEffect::render(bt1, bt0, m_BlurMat);
     }
 
-    // Read emission GBuffer to buffer copy.
-    m_EmissionOcclGBufferCopy->bind();
-    FullscreenTriangle::Draw(*m_CopyMat, /*depthTest=*/ false);
+    // Create a GBuffer copy of EmissionOcclusion to read from in the next pass, since we can't read and write to it simulataneously.
+    BufferTexture* emissionOcclCopy = BufferTexturePool::Get(emissionOccl->width(), emissionOccl->height(), /*colorFormat=*/ emissionOccl->format(), /*depthFormat=*/ TextureFormat::None);
+    DeferredEffect::render(emissionOccl, emissionOcclCopy, m_CopyMat);
 
-    // Write occlusion buffer to emission GBuffer alpha channel.
+    // Write occlusion buffer to emissionOccl GBuffer alpha channel.
     m_Camera->getGBuffers()->bind();
+    m_Material->setTexture("u_EmissionOccl", emissionOcclCopy->colorTexture());
+    m_Material->setTexture("u_Occlusion", bt0->colorTexture());
     FullscreenTriangle::Draw(*m_Material, /*depthTest=*/ false);
+
+    BufferTexturePool::Return(emissionOcclCopy);
+    BufferTexturePool::Return(bt0);
+
+    if (BLUR_ITERATIONS > 0)
+        BufferTexturePool::Return(bt1);
 }

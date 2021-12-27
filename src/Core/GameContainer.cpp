@@ -89,6 +89,7 @@ GameContainer::~GameContainer()
     delete m_TexPickerWindow;
 
     ShaderCompiler::CleanCache();
+    BufferTexturePool::Clear();
 }
 
 void GameContainer::update(double deltaTime)

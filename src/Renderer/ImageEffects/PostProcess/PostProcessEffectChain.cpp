@@ -7,9 +7,6 @@ PostProcessEffectChain::PostProcessEffectChain(Camera* camera) : m_Camera(camera
 
 PostProcessEffectChain::~PostProcessEffectChain()
 {
-    for (size_t i = 0; i < m_NumColorBuffers; i++)
-        delete m_ColorBuffers[i];
-
     delete m_CopyMat;
 }
 
@@ -18,18 +15,20 @@ void PostProcessEffectChain::add(PostProcessEffect* effect)
     effect->lazyInitialize(m_Camera);
     m_Effects.push_back(effect);
 
-    // Initialize swap buffers if necessary for reading/writing. Amount we need depends on how many effects we add, but can only be at most 2.
-    size_t numBuffersRequired = Math::Min(m_Effects.size(), (size_t)2);
-    BufferTexture* cameraTex = m_Camera->getRenderTargetBuffer();
-
-    while (m_NumColorBuffers < numBuffersRequired)
-        m_ColorBuffers[m_NumColorBuffers++] = new BufferTexture(cameraTex->width(), cameraTex->height(), /*colorFormat=*/ TextureFormat::RGBAHalf, /*depthFormat=*/ TextureFormat::None);
+    // Calculate how many color buffers are needed to render to the camera's target.
+    m_NumColorBuffers = Math::Min(m_Effects.size(), (size_t)2);
 }
 
 void PostProcessEffectChain::render()
 {
+    if (m_Effects.size() == 0)
+        return;
+
     BufferTexture* source = m_Camera->getRenderTargetBuffer();
     bool pingPongFlag = false;
+
+    for (size_t i = 0; i < m_NumColorBuffers; i++)
+        m_ColorBuffers[i] = BufferTexturePool::Get(source->width(), source->height(), /*colorFormat=*/ TextureFormat::RGBAHalf, /*depthFormat=*/ TextureFormat::None);
 
     for (size_t i = 0; i < m_Effects.size(); i++)
     {
@@ -48,11 +47,11 @@ void PostProcessEffectChain::render()
         }
     }
 
-    if (m_Effects.size() > 0)
-    {
-        // Copy final color buffer back into `source`, as long as we processed at least one effect.
-        source->bind();
-        m_CopyMat->setTexture("u_MainTex", m_ColorBuffers[pingPongFlag]->colorTexture());
-        FullscreenTriangle::Draw(*m_CopyMat, /*depthTest=*/ false);
-    }
+    // Copy final color buffer back into `source`
+    source->bind();
+    m_CopyMat->setTexture("u_MainTex", m_ColorBuffers[pingPongFlag]->colorTexture());
+    FullscreenTriangle::Draw(*m_CopyMat, /*depthTest=*/ false);
+
+    for (size_t i = 0; i < m_NumColorBuffers; i++)
+        BufferTexturePool::Return(m_ColorBuffers[i]);
 }

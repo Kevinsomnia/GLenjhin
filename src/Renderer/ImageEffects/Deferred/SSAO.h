@@ -15,7 +15,5 @@ private:
 
     Material* m_OcclusionMat;
     Material* m_BlurMat;
-    BufferTexture* m_EmissionOcclGBufferCopy;
     Texture2D* m_NoiseTex;
-    std::array<BufferTexture*, 2> m_OcclusionBuffers;
 };
