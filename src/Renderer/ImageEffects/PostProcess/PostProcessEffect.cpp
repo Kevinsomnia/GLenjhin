@@ -2,13 +2,11 @@
 
 PostProcessEffect::PostProcessEffect(const std::string& shaderPath) : m_Initialized(false)
 {
-    m_Shader = new Shader(shaderPath);
-    m_Material = new Material(m_Shader);
+    m_Material = new Material(Shader::Load(shaderPath));
 }
 
 PostProcessEffect::~PostProcessEffect()
 {
-    delete m_Shader;
     delete m_Material;
 }
 

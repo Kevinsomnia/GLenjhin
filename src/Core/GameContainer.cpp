@@ -87,6 +87,8 @@ GameContainer::~GameContainer()
     delete m_CurrentScene;
     delete m_DebugOverlayPanel;
     delete m_TexPickerWindow;
+
+    ShaderCompiler::CleanCache();
 }
 
 void GameContainer::update(double deltaTime)

@@ -35,7 +35,7 @@ Scene::Scene()
     testGridAlbedo->setAnisotropicFilterLevel(4);
 
     // Load shader and material
-    m_GroundMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
+    m_GroundMat = new Material(Shader::Load("res\\shaders\\StandardSurface.glsl"));
     m_GroundMat->setTexture("u_AlbedoTex", m_GroundAlbedo);
     m_GroundMat->setTexture("u_NormalTex", groundNormalMap);
     m_GroundMat->setTexture("u_MSATex", groundMSA);
@@ -43,24 +43,24 @@ Scene::Scene()
     m_GroundMat->setFloat("u_HeightScale", 0.007f);
     m_GroundMat->setVector2("u_TileSize", Vector2(5.0f, 5.0f));
 
-    Material* wallMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
+    Material* wallMat = new Material(Shader::Load("res\\shaders\\StandardSurface.glsl"));
     wallMat->setTexture("u_AlbedoTex", metalAlbedo);
     wallMat->setTexture("u_NormalTex", metalNormalMap);
     wallMat->setTexture("u_MSATex", metalMSA);
     wallMat->setVector2("u_TileSize", Vector2(3.75f, 0.75f));
 
-    Material* basicMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));
+    Material* basicMat = new Material(Shader::Load("res\\shaders\\StandardSurface.glsl"));
     basicMat->setTexture("u_AlbedoTex", testGridAlbedo);
     basicMat->setTexture("u_NormalTex", metalNormalMap);
     basicMat->setTexture("u_MSATex", groundMSA);
     basicMat->setVector2("u_TileSize", Vector2::one);
 
-    Material* emissiveMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl")); // yes this will leak memory. temp solution.
+    Material* emissiveMat = new Material(Shader::Load("res\\shaders\\StandardSurface.glsl"));   // yes this will leak memory. temp solution.
     emissiveMat->setTexture("u_AlbedoTex", Texture2D::blackTexture);
     emissiveMat->setTexture("u_MSATex", Texture2D::blackTexture);
     emissiveMat->setColor("u_EmissionColor", Color(0.5f, 1.5f, 0.25f));
 
-    Material* whiteMat = new Material(new Shader("res\\shaders\\StandardSurface.glsl"));    // yes this will leak memory. temp solution.
+    Material* whiteMat = new Material(Shader::Load("res\\shaders\\StandardSurface.glsl"));      // yes this will leak memory. temp solution.
     whiteMat->setTexture("u_AlbedoTex", Texture2D::whiteTexture);
     whiteMat->setTexture("u_NormalTex", metalNormalMap);
     whiteMat->setTexture("u_MSATex", Texture2D::msaDefaultTexture);

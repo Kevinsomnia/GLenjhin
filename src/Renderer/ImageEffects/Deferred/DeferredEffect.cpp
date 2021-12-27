@@ -2,14 +2,12 @@
 
 DeferredEffect::DeferredEffect(const std::string& shaderPath) : m_Initialized(false)
 {
-    m_Shader = new Shader(shaderPath);
-    m_Material = new Material(m_Shader);
-    m_CopyMat = new Material(new Shader("res\\shaders\\ImageEffects\\Common\\Copy.glsl"));
+    m_Material = new Material(Shader::Load(shaderPath));
+    m_CopyMat = new Material(Shader::Load("res\\shaders\\ImageEffects\\Common\\Copy.glsl"));
 }
 
 DeferredEffect::~DeferredEffect()
 {
-    delete m_Shader;
     delete m_Material;
 }
 

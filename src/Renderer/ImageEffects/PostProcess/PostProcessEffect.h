@@ -15,6 +15,5 @@ public:
 protected:
     bool m_Initialized;
     Camera* m_Camera;
-    Shader* m_Shader;
     Material* m_Material;
 };

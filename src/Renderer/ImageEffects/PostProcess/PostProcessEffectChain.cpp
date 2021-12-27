@@ -2,7 +2,7 @@
 
 PostProcessEffectChain::PostProcessEffectChain(Camera* camera) : m_Camera(camera), m_NumColorBuffers(0)
 {
-    m_CopyMat = new Material(new Shader("res\\shaders\\ImageEffects\\Common\\Copy.glsl"));
+    m_CopyMat = new Material(Shader::Load("res\\shaders\\ImageEffects\\Common\\Copy.glsl"));
 }
 
 PostProcessEffectChain::~PostProcessEffectChain()

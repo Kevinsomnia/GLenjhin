@@ -2,8 +2,8 @@
 
 GaussianBlur::GaussianBlur() : PostProcessEffect("res\\shaders\\ImageEffects\\Common\\Copy.glsl")
 {
-    m_DownsampleMat = new Material(new Shader("res\\shaders\\ImageEffects\\GaussianBlur\\Downsample.glsl"));
-    m_BlurMat = new Material(new Shader("res\\shaders\\ImageEffects\\GaussianBlur\\Blur.glsl"));
+    m_DownsampleMat = new Material(Shader::Load("res\\shaders\\ImageEffects\\GaussianBlur\\Downsample.glsl"));
+    m_BlurMat = new Material(Shader::Load("res\\shaders\\ImageEffects\\GaussianBlur\\Blur.glsl"));
 }
 
 GaussianBlur::~GaussianBlur()
