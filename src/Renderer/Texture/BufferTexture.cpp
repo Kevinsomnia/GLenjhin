@@ -5,6 +5,7 @@ BufferTexture::BufferTexture(uint32_t width, uint32_t height, TextureFormat colo
     assert(colorFormat != TextureFormat::None || depthFormat != TextureFormat::None);
     m_Width = width;
     m_Height = height;
+    m_Format = colorFormat;
 
     glGenFramebuffers(1, &m_TextureID);
     glBindFramebuffer(GL_FRAMEBUFFER, m_TextureID);
