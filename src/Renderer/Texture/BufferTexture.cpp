@@ -1,8 +1,8 @@
 #include "BufferTexture.h"
 
-BufferTexture::BufferTexture(uint32_t width, uint32_t height, uint8_t depth, TextureFormat colorFormat) : Texture()
+BufferTexture::BufferTexture(uint32_t width, uint32_t height, TextureFormat colorFormat, TextureFormat depthFormat) : Texture()
 {
-    assert(colorFormat != TextureFormat::None || depth != 0);
+    assert(colorFormat != TextureFormat::None || depthFormat != TextureFormat::None);
     m_Width = width;
     m_Height = height;
 
@@ -15,10 +15,12 @@ BufferTexture::BufferTexture(uint32_t width, uint32_t height, uint8_t depth, Tex
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColorTexture->id(), 0);
     }
 
-    if (depth != 0)
+    if (depthFormat != TextureFormat::None)
     {
-        // Depth texture should always have point filtering. Might change in the future.
-        m_DepthTexture = new Texture2D(width, height, GetDepthTextureFormat(depth), /*readable=*/ false, /*sRGB=*/ false);
+        assert(depthFormat == TextureFormat::Depth16 || depthFormat == TextureFormat::Depth24 || depthFormat == TextureFormat::Depth32);
+
+        // Depth texture should always have point filtering.
+        m_DepthTexture = new Texture2D(width, height, depthFormat, /*readable=*/ false, /*sRGB=*/ false);
         m_DepthTexture->setFilterMode(TextureFilterMode::Point);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthTexture->id(), 0);
 

@@ -36,7 +36,7 @@ void Bloom::lazyInitialize(Camera* camera)
 
     for (size_t i = 0; i < MAX_BUFFER_COUNT; i++)
     {
-        m_Buffers.push_back(new BufferTexture(tw, th, /*depth=*/ 0, TextureFormat::RGBAHalf));
+        m_Buffers.push_back(new BufferTexture(tw, th, /*colorFormat=*/ TextureFormat::RGBAHalf, /*depthFormat=*/ TextureFormat::None));
         tw >>= 1;
         th >>= 1;
 

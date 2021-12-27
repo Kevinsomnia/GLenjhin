@@ -31,7 +31,7 @@ void SSAO::lazyInitialize(Camera* camera)
     // Create a GBuffer copy of EmissionOcclusion to read from, since we can't read and write to it simulataneously.
     GeometryBuffers* gBufs = camera->getGBuffers();
     Texture2D* emissionOccl = gBufs->emissionOcclGBuffer();
-    m_EmissionOcclGBufferCopy = new BufferTexture(/*width=*/ emissionOccl->width(), /*height=*/ emissionOccl->height(), /*depth=*/ 0, /*colorFormat=*/ emissionOccl->format());
+    m_EmissionOcclGBufferCopy = new BufferTexture(emissionOccl->width(), emissionOccl->height(), /*colorFormat=*/ emissionOccl->format(), /*depthFormat=*/ TextureFormat::None);
     m_CopyMat->setTexture("u_MainTex", emissionOccl);
 
     // Occlusion buffers setup
@@ -42,7 +42,7 @@ void SSAO::lazyInitialize(Camera* camera)
     uint32_t h = cameraTargetTex->height() >> DOWNSAMPLE;
 
     for (size_t i = 0; i < m_OcclusionBuffers.size(); i++)
-        m_OcclusionBuffers[i] = new BufferTexture(w, h, /*depth=*/ 0, TextureFormat::R8);
+        m_OcclusionBuffers[i] = new BufferTexture(w, h, /*colorFormat=*/ TextureFormat::R8, /*depthFormat=*/ TextureFormat::None);
 
     m_Material->setTexture("u_EmissionOccl", m_EmissionOcclGBufferCopy->colorTexture());
     m_Material->setTexture("u_Occlusion", m_OcclusionBuffers[0]->colorTexture());

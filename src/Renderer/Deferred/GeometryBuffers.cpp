@@ -1,6 +1,6 @@
 #include "GeometryBuffers.h"
 
-GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height, uint8_t depth, bool motionVectors) : m_Width(width), m_Height(height)
+GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height, TextureFormat depthFormat, bool motionVectors) : m_Width(width), m_Height(height)
 {
     glGenFramebuffers(1, &m_FboID);
     glBindFramebuffer(GL_FRAMEBUFFER, m_FboID);
@@ -25,10 +25,12 @@ GeometryBuffers::GeometryBuffers(uint32_t width, uint32_t height, uint8_t depth,
 
     glDrawBuffers(static_cast<uint32_t>(colorAttachments.size()), colorAttachments.data());
 
-    if (depth != 0)
+    if (depthFormat != TextureFormat::None)
     {
-        // Depth texture should always have point filtering. Might change in the future.
-        m_DepthTexture = new Texture2D(width, height, GetDepthTextureFormat(depth), /*readable=*/ false, /*sRGB=*/ false);
+        assert(depthFormat == TextureFormat::Depth16 || depthFormat == TextureFormat::Depth24 || depthFormat == TextureFormat::Depth32);
+
+        // Depth texture should always have point filtering.
+        m_DepthTexture = new Texture2D(width, height, depthFormat, /*readable=*/ false, /*sRGB=*/ false);
         m_DepthTexture->setFilterMode(TextureFilterMode::Point);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthTexture->id(), 0);
     }

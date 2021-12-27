@@ -6,7 +6,7 @@
 class BufferTexture : public Texture
 {
 public:
-    BufferTexture(uint32_t width, uint32_t height, uint8_t depth, TextureFormat colorFormat);
+    BufferTexture(uint32_t width, uint32_t height, TextureFormat colorFormat, TextureFormat depthFormat);
     ~BufferTexture();
     Texture2D* colorTexture() const;
     Texture2D* depthTexture() const;

@@ -16,7 +16,7 @@ Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, co
     assert(bufferFlags != CameraBufferFlags::None);
 
     float aspect = pixelWidth / static_cast<float>(pixelHeight);
-    uint8_t depthBits = (bufferFlags & CameraBufferFlags::Depth) != CameraBufferFlags::None ? 32 : 0;
+    TextureFormat depthFormat = (bufferFlags & CameraBufferFlags::Depth) != CameraBufferFlags::None ? TextureFormat::Depth32 : TextureFormat::None;
 
     m_Transform = new Transform(pos, rot, Vector3::one);
 
@@ -45,7 +45,7 @@ Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, co
     if (deferred)
     {
         bool renderToMotionVectors = (bufferFlags & CameraBufferFlags::MotionVectors) != CameraBufferFlags::None;
-        m_GBuffers = new GeometryBuffers(pixelWidth, pixelHeight, depthBits, renderToMotionVectors);
+        m_GBuffers = new GeometryBuffers(pixelWidth, pixelHeight, depthFormat, renderToMotionVectors);
         m_DeferredGeometryMat = new Material(Shader::Load("res\\shaders\\Deferred\\GeometryBuffers.glsl"));
         m_DeferredLightingMat = new Material(Shader::Load("res\\shaders\\Deferred\\DeferredLighting.glsl"));
         m_GBuffers->setGBufferTextures(*m_DeferredLightingMat);
@@ -61,7 +61,7 @@ Camera::Camera(uint32_t pixelWidth, uint32_t pixelHeight, const Vector3& pos, co
     }
 
     TextureFormat colorFormat = (bufferFlags & CameraBufferFlags::Color) != CameraBufferFlags::None ? TextureFormat::RGBAHalf : TextureFormat::None;
-    m_RenderTargetBuffer = new BufferTexture(pixelWidth, pixelHeight, depthBits, colorFormat);
+    m_RenderTargetBuffer = new BufferTexture(pixelWidth, pixelHeight, colorFormat, depthFormat);
     m_PostProcessChain = new PostProcessEffectChain(this);
     m_BlitMat = new Material(Shader::Load("res\\shaders\\ImageEffects\\Common\\Copy.glsl"));
 

@@ -23,7 +23,7 @@ void PostProcessEffectChain::add(PostProcessEffect* effect)
     BufferTexture* cameraTex = m_Camera->getRenderTargetBuffer();
 
     while (m_NumColorBuffers < numBuffersRequired)
-        m_ColorBuffers[m_NumColorBuffers++] = new BufferTexture(cameraTex->width(), cameraTex->height(), /*depth=*/ 0, TextureFormat::RGBAHalf);
+        m_ColorBuffers[m_NumColorBuffers++] = new BufferTexture(cameraTex->width(), cameraTex->height(), /*colorFormat=*/ TextureFormat::RGBAHalf, /*depthFormat=*/ TextureFormat::None);
 }
 
 void PostProcessEffectChain::render()

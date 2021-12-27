@@ -10,7 +10,7 @@ using std::endl;
 class GeometryBuffers
 {
 public:
-    GeometryBuffers(uint32_t width, uint32_t height, uint8_t depth, bool motionVectors);
+    GeometryBuffers(uint32_t width, uint32_t height, TextureFormat depthFormat, bool motionVectors);
     ~GeometryBuffers();
     void bind() const;
     void setGBufferTextures(Material& mat) const;

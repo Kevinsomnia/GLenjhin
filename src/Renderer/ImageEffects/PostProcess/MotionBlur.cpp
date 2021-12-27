@@ -51,13 +51,13 @@ void MotionBlur::lazyInitialize(Camera* camera)
     uint32_t w = renderTarget->width();
     uint32_t h = renderTarget->height();
 
-    m_PackedVelocityDepthTex = new BufferTexture(w, h, /*depth=*/ 0, TextureFormat::RGB10A2);
+    m_PackedVelocityDepthTex = new BufferTexture(w, h, /*colorFormat=*/ TextureFormat::RGB10A2, /*depthFormat=*/ TextureFormat::None);
     m_PackedVelocityDepthTex->setFilterMode(TextureFilterMode::Point);
 
     for (size_t i = 0; i < m_MaxVelocityTex.size(); i++)
     {
         size_t downsample = i + 1;
-        m_MaxVelocityTex[i] = new BufferTexture(w >> downsample, h >> downsample, /*depth=*/ 0, TextureFormat::RGHalf);
+        m_MaxVelocityTex[i] = new BufferTexture(w >> downsample, h >> downsample, /*colorFormat=*/ TextureFormat::RGHalf, /*depthFormat=*/ TextureFormat::None);
         m_MaxVelocityTex[i]->setFilterMode(TextureFilterMode::Point);
     }
 
@@ -65,10 +65,10 @@ void MotionBlur::lazyInitialize(Camera* camera)
     // This defines the region of pixels that blur can potentially affect if the sample is at the center of the tile.
     uint32_t tileSize = ((maxBlurRadius - 1) / 8 + 1) * 8;
     assert(tileSize != 0);
-    m_MaxTileVelocityTex = new BufferTexture(w / tileSize, h / tileSize, /*depth=*/ 0, TextureFormat::RGHalf);
+    m_MaxTileVelocityTex = new BufferTexture(w / tileSize, h / tileSize, /*colorFormat=*/ TextureFormat::RGHalf, /*depthFormat=*/ TextureFormat::None);
     m_MaxTileVelocityTex->setFilterMode(TextureFilterMode::Point);
     // The max 3x3 neighbor mega-tile pass will handle cases where we're attempting to sample near the edges of the mega-tile and the blur can spill to neighboring mega-tiles.
-    m_MaxNeighborVelocityTex = new BufferTexture(w / tileSize, h / tileSize, /*depth=*/ 0, TextureFormat::RGHalf);
+    m_MaxNeighborVelocityTex = new BufferTexture(w / tileSize, h / tileSize, /*colorFormat=*/ TextureFormat::RGHalf, /*depthFormat=*/ TextureFormat::None);
     m_MaxNeighborVelocityTex->setFilterMode(TextureFilterMode::Point);
 
     Vector2 motionVectorsTexSize = motionVectorsTex->size();

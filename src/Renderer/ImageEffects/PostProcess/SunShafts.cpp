@@ -30,7 +30,7 @@ void SunShafts::lazyInitialize(Camera* camera)
     uint32_t h = renderTarget->height() >> DOWNSAMPLE;
 
     for (size_t i = 0; i < m_Buffers.size(); i++)
-        m_Buffers[i] = new BufferTexture(w, h, /*depth=*/ 0, TextureFormat::RGBAHalf);
+        m_Buffers[i] = new BufferTexture(w, h, /*colorFormat=*/ TextureFormat::RGBAHalf, /*depthFormat=*/ TextureFormat::None);
 
     m_Material->setTexture("u_ShaftsTex", m_Buffers[0]->colorTexture());
     m_Material->setColor("u_Color", Color(1.0f, 0.91f, 0.8f) * 1.5f);
