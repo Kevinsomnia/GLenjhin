@@ -61,6 +61,7 @@
     <ClCompile Include="src\Renderer\Shader.cpp" />
     <ClCompile Include="src\Renderer\Skybox.cpp" />
     <ClCompile Include="src\Renderer\Texture\BufferTexture.cpp" />
+    <ClCompile Include="src\Renderer\Texture\BufferTexturePool.cpp" />
     <ClCompile Include="src\Renderer\Texture\Texture.cpp" />
     <ClCompile Include="src\Renderer\Texture\Texture2D.cpp" />
     <ClCompile Include="src\Renderer\Transform.cpp" />
@@ -123,6 +124,7 @@
     <ClInclude Include="src\Renderer\Shader.h" />
     <ClInclude Include="src\Renderer\Skybox.h" />
     <ClInclude Include="src\Renderer\Texture\BufferTexture.h" />
+    <ClInclude Include="src\Renderer\Texture\BufferTexturePool.h" />
     <ClInclude Include="src\Renderer\Texture\Texture.h" />
     <ClInclude Include="src\Renderer\Texture\Texture2D.h" />
     <ClInclude Include="src\Renderer\Transform.h" />

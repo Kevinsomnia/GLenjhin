@@ -9,7 +9,6 @@ class Bloom : public PostProcessEffect
 public:
     Bloom();
     ~Bloom();
-    void lazyInitialize(Camera* camera) override;
     void render(BufferTexture* source, BufferTexture* destination) override;
 private:
     const float BLUR_SIZE = 2.0f;
@@ -17,7 +16,8 @@ private:
     static const size_t BLUR_ITERATIONS = 7;
     static const size_t MAX_BUFFER_COUNT = BLUR_ITERATIONS + 1;
 
-    std::vector<BufferTexture*> m_Buffers;
+    std::array<BufferTexture*, MAX_BUFFER_COUNT> m_Buffers;
+    size_t m_BufferCount;
     Material* m_PrefilterMat;
     Material* m_DownsampleMat;
     Material* m_UpsampleMat;

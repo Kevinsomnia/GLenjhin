@@ -17,6 +17,7 @@ public:
     virtual void render();
     void render(BufferTexture* destination, Material* mat) const;
     void render(BufferTexture* source, BufferTexture* destination, Material* mat) const;
+    void render(Texture2D* source, BufferTexture* destination, Material* mat) const;
 protected:
     bool m_Initialized;
     Camera* m_Camera;
