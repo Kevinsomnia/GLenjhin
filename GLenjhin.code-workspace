@@ -76,7 +76,8 @@
       "xmemory": "cpp",
       "xstddef": "cpp",
       "xtr1common": "cpp",
-      "xtree": "cpp"
+      "xtree": "cpp",
+      "unordered_set": "cpp"
     }
   }
 }

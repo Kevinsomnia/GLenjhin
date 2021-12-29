@@ -20,7 +20,7 @@ DirectionalLight::~DirectionalLight()
 
 void DirectionalLight::setUniforms(Material& mat) const
 {
-    Vector3 fwd = m_Transform->TRS().multiplyVector(Vector3::forward);
+    Vector3 fwd = m_Transform->worldTRS().multiplyVector(Vector3::forward);
     mat.setVector3("u_DirLightDir", fwd);
     mat.setColor("u_DirLightColor", Color(1.0f, 0.91f, 0.8f) * 2.0f);
 

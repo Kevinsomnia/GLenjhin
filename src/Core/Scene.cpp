@@ -144,7 +144,7 @@ void Scene::drawGeometryPass(const Camera& camera, Material& geometryMat) const
 {
     geometryMat.setMatrix4x4("u_PrevVP", camera.prevViewProjectionMatrix());
     geometryMat.setMatrix4x4("u_CurrVP", camera.viewProjectionMatrix());
-    geometryMat.setVector3("u_CameraPos", camera.transform()->position());
+    geometryMat.setVector3("u_CameraPos", camera.transform()->localPosition());
 
     for (size_t i = 0; i < m_Entities.size(); i++)
         m_Entities[i]->drawGeometryPass(geometryMat);
@@ -197,12 +197,12 @@ void Scene::userUpdate()
         double ti = t + (2.5 * i);
         Transform* trans = m_DynamicEntities[i]->transform();
 
-        trans->setPosition(Vector3(
+        trans->setLocalPosition(Vector3(
             (float)cos(ti * 0.7),
             (float)sin(ti * 0.8) * 0.5f + 2.0f,
             (float)sin(ti * 0.175) * 7.0f
         ));
-        trans->setRotation(rotationToRad(Vector3(
+        trans->setLocalRotation(rotationToRad(Vector3(
             (float)ti * 25.0f,
             (float)ti * 30.0f,
             (float)ti * 35.0f
@@ -214,12 +214,12 @@ void Scene::userUpdate()
         double ti = (t * 9.0) + (6.0 * i);
         Transform* trans = m_FastEntities[i]->transform();
 
-        trans->setPosition(Vector3(
+        trans->setLocalPosition(Vector3(
             10.0f,
             (float)sin(ti) + 2.0f,
             (float)sin(ti * 0.25) * 10.0f
         ));
-        trans->setRotation(rotationToRad(Vector3(
+        trans->setLocalRotation(rotationToRad(Vector3(
             (float)ti * 155.0f,
             (float)ti * 175.0f,
             (float)ti * 205.0f

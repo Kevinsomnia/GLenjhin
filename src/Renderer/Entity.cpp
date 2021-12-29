@@ -39,8 +39,8 @@ void Entity::drawGeometryPass(Material& geometryMat) const
     {
         Material* entityMat = m_Renderer->material();
 
-        geometryMat.setMatrix4x4("u_PrevModel", m_Transform->prevTRS());
-        geometryMat.setMatrix4x4("u_CurrModel", m_Transform->TRS());
+        geometryMat.setMatrix4x4("u_PrevModel", m_Transform->prevWorldTRS());
+        geometryMat.setMatrix4x4("u_CurrModel", m_Transform->worldTRS());
         geometryMat.setColor("u_EmissionColor", entityMat->getColor("u_EmissionColor"));
 
         Texture* albedo = entityMat->getTexture("u_AlbedoTex");
@@ -82,7 +82,7 @@ void Entity::drawShadowPass(Material& shadowMat) const
 {
     if (m_Renderer)
     {
-        shadowMat.setMatrix4x4("u_Model", m_Transform->TRS());
+        shadowMat.setMatrix4x4("u_Model", m_Transform->worldTRS());
         shadowMat.bind();
 
         m_Renderer->drawMeshDirect();
@@ -94,9 +94,9 @@ void Entity::draw(const Camera& cam, const std::vector<Light*>& lights) const
     if (m_Renderer)
     {
         m_Renderer->draw(
-            cam.transform()->position(),
+            cam.transform()->localPosition(),
             cam.viewProjectionMatrix(),
-            /*model=*/ m_Transform->TRS(),
+            /*model=*/ m_Transform->worldTRS(),
             lights
         );
     }

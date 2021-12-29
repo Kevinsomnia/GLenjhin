@@ -17,26 +17,26 @@ class Transform
 {
 public:
     Transform();
-    Transform(const Vector3& position, const Vector3& rotation, const Vector3& scale);
+    Transform(const Vector3& localPosition, const Vector3& localRotation, const Vector3& localScale);
 
-    Vector3 position() const { return m_Position; }
-    Vector3 rotation() const { return m_Rotation; }
-    Vector3 scale() const { return m_Scale; }
-    Matrix4x4 prevTRS() const { return m_PrevTRS; }
-    Matrix4x4 TRS();
+    Vector3 localPosition() const { return m_LocalPosition; }
+    Vector3 localRotation() const { return m_LocalRotation; }
+    Vector3 localScale() const { return m_LocalScale; }
+    Matrix4x4 prevWorldTRS() const { return m_PrevWorldTRS; }
+    Matrix4x4 worldTRS();
     Vector3 forward();
     Vector3 transformDirection(const Vector3& dir);
     void earlyUpdate();
-    void setPosition(const Vector3& position);
-    void setRotation(const Vector3& rotation);
-    void setScale(const Vector3& scale);
+    void setLocalPosition(const Vector3& position);
+    void setLocalRotation(const Vector3& rotation);
+    void setLocalScale(const Vector3& scale);
     void translate(const Vector3& v, Space space = Space::World);
     void rotate(const Vector3& r, Space space = Space::World);
 private:
-    Vector3 m_Position;
-    Vector3 m_Rotation; // Measured in radians
-    Vector3 m_Scale;
-    Matrix4x4 m_PrevTRS;
-    Matrix4x4 m_TRS;
+    Vector3 m_LocalPosition;
+    Vector3 m_LocalRotation;    // Measured in radians
+    Vector3 m_LocalScale;
+    Matrix4x4 m_PrevWorldTRS;
+    Matrix4x4 m_WorldTRS;
     bool m_DirtyTRS;
 };

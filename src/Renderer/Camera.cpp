@@ -88,7 +88,7 @@ Camera::~Camera()
 
 void Camera::update()
 {
-    m_ViewMatrix = Matrix4x4::View(m_Transform->position(), m_Transform->rotation());
+    m_ViewMatrix = Matrix4x4::View(m_Transform->localPosition(), m_Transform->localRotation());
     m_PrevViewProjectionMatrix = m_ViewProjectionMatrix;
     m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 }
@@ -123,7 +123,7 @@ void Camera::draw(Scene* scene, bool drawSkybox)
         }
 
         m_DeferredLightingMat->setColor("u_AmbientColor", ColorByte(50, 81, 107));
-        m_DeferredLightingMat->setVector3("u_CameraPos", m_Transform->position());
+        m_DeferredLightingMat->setVector3("u_CameraPos", m_Transform->localPosition());
         FullscreenTriangle::Draw(*m_DeferredLightingMat, /*depthTest=*/ false);
 
         // Blit GBuffer depth to buffer texture depth so that forward-rendered objects (e.g. skybox, transparent objects) display properly.
