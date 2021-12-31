@@ -7,6 +7,11 @@ Transform::Transform(const Vector3& localPosition, const Vector3& localRotation,
     m_PrevWorldTRS = worldTRS();
 }
 
+Transform::~Transform()
+{
+    // Cleanup transform children (and entities?)
+}
+
 Matrix4x4 Transform::worldTRS()
 {
     if (m_DirtyTRS)

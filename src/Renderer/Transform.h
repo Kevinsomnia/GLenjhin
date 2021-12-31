@@ -20,6 +20,7 @@ class Transform
 public:
     Transform();
     Transform(const Vector3& localPosition, const Vector3& localRotation, const Vector3& localScale);
+    ~Transform();
 
     Transform* parent() const { return m_Parent; }
     std::unordered_set<Transform*>::iterator childrenBegin() const { return m_Children.begin(); }
