@@ -43,6 +43,7 @@ private:
     std::vector<Entity*> m_Entities;
     std::vector<Entity*> m_DynamicEntities;
     std::vector<Entity*> m_FastEntities;
+    Entity* m_WallEntity;
     const std::vector<Light*> m_EmptyLightsList;  // An empty list for deferred path.
     std::vector<Light*> m_Lights;
 

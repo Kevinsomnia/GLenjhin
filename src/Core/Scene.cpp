@@ -70,9 +70,9 @@ Scene::Scene()
     plane->setupRenderer(MeshPrimitives::quad, m_GroundMat);
     m_Entities.push_back(plane);
 
-    Entity* wall = new Entity(Vector3(0.5f, 1.5f, 0.0f), Vector3::zero, Vector3(0.25f, 3.0f, 15.0f));
-    wall->setupRenderer(MeshPrimitives::cube, wallMat);
-    m_Entities.push_back(wall);
+    m_WallEntity = new Entity(Vector3(0.5f, 1.5f, 0.0f), Vector3::zero, Vector3(0.25f, 3.0f, 15.0f));
+    m_WallEntity->setupRenderer(MeshPrimitives::cube, wallMat);
+    m_Entities.push_back(m_WallEntity);
 
     Entity* dragon = new Entity(Vector3(-4.5f, 1.0f, 1.0f), rotationToRad(Vector3(-90.0f, 30.0f, 0.0f)), Vector3::one * 0.1f);
     dragon->setupRenderer(m_DragonModel.meshes[0], whiteMat);
@@ -92,6 +92,7 @@ Scene::Scene()
         Entity* entity = new Entity(Vector3::zero, Vector3::zero, Vector3::one * 0.4f);
         Mesh* primitive = primitives[i % primitives.size()];
         entity->setupRenderer(primitive, primitive == MeshPrimitives::sphere ? emissiveMat : basicMat);
+        entity->transform()->setParent(m_WallEntity->transform());
         m_Entities.push_back(entity);
         m_DynamicEntities.push_back(entity);
     }
@@ -190,39 +191,41 @@ void Scene::setNewTexture(const std::string& texturePath)
 
 void Scene::userUpdate()
 {
-    double t = Time::GetTime();
+    float t = (float)Time::GetTime();
+
+    m_WallEntity->transform()->setLocalRotation(rotationToRad(Vector3(0.0f, t * 10.0f, 0.0f)));
 
     for (size_t i = 0; i < m_DynamicEntities.size(); i++)
     {
-        double ti = t + (2.5 * i);
+        float ti = t + (2.5f * i);
         Transform* trans = m_DynamicEntities[i]->transform();
 
         trans->setLocalPosition(Vector3(
-            (float)cos(ti * 0.7),
-            (float)sin(ti * 0.8) * 0.5f + 2.0f,
-            (float)sin(ti * 0.175) * 7.0f
+            cos(ti * 0.7f),
+            sin(ti * 0.8f) * 0.5f + 2.0f,
+            sin(ti * 0.175f) * 7.0f
         ));
         trans->setLocalRotation(rotationToRad(Vector3(
-            (float)ti * 25.0f,
-            (float)ti * 30.0f,
-            (float)ti * 35.0f
+            ti * 25.0f,
+            ti * 30.0f,
+            ti * 35.0f
         )));
     }
 
     for (size_t i = 0; i < m_FastEntities.size(); i++)
     {
-        double ti = (t * 9.0) + (6.0 * i);
+        float ti = (t * 9.0f) + (6.0f * i);
         Transform* trans = m_FastEntities[i]->transform();
 
         trans->setLocalPosition(Vector3(
             10.0f,
-            (float)sin(ti) + 2.0f,
-            (float)sin(ti * 0.25) * 10.0f
+            sin(ti) + 2.0f,
+            sin(ti * 0.25f) * 10.0f
         ));
         trans->setLocalRotation(rotationToRad(Vector3(
-            (float)ti * 155.0f,
-            (float)ti * 175.0f,
-            (float)ti * 205.0f
+            ti * 155.0f,
+            ti * 175.0f,
+            ti * 205.0f
         )));
     }
 }
