@@ -142,9 +142,9 @@ void Scene::update()
 
 void Scene::drawGeometryPass(const Camera& camera, Material& geometryMat) const
 {
-    geometryMat.setMatrix4x4("u_PrevVP", camera.getPrevViewProjectionMatrix());
-    geometryMat.setMatrix4x4("u_CurrVP", camera.getViewProjectionMatrix());
-    geometryMat.setVector3("u_CameraPos", camera.getTransform()->getPosition());
+    geometryMat.setMatrix4x4("u_PrevVP", camera.prevViewProjectionMatrix());
+    geometryMat.setMatrix4x4("u_CurrVP", camera.viewProjectionMatrix());
+    geometryMat.setVector3("u_CameraPos", camera.transform()->position());
 
     for (size_t i = 0; i < m_Entities.size(); i++)
         m_Entities[i]->drawGeometryPass(geometryMat);
@@ -152,7 +152,7 @@ void Scene::drawGeometryPass(const Camera& camera, Material& geometryMat) const
 
 void Scene::drawShadowPass(const Light& light, Material& shadowMat) const
 {
-    shadowMat.setMatrix4x4("u_L", light.getLightMatrix());
+    shadowMat.setMatrix4x4("u_L", light.lightMatrix());
 
     for (size_t i = 0; i < m_Entities.size(); i++)
         m_Entities[i]->drawShadowPass(shadowMat);
@@ -161,7 +161,7 @@ void Scene::drawShadowPass(const Light& light, Material& shadowMat) const
 void Scene::drawSkybox(const Camera& camera) const
 {
     if (m_Skybox)
-        m_Skybox->draw(camera.getViewProjectionMatrix());
+        m_Skybox->draw(camera.viewProjectionMatrix());
 }
 
 void Scene::drawEntities(const Camera& camera) const
@@ -195,7 +195,7 @@ void Scene::userUpdate()
     for (size_t i = 0; i < m_DynamicEntities.size(); i++)
     {
         double ti = t + (2.5 * i);
-        Transform* trans = m_DynamicEntities[i]->getTransform();
+        Transform* trans = m_DynamicEntities[i]->transform();
 
         trans->setPosition(Vector3(
             (float)cos(ti * 0.7),
@@ -212,7 +212,7 @@ void Scene::userUpdate()
     for (size_t i = 0; i < m_FastEntities.size(); i++)
     {
         double ti = (t * 9.0) + (6.0 * i);
-        Transform* trans = m_FastEntities[i]->getTransform();
+        Transform* trans = m_FastEntities[i]->transform();
 
         trans->setPosition(Vector3(
             10.0f,

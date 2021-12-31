@@ -39,8 +39,8 @@ void Entity::drawGeometryPass(Material& geometryMat) const
     {
         Material* entityMat = m_Renderer->material();
 
-        geometryMat.setMatrix4x4("u_PrevModel", m_Transform->getPrevTRS());
-        geometryMat.setMatrix4x4("u_CurrModel", m_Transform->getTRS());
+        geometryMat.setMatrix4x4("u_PrevModel", m_Transform->prevTRS());
+        geometryMat.setMatrix4x4("u_CurrModel", m_Transform->TRS());
         geometryMat.setColor("u_EmissionColor", entityMat->getColor("u_EmissionColor"));
 
         Texture* albedo = entityMat->getTexture("u_AlbedoTex");
@@ -61,7 +61,7 @@ void Entity::drawGeometryPass(Material& geometryMat) const
             height = Texture2D::whiteTexture;
 
         Vector2 tileSize = entityMat->getVector2("u_TileSize");
-        if (tileSize.getSqrMagnitude() == 0.0f)
+        if (tileSize.sqrMagnitude() == 0.0f)
             tileSize = Vector2::one;
 
         geometryMat.setTexture("u_AlbedoTex", albedo);
@@ -82,7 +82,7 @@ void Entity::drawShadowPass(Material& shadowMat) const
 {
     if (m_Renderer)
     {
-        shadowMat.setMatrix4x4("u_Model", m_Transform->getTRS());
+        shadowMat.setMatrix4x4("u_Model", m_Transform->TRS());
         shadowMat.bind();
 
         m_Renderer->drawMeshDirect();
@@ -94,9 +94,9 @@ void Entity::draw(const Camera& cam, const std::vector<Light*>& lights) const
     if (m_Renderer)
     {
         m_Renderer->draw(
-            cam.getTransform()->getPosition(),
-            cam.getViewProjectionMatrix(),
-            /*model=*/ m_Transform->getTRS(),
+            cam.transform()->position(),
+            cam.viewProjectionMatrix(),
+            /*model=*/ m_Transform->TRS(),
             lights
         );
     }

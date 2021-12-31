@@ -56,5 +56,5 @@ private:
 
     static void HandleSelectedNewTexture(const std::string& path);
 
-    inline Vector3 getMoveAxis() const;
+    inline Vector3 inputMoveAxis() const;
 };

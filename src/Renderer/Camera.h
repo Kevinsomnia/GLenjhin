@@ -81,22 +81,22 @@ public:
     void addBuffersToDebugWindow(DebugWindow& window) const;
     Vector3 worldToViewportPoint(const Vector3& pos) const;
     inline bool isDeferred() const { return m_GBuffers; }
-    BufferTexture* getRenderTargetBuffer() const { return m_RenderTargetBuffer; }
-    Texture2D* getColorTexture() const { return m_RenderTargetBuffer->colorTexture(); }
-    Texture2D* getDepthTexture() const { return m_GBuffers ? m_GBuffers->depthTexture() : m_RenderTargetBuffer->depthTexture(); }
-    Texture2D* getMotionVectorsTexture() const { return m_GBuffers ? m_GBuffers->motionVectorsTexture() : nullptr; }
-    GeometryBuffers* getGBuffers() const { return m_GBuffers; }
-    Transform* getTransform() const { return m_Transform; }
-    Matrix4x4 getPrevViewProjectionMatrix() const { return m_PrevViewProjectionMatrix; }
-    Matrix4x4 getViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
-    Matrix4x4 getViewMatrix() const { return m_ViewMatrix; }
-    Matrix4x4 getProjectionMatrix() const { return m_ProjectionMatrix; }
+    BufferTexture* renderTargetBuffer() const { return m_RenderTargetBuffer; }
+    Texture2D* colorTexture() const { return m_RenderTargetBuffer->colorTexture(); }
+    Texture2D* depthTexture() const { return m_GBuffers ? m_GBuffers->depthTexture() : m_RenderTargetBuffer->depthTexture(); }
+    Texture2D* motionVectorsTexture() const { return m_GBuffers ? m_GBuffers->motionVectorsTexture() : nullptr; }
+    GeometryBuffers* gBuffers() const { return m_GBuffers; }
+    Transform* transform() const { return m_Transform; }
+    Matrix4x4 prevViewProjectionMatrix() const { return m_PrevViewProjectionMatrix; }
+    Matrix4x4 viewProjectionMatrix() const { return m_ViewProjectionMatrix; }
+    Matrix4x4 viewMatrix() const { return m_ViewMatrix; }
+    Matrix4x4 projectionMatrix() const { return m_ProjectionMatrix; }
     // X = near clip
     // Y = far clip
     // Z = far - near
     // W = 2.0 * near * far
-    Vector4 getProjectionParams() const { return m_ProjectionParams; }
-    CameraBufferFlags getBufferFlags() const { return m_BufferFlags; }
+    Vector4 projectionParams() const { return m_ProjectionParams; }
+    CameraBufferFlags bufferFlags() const { return m_BufferFlags; }
 private:
     Transform* m_Transform;
     GeometryBuffers* m_GBuffers;

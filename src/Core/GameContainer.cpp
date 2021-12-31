@@ -63,7 +63,7 @@ GameContainer::GameContainer(GLFWwindow* window) : m_MainWindow(window), m_Frame
 
     if (lights.size() > 0)
         // We're assuming first light is a directional light / sun. Set that as the shaft's source.
-        shafts->setSunTransform(lights[0]->getTransform());
+        shafts->setSunTransform(lights[0]->transform());
 
     // GUI windows
     m_TexPickerWindow = new TexturePickerWindow(&HandleSelectedNewTexture);
@@ -141,7 +141,7 @@ void GameContainer::handleCameraMovement(double deltaTime)
     if (!m_MainCamera)
         return;
 
-    Transform* cameraTrans = m_MainCamera->getTransform();
+    Transform* cameraTrans = m_MainCamera->transform();
 
     float dt = (float)deltaTime;
     bool allowInput = Input::GetMouseCursorState() == MouseCursorState::Locked;
@@ -155,7 +155,7 @@ void GameContainer::handleCameraMovement(double deltaTime)
         cameraTrans->rotate(rotateDelta);
 
         // Free fly
-        targetMoveDir = cameraTrans->transformDirection(getMoveAxis());
+        targetMoveDir = cameraTrans->transformDirection(inputMoveAxis());
         bool space = Input::GetKey(KeyCode::Space);
         bool ctrl = Input::GetKey(KeyCode::LeftCtrl) || Input::GetKey(KeyCode::RightCtrl);
 
@@ -168,7 +168,7 @@ void GameContainer::handleCameraMovement(double deltaTime)
             targetMoveDir.y -= 1.0f;
         }
 
-        if (targetMoveDir.getSqrMagnitude() > 1.0f)
+        if (targetMoveDir.sqrMagnitude() > 1.0f)
             targetMoveDir.normalize();
 
         const float MOVE_SPEED = 6.0f;
@@ -186,7 +186,7 @@ void GameContainer::handleCameraMovement(double deltaTime)
     const float MOVEMENT_SMOOTH_SPEED = 12.0f;
     m_SmoothedCamMoveDir = Vector3::Lerp(m_SmoothedCamMoveDir, targetMoveDir, dt * MOVEMENT_SMOOTH_SPEED);
 
-    if (m_SmoothedCamMoveDir.getSqrMagnitude() > 0.000001f)
+    if (m_SmoothedCamMoveDir.sqrMagnitude() > 0.000001f)
         cameraTrans->translate(m_SmoothedCamMoveDir);
 
     // Update and upload view projection.
@@ -209,7 +209,7 @@ void GameContainer::handleMouseCursorState()
 
 void GameContainer::handleFPSCounter()
 {
-    if (!m_DebugOverlayPanel->getVisible())
+    if (!m_DebugOverlayPanel->visible())
         return;
 
     m_FrameCountInLastSecond++;
@@ -239,7 +239,7 @@ void GameContainer::HandleSelectedNewTexture(const std::string& path)
     m_Instance->m_CurrentScene->setNewTexture(path);
 }
 
-Vector3 GameContainer::getMoveAxis() const
+Vector3 GameContainer::inputMoveAxis() const
 {
     bool w = Input::GetKey(KeyCode::W);
     bool s = Input::GetKey(KeyCode::S);
@@ -268,7 +268,7 @@ Vector3 GameContainer::getMoveAxis() const
 
     Vector3 result(x, 0.0f, z);
 
-    if (result.getSqrMagnitude() > 1.0f)
+    if (result.sqrMagnitude() > 1.0f)
         result.normalize();
 
     return result;

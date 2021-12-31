@@ -19,12 +19,12 @@ public:
     Transform();
     Transform(const Vector3& position, const Vector3& rotation, const Vector3& scale);
 
-    Vector3 getPosition() const { return m_Position; }
-    Vector3 getRotation() const { return m_Rotation; }
-    Vector3 getScale() const { return m_Scale; }
-    Matrix4x4 getPrevTRS() const { return m_PrevTRS; }
-    Matrix4x4 getTRS();
-    Vector3 getForward();
+    Vector3 position() const { return m_Position; }
+    Vector3 rotation() const { return m_Rotation; }
+    Vector3 scale() const { return m_Scale; }
+    Matrix4x4 prevTRS() const { return m_PrevTRS; }
+    Matrix4x4 TRS();
+    Vector3 forward();
     Vector3 transformDirection(const Vector3& dir);
     void earlyUpdate();
     void setPosition(const Vector3& position);

@@ -37,7 +37,7 @@ void DebugOverlayPanel::draw()
     }
 }
 
-bool DebugOverlayPanel::getVisible()
+bool DebugOverlayPanel::visible()
 {
     return m_Visible;
 }

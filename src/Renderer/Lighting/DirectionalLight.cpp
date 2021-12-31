@@ -7,7 +7,7 @@ DirectionalLight::DirectionalLight(const Vector3& pos, const Vector3& rot)
     m_DepthCamera = new Camera(/*pixelWidth=*/ 2048, /*pixelHeight=*/ 2048, pos, rot, projection, CameraBufferFlags::Depth, /*deferred=*/ false);
 
     // Setup depth map to clamp to a border color so that samples outside the shadowmap will properly be "unshadowed"
-    Texture2D* depthTex = m_DepthCamera->getDepthTexture();
+    Texture2D* depthTex = m_DepthCamera->depthTexture();
     depthTex->setWrapMode(TextureWrapMode::Border);
     depthTex->setBorderColor(Color::White());
 }
@@ -20,16 +20,16 @@ DirectionalLight::~DirectionalLight()
 
 void DirectionalLight::setUniforms(Material& mat) const
 {
-    Vector3 fwd = m_Transform->getTRS().multiplyVector(Vector3::forward);
+    Vector3 fwd = m_Transform->TRS().multiplyVector(Vector3::forward);
     mat.setVector3("u_DirLightDir", fwd);
     mat.setColor("u_DirLightColor", Color(1.0f, 0.91f, 0.8f) * 2.0f);
 
     if (m_DepthCamera)
     {
-        Texture2D* shadowMap = m_DepthCamera->getDepthTexture();
+        Texture2D* shadowMap = m_DepthCamera->depthTexture();
         mat.setTexture("u_DirShadows", shadowMap);
         mat.setVector2("u_DirShadowsTexelSize", shadowMap->texelSize());
-        mat.setMatrix4x4("u_DirLightMatrix", m_DepthCamera->getViewProjectionMatrix());
+        mat.setMatrix4x4("u_DirLightMatrix", m_DepthCamera->viewProjectionMatrix());
     }
     else
     {
@@ -48,15 +48,15 @@ void DirectionalLight::renderShadows(const Scene* scene) const
     if (!m_DepthCamera || !scene)
         return;
 
-    m_DepthCamera->getRenderTargetBuffer()->bind();
+    m_DepthCamera->renderTargetBuffer()->bind();
     glClear(GL_DEPTH_BUFFER_BIT);
     scene->drawShadowPass(*this, *m_ShadowMat);
 }
 
-Matrix4x4 DirectionalLight::getLightMatrix() const
+Matrix4x4 DirectionalLight::lightMatrix() const
 {
     if (m_DepthCamera)
-        return m_DepthCamera->getViewProjectionMatrix();
+        return m_DepthCamera->viewProjectionMatrix();
 
     return Matrix4x4::identity;
 }
@@ -64,5 +64,5 @@ Matrix4x4 DirectionalLight::getLightMatrix() const
 void DirectionalLight::addBuffersToDebugWindow(DebugWindow& window) const
 {
     if (m_DepthCamera)
-        window.addTexture(m_DepthCamera->getDepthTexture(), "Directional Shadowmap", /*flip=*/ true, DebugWindow::ElementSizeMode::ConstrainToWindowWidth);
+        window.addTexture(m_DepthCamera->depthTexture(), "Directional Shadowmap", /*flip=*/ true, DebugWindow::ElementSizeMode::ConstrainToWindowWidth);
 }

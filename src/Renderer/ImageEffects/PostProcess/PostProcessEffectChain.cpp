@@ -24,7 +24,7 @@ void PostProcessEffectChain::render()
     if (m_Effects.size() == 0)
         return;
 
-    BufferTexture* source = m_Camera->getRenderTargetBuffer();
+    BufferTexture* source = m_Camera->renderTargetBuffer();
     bool pingPongFlag = false;
 
     for (size_t i = 0; i < m_NumColorBuffers; i++)

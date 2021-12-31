@@ -17,8 +17,8 @@ public:
     Texture2D(const std::string& filePath, bool generateMipmaps, bool readable, bool sRGB);
     ~Texture2D();
 
-    ColorByte getPixel(uint32_t x, uint32_t y) const;
-    ColorByte* getPixels() const;
+    ColorByte pixel(uint32_t x, uint32_t y) const;
+    ColorByte* pixels() const;
     void setPixel(uint32_t x, uint32_t y, const ColorByte& c);
     void setPixels(ColorByte* colors);
     void uploadToGPU(bool keepReadable);

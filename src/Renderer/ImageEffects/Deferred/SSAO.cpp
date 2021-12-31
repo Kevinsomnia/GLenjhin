@@ -24,7 +24,7 @@ void SSAO::lazyInitialize(Camera* camera)
 
     m_NoiseTex = new Texture2D("res\\textures\\dither_noise.png", /*generateMipmaps=*/ false, /*readable=*/ false, /*sRGB=*/ false);
 
-    GeometryBuffers* gBufs = camera->getGBuffers();
+    GeometryBuffers* gBufs = camera->gBuffers();
     m_OcclusionMat->setTexture("u_Position", gBufs->positionGBuffer());
     m_OcclusionMat->setTexture("u_NormalSmooth", gBufs->normalSmoothGBuffer());
     m_OcclusionMat->setTexture("u_Depth", gBufs->depthTexture());
@@ -38,7 +38,7 @@ void SSAO::render()
 {
     DeferredEffect::render();
 
-    Texture2D* emissionOccl = m_Camera->getGBuffers()->emissionOcclGBuffer();
+    Texture2D* emissionOccl = m_Camera->gBuffers()->emissionOcclGBuffer();
 
     // Assume screen dimensions are equal to the GBuffer dimensions.
     uint32_t w = emissionOccl->width() >> DOWNSAMPLE;
@@ -50,8 +50,8 @@ void SSAO::render()
 
     // Render to occlusion buffers.
     Vector2 occlusionBufferTexelSize = bt0->texelSize();
-    m_OcclusionMat->setMatrix4x4("u_V", m_Camera->getViewMatrix());
-    m_OcclusionMat->setMatrix4x4("u_P", m_Camera->getProjectionMatrix());
+    m_OcclusionMat->setMatrix4x4("u_V", m_Camera->viewMatrix());
+    m_OcclusionMat->setMatrix4x4("u_P", m_Camera->projectionMatrix());
     m_OcclusionMat->setVector2("u_TexelSize", occlusionBufferTexelSize);
     DeferredEffect::render(bt0, m_OcclusionMat);
 
@@ -71,7 +71,7 @@ void SSAO::render()
     DeferredEffect::render(emissionOccl, emissionOcclCopy, m_CopyMat);
 
     // Write occlusion buffer to emissionOccl GBuffer alpha channel.
-    m_Camera->getGBuffers()->bind();
+    m_Camera->gBuffers()->bind();
     m_Material->setTexture("u_EmissionOccl", emissionOcclCopy->colorTexture());
     m_Material->setTexture("u_Occlusion", bt0->colorTexture());
     FullscreenTriangle::Draw(*m_Material, /*depthTest=*/ false);

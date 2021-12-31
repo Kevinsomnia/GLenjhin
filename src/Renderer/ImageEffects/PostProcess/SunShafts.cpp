@@ -20,9 +20,9 @@ void SunShafts::render(BufferTexture* source, BufferTexture* destination)
     BufferTexture* bt1 = BufferTexturePool::Get(w, h, /*colorFormat=*/ TextureFormat::RGBAHalf, /*depthFormat=*/ TextureFormat::None);
     m_Material->setTexture("u_ShaftsTex", bt0->colorTexture());
 
-    Vector3 sunDir = m_Camera->getTransform()->getPosition() - ((m_SunTransform) ? m_SunTransform->getForward() : Vector3::forward);
+    Vector3 sunDir = m_Camera->transform()->position() - ((m_SunTransform) ? m_SunTransform->forward() : Vector3::forward);
     Vector3 sunViewportPos = m_Camera->worldToViewportPoint(sunDir);
-    m_DepthFilterMat->setTexture("u_Depth", m_Camera->getDepthTexture());
+    m_DepthFilterMat->setTexture("u_Depth", m_Camera->depthTexture());
     m_DepthFilterMat->setVector3("u_SunPos", sunViewportPos);
     m_DepthFilterMat->setFloat("u_Threshold", 0.9f);
     PostProcessEffect::render(source, bt0, m_DepthFilterMat);

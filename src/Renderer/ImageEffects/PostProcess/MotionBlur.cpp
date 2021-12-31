@@ -25,7 +25,7 @@ void MotionBlur::lazyInitialize(Camera* camera)
     if (m_Initialized)
         return;
 
-    Texture2D* motionVectorsTex = camera->getMotionVectorsTexture();
+    Texture2D* motionVectorsTex = camera->motionVectorsTexture();
 
     if (!motionVectorsTex)
     {
@@ -35,7 +35,7 @@ void MotionBlur::lazyInitialize(Camera* camera)
 
     PostProcessEffect::lazyInitialize(camera);
 
-    uint32_t maxBlurRadius = static_cast<uint32_t>(camera->getRenderTargetBuffer()->height() * MAX_BLUR_RADIUS);   // in pixels
+    uint32_t maxBlurRadius = static_cast<uint32_t>(camera->renderTargetBuffer()->height() * MAX_BLUR_RADIUS);   // in pixels
 
     // The screen is divided into tiles (8x8 pixels), and those controls how big those tiles are in pixels, and therefore must be a multiple of 8.
     // This defines the region of pixels that blur can potentially affect if the sample is at the center of the tile.
@@ -44,9 +44,9 @@ void MotionBlur::lazyInitialize(Camera* camera)
 
     Vector2 motionVectorsTexSize = motionVectorsTex->size();
     m_PackVelocityDepthMat->setTexture("u_MotionTex", motionVectorsTex);
-    m_PackVelocityDepthMat->setTexture("u_DepthTex", m_Camera->getDepthTexture());
+    m_PackVelocityDepthMat->setTexture("u_DepthTex", m_Camera->depthTexture());
     m_PackVelocityDepthMat->setVector3("u_MotionParams", Vector3(motionVectorsTexSize.x, motionVectorsTexSize.y, static_cast<float>(maxBlurRadius)));
-    m_PackVelocityDepthMat->setVector4("u_ProjectionParams", camera->getProjectionParams());
+    m_PackVelocityDepthMat->setVector4("u_ProjectionParams", camera->projectionParams());
     m_PackVelocityDepthMat->setFloat("u_VelocityScale", BLUR_STRENGTH);
 
     m_MaxVelocityDenormalizeMat->setFloat("u_MaxBlurRadius", static_cast<float>(maxBlurRadius));

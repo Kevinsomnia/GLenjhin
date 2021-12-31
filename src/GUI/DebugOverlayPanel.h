@@ -18,7 +18,7 @@ public:
     DebugOverlayPanel() = delete;
     DebugOverlayPanel(DebugWindow* debugWindow);
     void draw();
-    bool getVisible();
+    bool visible();
     void toggleVisible();
     void setFPS(float fps);
 private:

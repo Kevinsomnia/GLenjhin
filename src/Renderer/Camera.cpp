@@ -88,7 +88,7 @@ Camera::~Camera()
 
 void Camera::update()
 {
-    m_ViewMatrix = Matrix4x4::View(m_Transform->getPosition(), m_Transform->getRotation());
+    m_ViewMatrix = Matrix4x4::View(m_Transform->position(), m_Transform->rotation());
     m_PrevViewProjectionMatrix = m_ViewProjectionMatrix;
     m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 }
@@ -123,7 +123,7 @@ void Camera::draw(Scene* scene, bool drawSkybox)
         }
 
         m_DeferredLightingMat->setColor("u_AmbientColor", ColorByte(50, 81, 107));
-        m_DeferredLightingMat->setVector3("u_CameraPos", m_Transform->getPosition());
+        m_DeferredLightingMat->setVector3("u_CameraPos", m_Transform->position());
         FullscreenTriangle::Draw(*m_DeferredLightingMat, /*depthTest=*/ false);
 
         // Blit GBuffer depth to buffer texture depth so that forward-rendered objects (e.g. skybox, transparent objects) display properly.
@@ -193,7 +193,7 @@ void Camera::addBuffersToDebugWindow(DebugWindow& window) const
         window.addTexture(m_GBuffers->motionVectorsTexture(), "Motion Vectors [RGHalf]: Screen-space Motion (RG)", /*flip=*/ true, DebugWindow::ElementSizeMode::ConstrainToWindowWidth);
     }
 
-    window.addTexture(getDepthTexture(), "Camera Depth (R) [Float]", /*flip=*/ true, DebugWindow::ElementSizeMode::ConstrainToWindowWidth);
+    window.addTexture(depthTexture(), "Camera Depth (R) [Float]", /*flip=*/ true, DebugWindow::ElementSizeMode::ConstrainToWindowWidth);
 }
 
 Vector3 Camera::worldToViewportPoint(const Vector3& pos) const
@@ -206,10 +206,10 @@ Vector3 Camera::worldToViewportPoint(const Vector3& pos) const
 
 void Camera::renderBackgroundMotionVectors()
 {
-    if (!getMotionVectorsTexture())
+    if (!motionVectorsTexture())
         return;
 
-    m_BgMotionVectorsMat->setMatrix4x4("u_PrevVP", getPrevViewProjectionMatrix());
-    m_BgMotionVectorsMat->setMatrix4x4("u_CurrVP", getViewProjectionMatrix());
+    m_BgMotionVectorsMat->setMatrix4x4("u_PrevVP", prevViewProjectionMatrix());
+    m_BgMotionVectorsMat->setMatrix4x4("u_CurrVP", viewProjectionMatrix());
     FullscreenTriangle::Draw(*m_BgMotionVectorsMat, /*depthTest=*/ true);
 }

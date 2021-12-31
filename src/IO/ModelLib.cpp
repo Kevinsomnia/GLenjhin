@@ -74,7 +74,7 @@ namespace ModelLib
                     }
                     else
                     {
-                        normal = position.getNormalized();
+                        normal = position.normalized();
                     }
 
                     if (hasUV0)

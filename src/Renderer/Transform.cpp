@@ -4,10 +4,10 @@ Transform::Transform() : Transform(Vector3::zero, Vector3::zero, Vector3::zero) 
 Transform::Transform(const Vector3& position, const Vector3& rotation, const Vector3& scale)
     : m_Position(position), m_Rotation(rotation), m_Scale(scale), m_DirtyTRS(true)
 {
-    m_PrevTRS = getTRS();
+    m_PrevTRS = TRS();
 }
 
-Matrix4x4 Transform::getTRS()
+Matrix4x4 Transform::TRS()
 {
     if (m_DirtyTRS)
     {
@@ -18,19 +18,19 @@ Matrix4x4 Transform::getTRS()
     return m_TRS;
 }
 
-Vector3 Transform::getForward()
+Vector3 Transform::forward()
 {
     return transformDirection(Vector3::forward);
 }
 
 Vector3 Transform::transformDirection(const Vector3& dir)
 {
-    return getTRS().multiplyVector(dir);
+    return TRS().multiplyVector(dir);
 }
 
 void Transform::earlyUpdate()
 {
-    m_PrevTRS = getTRS();
+    m_PrevTRS = TRS();
 }
 
 void Transform::setPosition(const Vector3& position)
@@ -59,7 +59,7 @@ void Transform::translate(const Vector3& v, Space space)
     }
     else
     {
-        m_Position += getTRS().multiplyVector(v);
+        m_Position += TRS().multiplyVector(v);
     }
 
     m_DirtyTRS = true;
@@ -73,7 +73,7 @@ void Transform::rotate(const Vector3& r, Space space)
     }
     else
     {
-        m_Rotation += getTRS().multiplyVector(r);
+        m_Rotation += TRS().multiplyVector(r);
     }
 
     m_DirtyTRS = true;

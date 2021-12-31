@@ -14,5 +14,5 @@ void FXAA::lazyInitialize(Camera* camera)
         return;
 
     PostProcessEffect::lazyInitialize(camera);
-    m_Material->setVector2("u_TexelSize", camera->getRenderTargetBuffer()->texelSize());
+    m_Material->setVector2("u_TexelSize", camera->renderTargetBuffer()->texelSize());
 }

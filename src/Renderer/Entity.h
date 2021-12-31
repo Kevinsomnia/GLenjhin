@@ -31,8 +31,8 @@ public:
     void drawShadowPass(Material& shadowMat) const;
     void draw(const Camera& camera, const std::vector<Light*>& lights) const;
 
-    Transform* getTransform() const { return m_Transform; }
-    MeshRenderer* getRenderer() const { return m_Renderer; }
+    Transform* transform() const { return m_Transform; }
+    MeshRenderer* renderer() const { return m_Renderer; }
 private:
     Transform* m_Transform;
     MeshRenderer* m_Renderer;

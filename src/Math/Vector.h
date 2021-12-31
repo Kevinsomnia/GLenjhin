@@ -23,9 +23,9 @@ struct Vector2
     float x;
     float y;
 
-    inline float getMagnitude() const { return sqrt(getSqrMagnitude()); }
-    inline float getSqrMagnitude() const { return x * x + y * y; }
-    inline Vector2 getNormalized() const { return *this / getMagnitude(); }
+    inline float magnitude() const { return sqrt(sqrMagnitude()); }
+    inline float sqrMagnitude() const { return x * x + y * y; }
+    inline Vector2 normalized() const { return *this / magnitude(); }
     inline void normalize();
 
     Vector2 operator +(const Vector2& other) const;
@@ -66,7 +66,7 @@ struct Vector2
 
 inline void Vector2::normalize()
 {
-    float oneOverMagnitude = 1.0f / getMagnitude();
+    float oneOverMagnitude = 1.0f / magnitude();
     operator *=(oneOverMagnitude);
 }
 
@@ -84,9 +84,9 @@ struct Vector3
     float y;
     float z;
 
-    inline float getMagnitude() const { return sqrt(getSqrMagnitude()); }
-    inline float getSqrMagnitude() const { return x * x + y * y + z * z; }
-    inline Vector3 getNormalized() const { return *this / getMagnitude(); }
+    inline float magnitude() const { return sqrt(sqrMagnitude()); }
+    inline float sqrMagnitude() const { return x * x + y * y + z * z; }
+    inline Vector3 normalized() const { return *this / magnitude(); }
     inline void normalize();
 
     Vector3 operator +(const Vector3& other) const;
@@ -129,7 +129,7 @@ struct Vector3
 
 inline void Vector3::normalize()
 {
-    float oneOverMagnitude = 1.0f / getMagnitude();
+    float oneOverMagnitude = 1.0f / magnitude();
     operator *=(oneOverMagnitude);
 }
 
@@ -148,9 +148,9 @@ struct Vector4
     float z;
     float w;
 
-    inline float getMagnitude() const { return sqrt(getSqrMagnitude()); }
-    inline float getSqrMagnitude() const { return x * x + y * y + z * z + w * w; }
-    inline Vector4 getNormalized() const { return *this / getMagnitude(); }
+    inline float magnitude() const { return sqrt(sqrMagnitude()); }
+    inline float sqrMagnitude() const { return x * x + y * y + z * z + w * w; }
+    inline Vector4 normalized() const { return *this / magnitude(); }
     inline void normalize();
 
     Vector4 operator +(const Vector4& other) const;
@@ -186,6 +186,6 @@ struct Vector4
 
 inline void Vector4::normalize()
 {
-    float oneOverMagnitude = 1.0f / getMagnitude();
+    float oneOverMagnitude = 1.0f / magnitude();
     operator *=(oneOverMagnitude);
 }

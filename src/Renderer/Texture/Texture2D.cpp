@@ -147,7 +147,7 @@ Texture2D::~Texture2D()
         delete[] m_Pixels;
 }
 
-ColorByte Texture2D::getPixel(uint32_t x, uint32_t y) const
+ColorByte Texture2D::pixel(uint32_t x, uint32_t y) const
 {
     if (!m_Pixels)
         return nullptr;
@@ -158,7 +158,7 @@ ColorByte Texture2D::getPixel(uint32_t x, uint32_t y) const
     return ColorByte(m_Pixels + offset, hasAlpha);
 }
 
-ColorByte* Texture2D::getPixels() const
+ColorByte* Texture2D::pixels() const
 {
     if (!m_Pixels)
         return nullptr;
