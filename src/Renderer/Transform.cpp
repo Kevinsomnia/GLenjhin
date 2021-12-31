@@ -33,6 +33,17 @@ void Transform::earlyUpdate()
     m_PrevWorldTRS = worldTRS();
 }
 
+void Transform::setParent(Transform* parent)
+{
+    if (m_Parent)
+        m_Parent->removeChild(this);
+
+    m_Parent = parent;
+
+    if (m_Parent)
+        m_Parent->addChild(this);
+}
+
 void Transform::setLocalPosition(const Vector3& position)
 {
     m_LocalPosition = position;
@@ -80,4 +91,17 @@ void Transform::rotate(const Vector3& r, Space space)
     }
 
     m_DirtyTRS = true;
+}
+
+void Transform::addChild(Transform* child)
+{
+    m_Children.insert(child);
+}
+
+void Transform::removeChild(Transform* child)
+{
+    auto iter = m_Children.find(child);
+
+    if (iter != m_Children.end())
+        m_Children.erase(iter);
 }
