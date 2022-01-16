@@ -11,7 +11,7 @@ public:
     ~Bloom();
     void render(BufferTexture* source, BufferTexture* destination) override;
 private:
-    const float BLUR_SIZE = 2.0f;
+    const float BLUR_SIZE = 1.0f;
 
     static const size_t BLUR_ITERATIONS = 7;
     static const size_t MAX_BUFFER_COUNT = BLUR_ITERATIONS + 1;

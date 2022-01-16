@@ -19,9 +19,9 @@ Bloom::~Bloom()
 
 void Bloom::render(BufferTexture* source, BufferTexture* destination)
 {
-    // Setup buffers.
-    uint32_t w = source->width();
-    uint32_t h = source->height();
+    // Setup buffers, starting from half-resolution for performance.
+    uint32_t w = source->width() >> 1;
+    uint32_t h = source->height() >> 1;
 
     m_BufferCount = 0;
     for (size_t i = 0; i < MAX_BUFFER_COUNT; i++)
